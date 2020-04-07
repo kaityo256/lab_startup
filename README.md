@@ -5,3 +5,5 @@
 * Pythonのインストール
 * Gitのインストール&GitHubのアカウント設定
 * LAMMPSとVMDのインストール
+
+* [Pythonのインストール](python/README.md)
