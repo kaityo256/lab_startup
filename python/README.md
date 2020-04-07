@@ -64,4 +64,3 @@ print("Hello Python")
 #### Anacondaのトラブル
 
 たまにAnaconda Navigatorを終了しようとすると「Anaconda Navigator is still busy. Do you want to quit?」と言われることがある。しばらくまって、再度終了しようとしてもまた出る場合はそのまま終了して良い。
-

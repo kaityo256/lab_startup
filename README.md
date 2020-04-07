@@ -2,8 +2,7 @@
 
 ## やるべきこと
 
-* Pythonのインストール
+* [Pythonのインストール](python/README.md)
+* [VSCodeのインストール](vscode/README.md)
 * Gitのインストール&GitHubのアカウント設定
 * LAMMPSとVMDのインストール
-
-* [Pythonのインストール](python/README.md)

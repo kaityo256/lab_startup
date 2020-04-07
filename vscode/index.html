@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+
+<style>
+  .markdown-body {
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 45px;
+  }
+  p.caption{
+    display:none;
+  }
+  img {width: 100%}
+
+  @media (max-width: 767px) {
+    .markdown-body {
+      padding: 15px;
+    }
+  }
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://kaityo256.github.io/sevendayshpc/github-markdown.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<article class="markdown-body">
+<h1 id="vscodeのインストール">VSCodeのインストール</h1>
+<p>Visual Studio Code、通称VSCodeは、Microsoftが中心となって開発を進めているオープンソースのエディタである。Windows/Mac/Linuxで動作するクロスプラットフォームであり、豊富なプラグインがあるためにユーザが増えている。以下ではVSCodeのインストールと、VSCodeからPythonを実行する環境まで構築する。なお、自分の好きな開発環境があるならそれを使ってよい。</p>
+<h2 id="windows編">Windows編</h2>
+<h3 id="ダウンロードとインストール">ダウンロードとインストール</h3>
+<p><a href="https://code.visualstudio.com/" class="uri">https://code.visualstudio.com/</a>に行って、「Download for Windows Stable Build」をダウンロード、インストールする。</p>
+<p>途中で「追加タスクの選択」が現れたら、「ファイルコンテキストメニュー」と「ディレクトリコンテキストメニュー」に「「Codeで開く」アクションを追加する」がチェックされていることを確認し、もしされていなかったらチェックしておく。</p>
+<div class="figure">
+<img src="fig/vscode_setup_win.png" alt="セットアップ" />
+<p class="caption">セットアップ</p>
+</div>
+<p>「デスクトップ上にアイコンを作成する」は、どちらでもかまわない。</p>
+<p>インストール後、VSCodeを起動する。</p>
+<h3 id="python環境のセットアップ">Python環境のセットアップ</h3>
+<p>VSCodeを起動する。例えばWindows 10なら左下の検索窓から「Visual Studio Code」として検索すれば見つかるはず。</p>
+<p>VSCodeの左のメニューからExtentionsのアイコン(ブロックのマーク)をクリックし、現れた検索窓に「python」と入力、現れた「Python extension for Visual Studio Code」の「install」ボタンを押して、インストールする。「再読み込みが必要です」というボタンに変わったら、クリックして再読み込みをする。</p>
+<p>Pythonのプラグインがインストールされたら、「ファイル」から「新規作成」を選ぶ(もしくはCtrl+Nを押す)。「Untitled-1」のようなファイル名でウィンドウが開かれるため、「保存(Ctrl+S)」を選んで、適当な場所に<code>test.py</code>という名前で保存する。</p>
+<p>この時、先にPython環境が正しくインストールされていれば、エディタの左下に「Python 3.7.6. 64-bit ('base':conda)」といった表示が現れるはずだ。</p>
+<p>Pythonの実行環境が選ばれた状態で</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="bu">print</span>(<span class="st">&quot;Hello Python&quot;</span>)</code></pre></div>
+<p>と入力し、右上にある三角のマーク(ターミナルでPythonを実行)をクリックせよ。下にウィンドウが開いて実行結果(<code>Hello Python</code>)が表示されるはずだ。</p>
+<p>ただ、ここで</p>
+<pre class="txt"><code>conda : 用語 &#39;conda&#39; は、コマンドレット、関数、スクリプト ファイル、または操作可能なプログラムの名前として認識されません</code></pre>
+<p>というエラーが表示される。これを防ぐには「ファイル」→「基本設定」→「設定」を開き、検索窓に「Activate」と入力すると「Python &gt; Terminal: Activate Environment」が見つかるはず。そこの「Activate Python Environment in Terminal created using the Extension.」のチェックを外せば良い。</p>
+</article>
+</body>
+</html>
