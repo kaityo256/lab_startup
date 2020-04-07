@@ -74,7 +74,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h1 id="pytyhonのインストール">Pytyhonのインストール</h1>
 <p>PCにPythonをインストールし、VSCodeから実行できるようにする。MacはデフォルトでPythonがインストールされているが、バージョンが古く、必要なライブラリが入っていないので、新たにインストールする。以下では全く環境をいじっていないpCにPythonのディストリビューションとしてAnacondaを、エディタとしてVSCodeをインストールして使うことを想定しているが、自分でインストールして使っているPythonがあったり、他に好きなエディタがあればそれを使ってかまわない。</p>
 <h2 id="windows編">Windows編</h2>
-<h3 id="anacondaのインストール">Anacondaのインストール</h3>
+<h3 id="anacondaのインストールとテスト">Anacondaのインストールとテスト</h3>
+<h4 id="anacondaのインストール">Anacondaのインストール</h4>
 <p>まず、ログイン名を英語にしておくことを推奨する。もし最初に日本語名でアカウントを作成してしまった場合、新たに英語名のログイン名のアカウントを作成し、そのアカウントに管理者権限を付与して、以降はそのアカウントをメインに使うのが良い。日本語アカウント名のままでもなんとかなるかもしれないが、昔はいろいろ不具合が起きたのでおすすめしない。</p>
 <p>最初に、Anacondaをインストールする。ブラウザでAnacondaと検索するか、<a href="https://www.anaconda.com/" class="uri">https://www.anaconda.com/</a>にアクセスし、右上にある「Download」ボタンを押す。</p>
 <div class="figure">
@@ -93,7 +94,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p class="caption">インストール先</p>
 </div>
 <p>これもデフォルトで良いが、アカウントを英語名にしておかないと、インストール先に日本語が含まれて、後で面倒なことになるかもしれない。インストールが完了したら、Finishを押す。</p>
-<h3 id="jupyter-notebookのテスト">Jupyter Notebookのテスト</h3>
+<h4 id="jupyter-notebookのテスト">Jupyter Notebookのテスト</h4>
 <p>Windowsのスタートメニューから、Anaconda Navigatorを実行する。Windows 10だとメニューが折り畳まれている場合もあるので注意。</p>
 <div class="figure">
 <img src="fig/navigator.png" alt="navigator.png" />
@@ -120,8 +121,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>セルの真下に「Hello Python」と表示されて、次のセルが入力待ちになれば成功である。これでPythonを実行する環境は整った。</p>
 <p>右上の「Quit」を押してサーバを終了する。「Logout」を押して終了しようとすると、Anaconda Navigatorを終了しようとする時に 「Jupyter Notebookが終了していない」と言われるの注意。その場合はそのまま終了して問題ない。</p>
 <p>また、次回からはAnaconda Navigatorを経由せず、いきなりJupyter Notebookを実行して良い。「Jupyter Notebook」というタイトルの コマンドライン画面経由でブラウザが起動されるが、「Quit」を押せば、コマンドライン画面は消える。この時も「Logout」を押すと コマンドライン画面が残ってしまうが、その場合はCtrl+Cを何度か押せば消える。</p>
-<h3 id="anacondaのトラブル">Anacondaのトラブル</h3>
-<p>たまに、Anaconda Navigatorを終了しようとすると「Anaconda Navigator is still busy. Do you want to quit?」と言われることがある。しばらくまって、再度終了しようとしてもまた出る場合はそのまま終了して良い。</p>
+<h4 id="anacondaのトラブル">Anacondaのトラブル</h4>
+<p>たまにAnaconda Navigatorを終了しようとすると「Anaconda Navigator is still busy. Do you want to quit?」と言われることがある。しばらくまって、再度終了しようとしてもまた出る場合はそのまま終了して良い。</p>
 </article>
 </body>
 </html>
