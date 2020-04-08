@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+
+<style>
+  .markdown-body {
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 45px;
+  }
+  p.caption{
+    display:none;
+  }
+  img {width: 100%}
+
+  @media (max-width: 767px) {
+    .markdown-body {
+      padding: 15px;
+    }
+  }
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://kaityo256.github.io/sevendayshpc/github-markdown.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<article class="markdown-body">
+<h1 id="lammpsとvmdのインストール">LammpsとVMDのインストール</h1>
+<p>Lammps (Large-scale Atomic/Molecular Massively Parallel Simulator)は、サンディア国立研究所の古典分子動力学プログラムだ。性能が良く、比較的容易に使えて、並列化もなされているため、広く使われている。</p>
+<h2 id="windows編">Windows編</h2>
+<h3 id="lammpsのインストール">Lammpsのインストール</h3>
+<p>まずは<a href="https://rpm.lammps.org/windows/">ここ</a>からLammpsをダウンロードしよう。並列版もあるが、とりあえずはシリアル版(並列化されていない)として、<code>LAMMPS-64bit-stable.exe</code>をダウンロードして、実行する。「WindowsによってPCが保護されました」というダイアログが出てきたら、「詳細情報」を押すと「実行」が出てくるので、それをクリックしてインストールする。</p>
+<p>インストールが完了したら、サンプルコードを実行してみよう。</p>
+<p>Lammpsのサンプルファイルは<code>C:\Program Files\LAMMPS 64-bit 3Mar2020\Examples</code>にある。そこに移動して「melt」というフォルダをコピーしよう。</p>
+<p>その後、自分のユーザフォルダに移動する。エクスプローラーで、「PC」→「Windows (C:)」→「ユーザー」→「自分のアカウント名」でいけるはず。</p>
+<p>そこに「lammps」というフォルダを作り、その中に入ってから、先ほどコピーした「melt」を貼り付けよう。</p>
+<p>次に、Windows Powershellを起動する。デフォルトでユーザーフォルダが表示されるはず。そこで、</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span> lammps
+<span class="bu">cd</span> melt</code></pre></div>
+<p>としてから、<code>ls</code>と打ってみよう。正しくコピーされていれば、以下のような表示になるはず。</p>
+<pre class="txt"><code>
+
+    ディレクトリ: C:\Users\watanabe\lammps\melt
+
+
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+-a----       2020/03/06      2:02            596 in.melt
+-a----       2020/03/06      2:02           2939 log.27Nov18.melt.g++.1</code></pre>
+<p>この状態で、以下を実行しよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">cat</span> .\in.melt <span class="kw">|</span> <span class="ex">lmp_serial.exe</span></code></pre></div>
+<p>いろいろ表示されて、最後に</p>
+<pre class="txt"><code>Total # of neighbors = 151513
+Ave neighs/atom = 37.8783
+Neighbor list builds = 12
+Dangerous builds not checked
+Total wall time: 0:00:00</code></pre>
+<p>といった表示が出れば実行は成功だ。</p>
+<h3 id="in.meltの修正">in.meltの修正</h3>
+<p>次に、<code>in.melt</code>を修正しよう。</p>
+<p>PowerShellで当該フォルダを開いているのなら、</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">code</span> in.melt</code></pre></div>
+<p>と入力すれば、VSCodeで直接<code>in.melt</code>が開かれるはず。</p>
+<p>また、コピーした(ユーザーフォルダの下にある)<code>melt</code>フォルダの中の<code>in.melt</code>ファイルを右クリックしよう。VSCodeが正しくインストールされていれば「Codeで開く」という項目があるはずだ。それを選ぶと、<code>in.melt</code>ファイルがVSCodeで開かれるはずである。</p>
+<p>コマンドライン(Windows Powershell)から開く方法と、こうしてエクスプローラーから開く方法の両方が使えるようになって欲しい。</p>
+<p>VSCodeでin.meltを開いたら、以下の行を探す。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="co">#dump       id all atom 50 dump.melt</span></code></pre></div>
+<p>この行頭の<code>#</code>を削除して保存しよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">dump</span>        id all atom 50 dump.melt</code></pre></div>
+<p>この状態で、またlammpsを実行しよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">cat</span> .\in.melt <span class="kw">|</span> <span class="ex">lmp_serial.exe</span></code></pre></div>
+<p>すると、今度は同じフォルダに<code>melt.dump</code>が作成されたはずだ。<code>ls</code>で確認せよ。</p>
+<p>これは原子の起動を保存したファイルで、これを後からVMDで読み込んで可視化する。</p>
+<h3 id="vmdのインストール">VMDのインストール</h3>
+<p>次にVMDをダウンロード、インストールしよう。</p>
+<p><a href="https://www.ks.uiuc.edu/Research/vmd/">ここ</a>に行って、「Download (all versions)」をクリックする。</p>
+<p>次に「Version 1.9.3 (2016-11-30) Platforms:」の、「Windows OpenGL (Microsoft Windows XP/Vista/7/8/10 (32-bit) using OpenGL)」を選ぶ。</p>
+<p>すると、「Registration/Login」画面が現れるので、メールアドレスと、適当なパスワードを入力する。初回登録時には「New User Registration」画面となるので、必要事項を入力の上で「Register」を押す。</p>
+<p>ライセンスに同意することを示すと、ダウンロードが始まる。ダウンロードが完了したら、インストールする。特に設定項目はない。</p>
+<p>Windows 10なら、左下の「ここに入力して検索」で「vmd」で検索すればVMDが起動する。</p>
+<p>VMDが起動したら、「VMD Main」の「File」から「New Molecule」を選び、「Browse」を押して先ほどの<code>dump.melt</code>を選ぶ。file typeとして「LAMMPS Trajectory」を選んでから「Load」を押す。</p>
+<div class="figure">
+<img src="fig/vmd_dialog.png" alt="VMD" />
+<p class="caption">VMD</p>
+</div>
+<p>すると、直線が多数重なったような画面が出たはずだ。この状態で、「VMD Main」の画面で「dump.melt」の行を選び、「Graphics」の「Representation」を選ぶ。</p>
+<p>ここで、「Drawing Method」を「VDW」にすると、画面が玉に変わるはず。その状態で「Sphere Scale」を小さくしよう。0.3くらいがちょうどよいと思う。</p>
+<div class="figure">
+<img src="fig/vmd_representation.png" alt="Representation" />
+<p class="caption">Representation</p>
+</div>
+<p>この状態で、VMD Mainの右下にある再生ボタン「Play Forward」を押せば、原子が凍った状態から解けていくアニメーション(6フレームしかないが)が表示されるはずだ。</p>
+</article>
+</body>
+</html>
