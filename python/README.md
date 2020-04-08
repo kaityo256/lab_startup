@@ -2,13 +2,13 @@
 
 PCにPythonをインストールし、VSCodeから実行できるようにする。MacはデフォルトでPythonがインストールされているが、バージョンが古く、必要なライブラリが入っていないので、新たにインストールする。以下では全く環境をいじっていないpCにPythonのディストリビューションとしてAnacondaを、エディタとしてVSCodeをインストールして使うことを想定しているが、自分でインストールして使っているPythonがあったり、他に好きなエディタがあればそれを使ってかまわない。
 
+なお、Windows/Macともにログイン名を英語にしておくことを推奨する。もし最初に日本語名でアカウントを作成してしまった場合、新たに英語名のログイン名のアカウントを作成し、そのアカウントに管理者権限を付与して、以降はそのアカウントをメインに使うのが良い。現在は日本語アカウント名のままでもなんとかなるかもしれないが、少なくとも昔はいろいろ不具合が起きたのでおすすめしない。
+
 ## Windows編
 
 ### Anacondaのインストールとテスト
 
 #### Anacondaのインストール
-
-まず、ログイン名を英語にしておくことを推奨する。もし最初に日本語名でアカウントを作成してしまった場合、新たに英語名のログイン名のアカウントを作成し、そのアカウントに管理者権限を付与して、以降はそのアカウントをメインに使うのが良い。日本語アカウント名のままでもなんとかなるかもしれないが、昔はいろいろ不具合が起きたのでおすすめしない。
 
 最初に、Anacondaをインストールする。ブラウザでAnacondaと検索するか、[https://www.anaconda.com/](https://www.anaconda.com/)にアクセスし、右上にある「Download」ボタンを押す。
 
@@ -64,3 +64,139 @@ print("Hello Python")
 #### Anacondaのトラブル
 
 たまにAnaconda Navigatorを終了しようとすると「Anaconda Navigator is still busy. Do you want to quit?」と言われることがある。しばらくまって、再度終了しようとしてもまた出る場合はそのまま終了して良い。
+
+## Mac編
+
+### Home brewのインストール
+
+もしインストールされていないのなら、まずHome Brewをインストールする。
+
+まず「ターミナル」を開く。Command+Spaceでスポットライトを開き、Terminal.appを選べば起動する。実行したら、今後良く使うのでDockに追加しておこう。ターミナルが開いたら、以下を実行せよ。
+
+```sh
+brew
+```
+
+「Command not found」と言われたらインストールされていない。インストールするには[https://brew.sh/index_ja](https://brew.sh/index_ja)の指示に従い、ターミナルで以下のコマンドを実行する。
+
+```sh
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+```
+
+ターミナルにコピペして実行せよ。途中、パスワードが要求されるので入力すること。Home brewのインストールが終わったら、再度以下を実行せよ。
+
+```sh
+brew
+```
+
+```txt
+Example usage:
+  brew search [TEXT|/REGEX/]
+  brew info [FORMULA...]
+(snip)
+Further help:
+  brew commands
+  brew help [COMMAND]
+  man brew
+  https://docs.brew.sh
+```
+
+などと表示されればインストールできている。もし
+
+```sh
+Error: You have not agreed to the Xcode license. Please resolve this by running:
+  sudo xcodebuild -license accept
+```
+
+というエラーが起きて実行できなかった場合、
+
+```sh
+sudo xcodebuild -license accept
+```
+
+を実行せよ(パスワードが必要)。
+
+最後にHome Brewを最新版にする。以下を実行せよ(かなり時間がかかる)。
+
+```sh
+brew update --force && brew upgrade
+```
+
+### Anacondaのインストール
+
+まず、pyenvをインストールする。ターミナルで以下を実行せよ。
+
+```sh
+brew install pyenv
+```
+
+次に、自分が使っているシェルを確認せよ。
+
+```sh
+echo $SHELL
+```
+
+おそらくデフォルトではbashだと思われる。bashの場合、以下を実行せよ。
+
+```sh
+echo 'eval "$(pyenv init -)"' >> ~/.bash_profile
+exec $SHELL -l
+```
+
+もしzshを使っている場合は、以下を実行せよ。
+
+```sh
+echo 'eval "$(pyenv init -)"' >> ~/.zshrc
+exec $SHELL -l
+```
+
+その後、pyenvを使ってanacondaをインストールする。まず、インストール可能なanacondaのバージョンを確認しよう。
+
+```sh
+pyenv install -l
+```
+
+pyenvでインストール可能なパッケージ一覧が表示されたはずだ。ここで`anaconda`の最新版を探す。2020年4月時点では、`anaconda3-2019.10`が最新である。インストールし、アクティベートしよう。
+
+```sh
+pyenv install anaconda3-2019.10
+pyenv global anaconda3-2019.10
+```
+
+インストールできたか確認しよう。ターミナルで`python`を実行せよ。
+
+```sh
+$ python
+Python 3.7.4 (default, Aug 13 2019, 15:17:50) 
+[Clang 4.0.1 (tags/RELEASE_401/final)] :: Anaconda, Inc. on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>> 
+```
+
+上のように「Anaconda, Inc.」などと表示されれば正しくインストールされている。Ctrl+Dで終了しよう。
+
+#### Jupyter Notebookのテスト
+
+ターミナルから以下を実行せよ。
+
+```sh
+jupyter notebook
+```
+
+デフォルトのブラウザで、Jupyter Notebookが開かれるので、右上の「New」ボタンから「Python 3」を選ぶ。
+
+![newbook2.png](fig/newbook2.png)
+
+新しいタブが開き、入力待ちになるので、そこで何かプログラムを入力する。例えば
+
+```py
+print("Hello Python")
+```
+
+と入力し「Shift+Return」もしくは上の「Run」ボタンをクリックする。
+
+![run2.png](fig/run2.png)
+
+セルの真下に「Hello Python」と表示されて、次のセルが入力待ちになれば成功である。これでPythonを実行する環境は整った。
+
+最初に起動した画面の「Quit」を選ぶとJupyter Notebookは終了する。
