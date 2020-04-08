@@ -2,15 +2,27 @@
 
 Lammps (Large-scale Atomic/Molecular Massively Parallel Simulator)は、サンディア国立研究所の古典分子動力学プログラムだ。性能が良く、比較的容易に使えて、並列化もなされているため、広く使われている。
 
-## Windows編
+## Lammpsのインストール
 
-### Lammpsのインストール
+### Windows
 
 まずは[ここ](https://rpm.lammps.org/windows/)からLammpsをダウンロードしよう。並列版もあるが、とりあえずはシリアル版(並列化されていない)として、`LAMMPS-64bit-stable.exe`をダウンロードして、実行する。「WindowsによってPCが保護されました」というダイアログが出てきたら、「詳細情報」を押すと「実行」が出てくるので、それをクリックしてインストールする。
 
+### Mac
+
+「ターミナル」で以下を実行しよう。
+
+```sh
+brew install lammps
+```
+
+## サンプルコードの実行
+
 インストールが完了したら、サンプルコードを実行してみよう。
 
-Lammpsのサンプルファイルは`C:\Program Files\LAMMPS 64-bit 3Mar2020\Examples`にある。そこに移動して「melt」というフォルダをコピーしよう。
+### Windows
+
+Windowsの場合、Lammpsのサンプルファイルは`C:\Program Files\LAMMPS 64-bit 3Mar2020\Examples`にある。そこに移動して「melt」というフォルダをコピーしよう。
 
 その後、自分のユーザフォルダに移動する。エクスプローラーで、「PC」→「Windows (C:)」→「ユーザー」→「自分のアカウント名」でいけるはず。
 
@@ -55,11 +67,47 @@ Total wall time: 0:00:00
 
 といった表示が出れば実行は成功だ。
 
-### in.meltの修正
+### Mac
+
+ターミナルで以下を実行せよ。
+
+```sh
+cd
+mkdir lammps
+cd lammps
+cp -r /usr/local/Cellar/lammps/2020-03-03/share/lammps/examples/melt .
+cd melt
+```
+
+ここまでやったら`ls`と入力してみよ。正しくコピーされていれば以下の３つのファイルがあるはずである。
+
+```txt
+in.melt  log.27Nov18.melt.g++.1  log.27Nov18.melt.g++.4
+```
+
+ではLammpsを実行しよう。
+
+```sh
+lmp_serial < in.melt 
+```
+
+最後に
+
+```txt
+Total # of neighbors = 151513
+Ave neighs/atom = 37.8783
+Neighbor list builds = 12
+Dangerous builds not checked
+Total wall time: 0:00:00
+```
+
+と表示されれば成功である。
+
+## in.meltの修正
 
 次に、`in.melt`を修正しよう。
 
-PowerShellで当該フォルダを開いているのなら、
+PowerShellもしくはターミナルで当該フォルダを開いているのなら、
 
 ```sh
 code in.melt
@@ -67,9 +115,7 @@ code in.melt
 
 と入力すれば、VSCodeで直接`in.melt`が開かれるはず。
 
-また、コピーした(ユーザーフォルダの下にある)`melt`フォルダの中の`in.melt`ファイルを右クリックしよう。VSCodeが正しくインストールされていれば「Codeで開く」という項目があるはずだ。それを選ぶと、`in.melt`ファイルがVSCodeで開かれるはずである。
-
-コマンドライン(Windows Powershell)から開く方法と、こうしてエクスプローラーから開く方法の両方が使えるようになって欲しい。
+また、Windowsであれば、コピーした(ユーザーフォルダの下にある)`melt`フォルダの中の`in.melt`ファイルを右クリックすると、「Codeで開く」という項目があるはずだ。それを選ぶと、`in.melt`ファイルがVSCodeで開かれるはずである。
 
 VSCodeでin.meltを開いたら、以下の行を探す。
 
@@ -85,15 +131,25 @@ dump		id all atom 50 dump.melt
 
 この状態で、またlammpsを実行しよう。
 
+WindowsならPowerShellで、
+
 ```sh
 cat .\in.melt | lmp_serial.exe
 ```
 
-すると、今度は同じフォルダに`melt.dump`が作成されたはずだ。`ls`で確認せよ。
+Macならターミナルで
 
-これは原子の起動を保存したファイルで、これを後からVMDで読み込んで可視化する。
+```sh
+lmp_serial < in.melt 
+```
 
-### VMDのインストール
+と実行する。
+
+すると、今度は同じフォルダに`melt.dump`が作成されたはずだ。`ls`で確認せよ。これは原子の起動を保存したファイルで、これを後からVMDで読み込んで可視化する。
+
+## VMDのインストール
+
+### Windows
 
 次にVMDをダウンロード、インストールしよう。
 
@@ -107,7 +163,114 @@ cat .\in.melt | lmp_serial.exe
 
 Windows 10なら、左下の「ここに入力して検索」で「vmd」で検索すればVMDが起動する。
 
-VMDが起動したら、「VMD Main」の「File」から「New Molecule」を選び、「Browse」を押して先ほどの`dump.melt`を選ぶ。file typeとして「LAMMPS Trajectory」を選んでから「Load」を押す。
+### Mac
+
+最新版のMacではVMDが実行できないため、やや手間だがDocker経由で実行する。
+
+#### XQuartzのインストール
+
+まず、XQuartzをインストールしよう。[ここ](https://www.xquartz.org/)から、`XQuartz-2.7.11.dmg`をダウンロード、インストールする。
+
+XQuartzは「アプリケーション」→「ユーティリティ」にインストールされるので起動する。「xterm」というウィンドウが開けばインストールできてる。
+
+その後、XQuartzの「環境設定」の「セキュリティ」タブで、「接続を認証」と「ネットワーク・クライアントからの接続を許可」の両方にチェックを入れる(デフォルトで「接続を認証」にはチェックが入っているはず)。
+
+![XQuartz](fig/xquartz.png)
+
+さらに、ターミナルから
+
+```sh
+defaults write org.macosforge.xquartz.X11 enable_iglx -bool true
+```
+
+を実行しておく。以上の変更を適用するためにXQuartzを再起動すること。
+
+#### Dockerのインストール
+
+次に、Dockerをインストールする。[ここ](https://www.docker.com/products/docker-desktop)から「Download for Mac」→「Get Docker」でダウンロードできるのでインストールする。
+
+インストール後、Dockerを起動する。最初にDocker IDの入力を求められるウィンドウが出るが、無視して消して良い。右上にクジラのような小さいアイコンが表示されたらDockerが起動している。
+
+Dockerの動作を確認しよう。ターミナルで、
+
+```sh
+docker ps
+```
+
+を実行し、
+
+```txt
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+```
+
+と表示されたらDockerが起動している。
+
+```txt
+Error response from daemon: dial unix docker.raw.sock: connect: connection refused
+```
+
+と表示されたらDockerが起動していないので起動すること。
+
+#### Dockerイメージの作成
+
+まず、Dockerイメージ作成用のディレクトリを作成し、そこにDockerfileをダウンロードしよう。
+
+```sh
+cd
+mkdir docker-vmd
+cd docker-vmd
+wget https://kaityo256.github.io/lab_startup/lammps/Dockerfile
+```
+
+次に、Linux版のVMDをダウンロードする。[ここ](https://www.ks.uiuc.edu/Research/vmd/)に行って、「Download (all versions)」をクリックする。
+
+次に「Version 1.9.4 LATEST ALPHA (2019-10-17) Platforms:」の「LINUX_64 OpenGL, CUDA, OptiX, OSPRay」を選ぶ。すると、「Registration/Login」画面が現れるので、メールアドレスと、適当なパスワードを入力する。初回登録時には「New User Registration」画面となるので、必要事項を入力の上で「Register」を押す。
+
+ライセンスに同意することを示すと、ダウンロードが始まる。ダイアログが出たら「Save File」を選ぶこと。ダウンロードが完了したら、ダウンロードしたファイルを、先程作成したディレクトリ`docker-vmd`に移動する。
+
+現在、`~/docker-vmd`ディレクトリには、以下の２つのファイルがあるはず。
+
+```sh
+$ ls
+Dockerfile  vmd-1.9.4a38.bin.LINUXAMD64-CUDA10-OptiX600-RTX-OSPRay170.opengl.tar.gz
+```
+
+この状態でDockerイメージをビルドする。
+
+```sh
+docker build -t vmd .
+```
+
+最後に
+
+```txt
+Successfully tagged vmd:latest
+```
+
+と表示されたら正しくビルドされている。
+
+次に、先程の`melt`ディレクトリに移動して、以下のコマンドを実行する。
+
+```sh
+cd
+cd lammps
+cd melt
+docker run -e DISPLAY=$(hostname):0 -v ~/.Xauthority:/root/.Xauthority -v $(pwd):/lammps -it vmd
+```
+
+ここまで正しく実行されていればVMDが起動したはずである。
+
+```txt
+Can't open display: watanabe-mbp.local:0
+```
+
+などと言われたらXQuartzが起動していないので起動せよ。
+
+## VMDによる可視化
+
+VMDが起動したら、「VMD Main」の「File」から「New Molecule」を選び、「Browse」を押して先ほどの`dump.melt`を選ぶ。Macの場合は`/lammps`の中にあるはず。
+
+file typeとして「LAMMPS Trajectory」を選んでから「Load」を押す。
 
 ![VMD](fig/vmd_dialog.png)
 
@@ -117,157 +280,4 @@ VMDが起動したら、「VMD Main」の「File」から「New Molecule」を�
 
 ![Representation](fig/vmd_representation.png)
 
-この状態で、VMD Mainの右下にある再生ボタン「Play Forward」を押せば、原子が凍った状態から解けていくアニメーション(6フレームしかないが)が表示されるはずだ。
-
-## Mac編
-
-### Lammpsのインストール
-
-「ターミナル」で以下を実行しよう。
-
-```sh
-brew install lammps
-```
-
-その後、ターミナルから`lammps`ディレクトリを作り、そこに移動する。
-
-```sh
-mkdir lammps
-cd lammps
-```
-
-次に、サンプルディレクトリをコピーしよう。
-
-```sh
-cp -r /usr/local/Cellar/lammps/2020-03-03/share/lammps/examples/ellipse .
-```
-
-長いが、タブ補完を駆使すれば入力が楽になるだろう。
-
-できた`ellipse`ディレクトリに入って、lammpsを実行しよう。
-
-```sh
-cd ellipse
-lmp_serial < in.ellipse.gayberne
-```
-
-いろいろ表示されて、最後に
-
-```txt
-Total # of neighbors = 3096
-Ave neighs/atom = 7.74
-Neighbor list builds = 46
-Dangerous builds = 0
-
-Please see the log.cite file for references relevant to this simulation
-
-Total wall time: 0:00:01
-```
-
-といった表示が出れば実行は成功だ。
-
-### 入力ファイルの修正
-
-次に、入力ファイルを修正しよう。ターミナルで`in.ellipse.gayberne`があるディレクトリがカレントディレクトリになっている状態で、
-
-```sh
-code in.ellipse.gayberne
-```
-
-と入力すると、VSCodeで`in.ellipse.gayberne`が開かれるはず。もし`command not found`と言われたら、まずVSCodeを開き、Shift+Command+Pで「コマンドパレット」を開いて「shell」で検索して「シェルコマンド: PAHT内にVS Codeをインストールします (Shell Command: Install code command in PATH)」を選択し、実行する。その後、再度先程の命令を実行すると、VSCodeで`in.ellipse.gayberne`が開かれるはず。
-
-VSCodeでin.ellipse.gayberneを開いたら、以下の行を探す。
-
-```sh
-#dump	     1 all custom 100 dump.ellipse.gayberne &
-#	     id type x y z c_q[1] c_q[2] c_q[3] c_q[4]
-```
-
-この二行の行頭の`#`を削除して保存しよう。
-
-```sh
-dump	     1 all custom 100 dump.ellipse.gayberne &
-	     id type x y z c_q[1] c_q[2] c_q[3] c_q[4]
-```
-
-この状態で、またlammpsを実行しよう。
-
-```sh
-lmp_serial < in.ellipse.gayberne 
-```
-
-すると、今度は同じディレクトリに`dump.ellipse.gayberne`ができているはず(`ls`で確認しよう)。
-
-これは原子の起動を保存したファイルで、これを後からPyMolで読み込んで可視化する。
-
-### PyMolのインストール
-
-本当はVMDを使う予定だったのだが、最新のMacでVMDが動かないことがわかったので、とりあえずPyMolでしのぐことにする。
-
-[ここ](https://pymol.org/2/)からmacOSのディスクイメージをダウンロードし、PyMolをアプリケーションにコピーしてインストールせよ。
-
-その後PyMolを起動すると、Activationについて聞いてくるので、とりあえず「Skip Activation」を選ぶ(30日間の試用期間に入る)。
-
-次に、LammpsのdumpファイルをPyMolのファイルに変換する。ターミナルで以下のディレクトリに移動せよ。
-
-```sh
-cd /usr/local/Cellar/lammps/2020-03-03/share/lammps/tools/pymol_asphere/src
-```
-
-そこで
-
-```sh
-make
-```
-
-を実行すること。すると、実行可能ファイルができるので、それをパスが通ったところにシンボリックリンクを作ろう。
-
-```sh
-cd /usr/local/bin 
-ln -s /usr/local/Cellar/lammps/2020-03-03/share/lammps/tools/pymol_asphere/bin/asphere_vis
-```
-
-次に、色ファイルを設定する。先程、シミュレーションを実行したディレクトリに移動して、`colors.ellipse`ファイルを作成しよう。
-
-```ls
-cd
-cd lammps
-cd ellipse
-code colors.ellipse
-```
-
-VSCodeが開き、`colors.ellipse`が新規作成されたはずだ。ファイルの中身は以下のように記入せよ(最後の改行を忘れないこと。全体で3行になる)。
-
-```txt
-1 marine 0.7 1
-2 red 1.0 3 1 1
-
-```
-
-上記を保存したら、ターミナルで以下を実行せよ。
-
-```sh
-asphere_vis colors.ellipse dump.ellipse.gayberne ellipse.py -r 4 -o
-```
-
-以下のように出力されたら成功だ。
-
-```txt
-Read in 2 atom types from flavor_file.
-Wrote 41 frames to output file.
-```
-
-もし、以下のように「1 atom」しか認識されなかった場合、最後の改行を忘れているので、再度ファイルを修正すること。
-
-```txt
-Read in 1 atom types from flavor_file.
-Wrote 41 frames to output file.
-```
-
-このスクリプトにより`ellipse.py`が作成されたはずである(`ls`で確認せよ)。
-
-PyMolの「File」「Run Script」から、先程作成した`ellipse.py`を選んで実行すると、こんな画面が表示されるはずだ。
-
-![PyMol](fig/pymol_ellipse.png)
-
-この状態で右上にある「Play」をクリックすると、アニメーションが表示されるはずである。
+この状態で、VMD Mainの右下にある再生ボタン「Play Forward」を押せば、原子が凍った状態から解けていくアニメーション(6フレームしかないが)が表示されるはずである。マウスでドラッグすると角度を変えられるので試してみよ。
