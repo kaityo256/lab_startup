@@ -180,20 +180,22 @@ Total wall time: 0:00:00</code></pre>
 <a class="sourceLine" id="cb19-4" data-line-number="4"><span class="fu">wget</span> https://kaityo256.github.io/lab_startup/lammps/Dockerfile</a></code></pre></div>
 <p>次に、Linux版のVMDをダウンロードする。<a href="https://www.ks.uiuc.edu/Research/vmd/">ここ</a>に行って、「Download (all versions)」をクリックする。</p>
 <p>次に「Version 1.9.4 LATEST ALPHA (2019-10-17) Platforms:」の「LINUX_64 OpenGL, CUDA, OptiX, OSPRay」を選ぶ。すると、「Registration/Login」画面が現れるので、メールアドレスと、適当なパスワードを入力する。初回登録時には「New User Registration」画面となるので、必要事項を入力の上で「Register」を押す。</p>
-<p>ライセンスに同意することを示すと、ダウンロードが始まる。ダイアログが出たら「Save File」を選ぶこと。ダウンロードが完了したら、ダウンロードしたファイルを、先程作成したディレクトリ<code>docker-vmd</code>に移動する。</p>
-<p>現在、<code>~/docker-vmd</code>ディレクトリには、以下の２つのファイルがあるはず。</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb20-1" data-line-number="1">$ <span class="fu">ls</span></a>
-<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="ex">Dockerfile</span>  vmd-1.9.4a38.bin.LINUXAMD64-CUDA10-OptiX600-RTX-OSPRay170.opengl.tar.gz</a></code></pre></div>
+<p>ライセンスに同意することを示すと、ダウンロードが始まる。ダイアログが出たら「Save File」を選ぶこと。ダウンロードが完了したら、ダウンロードしたファイルを、先程作成したディレクトリ<code>docker-vmd</code>にコピーする。例えば、「ダウンロード」フォルダにダウンロードされたなら、</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="fu">cp</span> ~/Downloads/vmd*.tar.gz .</a></code></pre></div>
+<p>で現在のディレクトリにコピーされるはずである。</p>
+<p>現在、<code>~/docker-vmd</code>ディレクトリには、以下のDockerファイルとtar.gzファイルの2つのファイルがあるはず。</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb21-1" data-line-number="1">$ <span class="fu">ls</span></a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="ex">Dockerfile</span>  vmd-1.9.4a38.bin.LINUXAMD64-CUDA10-OptiX600-RTX-OSPRay170.opengl.tar.gz</a></code></pre></div>
 <p>この状態でDockerイメージをビルドする。</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="ex">docker</span> build -t vmd .</a></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="ex">docker</span> build -t vmd .</a></code></pre></div>
 <p>最後に</p>
 <pre class="txt"><code>Successfully tagged vmd:latest</code></pre>
 <p>と表示されたら正しくビルドされている。</p>
 <p>次に、先程の<code>melt</code>ディレクトリに移動して、以下のコマンドを実行する。</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="bu">cd</span></a>
-<a class="sourceLine" id="cb23-2" data-line-number="2"><span class="bu">cd</span> lammps</a>
-<a class="sourceLine" id="cb23-3" data-line-number="3"><span class="bu">cd</span> melt</a>
-<a class="sourceLine" id="cb23-4" data-line-number="4"><span class="ex">docker</span> run -e DISPLAY=<span class="va">$(</span><span class="fu">hostname</span><span class="va">)</span>:0 -v ~/.Xauthority:/root/.Xauthority -v <span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span>:/lammps -it vmd</a></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="bu">cd</span></a>
+<a class="sourceLine" id="cb24-2" data-line-number="2"><span class="bu">cd</span> lammps</a>
+<a class="sourceLine" id="cb24-3" data-line-number="3"><span class="bu">cd</span> melt</a>
+<a class="sourceLine" id="cb24-4" data-line-number="4"><span class="ex">docker</span> run -e DISPLAY=<span class="va">$(</span><span class="fu">hostname</span><span class="va">)</span>:0 -v ~/.Xauthority:/root/.Xauthority -v <span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span>:/lammps -it vmd</a></code></pre></div>
 <p>ここまで正しく実行されていればVMDが起動したはずである。</p>
 <pre class="txt"><code>Can&#39;t open display: watanabe-mbp.local:0</code></pre>
 <p>などと言われたらXQuartzが起動していないので起動せよ。</p>
