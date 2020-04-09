@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+
+<style>
+  .markdown-body {
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 45px;
+  }
+  p.caption{
+    display:none;
+  }
+  img {width: 100%}
+
+  @media (max-width: 767px) {
+    .markdown-body {
+      padding: 15px;
+    }
+  }
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://kaityo256.github.io/sevendayshpc/github-markdown.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<article class="markdown-body">
+<h1 id="lastpassと多要素認証">LastPassと多要素認証</h1>
+<h2 id="はじめに">はじめに</h2>
+<p>これから、GitHubをはじめとして、MendeleyやGrammerlyなど、いくつかの「アカウント」を管理することになる。この時、パスワードを個別に管理するのは煩わしいし、かといってパスワードの使いまわしをするのはセキュリティ的に問題がある。</p>
+<p>こういう問題の一つの解決法として、「強く守った一つのアカウントに、他のパスワードを記録する」という方法がある。例えば、何かのサイトで「Googleでログイン」や「Twitterでログイン」というのを見たことがあるだろう。これは「Google」や「Twitter」のアカウントは「守られている」ことを仮定して、ユーザ認証をそちらに任せる仕組みだ(詳細については「OAuth」で検索してみよ)。</p>
+<p>他にも、「パスワードを忘れた」というボタンがついているサイトも多い。このボタンを押すと、登録されているメールアドレスにパスワードの初期化用の手段が贈られてくるが、これは「メールアカウントは守られている」ことを仮定している。</p>
+<p>このように、「あるメインのアカウントは強く守っておき、他のアカウントはメインのアカウントに認証を任せる」方法は有効である。この哲学に従い、複数のパスワードを、一つのパスワードマネージャに管理させよう。</p>
+<p>パスワードマネージャはなんでも良いが、</p>
+<ul>
+<li>無料である</li>
+<li>複数のデバイスから同じデータにアクセスできる(クラウド対応)</li>
+<li>多要素認証に対応している</li>
+</ul>
+<p>をすべて満たす「LastPass」をおすすめする(他には、1Password等が有名)。もちろん、好きなものを使ってよい。</p>
+<p>パスワードのクラウド対応については、「パスワードデータがネットワークの向こう側に保存される」ことを不安視する人もいるかもしれない。これについては、「クラウドからパスワードが流出する」リスクと、「パスワードマネージャを使わないことで、パスワードを忘れたり、つい使いまわしたりしてしまうリスク」を比較し、どちらを重視するか、各自で検討して欲しい。以下、パスワードマネージャとしてLastPassを使った場合、多要素認証導入までの方法を紹介する。</p>
+<h2 id="lastpassのインストール">LastPassのインストール</h2>
+<p>LastPassはブラウザの拡張として使うタイプのパスワードマネージャであるので、普段使うブラウザでアクセスしよう。だいたいのブラウザにはLastPass拡張が用意されていると思うが、特に希望がなければGoogle Chromeを推奨する。</p>
+<p>まず、<a href="https://www.lastpass.com/" class="uri">https://www.lastpass.com/</a>に行って、「Get LastPass Free」をクリックしよう。</p>
+<div class="figure">
+<img src="fig/create_account.png" alt="アカウント作成" />
+<p class="caption">アカウント作成</p>
+</div>
+<p>メールアドレス(Email)がアカウント名となる。普段使うメールアドレス(例えばGmail)を設定すること。</p>
+<p>マスターパスワードは、最も重要なパスワードとなるので、強いパスワードにすること。LastPassは</p>
+<ul>
+<li>12文字以上</li>
+<li>数字を一つ以上含む</li>
+<li>大文字小文字が混ざる</li>
+<li>メールアドレスにしてはならない</li>
+</ul>
+<p>ことを求めており、記号を入れることを必須にしていない。JPCERTも<a href="https://www.jpcert.or.jp/pr/stop-password.html">記号を含めて短い、パスワードが長い方が強度に寄与する</a>という見解を打ち出している。とりあえず12文字あれば良いだろう。「パスワード生成」などで検索して、適当なサイトでパスワードを作ってから、紙などにメモしておこう(なくさないように)。</p>
+<p>Reminderは、パスワードを忘れた時のヒントなので、入力しなくてかまわない。</p>
+<p>無事にアカウントが作成されたら「Install LastPass」をクリックして、ブラウザの拡張機能をインストールしよう。Google Chromeならchrome ウェブストアが表示されるはずなので、「拡張機能の追加」をクリックしてブラウザに追加する。他のブラウザでも同様。</p>
+<p>正しくインストールされたら、ブラウザの右上にLastPassの黒いアイコンが表示されるはずである。</p>
+<div class="figure">
+<img src="fig/lastpass_icon.png" alt="LastPassのアイコン" />
+<p class="caption">LastPassのアイコン</p>
+</div>
+<p>この黒いアイコンをクリックすると、ログイン画面となるので、先ほど設定したメールとマスターパスワードでログインしよう。</p>
+<div class="figure">
+<img src="fig/lastpass_login.png" alt="ログイン画面" />
+<p class="caption">ログイン画面</p>
+</div>
+<p>ログインに成功すると、アイコンが赤くなる。</p>
+<div class="figure">
+<img src="fig/lastpass_after_login.png" alt="ログイン後のアイコン" />
+<p class="caption">ログイン後のアイコン</p>
+</div>
+<p>今後、LastPassにログインした状態で何かのサイトにログインすると、LastPassに追加するか聞かれるので、その時に「Add」を選ぶとLastPassがアカウント名とパスワードを覚えていく。他にもいろいろ便利な機能があるが、それについてはおいおい覚えていくと良いだろう。</p>
+<h2 id="多要素認証">多要素認証</h2>
+<h3 id="二段階認証と多要素認証">二段階認証と多要素認証</h3>
+<p>パスワードマネージャのアカウントは、他の全てのパスワードを管理する最も重要なアカウントであるから、きちんと守ってやらなければならない。その時に使うのが多要素認証である。</p>
+<p>アカウントとパスワードだけの認証では心もとないので、もう一つ何か認証の要素を追加しよう、というのは自然な発想である。</p>
+<p>この時、アカウントとパスワードの他に、もう一つ何か知識(例えば生年月日)を求める方法を「二段階認証」と呼ぶ。二段階認証は面倒なわりにセキュリティの向上はあまり見込めない(……のだが、銀行のウェブサイトなどで採用例がある)。</p>
+<p>それに対して、多要素認証とは、「アカウントとパスワード」とは質的に異なるものを追加することで認証をセキュアにしよう、という方法論である。</p>
+<p>多要素認証には三つの要素がある。</p>
+<ul>
+<li>知識要素 (What you know) 「あなたしか知らない情報」パスワードや「秘密の質問」などがこれにあたる</li>
+<li>所持要素 (What you have)「あなたしか持っていない物」スマホを使ったワンタイムパスワードなどがこれにあたる</li>
+<li>生体要素 (What you are)　「あなた自身」指紋認証、静脈認証、顔認証などがこれにあたる</li>
+</ul>
+<p>例えばパスワードの他に「秘密の質問」を使った認証は、どちらも「知識要素」を使っているので二段階認証だが、多要素認証ではない。</p>
+<p>それに対して、パスワードの他にスマホを使った認証は、「知識要素」「所持要素」の二つを使っているので多要素認証となる。</p>
+<p>以下ではスマホを使った多要素認証を導入する。</p>
+<h3 id="google-authenticator">Google Authenticator</h3>
+<p>まず、スマホに「Google　Authenticator」を導入しよう。iPhoneならApple Store、AndroidならPlay Storeで「Google Authenticator」で検索することで見つかるだろう。</p>
+<div class="figure">
+<img src="fig/google_authenticator.png" alt="Google Authenticator" />
+<p class="caption">Google Authenticator</p>
+</div>
+<p>まずこれをインストールしよう。</p>
+<p>次に、LastPassで多要素認証を有効にする。</p>
+<p>まず、LastPassにログインし、「Open My Vault」を選ぶ(Vaultとは金庫室という意味である)。</p>
+<p>左のメニューから「Account Settings」を選ぶ。上のタブから「Multifactor Options」を選ぶ。</p>
+<p>一覧から「Google Authenticator」の列の右の鉛筆マークをクリックする。その後、指示に従うと、二次元コードが出てくるはずである。</p>
+<p>この状態でスマホを取り出し、Google Authenticatorを起動する。右下に「+」マークをクリックして「バーコードをスキャン」を選ぶと撮影モードになるので、表示されている二次元コードを映すことで追加できる。名前は「LastPass」とかにしておこう。</p>
+<p>以後、LastPassにログインしようとすると、パスワード認証の他にGoogle Authenticatorによる認証が要求される。Google Authenticatorを起動すると、先ほど名前をつけて保存した「LastPass」のところに6桁の数字が表示されるので、これを入力しよう。</p>
+<div class="figure">
+<img src="fig/google_number.png" alt="Google Authenticator" />
+<p class="caption">Google Authenticator</p>
+</div>
+<p>この数字は一分毎に変わる、ワンタイムパスワードと呼ばれるものになっている。</p>
+<p>パスワードマネージャを使うかどうかは個人の自由だが、大事なアカウントを多要素認証で守るのは必須である。今後、GitHubアカウントを作成するが、これも多要素認証で守ること。</p>
+</article>
+</body>
+</html>
