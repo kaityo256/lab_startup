@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="generator" content="pandoc">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>README</title>
+  <title></title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
 div.sourceCode { overflow-x: auto; }
@@ -78,7 +78,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>まずは<a href="https://rpm.lammps.org/windows/">ここ</a>からLammpsをダウンロードしよう。並列版もあるが、とりあえずはシリアル版(並列化されていない)として、<code>LAMMPS-64bit-stable.exe</code>をダウンロードして、実行する。「WindowsによってPCが保護されました」というダイアログが出てきたら、「詳細情報」を押すと「実行」が出てくるので、それをクリックしてインストールする。</p>
 <h3 id="mac">Mac</h3>
 <p>「ターミナル」で以下を実行しよう。</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="ex">brew</span> install lammps</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">brew</span> install lammps</code></pre></div>
 <h2 id="サンプルコードの実行">サンプルコードの実行</h2>
 <p>インストールが完了したら、サンプルコードを実行してみよう。</p>
 <h3 id="windows-1">Windows</h3>
@@ -86,8 +86,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>その後、自分のユーザフォルダに移動する。エクスプローラーで、「PC」→「Windows (C:)」→「ユーザー」→「自分のアカウント名」でいけるはず。</p>
 <p>そこに「lammps」というフォルダを作り、その中に入ってから、先ほどコピーした「melt」を貼り付けよう。</p>
 <p>次に、Windows Powershellを起動する。デフォルトでユーザーフォルダが表示されるはず。そこで、</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="bu">cd</span> lammps</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="bu">cd</span> melt</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span> lammps
+<span class="bu">cd</span> melt</code></pre></div>
 <p>としてから、<code>ls</code>と打ってみよう。正しくコピーされていれば、以下のような表示になるはず。</p>
 <pre class="txt"><code>
 
@@ -99,7 +99,7 @@ Mode                LastWriteTime         Length Name
 -a----       2020/03/06      2:02            596 in.melt
 -a----       2020/03/06      2:02           2939 log.27Nov18.melt.g++.1</code></pre>
 <p>この状態で、以下を実行しよう。</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="fu">cat</span> .\in.melt <span class="kw">|</span> <span class="ex">lmp_serial.exe</span></a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">cat</span> .\in.melt <span class="kw">|</span> <span class="ex">lmp_serial.exe</span></code></pre></div>
 <p>いろいろ表示されて、最後に</p>
 <pre class="txt"><code>Total # of neighbors = 151513
 Ave neighs/atom = 37.8783
@@ -109,15 +109,15 @@ Total wall time: 0:00:00</code></pre>
 <p>といった表示が出れば実行は成功だ。</p>
 <h3 id="mac-1">Mac</h3>
 <p>ターミナルで以下を実行せよ。</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="bu">cd</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="fu">mkdir</span> lammps</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="bu">cd</span> lammps</a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="fu">cp</span> -r /usr/local/Cellar/lammps/2020-03-03/share/lammps/examples/melt .</a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="bu">cd</span> melt</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span>
+<span class="fu">mkdir</span> lammps
+<span class="bu">cd</span> lammps
+<span class="fu">cp</span> -r /usr/local/Cellar/lammps/2020-03-03/share/lammps/examples/melt .
+<span class="bu">cd</span> melt</code></pre></div>
 <p>ここまでやったら<code>ls</code>と入力してみよ。正しくコピーされていれば以下の３つのファイルがあるはずである。</p>
 <pre class="txt"><code>in.melt  log.27Nov18.melt.g++.1  log.27Nov18.melt.g++.4</code></pre>
 <p>ではLammpsを実行しよう。</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="ex">lmp_serial</span> <span class="op">&lt;</span> in.melt </a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">lmp_serial</span> <span class="op">&lt;</span> in.melt </code></pre></div>
 <p>最後に</p>
 <pre class="txt"><code>Total # of neighbors = 151513
 Ave neighs/atom = 37.8783
@@ -128,20 +128,20 @@ Total wall time: 0:00:00</code></pre>
 <h2 id="in.meltの修正">in.meltの修正</h2>
 <p>次に、<code>in.melt</code>を修正しよう。</p>
 <p>PowerShellもしくはターミナルで当該フォルダを開いているのなら、</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="ex">code</span> in.melt</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">code</span> in.melt</code></pre></div>
 <p>と入力すれば、VSCodeで直接<code>in.melt</code>が開かれるはず。</p>
 <p>また、Windowsであれば、コピーした(ユーザーフォルダの下にある)<code>melt</code>フォルダの中の<code>in.melt</code>ファイルを右クリックすると、「Codeで開く」という項目があるはずだ。それを選ぶと、<code>in.melt</code>ファイルがVSCodeで開かれるはずである。</p>
 <p>VSCodeでin.meltを開いたら、以下の行を探す。</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co">#dump       id all atom 50 dump.melt</span></a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="co">#dump       id all atom 50 dump.melt</span></code></pre></div>
 <p>この行頭の<code>#</code>を削除して保存しよう。</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="ex">dump</span>        id all atom 50 dump.melt</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">dump</span>        id all atom 50 dump.melt</code></pre></div>
 <p>この状態で、またlammpsを実行しよう。</p>
 <p>WindowsならPowerShellで、</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="fu">cat</span> .\in.melt <span class="kw">|</span> <span class="ex">lmp_serial.exe</span></a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">cat</span> .\in.melt <span class="kw">|</span> <span class="ex">lmp_serial.exe</span></code></pre></div>
 <p>Macならターミナルで</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="ex">lmp_serial</span> <span class="op">&lt;</span> in.melt </a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">lmp_serial</span> <span class="op">&lt;</span> in.melt </code></pre></div>
 <p>と実行する。</p>
-<p>すると、今度は同じフォルダに<code>melt.dump</code>が作成されたはずだ。<code>ls</code>で確認せよ。これは原子の起動を保存したファイルで、これを後からVMDで読み込んで可視化する。</p>
+<p>すると、今度は同じフォルダに<code>dump.melt</code>が作成されたはずだ。<code>ls</code>で確認せよ。これは原子の起動を保存したファイルで、これを後からVMDで読み込んで可視化する。</p>
 <h2 id="vmdのインストール">VMDのインストール</h2>
 <h3 id="windows-2">Windows</h3>
 <p>次にVMDをダウンロード、インストールしよう。</p>
@@ -156,17 +156,18 @@ Total wall time: 0:00:00</code></pre>
 <p>まず、XQuartzをインストールしよう。<a href="https://www.xquartz.org/">ここ</a>から、<code>XQuartz-2.7.11.dmg</code>をダウンロード、インストールする。</p>
 <p>XQuartzは「アプリケーション」→「ユーティリティ」にインストールされるので起動する。「xterm」というウィンドウが開けばインストールできてる。</p>
 <p>その後、XQuartzの「環境設定」の「セキュリティ」タブで、「接続を認証」と「ネットワーク・クライアントからの接続を許可」の両方にチェックを入れる(デフォルトで「接続を認証」にはチェックが入っているはず)。</p>
-<figure>
-<img src="fig/xquartz.png" alt="XQuartz" /><figcaption>XQuartz</figcaption>
-</figure>
+<div class="figure">
+<img src="fig/xquartz.png" alt="XQuartz" />
+<p class="caption">XQuartz</p>
+</div>
 <p>さらに、ターミナルから</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="ex">defaults</span> write org.macosforge.xquartz.X11 enable_iglx -bool true</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">defaults</span> write org.macosforge.xquartz.X11 enable_iglx -bool true</code></pre></div>
 <p>を実行しておく。以上の変更を適用するためにXQuartzを再起動すること。</p>
 <h4 id="dockerのインストール">Dockerのインストール</h4>
 <p>次に、Dockerをインストールする。<a href="https://www.docker.com/products/docker-desktop">ここ</a>から「Download for Mac」→「Get Docker」でダウンロードできるのでインストールする。</p>
 <p>インストール後、Dockerを起動する。最初にDocker IDの入力を求められるウィンドウが出るが、無視して消して良い。右上にクジラのような小さいアイコンが表示されたらDockerが起動している。</p>
 <p>Dockerの動作を確認しよう。ターミナルで、</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="ex">docker</span> ps</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">docker</span> ps</code></pre></div>
 <p>を実行し、</p>
 <pre class="txt"><code>CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES</code></pre>
 <p>と表示されたらDockerが起動している。</p>
@@ -174,42 +175,44 @@ Total wall time: 0:00:00</code></pre>
 <p>と表示されたらDockerが起動していないので起動すること。</p>
 <h4 id="dockerイメージの作成">Dockerイメージの作成</h4>
 <p>まず、Dockerイメージ作成用のディレクトリを作成し、そこにDockerfileをダウンロードしよう。</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="bu">cd</span></a>
-<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="fu">mkdir</span> docker-vmd</a>
-<a class="sourceLine" id="cb19-3" data-line-number="3"><span class="bu">cd</span> docker-vmd</a>
-<a class="sourceLine" id="cb19-4" data-line-number="4"><span class="fu">wget</span> https://kaityo256.github.io/lab_startup/lammps/Dockerfile</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span>
+<span class="fu">mkdir</span> docker-vmd
+<span class="bu">cd</span> docker-vmd
+<span class="fu">wget</span> https://kaityo256.github.io/lab_startup/lammps/Dockerfile</code></pre></div>
 <p>次に、Linux版のVMDをダウンロードする。<a href="https://www.ks.uiuc.edu/Research/vmd/">ここ</a>に行って、「Download (all versions)」をクリックする。</p>
 <p>次に「Version 1.9.4 LATEST ALPHA (2019-10-17) Platforms:」の「LINUX_64 OpenGL, CUDA, OptiX, OSPRay」を選ぶ。すると、「Registration/Login」画面が現れるので、メールアドレスと、適当なパスワードを入力する。初回登録時には「New User Registration」画面となるので、必要事項を入力の上で「Register」を押す。</p>
 <p>ライセンスに同意することを示すと、ダウンロードが始まる。ダイアログが出たら「Save File」を選ぶこと。ダウンロードが完了したら、ダウンロードしたファイルを、先程作成したディレクトリ<code>docker-vmd</code>にコピーする。例えば、「ダウンロード」フォルダにダウンロードされたなら、</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="fu">cp</span> ~/Downloads/vmd*.tar.gz .</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">cp</span> ~/Downloads/vmd*.tar.gz .</code></pre></div>
 <p>で現在のディレクトリにコピーされるはずである。</p>
 <p>現在、<code>~/docker-vmd</code>ディレクトリには、以下のDockerファイルとtar.gzファイルの2つのファイルがあるはず。</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb21-1" data-line-number="1">$ <span class="fu">ls</span></a>
-<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="ex">Dockerfile</span>  vmd-1.9.4a38.bin.LINUXAMD64-CUDA10-OptiX600-RTX-OSPRay170.opengl.tar.gz</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">ls</span>
+<span class="ex">Dockerfile</span>  vmd-1.9.4a38.bin.LINUXAMD64-CUDA10-OptiX600-RTX-OSPRay170.opengl.tar.gz</code></pre></div>
 <p>この状態でDockerイメージをビルドする。</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="ex">docker</span> build -t vmd .</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">docker</span> build -t vmd .</code></pre></div>
 <p>最後に</p>
 <pre class="txt"><code>Successfully tagged vmd:latest</code></pre>
 <p>と表示されたら正しくビルドされている。</p>
 <p>次に、先程の<code>melt</code>ディレクトリに移動して、以下のコマンドを実行する。</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="bu">cd</span></a>
-<a class="sourceLine" id="cb24-2" data-line-number="2"><span class="bu">cd</span> lammps</a>
-<a class="sourceLine" id="cb24-3" data-line-number="3"><span class="bu">cd</span> melt</a>
-<a class="sourceLine" id="cb24-4" data-line-number="4"><span class="ex">docker</span> run -e DISPLAY=<span class="va">$(</span><span class="fu">hostname</span><span class="va">)</span>:0 -v ~/.Xauthority:/root/.Xauthority -v <span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span>:/lammps -it vmd</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span>
+<span class="bu">cd</span> lammps
+<span class="bu">cd</span> melt
+<span class="ex">docker</span> run -e DISPLAY=<span class="va">$(</span><span class="fu">hostname</span><span class="va">)</span>:0 -v ~/.Xauthority:/root/.Xauthority -v <span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span>:/lammps -it vmd</code></pre></div>
 <p>ここまで正しく実行されていればVMDが起動したはずである。</p>
 <pre class="txt"><code>Can&#39;t open display: watanabe-mbp.local:0</code></pre>
 <p>などと言われたらXQuartzが起動していないので起動せよ。</p>
 <h2 id="vmdによる可視化">VMDによる可視化</h2>
 <p>VMDが起動したら、「VMD Main」の「File」から「New Molecule」を選び、「Browse」を押して先ほどの<code>dump.melt</code>を選ぶ。Macの場合は<code>/lammps</code>の中にあるはず。</p>
 <p>file typeとして「LAMMPS Trajectory」を選んでから「Load」を押す。</p>
-<figure>
-<img src="fig/vmd_dialog.png" alt="VMD" /><figcaption>VMD</figcaption>
-</figure>
+<div class="figure">
+<img src="fig/vmd_dialog.png" alt="VMD" />
+<p class="caption">VMD</p>
+</div>
 <p>すると、直線が多数重なったような画面が出たはずだ。この状態で、「VMD Main」の画面で「dump.melt」の行を選び、「Graphics」の「Representation」を選ぶ。</p>
 <p>ここで、「Drawing Method」を「VDW」にすると、画面が玉に変わるはず。その状態で「Sphere Scale」を小さくしよう。0.3くらいがちょうどよいと思う。</p>
-<figure>
-<img src="fig/vmd_representation.png" alt="Representation" /><figcaption>Representation</figcaption>
-</figure>
+<div class="figure">
+<img src="fig/vmd_representation.png" alt="Representation" />
+<p class="caption">Representation</p>
+</div>
 <p>この状態で、VMD Mainの右下にある再生ボタン「Play Forward」を押せば、原子が凍った状態から解けていくアニメーション(6フレームしかないが)が表示されるはずである。マウスでドラッグすると角度を変えられるので試してみよ。</p>
 </article>
 </body>
