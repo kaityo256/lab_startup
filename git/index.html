@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+
+<style>
+  .markdown-body {
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 45px;
+  }
+  p.caption{
+    display:none;
+  }
+  img {width: 100%}
+
+  @media (max-width: 767px) {
+    .markdown-body {
+      padding: 15px;
+    }
+  }
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://kaityo256.github.io/sevendayshpc/github-markdown.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<article class="markdown-body">
+<h1 id="gitのインストールと動作確認">Gitのインストールと動作確認</h1>
+<h2 id="gitについて">Gitについて</h2>
+<p>まず、以下のスライドを見よ。</p>
+<p><a href="https://speakerdeck.com/kaityo256/starting-git">数値計算屋のためのGit入門</a></p>
+<p>今後、「どのファイルがどんな状態にあるか」「歴史はどうなっているか」をイメージしながらGitを操作すると良い。</p>
+<h2 id="gitのインストール">Gitのインストール</h2>
+<h3 id="windows">Windows</h3>
+<p>Windowsの場合、<a href="https://git-scm.com/" class="uri">https://git-scm.com/</a>からWindows用のインストーラをダウンロード、インストールする。右の方に「Download 2.26.0 for Windows」というボタンがあるはずなのでクリック。</p>
+<ul>
+<li>Information: そのままNext</li>
+<li>Select Components: 「Git LFS」以外のチェックを外す。</li>
+<li><img src="fig/git_select_components.png" alt="Select Components" /></li>
+<li>Choosing the default editor used by Git: デフォルトの「Use Vim」のまま</li>
+<li>Adjusting your PATH environment: デフォルトの「Git from the command line and also from 3rd-party software」のまま</li>
+<li>Choosing the SSH executable: デフォルトの「Use OpenSSH」のまま</li>
+<li>Choosing HTTPS transport backend: デフォルトの「Use the OpenSSL library」のまま</li>
+<li>Configuring the line ending conversions: 「Checkout as-is, commit Unix-style line endings」を選ぶ</li>
+<li><img src="fig/git_line_ending.png" alt="Line ending" /></li>
+<li>Configuring the terminal emulator to use with Git Bash: デフォルトのUse MinTTYのまま</li>
+<li>Configuring extra options: デフォルトでは「Enable symbolic links」が外れているが、これも含めて全てにチェックを入れる。</li>
+<li><img src="fig/git_extra_options.png" title="fig:" alt="Extra Options" /></li>
+</ul>
+<p>あとはインストールを待つ。インストール終了後、Git Bashというものがインストールされているので実行し、</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> --version</code></pre></div>
+<p>と入力して、</p>
+<pre class="txt"><code>git version 2.26.0.windows.1</code></pre>
+<p>と表示されれば成功である。また、Windowsのコマンドプロンプトからも実行できることを確認しておこう。「コマンドプロンプト」を実行し、同様にgitのバージョンを確認せよ。実行できたらインストール完了である。</p>
+<h3 id="mac">Mac</h3>
+<p>Macの場合は、Homebrewからインストールする。ターミナルから</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">brew</span> update
+<span class="ex">brew</span> install git</code></pre></div>
+<p>を実行せよ。インストールが完了したら、</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> --version</code></pre></div>
+<p>を実行せよ。</p>
+<pre class="txt"><code>git version 2.26.0</code></pre>
+<p>と表示されればインストール完了である。</p>
+<h2 id="gitの初期設定">Gitの初期設定</h2>
+<p>Gitのインストールが完了したら、「ユーザ名」と「メールアドレス」の設定を行う。ユーザ名とメールアドレスは、GitHub等で公開リポジトリを作った場合には誰からも見られる状態となることに注意。</p>
+<p>WindowsではGit Bashで、Macではターミナルを開き、以下を実行する。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> config --global user.name <span class="st">&quot;ユーザー名&quot;</span>
+<span class="fu">git</span> config --global user.email <span class="st">&quot;メールアドレス&quot;</span></code></pre></div>
+<p>特にこだわりがなければ、ユーザ名は自分の英語名(私は &quot;H. Watanabe&quot;にしている)、メールアドレスは普段使うメールアドレスにしておけば良い(携帯のアドレスなどは避けること)。</p>
+<p>上記の設定は<code>.gitconfig</code>に保存される。保存されたか見てみよう。以下を実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">cat</span> .gitconfig</code></pre></div>
+<p>以下のように表示されれば設定されている。</p>
+<pre class="txt"><code>[user]
+        name = 先ほど設定したユーザー名
+        email = 先ほど設定したメールアドレス</code></pre>
+<p>また、よく使うコマンドの省略形(エイリアス)も登録しておこう。とりあえず以下を設定しておく。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> config --global alias.co <span class="st">&quot;checkout&quot;</span>
+<span class="fu">git</span> config --global alias.st <span class="st">&quot;status -s&quot;</span>
+<span class="fu">git</span> config --global alias.ci <span class="st">&quot;commit -a&quot;</span></code></pre></div>
+<p>それぞれの説明は以下の通り。</p>
+<ul>
+<li>co: <code>checkout</code>は良く使うコマンドで、いちいち打つのが面倒なので<code>co</code>で代替する</li>
+<li>st: デフォルトの<code>status</code>は情報過多のため、短い形式<code>-s</code>で状態を表示させる<code>st</code>コマンドを登録</li>
+<li>ci: 通常、<code>git add</code>してインデックスに登録してから<code>git commit</code>する必要があるが、<code>-a</code>オプションをつけることで修正があるファイル全てをコミットする(<code>git add</code>を省くことができる)</li>
+</ul>
+<p>このあたりは完全に趣味なので、慣れてきたら自分好みに追加・削除・修正していくと良い。ここまでの設定で、<code>.gitconfig</code>は以下のようになったはずだ。</p>
+<pre class="txt"><code>[user]
+        name = 先ほど設定したユーザー名
+        email = 先ほど設定したメールアドレス
+[alias]
+        co = checkout
+        st = status -s
+        ci = commit -a</code></pre>
+<p>これでGitの利用準備が整った。</p>
+<h2 id="gitの動作確認">Gitの動作確認</h2>
+<p>それでは、実際にGitを使ってリポジトリを作成し、基本的な操作を学んでみよう。最初にコマンドラインから、次にVSCode上から操作する。今後、コマンドライン、VSCodeどちらでGitを利用しても良いが、コマンドラインから使えるようになることを推奨する。</p>
+<p>以下、WindowsはGit Bashで、Macはターミナルで実行すること。どちらも「ターミナル」と呼ぶ。</p>
+<p>途中、わけがわからなくなったら、ディレクトリごと消してやり直すこと。</p>
+<h3 id="リポジトリの作成">リポジトリの作成</h3>
+<p>まず、適当なテスト用ディレクトリを作り、その中で作業しよう。<code>git</code>というディレクトリを作り、さらにその中に<code>test</code>というディレクトリを作ろう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span>
+<span class="fu">mkdir</span> git
+<span class="bu">cd</span> git
+<span class="fu">mkdir</span> test
+<span class="bu">cd</span> test</code></pre></div>
+<p>最初に<code>cd</code>とだけ入力しているのは、ホームディレクトリに戻るためだ。</p>
+<p>ディレクトリ<code>test</code>の中に、<code>README.md</code>というファイルを作成しよう。まず、このディレクトリでVSCodeを起動する。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">code</span> .</code></pre></div>
+<p>VSCodeが開いたら、左のエクスプローラーの「TEST」の右にある「新しいファイル」ボタンを押して、<code>README.md</code>と入力しよう。</p>
+<div class="figure">
+<img src="fig/vscode_newfile.png" alt="新しいファイル" />
+<p class="caption">新しいファイル</p>
+</div>
+<p><code>README.md</code>ファイルが開かれたら、</p>
+<div class="sourceCode"><pre class="sourceCode md"><code class="sourceCode markdown"><span class="fu"># Test</span></code></pre></div>
+<p>とだけ入力し、保存しよう。これで、以下のようなディレクトリ構成になったはずだ。</p>
+<pre class="txt"><code>git
+└── test
+    └── README.md</code></pre>
+<p>この状態でターミナルに戻り、リポジトリとして初期化しよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> init</code></pre></div>
+<p>すると、<code>.git</code>というディレクトリが作成され、<code>test</code>ディレクトリがリポジトリとして初期化される。以下を実行してみよ。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">ls</span> -la</code></pre></div>
+<p><code>README.md</code>に加え、<code>.git</code>というディレクトリが作成されたことがわかるはずだ。</p>
+<p><code>git init</code>した直後は、「現在のディレクトリ<code>test</code>をGitで管理することは決まったが、まだGitはどのファイルも管理していない」という状態になる。</p>
+<div class="figure">
+<img src="fig/git_init.png" alt="git init直後" />
+<p class="caption">git init直後</p>
+</div>
+<p>この状態を確認してみよう。ターミナルで以下を実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> status</code></pre></div>
+<p>以下のような表示が得られるはずである。</p>
+<pre class="txt"><code>On branch master
+
+No commits yet
+
+Untracked files:
+  (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)
+        README.md
+
+nothing added to commit but untracked files present (use &quot;git add&quot; to track)</code></pre>
+<p>これは、まだ何もコミットがされておらず、<code>README.md</code>というファイルが<code>Untracked</code>、つまりGitの管理下に置かれていないことを表している。</p>
+<p>状態を見るのにいちいちこんな長いメッセージを見せられても困るので、<code>-s</code>オプションをつけて見よう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> status -s</code></pre></div>
+<p>こんな表示が出力されたはずだ。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">??</span> README.md</code></pre></div>
+<p><code>??</code>というのは、<code>Untracked</code>、つまりGitの管理下に無いよ、という意味だ。いちいち<code>git status -s</code>と入力するのは面倒なので、最初に<code>status -s</code>に<code>st</code>という別名をつけておいた。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> st</code></pre></div>
+<p>と入力すると、<code>git status -s</code>と入力したのと同じことになる。以後、こっちを使うことにしよう。</p>
+<h3 id="インデックスへの追加">インデックスへの追加</h3>
+<p>さて、<code>Untracked</code>な状態のファイルを、Gitの管理下に置こう。そのためには、<code>git add</code>を実行する。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> add README.md</code></pre></div>
+<p>なお、Windowsでは</p>
+<pre class="txt"><code>warning: CRLF will be replaced by LF in README.md.
+The file will have its original line endings in your working directory</code></pre>
+<p>といった警告が出るが、これは「改行コードを変換するよ」という意味であり、とりあえず気にしなくて良い。</p>
+<p>現在の状態を見てみよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> st</code></pre></div>
+<p>こんな表示になるはずだ。</p>
+<pre class="txt"><code>A  README.md</code></pre>
+<p>これは「<code>README.md</code>が追加されることが予約されたよ」という意味で、インデックスに<code>README.md</code>が追加された状態になっている。</p>
+<div class="figure">
+<img src="fig/git_index.png" alt="インデックス" />
+<p class="caption">インデックス</p>
+</div>
+<p>では、記念すべき最初のコミットをしよう。Gitはコミットをする時に、コミットメッセージが必要となる。最初のメッセージは慣例により<code>initial commit</code>とすることが多い。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> commit -m <span class="st">&quot;initial commit&quot;</span></code></pre></div>
+<p>これによりコミットが作成され、<code>README.md</code>はGitの管理下に入った。</p>
+<div class="figure">
+<img src="fig/git_commit.png" alt="git commit" />
+<p class="caption">git commit</p>
+</div>
+<p>状態を見てみよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> st</code></pre></div>
+<p>何も表示されないはずである。ロングバージョンのステータスも見てみよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">git</span> status
+<span class="ex">On</span> branch master
+<span class="ex">nothing</span> to commit, working tree clean</code></pre></div>
+<p>なお、このように<code>$ コマンド名</code>の表記がある場合は、<code>$</code>以後だけを入力して実行したら、行頭に<code>$</code>がついていないような表記が出力された、という意味である。今後、<code>$</code>がついている場所のコマンドを<code>$</code>抜きで入力すること。</p>
+<p>自分がいま<code>master</code>ブランチにいて、何もコミットをする必要がなく、ワーキングツリーがきれい(clean)、つまりリポジトリが記憶している最新のコミットと一致していることを意味している。</p>
+<h3 id="ファイルの修正">ファイルの修正</h3>
+<p>では、ファイルを修正してみよう。VSCodeで<code>README.md</code>に行を付け加えて保存しよう。</p>
+<pre class="txt"><code># Test
+
+Hello git
+</code></pre>
+<p><code>Hello git</code>の最後の改行を忘れないように。</p>
+<p>状態を見てみよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">git</span> st
+ <span class="ex">M</span> README.md</code></pre></div>
+<p>ファイル名の前に<code>M</code>という文字がついた。これは<code>Modified</code>の頭文字で、「リポジトリが知っている状態から修正されているよ」という意味だ。</p>
+<div class="figure">
+<img src="fig/git_modified.png" alt="git modified" />
+<p class="caption">git modified</p>
+</div>
+<p>また、この状態で<code>git diff</code>を実行してみよう。</p>
+<pre class="txt"><code>$ git diff
+diff --git a/README.md b/README.md
+index 8ae0569..58c814b 100644
+--- a/README.md
++++ b/README.md
+@@ -1 +1,3 @@
+ # Test
++
++Hello git</code></pre>
+<p><code>git diff</code>は、何もオプションをつけずに実行すると、</p>
+<ul>
+<li>現在のブランチで</li>
+<li>リポジトリに記録されている最新の状態から</li>
+<li>修正のあった全てのファイルについて</li>
+</ul>
+<p>差分を表示する。</p>
+<p>行頭に<code>+</code>がついた箇所が追加された行である。</p>
+<p>この修正をリポジトリに教えるために、<code>git add</code>しよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> add README.md</code></pre></div>
+<p>また、状態を見てみよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">git</span> st
+<span class="ex">M</span>  README.md</code></pre></div>
+<p>先ほどは赤字で二桁目に<code>M</code>が表示されていたのが、今回は緑字で一桁目に<code>M</code>が表示されているはずである。これは、修正されたファイルがインデックスに追加されたことを示す。</p>
+<div class="figure">
+<img src="fig/git_modified_add.png" alt="git add" />
+<p class="caption">git add</p>
+</div>
+<p>この状態でコミットしよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> commit -m <span class="st">&quot;adds new line&quot;</span></code></pre></div>
+<p><code>-m</code>以後がコミットメッセージだ。日本語も使えるが、文字化けする可能性があるので、とりあえず英語で書いておいた方が良い。</p>
+<p>修正がリポジトリに登録され、ワーキングツリーがきれい(clean)な状態となった。</p>
+<div class="figure">
+<img src="fig/git_modified_commit.png" alt="git commit" />
+<p class="caption">git commit</p>
+</div>
+<h3 id="git-addなしのコミット">git addなしのコミット</h3>
+<p>Gitでは、原則として</p>
+<ul>
+<li>ファイルを修正する</li>
+<li><code>git add</code>でコミットするファイルをインデックスに登録する</li>
+<li><code>git commit</code>でリポジトリに反映する</li>
+</ul>
+<p>という作業を繰り返す。実際、多人数で開発する場合はこうして「きれいな歴史」を作る方が良いのだが、当面は一人で開発するので、<code>git add</code>を省略して良い。</p>
+<p><code>git add</code>を省略するには、コミットする時に<code>git commit -a</code>オプションをつけて、「修正されたファイル全てをコミットする」ようにすれば良い。先ほど<code>commit -a</code>に<code>ci</code>という別名(エイリアス)をつけたので、今後はそれを使うことにしよう。</p>
+<p>まず、VSCodeでさらにファイルを修正しよう。<code>README.md</code>に以下の行を付け加えよう。</p>
+<pre class="txt"><code># Test
+
+Hello git
+Bye git
+</code></pre>
+<p>この状態で、<code>git add</code>せずに<code>git commit</code>しようとすると、「何をコミットするか指定が無いよ」と怒られる。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">git</span> commit -m <span class="st">&quot;modifies README.md&quot;</span>
+<span class="ex">On</span> branch master
+<span class="ex">Changes</span> not staged for commit:
+  <span class="kw">(</span><span class="ex">use</span> <span class="st">&quot;git add &lt;file&gt;...&quot;</span> to update what will be committed<span class="kw">)</span>
+  <span class="kw">(</span><span class="ex">use</span> <span class="st">&quot;git restore &lt;file&gt;...&quot;</span> to discard changes in working directory<span class="kw">)</span>
+        <span class="ex">modified</span>:   README.md
+
+<span class="ex">no</span> changes added to commit (use <span class="st">&quot;git add&quot;</span> and/or <span class="st">&quot;git commit -a&quot;</span>)</code></pre></div>
+<p>しかし、<code>git ci</code>を使うと、<code>git add</code>なしにコミットできる。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> ci -m <span class="st">&quot;modifies README.md&quot;</span></code></pre></div>
+<p>以後は<code>git ci</code>を使ってよい。</p>
+<h3 id="歴史の確認">歴史の確認</h3>
+<p>これまでの歴史を確認して見よう。上記の通りに作業して来たなら、3つのコミットが作成されたはずだ。<code>git log</code>で歴史を振り返ってみよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">git</span> log
+<span class="ex">commit</span> 6d3fcfa23562ce623d0fd6f7f37e79be42e0093d (HEAD -<span class="op">&gt;</span> master)
+<span class="ex">Author</span>: H. Watanabe <span class="op">&lt;</span>kaityo@users.sourceforge.jp<span class="op">&gt;</span>
+<span class="ex">Date</span>:   Sat Apr 11 19:48:28 2020 +0900
+
+    <span class="ex">modifies</span> README.md
+
+<span class="ex">commit</span> 301d9a7d00911bf70e86db11eea197471eed3f27
+<span class="ex">Author</span>: H. Watanabe <span class="op">&lt;</span>kaityo@users.sourceforge.jp<span class="op">&gt;</span>
+<span class="ex">Date</span>:   Sat Apr 11 19:41:41 2020 +0900
+
+    <span class="ex">adds</span> new line
+
+<span class="ex">commit</span> 06f9a1243e4b3c94a5fe9842196792278fb2ea64
+<span class="ex">Author</span>: H. Watanabe <span class="op">&lt;</span>kaityo@users.sourceforge.jp<span class="op">&gt;</span>
+<span class="ex">Date</span>:   Sat Apr 11 19:12:11 2020 +0900
+
+    <span class="ex">initial</span> commit</code></pre></div>
+<p>いつ、誰が、どのコミットを作ったかが表示される。<code>commit</code>の後の英数字は「コミットハッシュ」と呼ばれ、コミットにつけられた識別子である。これは環境によって異なるため、同じ操作をしても異なるハッシュが作成される。</p>
+<p>デフォルトの表示では見づらいので、一コミット一行で表示しても良い。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">git</span> log --oneline
+<span class="ex">6d3fcfa</span> (HEAD -<span class="op">&gt;</span> master) <span class="ex">modifies</span> README.md
+<span class="ex">301d9a7</span> adds new line
+<span class="ex">06f9a12</span> initial commit</code></pre></div>
+<p>個人的にはこちらの方が見やすいので、<code>l</code>を<code>log --oneline</code>のエイリアスにしてしまっても良いと思う。もしそうしたい場合は、</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> config --global alias.l <span class="st">&quot;log --oneline&quot;</span></code></pre></div>
+<p>を実行せよ。以後、</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> l</code></pre></div>
+<p>で、コンパクトなログを見ることができる。</p>
+<h3 id="vscodeからの操作">VSCodeからの操作</h3>
+<p>Gitは、VSCodeからも操作することができる。今、<code>README.md</code>を開いているVSCodeで何か修正して、保存してみよう。例えば以下のように行を追加する。</p>
+<pre class="txt"><code># Test
+
+Hello git
+Bye git
+Git from VSCode
+</code></pre>
+<p>修正を保存した状態で左を見ると、「ソース管理」アイコンに「1」という数字が表示されているはずだ。これは「Gitで管理されているファイルのうち、一つのファイルが修正されているよ」という意味だ。</p>
+<div class="figure">
+<img src="fig/vscode_giticon.png" alt="VSCode Git Icon" />
+<p class="caption">VSCode Git Icon</p>
+</div>
+<p>この「ソース管理アイコン」をクリックしよう。</p>
+<div class="figure">
+<img src="fig/vscode_add.png" alt="VSCode add" />
+<p class="caption">VSCode add</p>
+</div>
+<p>すると、ソース管理ウィンドウが開き、「変更」の下に「README.md」がある。そのファイル名の右にある「+」マークをクリックしよう。<code>README.md</code>が「変更」から「ステージング済みの変更」に移動したはずだ。</p>
+<div class="figure">
+<img src="fig/vscode_staged.png" alt="VSCode staged" />
+<p class="caption">VSCode staged</p>
+</div>
+<p>これは、</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> add README.md</code></pre></div>
+<p>という操作をしたことと等価だ。</p>
+<p>この状態で「メッセージ」のところにコミットメッセージを書いて、上の「チェックマーク」をクリックすると、コミットできる。例えばメッセージとして「commit from VSCode」と書いてコミットしてみよう。</p>
+<div class="figure">
+<img src="fig/vscode_commit.png" alt="VSCode commit" />
+<p class="caption">VSCode commit</p>
+</div>
+<p>これでコミットができた。ちゃんとコミットされたかどうか、ターミナルから確認してみよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">git</span> log --oneline
+<span class="ex">5203526</span> (HEAD -<span class="op">&gt;</span> master) <span class="ex">commit</span> from VSCode
+<span class="ex">6d3fcfa</span> modifies README.md
+<span class="ex">301d9a7</span> adds new line
+<span class="ex">06f9a12</span> initial commit</code></pre></div>
+<p>VSCodeから作ったコミットが反映されていることがわかる。</p>
+<p>基本的にVSCodeからGitの全ての操作を行うことができるが、当面の間はコマンドラインから実行した方が良い。慣れてきたらVSCodeその他のGUIツールを使うと良いだろう。</p>
+</article>
+</body>
+</html>
