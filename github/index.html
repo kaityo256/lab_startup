@@ -75,7 +75,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h2 id="githubとは">GitHubとは</h2>
 <p>GitHubは、Gitのホスティングサービスの一つである。Gitはローカルだけでも利用可能だが、リモートリポジトリを用意することで、どこからでもアクセスできたり、他の人と共同で開発したりすることができる。このリモートリポジトリの「置き場所」を提供するのがGitHubだ。GitHubはリモートリポジトリの置き場所を提供するのみならず、開発に便利な様々な機能を備えている。また、通常利用の範囲内においては無料である。最初は無料利用ではプライベートリポジトリ(自分だけが見ることができるリポジトリ)を作ることができず、全て公開リポジトリとなっていたが、現在では無料枠でプライベートリポジトリも作ることがでｋりうようになった。</p>
 <p>本研究室では、原則としてプログラムの開発やドキュメントの執筆をGitHub上で行う。以下では、GitHubのアカウントの作成と、簡単な操作方法の確認をしておこう。</p>
-<h2 id="アカウントの作成">アカウントの作成</h2>
+<h2 id="githubのセットアップ">GitHubのセットアップ</h2>
+<h3 id="アカウントの作成">アカウントの作成</h3>
 <p>まず<a href="https://github.com/" class="uri">https://github.com/</a>でアカウントを作成しよう。ユーザー名、メールアドレス、パスワードを入力して「Signup for Githup」を選ぶ。</p>
 <p>ユーザー名は、今後長く使う可能性があるのでよく考えておこう。場合によっては本名よりも有名になる可能性もある。メールアドレスは、普段使うアドレスを設定しておく。このアドレスは公開されない(公開することもできる)。</p>
 <p>パスワードは使いまわしをせず、ここでGitHub専用に新しく作成すること。LastPassがインストール済みなら、アイコンをクリックし、「Generate Secure Password」を選ぶことでパスワードを生成できる。</p>
@@ -96,7 +97,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <img src="fig/sign_in.png" alt="Sign in" />
 <p class="caption">Sign in</p>
 </div>
-<h2 id="多要素認証">多要素認証</h2>
+<h3 id="多要素認証">多要素認証</h3>
 <p>多くのサービスが「GitHubでログイン」という方法を用意している。これは、「認証をGitHubに任せるよ」という意味だ。具体的にはOAuthという技術を使っている(興味のある人は調べてみよ)。逆に言えば、多くのサービスがGitHubアカウントに依存することになるので、GitHubアカウントが乗っ取られてしまうと、芋づる式に別のサービスのアカウントも乗っ取られてしまうことになる。したがって、GitHubアカウントはしっかり守る必要がある。そこで、GitHubも多要素認証で守ることにしよう。</p>
 <p>GitHubにログインした状態で、右上のアイコンをクリックするとメニューが現れるので「Settings」を選ぶ。</p>
 <div class="figure">
@@ -124,6 +125,181 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p class="caption">二段階認証完了</p>
 </div>
 <p>以後、GitHubにログインするとき、パスワードと数字を要求されるようになる。パスワードはLastPassが入力してくれるので、6桁の数字だけ入力するようにしよう。</p>
+<h3 id="sshの設定と公開鍵の登録">SSHの設定と公開鍵の登録</h3>
+<p>GitHubのサーバはネットワークの向こう側にある。従って、そこと通信を行うためには、ネットワークの設定をしなければならない。GitHubとの通信にはSSH (Secure Shell)と呼ばれる仕組みを使うため、まずはその設定をしよう。</p>
+<p>WindowsならGit Bash、Macならターミナルを開いて、ホームディレクトリ(<code>cd</code>を入力したら移動するディレクトリ)にて<code>ssh-keygen -t rsa</code>を実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">ssh-keygen</span> -t rsa
+<span class="ex">Generating</span> public/private rsa key pair.
+<span class="ex">Enter</span> file in which to save the key (/c/Users/watanabe/.ssh/id_rsa):　#ここはそのまま改行で良い
+<span class="ex">Created</span> directory <span class="st">&#39;/c/Users/watanabe/.ssh&#39;</span>.
+<span class="ex">Enter</span> passphrase (empty for no passphrase)<span class="bu">:</span> <span class="co"># ここはパスフレーズを入力すること</span>
+<span class="ex">Enter</span> same passphrase again: <span class="co"># もう一度同じパスフレーズを入力</span>
+<span class="ex">Your</span> identification has been saved in /c/Users/watanabe/.ssh/id_rsa
+<span class="ex">Your</span> public key has been saved in /c/Users/watanabe/.ssh/id_rsa.pub</code></pre></div>
+<p>最初に鍵の置き場所を聞かれるが、これはデフォルトのままで良い。次に秘密鍵の「パスフレーズ」を聞かれる。これは「なし」にもできるのだが、必ず設定すること。パスフレーズはLastPassなどで生成して、Secure Note等に保存しておこう。</p>
+<p>完了したら、ホームディレクトリに<code>.ssh</code>というディレクトリが作成され、その中に<code>id_rsa</code>と<code>id_rsa.pub</code>というファイルが作成されたはずである。</p>
+<pre class="txt"><code>.ssh
+├── id_rsa
+└── id_rsa.pub</code></pre>
+<p>このうち、<code>id_rsa</code>が「秘密鍵」、<code>id_rsa.pub</code>が「公開鍵」である。この公開鍵をGitHubに置き、手元に「秘密鍵」を置くことで、「自分がGitHubにアクセスできる権利を持っている」ことを証明する。</p>
+<p>では、GitHubに公開鍵を登録しよう。GitHubの右上のアイコンをクリックし、開いたメニューから「Settings」を選ぶ。現れた左のメニューから「SSH and GPG keys」を開くと、以下のような画面が現れるはずだ。</p>
+<div class="figure">
+<img src="fig/ssh_and_gpg_keys.png" alt="SSH Keys" />
+<p class="caption">SSH Keys</p>
+</div>
+<p>まだ公開鍵を一つも登録していないので「There are no SSH keys associated with you account.」と表示されている。ここで「New SSH key」をクリックしよう。すると、TitleとKeyの入力画面になる。</p>
+<p>Titleは「どのPCの鍵であるか」を自分で区別するためのものなのでなんでも良い。例えば「研究室のMac Book」などで良い。</p>
+<p>Keyに公開鍵を入力する。ターミナルで</p>
+<pre class="ssh"><code>cat .ssh/id_rsa.pub</code></pre>
+<p>を実行すると、例えば以下のように「ssh-rsa」から始まる表示がされるはずである(環境によって表示内容が異なる)。</p>
+<pre class="txt"><code>ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC4/wWKWxcmPu6ygGXdGk6IQZsH5JxSbRfakGZ1KQDbZJo91r8H8khjpBPOxrNkji75i2I6yPu9YjhaloR5Pzck2HMmjj6Ko7zBpiwNACy/7r7ECcUGcpEFArcD+72riZof4MGstyGy0jQKMDZxyjaFYpF5Gn7sfjCVNtfvRDrniFpF57+827CywuwpscZSUy63DvQ+L5yUrgL1Xh8hNpktzrO4hpXiYzl19g/j79AeHoZwrjxT3Q2Ul7rZTWps2IRkKtrz6lLx4ReyNeu1Jjg+A/c/Oo/gKhJwXpImVBwwkyi3MYX4GyLZ+6Vx07TgdvxC9ZRFEzuFIHYWERej3yaYAXnSVkcbWAP4dD4gD7AbwIiTUnTwyhTBHn3a1d7D8+IFIyQUZPVp7PBRhsst/VYUUVv1N2ZaTonC3cPsWSdCyGSQU+Gxwig0MzXCLHO8VAeyQ3W1OPekBa23B6yPza0W9DKIXuztMeVlCPaOS4RIfGWl75YxJrmV+6af1oBj0Us= watanabe@DESKTOP-TB4E5C4</code></pre>
+<p>これは改行が入らず、一行であることに注意。これを(途中で改行が入らないように)コピペして、GitHubの「Key」のところに貼り付ける。</p>
+<div class="figure">
+<img src="fig/add_key.png" alt="鍵の追加" />
+<p class="caption">鍵の追加</p>
+</div>
+<p>ここで、間違えて「秘密鍵」を貼り付けないこと。公開鍵は<code>ssh-rsa</code>という文字列から始まる一行のファイルだが、秘密鍵は<code>-----BEGIN RSA PRIVATE KEY-----</code>という文字列から始まる、複数行のファイルである。</p>
+<p>以下のような画面になったら正しく登録されている。</p>
+<div class="figure">
+<img src="fig/key_added.png" alt="鍵の追加完了" />
+<p class="caption">鍵の追加完了</p>
+</div>
+<p>公開鍵の登録は、GitHubにアクセスするパソコンごとに行う。今後、別のマシンでGitHubにアクセスしたくなったら、そのマシンで秘密鍵、公開鍵のペアを作成し、同様な手続きでGitHubに公開鍵を登録すること。</p>
+<h2 id="githubの操作">GitHubの操作</h2>
+<h3 id="リポジトリの作成とクローン">リポジトリの作成とクローン</h3>
+<p>では、実際にGitHubと通信して、データのやり取りをしてみよう。</p>
+<p>まずはGitHub上でリポジトリを作成して、ローカルに取ってくる(clone)してみよう。</p>
+<p>まず、GitHubのホーム画面を表示しよう。GitHubの左上のネコのようなアイコンをクリックすると、ホームに戻ることができる。</p>
+<div class="figure">
+<img src="fig/create_new_repository.png" alt="リポジトリを新規作成" />
+<p class="caption">リポジトリを新規作成</p>
+</div>
+<p>ホーム画面に戻ったら「Create repository」を押してリポジトリを新規作成しよう。</p>
+<div class="figure">
+<img src="fig/new_repository.png" alt="リポジトリの設定" />
+<p class="caption">リポジトリの設定</p>
+</div>
+<p>リポジトリの新規作成画面では、以下の項目を設定しよう。</p>
+<ul>
+<li>Repository name: リポジトリの名前。Gitでアクセスするので、英数字だけにしよう。ここでは<code>test</code>としておく。</li>
+<li>Descrption: リポジトリの説明(任意)。ここは日本語でも良いが、とりあえず「test repository」にしておこう。</li>
+<li>Public/Private: ここで「Public」を選ぶと、全世界の人から見ることができるリポジトリとなる。とりあえずは「Private (自分だけがアクセスできる)」を選んでおこう。</li>
+<li>Initialize this repository with a README: リポジトリには監修としてREADMEというドキュメントをつける。ここをチェックすると自動で作ってくれる。</li>
+<li>Add a license: このリポジトリのファイルをどのようなライセンスで公開するか。ライセンスについては後で説明するが、とりあえず「MIT License」を選んでおこう。</li>
+</ul>
+<p>以上の設定をして「Create repository」をクリックすると、リポジトリが作成され、以下のような画面が表示される。</p>
+<div class="figure">
+<img src="fig/test_rep.png" alt="新規作成されたリポジトリ" />
+<p class="caption">新規作成されたリポジトリ</p>
+</div>
+<p>このリポジトリは<code>README.md</code>と<code>LICENSE</code>という二つのファイルが最初に登録され、<code>initial commit</code>というコミットメッセージでコミットされた状態になっている。</p>
+<p>このリポジトリを、ローカルマシンにクローンしてみよう。</p>
+<p>右にある「Clone or download」をクリックし、「Use ssh」をクリックする。</p>
+<div class="figure">
+<img src="fig/use_ssh.png" alt="Use SSH" />
+<p class="caption">Use SSH</p>
+</div>
+<p>すると、下に<code>git@github.com:アカウント名/test.git</code>という表示がされるので、これをコピーする(右にあるコピーボタンを押しても良い)。</p>
+<p>次に、ローカルマシンのターミナルで、<code>github</code>ディレクトリを作り、その下にリポジトリをクローンしよう。以下を実行してみよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span>
+<span class="fu">mkdir</span> github
+<span class="bu">cd</span> github
+<span class="fu">git</span> clone git@github.com:アカウント名/test.git</code></pre></div>
+<p>すると、パスフレーズを要求されるので、先ほど設定した秘密鍵のパスフレーズを入力しよう。正しく公開鍵が登録されていたらクローンできるはずだ。</p>
+<h3 id="ローカルの修正とpush">ローカルの修正とpush</h3>
+<p>手元にクローンしたリポジトリを修正し、GitHubに修正をpushしてみよう。</p>
+<p>まず、クローンしたリポジトリの<code>README.md</code>を修正しよう。先ほどクローンされた<code>test</code>に移動し、VSCodeで<code>README.md</code>を開こう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span> test
+<span class="ex">code</span> README.md</code></pre></div>
+<p>すると、以下のような内容が表示されるはずだ。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="co"># test</span>
+<span class="bu">test</span> repository</code></pre></div>
+<p>ここで内容を修正してみよう。</p>
+<div class="sourceCode"><pre class="sourceCode md"><code class="sourceCode markdown"><span class="fu"># test</span>
+test repository
+
+Hello GitHub</code></pre></div>
+<p>この状態で、<code>README.md</code>の修正を<code>git add</code>して<code>git commit</code>しよう。ターミナルで以下を実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> add README.md
+<span class="fu">git</span> commit -m <span class="st">&quot;modifies README.md&quot;</span></code></pre></div>
+<p>これでローカルの「歴史」は、GitHubが記憶している「歴史」よりも先に進んだ。歴史を見てみよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">git</span> log --oneline
+<span class="ex">be064a8</span> (HEAD -<span class="op">&gt;</span> master) <span class="ex">modifies</span> README.md
+<span class="ex">083bc2d</span> (origin/master, origin/HEAD) <span class="ex">Initial</span> commit</code></pre></div>
+<p>なお、左に表示されるコミットハッシュ(<code>be064a8</code>等)は環境によって異なる。</p>
+<p>ローカルのリポジトリにはコミットが二つあるが、GitHubにはまだコミットが一つしかない。この「新しくなった歴史」をGitHubに教えよう。ターミナルで以下を実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> push</code></pre></div>
+<p>パスフレーズを聞かれるので入力せよ。これでローカルの修正がリモート(GitHub)に反映された。もう一度ブラウザでGitHubのリポジトリを見てみよう。ブラウザをリロードしてみよ。ローカルの変更が反映されたはずだ。</p>
+<div class="figure">
+<img src="fig/modified_readme.png" alt="修正されたリポジトリ" />
+<p class="caption">修正されたリポジトリ</p>
+</div>
+<p>下に表示されている<code>README.md</code>の内容が変更されている。さらに、コミット数が「2 commits」になっており、<code>README.md</code>のコミットメッセージが「modified README.md」になっていることもわかる。</p>
+<p>以上で、「GitHubでリポジトリを作成し、ローカルにクローンする」作業が完了した。以上の作業をまとめると以下のようになる。</p>
+<div class="figure">
+<img src="fig/github_flow1.png" alt="Flow1" />
+<p class="caption">Flow1</p>
+</div>
+<h3 id="ローカルで作成したリポジトリをgithubにpush">ローカルで作成したリポジトリをGitHubにpush</h3>
+<p>次に、ローカルで作成したリポジトリをリモートにpushする作業を試してみよう。</p>
+<p>ローカルのターミナルで、<code>github</code>ディレクトリの下に、<code>test2</code>というディレクトリを作ろう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span>
+<span class="bu">cd</span> github
+<span class="fu">mkdir</span> test2
+<span class="bu">cd</span> test2</code></pre></div>
+<p>ここでまた<code>README.md</code>ファイルを作ろう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">code</span> README.md</code></pre></div>
+<p><code>README.md</code>の内容はなんでも良いが、たとえば以下の内容として保存しよう。</p>
+<div class="sourceCode"><pre class="sourceCode md"><code class="sourceCode markdown"><span class="fu"># test2</span>
+
+2nd repository</code></pre></div>
+<p>この状態で、Gitリポジトリとして初期化し、最初のコミットをしよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> init
+<span class="fu">git</span> add README.md
+<span class="fu">git</span> commit -m <span class="st">&quot;initial commit&quot;</span></code></pre></div>
+<p>さて、このリポジトリをGitHubに登録する。まず、GitHubのホーム画面の左上の「Repositories」の右にある「New」をクリックしよう。</p>
+<div class="figure">
+<img src="fig/test2_new.png" alt="New" />
+<p class="caption">New</p>
+</div>
+<p>Repository nameは<code>test2</code>、Descriptionは無くても良いが、とりあえず<code>2nd repository</code>としておこう。また、今回もPrivateリポジトリとする。</p>
+<p>それ以外はデフォルトのまま、すなわち<code>README.md</code>も作らず、ライセンスファイルも追加しないまま<code>Create repository</code>をクリックする。</p>
+<div class="figure">
+<img src="fig/test2_create.png" alt="Create test2" />
+<p class="caption">Create test2</p>
+</div>
+<p>すると、先ほどとは異なり、全くファイルを含まない空のリポジトリが作成される。</p>
+<div class="figure">
+<img src="fig/test2_empty.png" alt="Empty Repository" />
+<p class="caption">Empty Repository</p>
+</div>
+<p>そこには「次にすべきこと」がいくつか書いてあるが、ここでは「既に存在するリポジトリをpushする」を選びたいので、そこに書かれているコマンド、</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> remote add origin git@github.com:アカウント名/test2.git
+<span class="fu">git</span> push -u origin master</code></pre></div>
+<p>を、先ほどのリポジトリ(<code>test2</code>ディレクトリの中)で実行する。右にある「コピー」ボタンをクリックすると、コマンド内容がコピーされるので、ターミナルに貼り付けて実行しても良い。</p>
+<p>またパスワードを聞かれるので入力すると、ローカルで作成されたリポジトリが、GitHubに作られた空のリポジトリにコピーされる。</p>
+<p>この状態で、もう一度GitHubの当該リポジトリを見てみよう。ブラウザをリロードせよ。以下のような画面になるはずだ。</p>
+<div class="figure">
+<img src="fig/test2_created.png" alt="Created" />
+<p class="caption">Created</p>
+</div>
+<p>以上の操作をまとめると、以下のようになる。</p>
+<div class="figure">
+<img src="fig/github_flow2.png" alt="Flow 2" />
+<p class="caption">Flow 2</p>
+</div>
+<p>GitHubでリポジトリを作ってからローカルにcloneした場合は、ローカルは「リモートリポジトリはどこにあるか」、すなわち「どこにpushすれば良いか」の情報を知っている。しかし、ローカルでリポジトリを作った場合、ローカルリポジトリは「どこにpushすれば良いか」がわからない。従って、まずその場所を教えてやらなければならない。</p>
+<p>先ほどの</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> remote add origin git@github.com:アカウント名/test2.git
+<span class="fu">git</span> push -u origin master</code></pre></div>
+<p>という操作は、</p>
+<ol style="list-style-type: decimal">
+<li><code>git@github.com:アカウント名/test2.git</code>というリポジトリに<code>origin</code>という名前をつけて保存する。</li>
+<li>先ほど名前をつけた<code>origin</code>というリポジトリに<code>master</code>ブランチを<code>push</code>する。その際、この<code>master</code>ブランチと<code>origin</code>を紐づける(<code>-u</code>オプション)</li>
+</ol>
+<p>ということをやっている。</p>
+<p>以上で、ローカルで作成したリポジトリをGitHubに登録することができた。</p>
+<p>今後、ローカルとGitHubのどちらでリポジトリを作っても良いが、慣れるまではとりあえずローカルでリポジトリを作成・作業し、必要になったらGitHubに登録するのが良いだろう。</p>
 </article>
 </body>
 </html>
