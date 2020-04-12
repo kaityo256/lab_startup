@@ -56,7 +56,7 @@ GitHubにログインした状態で、右上のアイコンをクリックす�
 
 以後、GitHubにログインするとき、パスワードと数字を要求されるようになる。パスワードはLastPassが入力してくれるので、6桁の数字だけ入力するようにしよう。
 
-## SSHの設定
+## SSHの設定と公開鍵の登録
 
 GitHubのサーバはネットワークの向こう側にある。従って、そこと通信を行うためには、ネットワークの設定をしなければならない。GitHubとの通信にはSSH (Secure Shell)と呼ばれる仕組みを使うため、まずはその設定をしよう。
 
@@ -120,3 +120,102 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC4/wWKWxcmPu6ygGXdGk6IQZsH5JxSbRfakGZ1KQDb
 
 ## リポジトリの作成とクローン
 
+では、実際にGitHubと通信して、データのやり取りをしてみよう。
+
+まずはGitHub上でリポジトリを作成して、ローカルに取ってくる(clone)してみよう。
+
+まず、GitHubのホーム画面を表示しよう。GitHubの左上のネコのようなアイコンをクリックすると、ホームに戻ることができる。
+
+![リポジトリを新規作成](fig/create_new_repository.png)
+
+ホーム画面に戻ったら「Create repository」を押してリポジトリを新規作成しよう。
+
+![リポジトリの設定](fig/new_repository.png)
+
+リポジトリの新規作成画面では、以下の項目を設定しよう。
+
+* Repository name: リポジトリの名前。Gitでアクセスするので、英数字だけにしよう。ここでは`test`としておく。
+* Descrption: リポジトリの説明(任意)。ここは日本語でも良いが、とりあえず「test repository」にしておこう。
+* Public/Private: ここで「Public」を選ぶと、全世界の人から見ることができるリポジトリとなる。とりあえずは「Private (自分だけがアクセスできる)」を選んでおこう。
+* Initialize this repository with a README: リポジトリには監修としてREADMEというドキュメントをつける。ここをチェックすると自動で作ってくれる。
+* Add a license: このリポジトリのファイルをどのようなライセンスで公開するか。ライセンスについては後で説明するが、とりあえず「MIT License」を選んでおこう。
+
+以上の設定をして「Create repository」をクリックすると、リポジトリが作成され、以下のような画面が表示される。
+
+![新規作成されたリポジトリ](fig/test_rep.png)
+
+このリポジトリは`README.md`と`LICENSE`という二つのファイルが最初に登録され、`initial commit`というコミットメッセージでコミットされた状態になっている。
+
+このリポジトリを、ローカルマシンにクローンしてみよう。
+
+右にある「Clone or download」をクリックし、「Use ssh」をクリックする。
+
+![Use SSH](fig/use_ssh.png)
+
+すると、下に`git@github.com:アカウント名/test.git`という表示がされるので、これをコピーする(右にあるコピーボタンを押しても良い)。
+
+次に、ローカルマシンのターミナルで、`github`ディレクトリを作り、その下にリポジトリをクローンしよう。以下を実行してみよう。
+
+```sh
+cd
+mkdir github
+cd github
+git clone git@github.com:アカウント名/test.git
+```
+
+すると、パスフレーズを要求されるので、先ほど設定した秘密鍵のパスフレーズを入力しよう。正しく公開鍵が登録されていたらクローンできるはずだ。
+
+## ローカルの修正とpush
+
+手元にクローンしたリポジトリを修正し、GitHubに修正をpushしてみよう。
+
+まず、クローンしたリポジトリの`README.md`を修正しよう。先ほどクローンされた`test`に移動し、VSCodeで`README.md`を開こう。
+
+```sh
+cd test
+code README.md
+```
+
+すると、以下のような内容が表示されるはずだ。
+
+```sh
+# test
+test repository
+```
+
+ここで内容を修正してみよう。
+
+```md
+# test
+test repository
+
+Hello GitHub
+```
+
+この状態で、`README.md`の修正を`git add`して`git commit`しよう。ターミナルで以下を実行せよ。
+
+```sh
+git ci -m "modifies README.md"
+```
+
+これでローカルの「歴史」は、GitHubが記憶している「歴史」よりも先に進んだ。歴史を見てみよう。
+
+```sh
+$ git log --oneline
+be064a8 (HEAD -> master) modifies README.md
+083bc2d (origin/master, origin/HEAD) Initial commit
+```
+
+なお、左に表示されるコミットハッシュ(`be064a8`等)は環境によって異なる。
+
+ローカルのリポジトリにはコミットが二つあるが、GitHubにはまだコミットが一つしかない。この「新しくなった歴史」をGitHubに教えよう。ターミナルで以下を実行せよ。
+
+```sh
+git push
+```
+
+パスフレーズを聞かれるので入力せよ。これでローカルの修正がリモート(GitHub)に反映された。もう一度ブラウザでGitHubのリポジトリを見てみよう。ブラウザをリロードしてみよ。ローカルの変更が反映されたはずだ。
+
+![修正されたリポジトリ](fig/modified_readme.png)
+
+下に表示されている`README.md`の内容が変更されている。さらに、コミット数が「2 commits」になっており、`README.md`のコミットメッセージが「modified README.md」になっていることもわかる。
