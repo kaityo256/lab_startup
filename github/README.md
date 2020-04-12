@@ -55,3 +55,68 @@ GitHubにログインした状態で、右上のアイコンをクリックす�
 ![二段階認証完了](fig/two_factor_enabled.png)
 
 以後、GitHubにログインするとき、パスワードと数字を要求されるようになる。パスワードはLastPassが入力してくれるので、6桁の数字だけ入力するようにしよう。
+
+## SSHの設定
+
+GitHubのサーバはネットワークの向こう側にある。従って、そこと通信を行うためには、ネットワークの設定をしなければならない。GitHubとの通信にはSSH (Secure Shell)と呼ばれる仕組みを使うため、まずはその設定をしよう。
+
+WindowsならGit Bash、Macならターミナルを開いて、ホームディレクトリ(`cd`を入力したら移動するディレクトリ)にて`ssh-keygen -t rsa`を実行せよ。
+
+```sh
+$ ssh-keygen -t rsa
+Generating public/private rsa key pair.
+Enter file in which to save the key (/c/Users/watanabe/.ssh/id_rsa):　#ここはそのまま改行で良い
+Created directory '/c/Users/watanabe/.ssh'.
+Enter passphrase (empty for no passphrase): # ここはパスフレーズを入力すること
+Enter same passphrase again: # もう一度同じパスフレーズを入力
+Your identification has been saved in /c/Users/watanabe/.ssh/id_rsa
+Your public key has been saved in /c/Users/watanabe/.ssh/id_rsa.pub
+
+```
+
+最初に鍵の置き場所を聞かれるが、これはデフォルトのままで良い。次に秘密鍵の「パスフレーズ」を聞かれる。これは「なし」にもできるのだが、必ず設定すること。パスフレーズはLastPassなどで生成して、Secure Note等に保存しておこう。
+
+完了したら、ホームディレクトリに`.ssh`というディレクトリが作成され、その中に`id_rsa`と`id_rsa.pub`というファイルが作成されたはずである。
+
+```txt
+.ssh
+├── id_rsa
+└── id_rsa.pub
+```
+
+このうち、`id_rsa`が「秘密鍵」、`id_rsa.pub`が「公開鍵」である。この公開鍵をGitHubに置き、手元に「秘密鍵」を置くことで、「自分がGitHubにアクセスできる権利を持っている」ことを証明する。
+
+では、GitHubに公開鍵を登録しよう。GitHubの右上のアイコンをクリックし、開いたメニューから「Settings」を選ぶ。現れた左のメニューから「SSH and GPG keys」を開くと、以下のような画面が現れるはずだ。
+
+![SSH Keys](fig/ssh_and_gpg_keys.png)
+
+まだ公開鍵を一つも登録していないので「There are no SSH keys associated with you account.」と表示されている。ここで「New SSH key」をクリックしよう。すると、TitleとKeyの入力画面になる。
+
+Titleは「どのPCの鍵であるか」を自分で区別するためのものなのでなんでも良い。例えば「研究室のMac Book」などで良い。
+
+Keyに公開鍵を入力する。ターミナルで
+
+```ssh
+cat .ssh/id_rsa.pub
+```
+
+を実行すると、例えば以下のように「ssh-rsa」から始まる表示がされるはずである(環境によって表示内容が異なる)。
+
+```txt
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC4/wWKWxcmPu6ygGXdGk6IQZsH5JxSbRfakGZ1KQDbZJo91r8H8khjpBPOxrNkji75i2I6yPu9YjhaloR5Pzck2HMmjj6Ko7zBpiwNACy/7r7ECcUGcpEFArcD+72riZof4MGstyGy0jQKMDZxyjaFYpF5Gn7sfjCVNtfvRDrniFpF57+827CywuwpscZSUy63DvQ+L5yUrgL1Xh8hNpktzrO4hpXiYzl19g/j79AeHoZwrjxT3Q2Ul7rZTWps2IRkKtrz6lLx4ReyNeu1Jjg+A/c/Oo/gKhJwXpImVBwwkyi3MYX4GyLZ+6Vx07TgdvxC9ZRFEzuFIHYWERej3yaYAXnSVkcbWAP4dD4gD7AbwIiTUnTwyhTBHn3a1d7D8+IFIyQUZPVp7PBRhsst/VYUUVv1N2ZaTonC3cPsWSdCyGSQU+Gxwig0MzXCLHO8VAeyQ3W1OPekBa23B6yPza0W9DKIXuztMeVlCPaOS4RIfGWl75YxJrmV+6af1oBj0Us= watanabe@DESKTOP-TB4E5C4
+```
+
+これは改行が入らず、一行であることに注意。これを(途中で改行が入らないように)コピペして、GitHubの「Key」のところに貼り付ける。
+
+![鍵の追加](fig/add_key.png)
+
+ここで、間違えて「秘密鍵」を貼り付けないこと。公開鍵は`ssh-rsa`という文字列から始まる一行のファイルだが、秘密鍵は`-----BEGIN RSA PRIVATE KEY-----`という文字列から始まる、複数行のファイルである。
+
+以下のような画面になったら正しく登録されている。
+
+![鍵の追加完了](fig/key_added.png)
+
+公開鍵の登録は、GitHubにアクセスするパソコンごとに行う。今後、別のマシンでGitHubにアクセスしたくなったら、そのマシンで秘密鍵、公開鍵のペアを作成し、同様な手続きでGitHubに公開鍵を登録すること。
+
+## リポジトリの作成とクローン
+
