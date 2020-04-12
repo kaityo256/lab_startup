@@ -195,7 +195,8 @@ Hello GitHub
 この状態で、`README.md`の修正を`git add`して`git commit`しよう。ターミナルで以下を実行せよ。
 
 ```sh
-git ci -m "modifies README.md"
+git add README.md
+git commit -m "modifies README.md"
 ```
 
 これでローカルの「歴史」は、GitHubが記憶している「歴史」よりも先に進んだ。歴史を見てみよう。
@@ -219,3 +220,69 @@ git push
 ![修正されたリポジトリ](fig/modified_readme.png)
 
 下に表示されている`README.md`の内容が変更されている。さらに、コミット数が「2 commits」になっており、`README.md`のコミットメッセージが「modified README.md」になっていることもわかる。
+
+以上で、「GitHubでリポジトリを作成し、ローカルにクローンする」作業が完了した。
+
+## ローカルで作成したリポジトリをGitHubにpush
+
+次に、ローカルで作成したリポジトリをリモートにpushする作業を試してみよう。
+
+ローカルのターミナルで、`github`ディレクトリの下に、`test2`というディレクトリを作ろう。
+
+```sh
+cd
+cd github
+mkdir test2
+cd test2
+```
+
+ここでまた`README.md`ファイルを作ろう。
+
+```sh
+code README.md
+```
+
+`README.md`の内容はなんでも良いが、たとえば以下の内容として保存しよう。
+
+```md
+# test2
+
+2nd repository
+```
+
+この状態で、Gitリポジトリとして初期化し、最初のコミットをしよう。
+
+```sh
+git init
+git add README.md
+git commit -m "initial commit"
+```
+
+さて、このリポジトリをGitHubに登録する。まず、GitHubのホーム画面の左上の「Repositories」の右にある「New」をクリックしよう。
+
+![New](fig/test2_new.png)
+
+Repository nameは`test2`、Descriptionは無くても良いが、とりあえず`2nd repository`としておこう。また、今回もPrivateリポジトリとする。
+
+それ以外はデフォルトのまま、すなわち`README.md`も作らず、ライセンスファイルも追加しないまま`Create repository`をクリックする。
+
+![Create test2](fig/test2_create.png)
+
+すると、先ほどとは異なり、全くファイルを含まない空のリポジトリが作成される。
+
+![Empty Repository](fig/test2_empty.png)
+
+そこには「次にすべきこと」がいくつか書いてあるが、ここでは「既に存在するリポジトリをpushする」を選びたいので、そこに書かれているコマンド、
+
+```sh
+git remote add origin git@github.com:アカウント名/test2.git
+git push -u origin master
+```
+
+を、先ほどのリポジトリ(`test2`ディレクトリの中)で実行する。右にある「コピー」ボタンをクリックすると、コマンド内容がコピーされるので、ターミナルに貼り付けて実行しても良い。
+
+またパスワードを聞かれるので入力すると、ローカルで作成されたリポジトリが、GitHubに作られた空のリポジトリにコピーされる。
+
+この状態で、もう一度GitHubの当該リポジトリを見てみよう。ブラウザをリロードせよ。以下のような画面になるはずだ。
+
+![Created](fig/test2_created.png)
