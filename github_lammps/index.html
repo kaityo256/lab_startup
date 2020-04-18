@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+
+<style>
+  .markdown-body {
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 45px;
+  }
+  p.caption{
+    display:none;
+  }
+  img {width: 100%}
+
+  @media (max-width: 767px) {
+    .markdown-body {
+      padding: 15px;
+    }
+  }
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://kaityo256.github.io/sevendayshpc/github-markdown.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<article class="markdown-body">
+<h1 id="githubのフォークとlammps">GitHubのフォークとLAMMPS</h1>
+<p>これまで、Python、LAMMPS、Git、GitHubのセットアップを行って来た。これら全てを使った作業をしてみよう。</p>
+<p>具体的には以下のような作業を行う。</p>
+<ol style="list-style-type: decimal">
+<li>GitHubにて既存のリポジトリをforkする</li>
+<li>Gitでそのリポジトリをcloneする</li>
+<li>PythonでLAMMPS用の原子状態を出力する</li>
+<li>LAMMPSで実行、VMDで可視化する</li>
+<li>シミュレーションの条件を変更し、その結果をgit commit &amp; pushする。</li>
+</ol>
+<h2 id="シミュレーションの内容">シミュレーションの内容</h2>
+<p>簡単な分子動力学シミュレーションとして、液滴衝突をしてみよう。二つの液滴を用意し、それらに初速を与えて正面衝突させる。</p>
+<div class="figure">
+<img src="fig/collision.png" alt="液滴衝突" />
+<p class="caption">液滴衝突</p>
+</div>
+<p>LAMMPSに与えるファイルは二つである。一つはLAMMPSのインプットファイルで、</p>
+<ul>
+<li>どのような相互作用をさせるか</li>
+<li>時間刻みはどうするか</li>
+<li>原子配置はどうするか</li>
+<li>何ステップ計算するか</li>
+<li>何ステップに一度ダンプファイルを出力するか</li>
+</ul>
+<p>などを記述する。もう一つはインプットファイルから読み込まれるファイルで、シミュレーションボックスのサイズや、原子の種類、原子の位置、初速を記述する。</p>
+<p>原子が10個程度なら手で書けなくもないが、千個、一万個となると手で書くのは不可能だ。そこで、Pythonスクリプトで原子配置を作成させよう。</p>
+<h2 id="githubでのfolk">GitHubでのfolk</h2>
+<p>まず、既存のリポジトリをfork(フォーク)しよう。forkとは、他人の公開リポジトリを、自分のアカウントにコピーすることだ。他人の公開リポジトリは、cloneすることはできるが、修正後にpushすることはできない。しかし、forkにより、自分のリポジトリとしてコピーすると、それは自分のファイルになるので、自由にpushすることができるようになる。</p>
+<div class="figure">
+<img src="fig/fork.png" alt="forkとpush" />
+<p class="caption">forkとpush</p>
+</div>
+<p>では早速forkしてみよう。GitHubにログインした状態で、以下のリポジトリを見てみよ。</p>
+<p><a href="https://github.com/kaityo256/lammps_collision" class="uri">https://github.com/kaityo256/lammps_collision</a></p>
+<p>左上に「Fork」ボタンがあるので、押してみよう。</p>
+<div class="figure">
+<img src="fig/fork_button.png" alt="Forkボタン" />
+<p class="caption">Forkボタン</p>
+</div>
+<p>ボタンの隣の数字は「これまでに誰がForkしたか」なので、そこではなく「Fork」と書いてある方を押すこと。</p>
+<p>すると、しばらくしてから「GitHubの自分のアカウント」の画面に遷移する。</p>
+<div class="figure">
+<img src="fig/forked_repository.png" alt="Forkしたリポジトリ" />
+<p class="caption">Forkしたリポジトリ</p>
+</div>
+<p>通常の自分のリポジトリと違うところは、「forked from kaityo256/lammps_collision」とFork元が書いてあることである(また、リポジトリ名の左にあるアイコンも異なる)。しかし、後は自分のリポジトリと同じように、cloneやpushその他好きなことができる。</p>
+<p>また、このように既存のリポジトリをForkするのはプルリクエストを作る目的もあるのだが、ここでは触れない。</p>
+<p>Forkした後は、「Clone or download」ボタンからclone用のURLをコピーしよう。この時、SSH経由でcloneすること。もし「Clone with HTTPS」と書いてあったら、「Use SSH」をクリックし、SSH用のURLをコピーする。 URLをコピーしたら、ターミナル(WindowsならPowerShell、Macならターミナル)の、<code>github</code>ディレクトリの下でcloneしよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span> github
+<span class="fu">git</span> clone git@github.com:アカウント名/lammps_collision.git</code></pre></div>
+<p>Cloneする時に秘密鍵のパスフレーズを聞かれるので入力すること。</p>
+<pre class="txt"><code>Receiving objects: 100% (10/10), done.</code></pre>
+<p>などと表示されたら無事にcloneされている。</p>
+<h2 id="pythonスクリプトの実行">Pythonスクリプトの実行</h2>
+<p>作成されたリポジトリに入り、VSCodeを起動しよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span> lammps_collision
+<span class="ex">code</span> .</code></pre></div>
+<p>VSCodeが起動したら、左のウィンドウの<code>generate_config.py</code>をクリックして開く。これは、LAMMPSに入力するための原子配列を生成するPythonスクリプトである。スクリプトが開いたら、右上の「実行ボタン」をクリックして実行しよう。実行ウィンドウで</p>
+<pre class="txt"><code>Generated collision.atoms</code></pre>
+<p>と表示され、かつVSCodeの左にあるファイル一覧(エクスプローラー)に<code>collision.atoms</code>が追加されれば正しく実行されてる。なお、<code>collision.atoms</code>は、「Gitで管理しないファイル」に登録されているため、VSCodeでは灰色で表示される。</p>
+<p>この「Gitで管理しないファイル(無視されるファイル)」は、リポジトリの<code>.gitignore</code>ファイルに含まれている。中身を見てみよう。</p>
+<pre class="txt"><code>log.lammps
+*.atoms
+*.dump
+vmd.state</code></pre>
+<p>ここで<code>*.atoms</code>などと<code>*</code>マークがあるのは「ワイルドカード」と呼ばれる指定方法だ。この場合は「拡張子が<code>atoms</code>のファイル全て」を意味しており、<code>collision.atoms</code>はそれにマッチするために無視される。同様に今後作成される<code>collision.dump</code>や<code>log.lammps</code>などもGitから無視される。</p>
+<h2 id="lammpsの実行">LAMMPSの実行</h2>
+<p>いま、リポジトリには<code>collision.input</code>と<code>collision.atoms</code>があるはずだ。前者がLAMMPSでシミュレーションをするためのインプットファイルで、後者がシステムサイズや原子の位置、初速を記述するファイルである。これらをLAMMPSにい入力して実行してみよう。</p>
+<p>Windows PowerShellの場合は</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">cat</span> collision.input <span class="kw">|</span> <span class="ex">lmp_serial.exe</span></code></pre></div>
+<p>Macの場合は</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">lmp_serial</span> <span class="op">&lt;</span> collision.input</code></pre></div>
+<p>として実行しよう。一分程度で実行が終わるはずである。同じディレクトリに<code>collision.dump</code>が生成されていれば正しく実行されている。</p>
+<h2 id="vmdによる可視化">VMDによる可視化</h2>
+<p>先ほど生成された<code>collision.dump</code>をVMDで読み込んでみよう。</p>
+<p>VMDを実行し、「VMD Main」の「File」から「New Molecule」を選び、「Browse」を押して先ほどの<code>collision.dump</code>を選ぶ。次にVMD Mainの「Graphics」の「Representation」を選び、「Drawing Method」を「VDW」にすると、画面が玉に変わる。その状態で「Sphere Scale」を適切に設定しよう。おそらく0.5程度が適切と思われる。</p>
+<p>設定終了したら、VMD Mainの右下にあるアニメーションボタンを押してみよう。二つの液滴が衝突し、合体する様子が見られるはずである。</p>
+<h2 id="シミュレーションの修正">シミュレーションの修正</h2>
+<p>手元にGit管理されたシミュレーションファイルがあるので、これをいろいろ修正してみよう。特に衝突する液滴の速度をより高速にしてみたらどうなるか調べてみよう。</p>
+<h3 id="インプットファイル">インプットファイル</h3>
+<p>LAMMPSに直接入力するファイルは<code>collision.input</code>である。サンプルでは<code>in.melt</code>となっていたが、ここでは私の趣味で「プロジェクト名.拡張子」という形で統一する。</p>
+<p><code>collision.input</code>の内容は以下の通りである。</p>
+<pre class="txt"><code>units lj
+atom_style atomic
+boundary p p p
+timestep 0.001
+
+read_data collision.atoms
+
+mass 1 1.0
+
+pair_style lj/cut 2.5
+pair_coeff 1 1 1.0 1.0 2.5
+
+neighbor 0.3 bin
+neigh_modify every 20 delay 0 check no
+
+fix 1 all nve
+
+dump id all atom 100 collision.dump
+
+run 20000</code></pre>
+<p>なお、調べたいコマンドを<a href="https://lammps.sandia.gov/doc/Manual.html">LAMMPSのドキュメント</a>の検索窓に入力すれば説明が見つかるので適宜参照すること。</p>
+<p>最初に、系の概要の定義がある。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">units</span>    lj       # LJ単位系をとる
+<span class="ex">atom_style</span> atomic <span class="co"># 原子タイプはデフォルト</span>
+<span class="ex">boundary</span> p p p    # 三方向に周期境界条件を採用する
+<span class="ex">timestep</span> 0.001    # 時間刻みを0.001とする</code></pre></div>
+<p>次に、原子配置の読み込みをする。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">read_data</span> collision.atoms</code></pre></div>
+<p>ここでは<code>collision.atom</code>というファイルを読み込んでいる。</p>
+<p>次のセクションも系の定義の続きだ。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">mass</span> 1 1.0 <span class="co"># 質量の設定</span>
+
+<span class="ex">pair_style</span> lj/cut 2.5       # 原子間相互作用のタイプ
+<span class="ex">pair_coeff</span> 1 1 1.0 1.0 2.5  # 原子間相互作用のパラメタ</code></pre></div>
+<p>次のセクションはシミュレーション実行のためのテクニカルなパラメータである。いまはあまり気にしなくて良い。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">neighbor</span> 0.3 bin <span class="co"># 相互作用ペア探索の距離</span>
+<span class="ex">neigh_modify</span> every 20 delay 0 check no <span class="co"># 相互作用ペアリストの更新方法</span>
+
+<span class="ex">fix</span> 1 all nve <span class="co"># タイプ1の原子全てをNVEアンサンブルとする</span></code></pre></div>
+<p>次が、ダンプファイル(スナップショット)を出力する設定だ。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">dump</span> id all atom 100 collision.dump</code></pre></div>
+<p>ここでは全ての原子について、<code>collision.dump</code>というファイルに、100ステップごとにスナップショットを出力している。</p>
+<p>最後がシミュレーションの実行だ。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">run</span> 20000</code></pre></div>
+<p>20000ステップの計算をしている。</p>
+<h3 id="原子配置ファイル">原子配置ファイル</h3>
+<p><code>collision.input</code>から読み込まれる<code>collision.atoms</code>の内容も見ておこう。こんな感じである。</p>
+<h4 id="全体">全体</h4>
+<pre class="txt"><code>Position Data
+
+4696 atoms
+1 atom types
+
+-40.00 40.00 xlo xhi
+-20.00 20.00 ylo yhi
+-20.00 20.00 zlo zhi
+
+Atoms
+
+1 1 -27.75 -1.55 0.0
+2 1 -27.75 -0.775 0.775
+(snip)
+4695 1 28.525 1.55 0.775
+4696 1 28.525 2.325 0.0
+
+
+Velocities
+
+1 2.0 0.0 0.0
+2 2.0 0.0 0.0
+(snip)
+2439 -2.0 0.0 0.0
+2440 -2.0 0.0 0.0
+</code></pre>
+<p>なお、ここで出てくる(snip)とは「中略」、つまり途中を省略したよ、という意味だ。</p>
+<p>また上から順番に見ていこう。</p>
+<h4 id="タイトルと原子定義">タイトルと原子定義</h4>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">Position</span> Data
+
+<span class="ex">2440</span> atoms    # 原子数
+<span class="ex">1</span> atom types  # 原子の種類の数</code></pre></div>
+<p>最初の行はタイトルだ。どうも必須らしい。次に原子数と原子の種類の数を指定する。</p>
+<h4 id="シミュレーションボックス">シミュレーションボックス</h4>
+<pre class="txt"><code>-40.00 40.00 xlo xhi
+-20.00 20.00 ylo yhi
+-20.00 20.00 zlo zhi</code></pre>
+<p>次にシミュレーションボックスのサイズを指定する。X, Y, Z各軸の最小値と最大値を決めることで、X, Y, Z軸に辺が平行な直方体を指定する。</p>
+<p>ここでは、</p>
+<ul>
+<li>-40 &lt; x &lt; 40</li>
+<li>-20 &lt; y &lt; 20</li>
+<li>-20 &lt; z &lt; 20</li>
+</ul>
+<p>を満たす直方体をシミュレーション領域としている。</p>
+<h4 id="原子位置">原子位置</h4>
+<pre class="txt"><code>Atoms
+
+1 1 -27.75 -1.55 0.0
+2 1 -27.75 -0.775 0.775
+...</code></pre>
+<p><code>Atoms</code>の後に、原子の数だけ原子の位置を並べる。フォーマットは</p>
+<pre class="txt"><code>ID 原子種別 X座標 Y座標 Z座標</code></pre>
+<p>だ。今回は原子が一種類しかないため、二桁目は全て「1」である。また、IDが「1はじまり」なのに注意。多くのプログラム言語が「0はじまり」を採用しているため、調整が必要だ。</p>
+<h4 id="原子速度">原子速度</h4>
+<pre class="txt"><code>Velocities
+
+1 2.0 0.0 0.0
+2 2.0 0.0 0.0</code></pre>
+<p><code>Velocities</code>の後に、原子の数だけ速度を並べる。フォーマットは</p>
+<pre class="txt"><code>ID X成分 Y成分 Z成分</code></pre>
+<p>である。原子配置ファイルのフォーマットは以上だ。</p>
+<h3 id="原子配置ファイル生成スクリプト">原子配置ファイル生成スクリプト</h3>
+<p>先ほどの<code>collision.atoms</code>は、Pythonスクリプトにより生成されたものだ。このファイルを生成するPythonスクリプト<code>generate_config.py</code>を見てみよう。</p>
+<h4 id="スクリプト全体">スクリプト全体</h4>
+<p>スクリプトは50行ちょっとだ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">class</span> Atom:
+    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, x, y, z, xvel):
+        <span class="va">self</span>.x <span class="op">=</span> x
+        <span class="va">self</span>.y <span class="op">=</span> y
+        <span class="va">self</span>.z <span class="op">=</span> z
+        <span class="va">self</span>.<span class="bu">type</span> <span class="op">=</span> <span class="dv">1</span>
+        <span class="va">self</span>.vx <span class="op">=</span> xvel
+        <span class="va">self</span>.vy <span class="op">=</span> <span class="fl">0.0</span>
+        <span class="va">self</span>.vz <span class="op">=</span> <span class="fl">0.0</span>
+
+
+<span class="kw">def</span> add_ball(atoms, xpos, xvel):
+    r <span class="op">=</span> <span class="dv">8</span>
+    s <span class="op">=</span> <span class="fl">1.55</span>
+    h <span class="op">=</span> <span class="fl">0.5</span> <span class="op">*</span> s
+    <span class="cf">for</span> ix <span class="kw">in</span> <span class="bu">range</span>(<span class="op">-</span>r, r<span class="op">+</span><span class="dv">1</span>):
+        <span class="cf">for</span> iy <span class="kw">in</span> <span class="bu">range</span>(<span class="op">-</span>r, r<span class="op">+</span><span class="dv">1</span>):
+            <span class="cf">for</span> iz <span class="kw">in</span> <span class="bu">range</span>(<span class="op">-</span>r, r<span class="op">+</span><span class="dv">1</span>):
+                x <span class="op">=</span> ix <span class="op">*</span> s
+                y <span class="op">=</span> iy <span class="op">*</span> s
+                z <span class="op">=</span> iz <span class="op">*</span> s
+                <span class="cf">if</span> (x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> y<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> z<span class="op">**</span><span class="dv">2</span> <span class="op">&gt;</span> r<span class="op">**</span><span class="dv">2</span>):
+                    <span class="cf">continue</span>
+                x <span class="op">=</span> x <span class="op">+</span> xpos
+                atoms.append(Atom(x, y, z, xvel))
+                atoms.append(Atom(x, y<span class="op">+</span>h, z<span class="op">+</span>h, xvel))
+                atoms.append(Atom(x<span class="op">+</span>h, y, z<span class="op">+</span>h, xvel))
+                atoms.append(Atom(x<span class="op">+</span>h, y<span class="op">+</span>h, z, xvel))
+
+
+<span class="kw">def</span> save_file(filename, atoms):
+    <span class="cf">with</span> <span class="bu">open</span>(filename, <span class="st">&quot;w&quot;</span>) <span class="im">as</span> f:
+        f.write(<span class="st">&quot;Position Data</span><span class="ch">\n\n</span><span class="st">&quot;</span>)
+        f.write(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> atoms</span><span class="ch">\n</span><span class="st">&quot;</span>.<span class="bu">format</span>(<span class="bu">len</span>(atoms)))
+        f.write(<span class="st">&quot;1 atom types</span><span class="ch">\n\n</span><span class="st">&quot;</span>)
+        f.write(<span class="st">&quot;-40.00 40.00 xlo xhi</span><span class="ch">\n</span><span class="st">&quot;</span>)
+        f.write(<span class="st">&quot;-20.00 20.00 ylo yhi</span><span class="ch">\n</span><span class="st">&quot;</span>)
+        f.write(<span class="st">&quot;-20.00 20.00 zlo zhi</span><span class="ch">\n</span><span class="st">&quot;</span>)
+        f.write(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+        f.write(<span class="st">&quot;Atoms</span><span class="ch">\n\n</span><span class="st">&quot;</span>)
+        <span class="cf">for</span> i, a <span class="kw">in</span> <span class="bu">enumerate</span>(atoms):
+            f.write(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="ch">\n</span><span class="st">&quot;</span>.<span class="bu">format</span>(i<span class="op">+</span><span class="dv">1</span>, a.<span class="bu">type</span>, a.x, a.y, a.z))
+        f.write(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+        f.write(<span class="st">&quot;Velocities</span><span class="ch">\n\n</span><span class="st">&quot;</span>)
+        <span class="cf">for</span> i, a <span class="kw">in</span> <span class="bu">enumerate</span>(atoms):
+            f.write(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="ch">\n</span><span class="st">&quot;</span>.<span class="bu">format</span>(i<span class="op">+</span><span class="dv">1</span>, a.vx, a.vy, a.vz))
+    <span class="bu">print</span>(<span class="st">&quot;Generated </span><span class="sc">{}</span><span class="st">&quot;</span>.<span class="bu">format</span>(filename))
+
+
+atoms <span class="op">=</span> []
+
+add_ball(atoms, <span class="op">-</span><span class="dv">20</span>, <span class="fl">2.0</span>)
+add_ball(atoms, <span class="dv">20</span>, <span class="op">-</span><span class="fl">2.0</span>)
+
+save_file(<span class="st">&quot;collision.atoms&quot;</span>, atoms)</code></pre></div>
+<p>最初にクラス定義、関数定義があり、最後にプログラムの実行がある。少しずつ見ていこう。</p>
+<h4 id="プログラムの実行">プログラムの実行</h4>
+<p>まず「最後」を見てみよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">atoms <span class="op">=</span> []
+
+add_ball(atoms, <span class="op">-</span><span class="dv">20</span>, <span class="fl">2.0</span>)
+add_ball(atoms, <span class="dv">20</span>, <span class="op">-</span><span class="fl">2.0</span>)
+
+save_file(<span class="st">&quot;collision.atoms&quot;</span>, atoms)</code></pre></div>
+<p><code>atoms</code>は原子の情報をまとめるリストだ。これを<code>add_ball</code>という関数に渡して、原子を追加してもらっている。<code>add_ball</code>は、指定の位置に、指定の初速で原子を生成する関数だ。</p>
+<ul>
+<li>左の方(x=-20)に、右向きの初速(vx = 2.0)の玉</li>
+<li>右の方(x= 20)に、左向きの初速(vx =-2.0)の玉</li>
+</ul>
+<p>の二つを生成し、<code>atoms</code>に追加している。</p>
+<p>最後に、生成された原子情報を<code>save_file</code>でファイルに保存している。それだけのスクリプトだ。</p>
+<h4 id="原子クラス">原子クラス</h4>
+<p>まず、原子の情報をまとめて扱うために、原子クラスを定義している。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">class</span> Atom:
+    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, x, y, z, xvel):
+        <span class="va">self</span>.x <span class="op">=</span> x
+        <span class="va">self</span>.y <span class="op">=</span> y
+        <span class="va">self</span>.z <span class="op">=</span> z
+        <span class="va">self</span>.<span class="bu">type</span> <span class="op">=</span> <span class="dv">1</span>
+        <span class="va">self</span>.vx <span class="op">=</span> xvel
+        <span class="va">self</span>.vy <span class="op">=</span> <span class="fl">0.0</span>
+        <span class="va">self</span>.vz <span class="op">=</span> <span class="fl">0.0</span></code></pre></div>
+<p>要するに原子とは座標(<code>x,y,z</code>)、速度(<code>vx, vy, vz</code>)、タイプ(<code>type</code>)を持つものである、と定義している。このうち、座標と速度のx成分のみ受け取って、後はデフォルトの値を設定している。</p>
+<h4 id="液滴生成">液滴生成</h4>
+<p>次は指定の位置に液滴を置く関数<code>add_ball</code>だ。慣れないと読みづらいかもしれない。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> add_ball(atoms, xpos, xvel):
+    r <span class="op">=</span> <span class="dv">8</span>
+    s <span class="op">=</span> <span class="fl">1.55</span>
+    h <span class="op">=</span> <span class="fl">0.5</span> <span class="op">*</span> s
+    <span class="cf">for</span> ix <span class="kw">in</span> <span class="bu">range</span>(<span class="op">-</span>r, r<span class="op">+</span><span class="dv">1</span>):
+        <span class="cf">for</span> iy <span class="kw">in</span> <span class="bu">range</span>(<span class="op">-</span>r, r<span class="op">+</span><span class="dv">1</span>):
+            <span class="cf">for</span> iz <span class="kw">in</span> <span class="bu">range</span>(<span class="op">-</span>r, r<span class="op">+</span><span class="dv">1</span>):
+                x <span class="op">=</span> ix <span class="op">*</span> s
+                y <span class="op">=</span> iy <span class="op">*</span> s
+                z <span class="op">=</span> iz <span class="op">*</span> s
+                <span class="cf">if</span> (x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> y<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> z<span class="op">**</span><span class="dv">2</span> <span class="op">&gt;</span> r<span class="op">**</span><span class="dv">2</span>):
+                    <span class="cf">continue</span>
+                x <span class="op">=</span> x <span class="op">+</span> xpos
+                atoms.append(Atom(x, y, z, xvel))
+                atoms.append(Atom(x, y<span class="op">+</span>h, z<span class="op">+</span>h, xvel))
+                atoms.append(Atom(x<span class="op">+</span>h, y, z<span class="op">+</span>h, xvel))
+                atoms.append(Atom(x<span class="op">+</span>h, y<span class="op">+</span>h, z, xvel))</code></pre></div>
+<p>最初の<code>r</code>は液滴の半径、<code>s</code>は原子間距離、<code>h</code>はその半分の距離だ。原子間距離は、原子がちょうど結晶を組む距離(安定する距離)としている。そういう意味では液滴ではなく氷をぶつけていることになるのだが、あまり細かいことは気にしないこと。</p>
+<p>そのあとのループでは、原子をFCC(面心立方格子)状に配置している。ただし、</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">if</span> (x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> y<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> z<span class="op">**</span><span class="dv">2</span> <span class="op">&gt;</span> r<span class="op">**</span><span class="dv">2</span>):
+    <span class="cf">continue</span></code></pre></div>
+<p>の行により、半径<code>r</code>以内に無い原子は追加しないことで液滴を作っている。逆に、この行をコメントアウトすれば、液滴ではなく立方体をぶつけることができる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">atoms.append(Atom(x, y, z, xvel))</code></pre></div>
+<p>だが、これはもう少し丁寧に書くと</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> Atom(x, y, z, xvel)
+atoms.append(a)</code></pre></div>
+<p>という意味だ。まず<code>x, y, z</code>の位置と、<code>xvel</code>の初速を持つ原子を生成し<code>a</code>という名前をつける。そして<code>a</code>を<code>atoms</code>に追加している。この中間変数<code>a</code>を使わないで一行で書いてしまったのが先のプログラムである。</p>
+<h4 id="ファイル出力">ファイル出力</h4>
+<p>最後に、生成した原子リストを使ってファイルに出力する関数である。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> save_file(filename, atoms):
+    <span class="cf">with</span> <span class="bu">open</span>(filename, <span class="st">&quot;w&quot;</span>) <span class="im">as</span> f:
+        f.write(<span class="st">&quot;Position Data</span><span class="ch">\n\n</span><span class="st">&quot;</span>)
+        f.write(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> atoms</span><span class="ch">\n</span><span class="st">&quot;</span>.<span class="bu">format</span>(<span class="bu">len</span>(atoms)))
+        f.write(<span class="st">&quot;1 atom types</span><span class="ch">\n\n</span><span class="st">&quot;</span>)
+        f.write(<span class="st">&quot;-40.00 40.00 xlo xhi</span><span class="ch">\n</span><span class="st">&quot;</span>)
+        f.write(<span class="st">&quot;-20.00 20.00 ylo yhi</span><span class="ch">\n</span><span class="st">&quot;</span>)
+        f.write(<span class="st">&quot;-20.00 20.00 zlo zhi</span><span class="ch">\n</span><span class="st">&quot;</span>)
+        f.write(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+        f.write(<span class="st">&quot;Atoms</span><span class="ch">\n\n</span><span class="st">&quot;</span>)
+        <span class="cf">for</span> i, a <span class="kw">in</span> <span class="bu">enumerate</span>(atoms):
+            f.write(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="ch">\n</span><span class="st">&quot;</span>.<span class="bu">format</span>(i<span class="op">+</span><span class="dv">1</span>, a.<span class="bu">type</span>, a.x, a.y, a.z))
+        f.write(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+        f.write(<span class="st">&quot;Velocities</span><span class="ch">\n\n</span><span class="st">&quot;</span>)
+        <span class="cf">for</span> i, a <span class="kw">in</span> <span class="bu">enumerate</span>(atoms):
+            f.write(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="ch">\n</span><span class="st">&quot;</span>.<span class="bu">format</span>(i<span class="op">+</span><span class="dv">1</span>, a.vx, a.vy, a.vz))
+    <span class="bu">print</span>(<span class="st">&quot;Generated </span><span class="sc">{}</span><span class="st">&quot;</span>.<span class="bu">format</span>(filename))</code></pre></div>
+<p>特に難しいことはやっていない。ファイル出力に関しては、例えば<a href="https://kaityo256.github.io/python_zero/file/index.html">プログラム基礎同演習の当該回</a>を参照のこと。</p>
+<h3 id="自分のシミュレーション">自分のシミュレーション</h3>
+<p>以上の知識で、例えば</p>
+<ul>
+<li>衝突速度をより早くする</li>
+<li>液滴を大きく/小さくしてみる</li>
+<li>液滴の密度を変えてみる(<code>add_ball</code>の<code>s</code>を変える)</li>
+<li>球ではなく立方体をぶつけてみる (面ではなく角でぶつけると面白いかもしれない)</li>
+</ul>
+<p>などを試してみて、ローカルで修正したらコミットし、自分のリポジトリにpushしてみよ。</p>
+</article>
+</body>
+</html>
