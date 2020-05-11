@@ -14,6 +14,7 @@
 ## 開発編
 
 * [GitHubのフォークとLAMMPS](github_lammps/README.md)
+* [C++のコンパイルとSIMDの確認](simd/README.md)
 
 ## ライセンス
 

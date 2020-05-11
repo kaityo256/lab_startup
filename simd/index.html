@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+
+<style>
+  .markdown-body {
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 45px;
+  }
+  p.caption{
+    display:none;
+  }
+  img {width: 100%}
+
+  @media (max-width: 767px) {
+    .markdown-body {
+      padding: 15px;
+    }
+  }
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://kaityo256.github.io/sevendayshpc/github-markdown.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<article class="markdown-body">
+<h1 id="cのコンパイルとsimdの確認">C++のコンパイルとSIMDの確認</h1>
+<h2 id="simdについて">SIMDについて</h2>
+<p>SIMDとはSingle Instruction, Multiple Dataの略で、CPUの1サイクルで複数の命令を同時に実行する工夫である。なぜSIMDが必要であるか、SIMD化とは何かについては、以下のスライドを参照されたい。</p>
+<p><a href="https://speakerdeck.com/kaityo256/basics-of-simd">SIMD化とは何か</a></p>
+<p>以下では、実際にx86系の石でSIMDレジスタがどのように使われているかを確認してみる。その過程で、C++言語のコンパイルと実行、そしてアセンブリの確認をしよう。ついでにVimの操作にも慣れておこう。</p>
+<h2 id="vimとは">Vimとは</h2>
+<p>VimはVi IMprovedの略で、viというエディタを拡張したものだ。多くの環境で、単に<code>vi</code>とすると<code>vim</code>が起動する。以下、Vimのこともviと呼ぶことにする。viはUNIX-likeな環境において、Emacsと人気を二分するエディタである(<a href="https://ja.wikipedia.org/wiki/%E3%82%A8%E3%83%87%E3%82%A3%E3%82%BF%E6%88%A6%E4%BA%89">エディタ戦争</a>を参照)。本研究室ではリモートサーバにsshでログインして作業することが多くなる。この時、VSCodeなどをリモート接続してファイルを編集することも可能なのだが、せっかく数値計算の研究室に配属されたことだし、教養としてviとEmacsくらいは使えるようになっておこう。以下、私の趣味でviを使うが、簡単な操作くらいはどちらも使えるようになっておくのが望ましい。</p>
+<p>Vimの使い方を解説したサイトは多数あるが、例えば</p>
+<p><a href="https://knowledge.sakura.ad.jp/21687/">はじめてのVim 〜 Vimはいいぞ！ゴリラと学ぶVim講座</a></p>
+<p>等で学ぶと良いだろう。</p>
+<h2 id="プログラム作成とコンパイル">プログラム作成とコンパイル</h2>
+<p>まずはsshで研究室サーバにログインせよ。Powershellでは問題が起きることが多いので、Windowsを使っている人はGit Bash等を利用すること。Macを使っている人はターミナルから接続せよ。ログインに成功したら、<code>simd</code>というフォルダを作成し、そこへ移動しよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">mkdir</span> simd
+<span class="bu">cd</span> simd</code></pre></div>
+<p>次に、viで<code>test.cpp</code>というファイルを新規作成する。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">vi</span> test.cpp</code></pre></div>
+<p>すると、画面の下に</p>
+<pre class="txt"><code>&quot;test.cpp&quot; [新ファイル]</code></pre>
+<p>という表示がされ、全画面になったはずだ。</p>
+<p>さて、viの最大の特徴は「モード」を持つことだ。viには「ノーマルモード」と「編集モード」の二つのモードがあり、それを入れ替えながらファイルを編集する(他にもモードがあるが、深くは立ち入らない)。起動時には「ノーマルモード」になっており、そのままでは文字入力ができない。ここで「i」を押して編集モードに切り替えよう。</p>
+<p>画面の下が<code>-- 挿入 --</code>という表示になったはずだ。この状態では、通常のエディタのように文字列を入力することができる。以下のプログラムを入力してみよう。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&lt;cstdio&gt;</span>
+
+<span class="dt">int</span> main(){
+    printf(<span class="st">&quot;Hello World</span><span class="sc">\n</span><span class="st">&quot;</span>);
+}</code></pre></div>
+<p><code>print</code>ではなく<code>printf</code>と、最後のfが付くことに注意。これは<code>print format string</code>の略だ。</p>
+<p>入力が終わったら、「ESC」キーを押すことで「ノーマルモード」に戻る。この状態でカーソルを動かしてみよう。ノーマルモードでは「hjkl」キーで移動する。「上下左右」が「kjlh」に対応する。カーソルキーでも移動させることは可能なのだが、ホームポジションから手を動かさなくて済むので慣れるとこちらの方が楽である。</p>
+<p>さて、ノーマルモードで「:(コロン)」を入力すると、カーソルが画面一番下に移り、入力待ちになる(コマンドラインモード)。そこで「wq」と入力して、エンターキーを打つ。</p>
+<p>「w」は「これまでの修正内容を保存せよ」という意味で、一般的なエディタのCtrl+Sにあたる。「q」は「エディタを終了せよ」という意味で、Windowsの一般的なエディタなら「Alt+F4」に対応する。</p>
+<p>さて、これで<code>test.cpp</code>というファイルが作成されたはずだ。まずは<code>ls</code>で確認してみよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">ls</span>
+<span class="ex">test.cpp</span></code></pre></div>
+<p>次に、ファイルの中身を<code>cat</code>で確認しよう。これは<code>concatenate</code>(連結する)の略だ。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">cat</span> test.cpp
+<span class="co">#include &lt;cstdio&gt;</span>
+
+<span class="ex">int</span> main()<span class="kw">{</span>
+  <span class="bu">printf</span>(<span class="st">&quot;Hello World\n&quot;</span>);
+<span class="kw">}</span></code></pre></div>
+<p>このようにファイルの中身が表示されるはずだ。</p>
+<p>ファイルが作成できたらコンパイルしよう。コンパイラは<code>g++</code>を使う。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">g++</span> test.cpp</code></pre></div>
+<p>入力ミスをしていなければ、<code>a.out</code>というファイルが作成されたはずだ。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">ls</span>
+<span class="ex">a.out</span> test.cpp</code></pre></div>
+<p>では、このプログラムを実行しよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">a.out</span>
+<span class="ex">bash</span>: a.out: コマンドが見つかりませんでした...</code></pre></div>
+<p>エラーが出てしまった。コマンドには「パス」が通っていないとそのままでは実行することができない。パスの通っていないプログラムは、相対パス、もしくは絶対パスで実行する必要がある。ここでは相対パスを指定してみよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">./a.out</span>
+<span class="ex">Hello</span> World</code></pre></div>
+<p>無事に「Hello World」が表示されたことと思う。絶対パスも指定してみよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="va">$HOME</span><span class="ex">/simd/a.out</span>
+<span class="ex">Hello</span> World</code></pre></div>
+<p>こちらも実行できたと思う。相対パス、絶対パスが指定されていない場合、あらかじめ指定された「パス」を調べにいく。この「パス」を見てみよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="bu">echo</span> <span class="va">$PATH</span></code></pre></div>
+<p>多数の文字列が表示されたことと思う。コマンドをパス無しで実行した場合、この「パス」のリストを順番に調べることになる。先ほど<code>g++</code>と、パス無しでプログラムが実行できたのは、パスのリストの中でこのファイルを見つけることができたからだ。見つけられた場所は<code>which</code>で調べることができる。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">which</span> g++
+<span class="ex">/usr/bin/g++</span></code></pre></div>
+<p><code>g++</code>は<code>/usr/bin</code>の下にあることがわかった。同じファイルが複数のパスに存在する場合、最初に見つかったものが実行されるので覚えておこう。</p>
+<p>ついでに、インテルコンパイラでのコンパイルも試しておこう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">rm</span> a.out
+$ <span class="ex">icpc</span> test.cpp
+$ <span class="ex">./a.out</span>
+<span class="ex">Hello</span> World</code></pre></div>
+<p>やはり同じ結果が表示されるはずだ。</p>
+<p>viのノーマルモードでの操作に慣れるため、もう少しだけVimを使ってみよう。またviでファイルを開いてみる。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">vi</span> test.cpp</code></pre></div>
+<p>ノーマルモードのまま、カーソルを<code>printf</code>の行に移動させて、「yyp」と入力せよ。最後にエンターを入力するは必要ない。以下のように、カーソルのある行が複製されたのがわかるだろう。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&lt;cstdio&gt;</span>
+
+<span class="dt">int</span> main(){
+  printf(<span class="st">&quot;Hello World</span><span class="sc">\n</span><span class="st">&quot;</span>);
+  printf(<span class="st">&quot;Hello World</span><span class="sc">\n</span><span class="st">&quot;</span>);                                                    }
+}</code></pre></div>
+<p>次に、そのままの状態で「dd」と入力せよ。これは「カーソルのある行を削除」する。これにより元に戻ったはずだ。</p>
+<p>検索も体験してみよう。「/(スラッシュ)」を入力せよ。カーソルが一番下に移り、入力待ちになったはずだ。ここで「include」と入力してエンターキーを押してみよ。「include」がハイライトされたはずだ。ハイライトを消すには「:」を押してコマンドモードに入り、「noh」と入力すること。</p>
+<p>また、viの終了は「:wq」でも可能だが、ただ「保存して終了」したい場合は「ZZ(大文字のZを二回)」でも可能だ。シフトキーを押しながらzを二回押せばよい。</p>
+<h2 id="アセンブリの表示">アセンブリの表示</h2>
+<p>先ほど、<code>g++ test.cpp</code>により、コンパイラにソースファイルを食わせてコンパイルし、実行可能ファイルを作成した。我々から見るとソースファイルが実行可能ファイルに変換されたように見えるが、実は裏でコンパイラは様々なことをしている。コンパイラは、プログラムをまずアセンブリと呼ばれる言語に変換し、その後必要なルーチンをリンカが「リンク」することで実行可能ファイルが作成される(他にもいろいろなことをしているのだが、ここでは触れない)。以下では、アセンブリを見てみることにしよう。</p>
+<p>アセンブリとは、「機械語」に、ほぼ一対一対応するプログラム言語だ。機械語は数字の羅列であり、人間には読みづらいので、それを読みやすくしたのが「アセンブリ」だと思っておけばとりあえず問題ない。</p>
+<p>コンパイラに<code>-S</code>オプションをつけてコンパイルしてみよう。大文字のSであることに注意。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">g++</span> -S test.cpp</code></pre></div>
+<p>すると、同じディレクトリに<code>test.s</code>というファイルが作成されるので、viで中身を見てみよう。中身はこんなファイルだ。</p>
+<pre class="txt"><code>    .file   &quot;test.cpp&quot;
+    .section    .rodata
+.LC0:
+    .string &quot;Hello World&quot;
+    .text
+    .globl  main
+    .type   main, @function
+main:
+.LFB0:
+    .cfi_startproc
+    pushq   %rbp
+    .cfi_def_cfa_offset 16
+    .cfi_offset 6, -16
+    movq    %rsp, %rbp
+    .cfi_def_cfa_register 6
+    movl    $.LC0, %edi
+    call    puts
+    movl    $0, %eax
+    popq    %rbp
+    .cfi_def_cfa 7, 8
+    ret
+    .cfi_endproc
+.LFE0:
+    .size   main, .-main
+    .ident  &quot;GCC: (GNU) 4.8.5 20150623 (Red Hat 4.8.5-36)&quot;
+    .section    .note.GNU-stack,&quot;&quot;,@progbits</code></pre>
+<p>デフォルトではデバッグ情報等が入っていて読みづらいが、それらを除いた本質はこれだけだ。</p>
+<pre class="txt"><code>main:
+        pushq   %rbp
+        movq    %rsp, %rbp
+        movl    $.LC0, %edi
+        call    puts
+        movl    $0, %eax
+        popq    %rbp
+        ret</code></pre>
+<p>これが<code>main</code>関数に対応するアセンブリだ。<code>pushq</code>や<code>popq</code>は関数呼び出しのために必要な操作であり、それらも除くと、以下だけである。</p>
+<pre class="txt"><code>        movl    $.LC0, %edi
+        call    puts</code></pre>
+<p>最初は、「ラベル<code>$.LC0</code>のアドレスを<code>edi</code>というレジスタにコピーせよ」という意味で、次で<code>puts</code>という関数を呼び出している。<code>puts</code>は<code>edi</code>が指すアドレスの文字列を表示する関数である。このラベルを見てみよう。</p>
+<pre class="txt"><code>.LC0:
+    .string &quot;Hello World&quot;
+    .text
+    .globl  main
+    .type   main, @function</code></pre>
+<p>文字列として「Hello World」が記載されている。ここを修正してみよう。「World」の先頭にカーソルを合わせて、「dw」と入力せよ。これは一単語削除する命令だ。「World」が消えるので「i」を押して挿入モードにしたら、「Assembly」と書いてエスケープキーを押し、「ZZ」で終了しよう。</p>
+<pre class="txt"><code>.LC0:
+    .string &quot;Hello Assembly&quot;
+    .text
+    .globl  main
+    .type   main, @function</code></pre>
+<p>この状態でアセンブリを実行可能ファイルにしてみよう。<code>g++</code>に<code>test.s</code>を食わせて見る(<code>test.cpp</code>ではないことに注意)。実行可能ファイルができるので、実行して、メッセージが変わっていることを確認しよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">g++</span> test.s
+$ <span class="ex">./a.out</span>
+<span class="ex">Hello</span> Assembly</code></pre></div>
+<p>アセンブリの修正が簡単だ、ということがわかったっだろうか。</p>
+<h2 id="部分コンパイル">部分コンパイル</h2>
+<p>C/C++言語は、部分コンパイルができる。部分コンパイルとは、大きなプログラムを複数の「部分」に分けてコンパイルすることで、大きなプログラムを一気にコンパイルするのに比べて、更新部分のみコンパイルできるためにコンパイル時間が短くなる。</p>
+<p>以下では、小さなプログラムを組んで、そのアセンブリを見てみることにしよう。viで<code>test2.cpp</code>を作成せよ。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">vi</span> test2.cpp</code></pre></div>
+<p>入力内容は以下の通り。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">double</span> func(<span class="dt">double</span> a, <span class="dt">double</span> b){
+  <span class="cf">return</span> a+b;
+}</code></pre></div>
+<p>入力できたら、コンパイラに食わせてアセンブリを出力しよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">g++</span> -S -O2 test2.cpp</code></pre></div>
+<p>デフォルトの出力はごちゃごちゃして見づらいので、<code>-O2</code>オプションで最適化をかけている。オプションは大文字のO(オー)であることに注意。アセンブリを見てみよう。</p>
+<div class="sourceCode"><pre class="sourceCode asm"><code class="sourceCode fasm"><span class="fu">_Z4funcdd:</span>
+        <span class="bu">addsd</span>   %<span class="kw">xmm1</span>, %<span class="kw">xmm0</span>
+        <span class="bu">ret</span></code></pre></div>
+<p>不要部分を除くと、関数<code>func</code>の中身はこれだけだ。内容は「xmm1レジスタとxmm0レジスタを足して、結果をxmm0レジスタに格納せよ」だけである。</p>
+<p>関数<code>func</code>の引数は<code>a</code>と<code>b</code>であったが、それは「それぞれ<code>xmm0</code>レジスタと<code>xmm1</code>レジスタに入れて呼び出される」という決まりになっている。また、returnによる返り値は、「倍精度実数を返す場合は<code>xmm0</code>に値を入れる」と決まっている。このような決まりを<code>Application Binary Interface (ABI)</code>と呼ぶ。</p>
+<p>倍精度実数は64ビットなのだが、xmmレジスタは128ビットのSIMDレジスタになっている。通常、多くのCPUでは64ビット浮動小数点用のレジスタを備えているのだが、x86系のCPUでは、歴史的な事情から128ビットのレジスタを64ビットの演算にも用いることになっている(80ビットを用いるx87命令というものもあるが、ここでは触れない)。</p>
+<p>xmmレジスタは128ビットだが、さらに幅を広げたレジスタがymmレジスタであり、256ビットある。これを見てみよう。</p>
+<p>以下の内容を<code>test3.cpp</code>として作成せよ。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&lt;x86intrin.h&gt;</span>
+
+__m256d func(__m256d a, __m256d b){
+  <span class="cf">return</span> a+b;
+}</code></pre></div>
+<p>これを、通常のオプションでコンパイルすると「__m256dなんて知らないよ」とエラーになる。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">g++</span> -O2 -S test3.cpp
+<span class="ex">test3.cpp</span>:3:1: エラー: ‘__m256d’ does not name a type
+ <span class="ex">__m256d</span> func(__m256d a, __m256d b)<span class="kw">{</span>
+ ^</code></pre></div>
+<p>そこで、コンパイラに「我々は AVX2命令セットを使うよ」と教えてあげよう。そのためには<code>-mavx2</code>を指定する。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">g++</span> -O2 -S -mavx2 test3.cpp</code></pre></div>
+<p>アセンブリを見てみるとこうなっている。</p>
+<div class="sourceCode"><pre class="sourceCode asm"><code class="sourceCode fasm"><span class="fu">_Z4funcU8__vectordS_:</span>
+        vaddpd  %ymm1, %ymm0, %ymm0
+        <span class="bu">ret</span></code></pre></div>
+<p>ymmレジスタが使われていることがわかる。ここでは256ビットの演算、すなわち4つの浮動小数点演算が行われている。</p>
+<p>先ほど、「普通の浮動小数点演算」でも128ビットのxmmレジスタが使われていた。では128ビットSIMD演算をしてみたらどうなるだろうか？</p>
+<p>以下の内容で<code>test4.cpp</code>を作成せよ。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&lt;x86intrin.h&gt;</span>
+__m128d func(__m128d a, __m128d b){
+  <span class="cf">return</span> a+b;
+}</code></pre></div>
+<p>コンパイルしてアセンブリを見てみよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">g++</span> -O2 -S test4.cpp</code></pre></div>
+<p>関数<code>func</code>の中身はこうなっている。</p>
+<div class="sourceCode"><pre class="sourceCode asm"><code class="sourceCode fasm"><span class="fu">_Z4funcU8__vectordS_:</span>
+        <span class="bu">addpd</span>   %<span class="kw">xmm1</span>, %<span class="kw">xmm0</span>
+        <span class="bu">ret</span></code></pre></div>
+<p>やはりxmmレジスタの足し算が行われているが、先ほどは<code>addsd</code>という命令だったが、こんどは<code>addpd</code>という命令に変わっている。<code>addsd</code>はxmmレジスタの「下位64ビットを足しなさい」という命令で、<code>addpd</code>は「下位と上位64ビットをそれぞれ足しなさい」というSIMD命令になっている。</p>
+</article>
+</body>
+</html>
