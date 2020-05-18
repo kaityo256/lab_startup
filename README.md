@@ -13,6 +13,7 @@
 
 ## 開発編
 
+* [gnuplotの使い方](gnuplot/README.md)
 * [GitHubのフォークとLAMMPS](github_lammps/README.md)
 * [C++のコンパイルとSIMDの確認](simd/README.md)
 
