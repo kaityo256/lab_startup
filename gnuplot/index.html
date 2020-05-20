@@ -168,6 +168,8 @@ A ~/.bash_profile that loads ~/.bashrc will be created for you.</code></pre>
 3 3.2
 4 4.1
 5 4.8</code></pre>
+<p>ウェブからダウンロードしてもよい。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">wget</span> https://kaityo256.github.io/lab_startup/gnuplot/test.dat</code></pre></div>
 <p>これをgnuplotでプロットしてみよう。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">gnuplot</span><span class="op">&gt;</span> p <span class="st">&quot;test.dat&quot;</span></code></pre></div>
 <p>以下のような表示がされたはずだ。</p>
@@ -252,6 +254,8 @@ a               1.000</code></pre>
 3 3.02 0.1
 4 5.10 1.1
 5 4.98 0.1</code></pre>
+<p>上記のファイルのウェブからダウンロードできる。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">wget</span> https://kaityo256.github.io/lab_startup/gnuplot/test2.dat</code></pre></div>
 <p>それぞれ「x, y, 誤差」である。これを表示しよう。データをエラーバー付きで表示するには<code>with errorbars</code> を指定する。見づらいので、少しプロット範囲を広げよう。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">gnuplot</span><span class="op">&gt;</span> p [0.9: 5.1] <span class="st">&quot;test2.dat&quot;</span> w e</code></pre></div>
 <div class="figure">

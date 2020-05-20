@@ -197,6 +197,12 @@ gnuplotは、データファイルのプロットができる。こんなデー�
 5 4.8
 ```
 
+ウェブからダウンロードしてもよい。
+
+```sh
+wget https://kaityo256.github.io/lab_startup/gnuplot/test.dat
+```
+
 これをgnuplotでプロットしてみよう。
 
 ```sh
@@ -329,6 +335,12 @@ gnuplotは、誤差を考慮したフィッティングもできる。以下の�
 3 3.02 0.1
 4 5.10 1.1
 5 4.98 0.1
+```
+
+上記のファイルのウェブからダウンロードできる。
+
+```sh
+wget https://kaityo256.github.io/lab_startup/gnuplot/test2.dat
 ```
 
 それぞれ「x, y, 誤差」である。これを表示しよう。データをエラーバー付きで表示するには`with errorbars` を指定する。見づらいので、少しプロット範囲を広げよう。
