@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+
+<style>
+  .markdown-body {
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 45px;
+  }
+  p.caption{
+    display:none;
+  }
+  img {width: 100%}
+
+  @media (max-width: 767px) {
+    .markdown-body {
+      padding: 15px;
+    }
+  }
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://kaityo256.github.io/sevendayshpc/github-markdown.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<article class="markdown-body">
+<h1 id="tensorflowでfashion-mnistを学習させてウェブで読み込む">TensorFlowでFashion-MNISTを学習させてウェブで読み込む</h1>
+<p>Fashion-MNISTというデータセットがある。MNISTは手書き数字だが、そのファッション版だ。このデータセットをTensorFlowを使ってニューラルネットに学習させ、そのデータをエクスポートし、ウェブで読み込んで、自分の描いた絵をニューラルネットに判定させてみよう。</p>
+<h2 id="環境設定">環境設定</h2>
+<p>ターミナル(以下、WindowsならAnaconda Promptで、Macならターミナルを指すものとする)で、以下を実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">conda</span> install pip
+<span class="ex">pip</span> install -U pip
+<span class="ex">pip</span> install tensorflow
+<span class="ex">pip</span> install tensorflowjs</code></pre></div>
+<h2 id="リポジトリのフォークとクローン">リポジトリのフォークとクローン</h2>
+<p>まず、以下のリポジトリをフォークせよ。</p>
+<p><a href="https://github.com/kaityo256/fashion_mnist_check" class="uri">https://github.com/kaityo256/fashion_mnist_check</a></p>
+<div class="figure">
+<img src="fig/fork.png" alt="フォーク" />
+<p class="caption">フォーク</p>
+</div>
+<p>フォークが完了したら、clone用のアドレスをコピーする。「Clone or download」ボタンをクリックし、「Clone with SSH」になっていることを確認して「クリップボードにコピーボタン」を押す。</p>
+<div class="figure">
+<img src="fig/clone.png" alt="clone" />
+<p class="caption">clone</p>
+</div>
+<p>この状態で、ターミナルで<code>github</code>ディレクトリに移動してからcloneする。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span> github
+<span class="fu">git</span> clone git clone git@github.com:youraccount/fashion_mnist_check.git</code></pre></div>
+<p>cloneできたら、そこに移動しよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span> fashion_mnist_check</code></pre></div>
+<h2 id="学習とエクスポート">学習とエクスポート</h2>
+<p>まず、データを学習させよう。機械学習の定番データといえば、手書き数字認識のMNIST(Modified National Institute of Standards and Technology)データセットだが、今回使うデータは「Fashion-MNIST」と呼ばれるもので、10種類の衣類を区別するものだ。</p>
+<div class="figure">
+<img src="fig/fashion-mnist.png" alt="Fasihon-MNIST" />
+<p class="caption">Fasihon-MNIST</p>
+</div>
+<p>これは28ピクセル x 28ピクセルの白黒画像である。各ピクセルは0から255までの輝度を持っているが、これを0から1までの実数に変換し、784次元の一次元ベクトルにしてニューラルネットに食わせて学習させる。</p>
+<p>このデータはウェブに公開されているため、ダウンロードから学習まで一発でできる。まずはニューラルネットを学習させ、その結果を保存しよう。以下を実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">python</span> train.py</code></pre></div>
+<p>正しくTensorFlowがインストールされていれば学習が進み、最終的に以下のような出力がされるはずである。</p>
+<pre class="txt"><code>Test accuracy: 0.8709999918937683
+
+Predictions for zero input
+[0.08157011 0.00318779 0.02768737 0.05093732 0.00741246 0.71254516
+ 0.07637644 0.02599602 0.01260033 0.00168701]
+
+Model was saved.</code></pre>
+<p>最後の「Predictions for zero input」とは、全てがゼロ、すなわち「真っ黒な画像」が入力された時のニューラルネットの出力である。後でデバッグに用いる。</p>
+<p>この結果、実行したディレクトリに以下のファイルが保存されている。</p>
+<ul>
+<li><code>model.data-00000-of-00001</code></li>
+<li><code>model.index</code></li>
+</ul>
+<p>次に、このデータを読み込んで、TensorFlow.js用のデータをエクスポートする。以下を実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">python</span> export.py</code></pre></div>
+<p>TensorFlow.jsが正しくインストールされていれば、以下のような出力になるはずだ。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">Predictions</span> for zero input
+[<span class="ex">0.08157011</span> 0.00318779 0.02768737 0.05093732 0.00741246 0.71254516
+ <span class="ex">0.07637644</span> 0.02599602 0.01260033 0.00168701]
+
+<span class="ex">Model</span> was exported.</code></pre></div>
+<p>この結果、実行したディレクトリに<code>model</code>というディレクトリができており、その中に以下のようなファイルが作成されているはずである。</p>
+<pre class="txt"><code>model
+├── group1-shard1of1.bin
+└── model.json</code></pre>
+<p>これをJavaScriptから読み込んで、自分で絵を書いて判定させてみよう。</p>
+<p>ただし、JavaScriptはセキュリティのため、デフォルトではローカルに保存されたファイルにアクセスできない。回避する方法もあるのだが、ここではそのままGitHubにアップロードし、GitHub Pagesでウェブサイトとして公開することでアクセスしよう。</p>
+<p>まず、作成されたディレクトリ<code>model</code>をリポジトリに追加する。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> add model</code></pre></div>
+<p>その後、commit、pushしよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> commit -m <span class="st">&quot;adds model&quot;</span>
+<span class="fu">git</span> push</code></pre></div>
+<h2 id="github-pagesの公開">GitHub Pagesの公開</h2>
+<p>GitHubの、自分のリポジトリを見てみよう。ブラウザをリロードすると、<code>model</code>が追加されているはずである。この状態でSettingsをクリックする。</p>
+<div class="figure">
+<img src="fig/settings.png" alt="settings" />
+<p class="caption">settings</p>
+</div>
+<p>下の方に「GitHub Pages」という項目があるので、そこの「master branch」をクリックする。</p>
+<div class="figure">
+<img src="fig/github_pages.png" alt="settings" />
+<p class="caption">settings</p>
+</div>
+<p>すると、GitHub Pagesのところに「Your site is ready to be published at https://youraccount.github.io/fashion_mnist_check/.」という文章が表示されるので、「数分待ってから」アクセスする。</p>
+<p>以下のような画面が出てきたら成功だ。</p>
+<div class="figure">
+<img src="fig/fashion_mnist_check.png" alt="Fasihon-MNIST Check" />
+<p class="caption">Fasihon-MNIST Check</p>
+</div>
+<p>左に何か絵を描くと、それを28 x 28ピクセルに変換したデータが右に表示され、さらにそのデータを784次元のベクトルとして訓練済みニューラルネットに食わせた結果、その絵が何であるかを判定してくれる。</p>
+<div class="figure">
+<img src="fig/result.png" alt="result" />
+<p class="caption">result</p>
+</div>
+<p>上記の例では、サンダルと判定された。</p>
+</article>
+</body>
+</html>
