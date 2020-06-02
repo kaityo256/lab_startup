@@ -74,12 +74,33 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h1 id="tensorflowでfashion-mnistを学習させてウェブで読み込む">TensorFlowでFashion-MNISTを学習させてウェブで読み込む</h1>
 <p>Fashion-MNISTというデータセットがある。MNISTは手書き数字だが、そのファッション版だ。このデータセットをTensorFlowを使ってニューラルネットに学習させ、そのデータをエクスポートし、ウェブで読み込んで、自分の描いた絵をニューラルネットに判定させてみよう。</p>
 <h2 id="環境設定">環境設定</h2>
+<h3 id="ローカルマシンで実行する場合">ローカルマシンで実行する場合</h3>
+<h4 id="パッケージのインストール">パッケージのインストール</h4>
 <p>ターミナル(以下、WindowsならAnaconda Promptで、Macならターミナルを指すものとする)で、以下を実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">conda</span> install pip
 <span class="ex">pip</span> install -U pip
 <span class="ex">pip</span> install tensorflow
 <span class="ex">pip</span> install tensorflowjs</code></pre></div>
-<h2 id="リポジトリのフォークとクローン">リポジトリのフォークとクローン</h2>
+<h4 id="リポジトリのフォークとクローン">リポジトリのフォークとクローン</h4>
+<p>以下のリポジトリをフォークせよ。</p>
+<p><a href="https://github.com/kaityo256/fashion_mnist_check" class="uri">https://github.com/kaityo256/fashion_mnist_check</a></p>
+<div class="figure">
+<img src="fig/fork.png" alt="フォーク" />
+<p class="caption">フォーク</p>
+</div>
+<p>フォークが完了したら、clone用のアドレスをコピーする。「Clone or download」ボタンをクリックし、「Clone with SSH」になっていることを確認して「クリップボードにコピーボタン」を押す。</p>
+<div class="figure">
+<img src="fig/clone.png" alt="clone" />
+<p class="caption">clone</p>
+</div>
+<p>この状態で、ターミナルで<code>github</code>ディレクトリに移動してからcloneする。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span> github
+<span class="fu">git</span> clone git clone git@github.com:youraccount/fashion_mnist_check.git</code></pre></div>
+<p>cloneできたら、そこに移動しよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span> fashion_mnist_check</code></pre></div>
+<h3 id="研究室サーバで実行する場合">研究室サーバで実行する場合</h3>
+<p><a href="../ssh">SSHエージェント転送の設定</a>を参考に、まずはssh-agentを起動の上、<code>ssh-add</code>によりパスフレーズを覚えさせた状態で、研究室のサーバに<code>-A</code>オプションつきでログインせよ。以下の作業は<code>git push</code>まではサーバ上で行う。</p>
+<h4 id="リポジトリのフォークとクローン-1">リポジトリのフォークとクローン</h4>
 <p>まず、以下のリポジトリをフォークせよ。</p>
 <p><a href="https://github.com/kaityo256/fashion_mnist_check" class="uri">https://github.com/kaityo256/fashion_mnist_check</a></p>
 <div class="figure">
@@ -96,6 +117,23 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="fu">git</span> clone git clone git@github.com:youraccount/fashion_mnist_check.git</code></pre></div>
 <p>cloneできたら、そこに移動しよう。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span> fashion_mnist_check</code></pre></div>
+<h4 id="仮想環境の構築">仮想環境の構築</h4>
+<p>Pythonでは、複数のパッケージをインストールして利用するが、多くの場合、パッケージは別のパッケージに依存しており、さらにバージョンが異なるとうまく動作しないことがある。すると、あるプロジェクトではあるパッケージのVer 1.0じゃないと動作しないが、別のプロジェクトではVer 2.0以降でないと動作しない、ということが起きる。このため、Pythonでは「仮想環境」を構築して、環境を切り替えることで、異なるバージョンのパッケージを共存させられるようになっている。</p>
+<p>Pythonの仮想環境構築自体もかなりの魔境なのだが、今回はPython標準のvenvを使うことにする。これは「プロジェクト毎」に異なる仮想環境を構築する。</p>
+<p>先ほど、クローンした<code>fashion_mnist_check</code>のディレクトリにいるはずである。この状態で、「tf」という名前の仮想環境を構築する。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">python3</span> -m venv tf</code></pre></div>
+<p>すると、カレントディレクトリに<code>tf</code>というディレクトリが作られる。この状態で仮想環境を有効にする(この仮想環境<code>tf</code>に入る)ためには、以下を実行する。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">source</span> tf/bin/activate</code></pre></div>
+<p>プロンプトの左側に<code>(tf)</code>という文字が現れたら仮想環境に入った印である。</p>
+<p>この環境に必要なものを入れていこう。以下を実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">pip</span> install --upgrade pip
+<span class="ex">pip</span> install tensorflow tensorflowjs</code></pre></div>
+<p>途中でエラーが出るが、(多分)気にしなくて良い。</p>
+<p>サーバからログアウトすれば仮想環境からも出るが、明示的に出たい場合は</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">deactivate</span></code></pre></div>
+<p>を実行する。プロンプトの左から<code>(tf)</code>が消えたはずだ。次回から、このディレクトリに入って、また</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">source</span> tf/bin/activate</code></pre></div>
+<p>を実行すれば、TensorFlow, TensorFlowJSがインストールされた仮想環境に入ることができる。</p>
 <h2 id="学習とエクスポート">学習とエクスポート</h2>
 <p>まず、データを学習させよう。機械学習の定番データといえば、手書き数字認識のMNIST(Modified National Institute of Standards and Technology)データセットだが、今回使うデータは「Fashion-MNIST」と呼ばれるもので、10種類の衣類を区別するものだ。</p>
 <div class="figure">
