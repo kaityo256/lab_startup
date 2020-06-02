@@ -96,7 +96,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>を実行せよ。秘密鍵のパスフレーズを聞かれるので、入力せよ。その後、研究室サーバにsshで接続してみよ。パスフレーズを聞かれずに接続できたら成功である。</p>
 <p>パスフレーズは、Macのキーチェインに保存される。これはログアウトされると消えるため、必要な時に毎回<code>ssh-add</code>の実行が必要となる。</p>
 <p>ターミナルを開いた時に自動でパスフレーズを聞かれるようにしたい場合は、<code>.bashrc</code>の最後に以下の記述を追加しておく。</p>
-<p>`<code>sh ssh-add</code></p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">ssh-add</span></code></pre></div>
 <p>こうするとターミナルを開くたびに(まだ入力していなければ)パスフレーズを聞かれるようになる。必要な時に<code>ssh-add</code>を実行するか、<code>.bashrc</code>に記述してしまうかはお好みで。</p>
 <h3 id="windowsの場合">Windowsの場合</h3>
 <p>まず、SSHエージェントを起動する必要がある。起動方法は</p>
