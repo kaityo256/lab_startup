@@ -71,30 +71,26 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </head>
 <body>
 <article class="markdown-body">
-<h1 id="数値計算用pcセットアップ資料">数値計算用PCセットアップ資料</h1>
-<h2 id="セットアップ編">セットアップ編</h2>
-<p>「上から順」にセットアップしていくことを想定しており、下の物は上のセットアップが終わっていることが前提となっているものがある。</p>
-<ul>
-<li><a href="python/index.html">Pythonのインストール</a></li>
-<li><a href="vscode/index.html">VSCodeのインストール</a></li>
-<li><a href="lammps/index.html">LAMMPSとVMDのインストール</a></li>
-<li><a href="lastpass/index.html">LastPassと多要素認証</a></li>
-<li><a href="git/index.html">Gitのインストールと動作の確認</a></li>
-<li><a href="ssh/index.html">SSHエージェント転送の設定</a></li>
-<li><a href="github/index.html">GitHubのアカウント作成と基本的な操作</a></li>
-</ul>
-<h2 id="開発編">開発編</h2>
-<ul>
-<li><a href="gnuplot/index.html">gnuplotの使い方</a></li>
-<li><a href="github_lammps/index.html">GitHubのフォークとLAMMPS</a></li>
-<li><a href="simd/index.html">C++のコンパイルとSIMDの確認</a></li>
-<li><a href="tensorflow/index.html">TensorFlowでFashion-MNISTを学習させてウェブで読み込む</a></li>
-<li><a href="docker/index.html">Dockerの簡単な使い方</a></li>
-<li><a href="paraview/index.html">ParaViewの使い方</a></li>
-</ul>
-<h2 id="ライセンス">ライセンス</h2>
-<p>Copyright (C) 2020 Hiroshi Watanabe</p>
-<p>この文章と絵(pptxファイルを含む)はクリエイティブ・コモンズ 4.0 表示 (CC-BY 4.0) で提供する。</p>
+<h1 id="paraviewの使い方">ParaViewの使い方</h1>
+<p>VMDは原子や粒子、すなわち「つぶつぶ」を可視化するためのツールだ。しかし、粒子数が増えてくると、全ての粒子を可視化するのは現実的ではない。そこで、空間を小さなセルに区切って「場の量」にすることが多い。「場の量」とは、温度や密度、速度場といったスカラー量、ベクトル量を、位置の関数として表現することだ。以下では、そんな「場の量」を可視化するParaViewというソフトウェアを使ってみよう。</p>
+<h2 id="インストール">インストール</h2>
+<p><a href="https://www.paraview.org/" class="uri">https://www.paraview.org/</a>に行き、「Download」をクリックする。</p>
+<div class="figure">
+<img src="fig/download.png" alt="Download" />
+<p class="caption">Download</p>
+</div>
+<p>Nightlyではなく、その時点での最新版(本記事執筆時はv5.8)を選ぶと良いだろう。</p>
+<p>Windowsの場合は、拡張子がexeで終わっており、かつMPI版ではないもの(本記事執筆時では<code>ParaView-5.8.0-Windows-Python3.7-msvc2015-64bit.exe</code>)を選ぶ。</p>
+<div class="figure">
+<img src="fig/windows_download.png" alt="Windows" />
+<p class="caption">Windows</p>
+</div>
+<p>Macの場合は、パッケージ版(拡張子がpkg)を選ぶと良いであろう。</p>
+<div class="figure">
+<img src="fig/mac_download.png" alt="Mac" />
+<p class="caption">Mac</p>
+</div>
+<p>直接インストーラで起動すると怒られる場合があるが、パッケージファイルをダブルクリックすればインストールできるはずである。</p>
 </article>
 </body>
 </html>
