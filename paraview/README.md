@@ -83,7 +83,6 @@ git clone https://github.com/kaityo256/paraview-sample.git
 cd paraview-sample
 ```
 
-
 ### Simple
 
 最初は最も簡単な構造格子(Structured Grid)のボリュームレンダリングをしてみよう。
@@ -107,4 +106,26 @@ python simple.py
 
 ぼんやりと浮かぶ球体が表示されれば成功だ。
 
-* Volumeを選んだ時に「Yes, and don't ask again」を選ぶ
+次に、カラーマップエディタをいじってみよう。
+
+TODO: 書く
+
+### 波動関数
+
+先程は、すべて正の値の密度場のボリュームレンダリング、つまり「濃いところ」の可視化のみを行った。次は、正負の値を持つ密度場の可視化の例として、波動関数を可視化してみよう。水素原子の波動関数は、最低エネルギー(1s軌道)以外は「節」を持つ。すなわち、正負の値を取る。この波動関数を密度場として保存する。
+
+なお、カラーマップをいじっていてわけがわからなくなった場合は、ParaViewを再起動すると良い。
+
+ディレクトリ`wavefunction`に、`wavefunction.py`があるので実行せよ。
+
+```sh
+cd wavefunction
+python
+```
+
+### Glyph
+
+
+### Gray-Scott
+
+
