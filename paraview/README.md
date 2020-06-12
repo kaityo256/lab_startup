@@ -83,7 +83,7 @@ git clone https://github.com/kaityo256/paraview-sample.git
 cd paraview-sample
 ```
 
-### Simple
+### 構造格子におけるボリュームレンダリング
 
 最初は最も簡単な構造格子(Structured Grid)のボリュームレンダリングをしてみよう。
 
@@ -134,7 +134,7 @@ python simple.py
 
 なお、カラーマップをいじっていてわけがわからなくなった場合(よくある)は、ParaViewを再起動すると良い。
 
-ディレクトリ`wavefunction`に、`wavefunction.py`があるので実行せよ。
+ディレクトリ`wavefunction`に、`wavefunction.py`があるので実行せよ。カレントディレクトリが`simple`の場合は、一度`cd ..`を実行して上のディレクトリに移動しておくこと。
 
 ```sh
 cd wavefunction
@@ -173,7 +173,7 @@ python wavefunction.py
 
 ![3dzx](fig/3dzx.png)
 
-### Glyph
+### ベクトル場
 
 これまではスカラー場を可視化してきた。しかし、速度場など、ベクトル場を可視化したいことがある。そのために「Glyph」という矢印を使った可視化が用意されている。
 
@@ -190,7 +190,11 @@ python tgv.py
 
 ![Glyph](fig/glyph.png)
 
-すると、よくわからない表示になったはずだ。そこで、PropertiesのScale Arrayが「angle」になっているのを「velocity」に修正して、もう一度Applyを押す。すると、以下のような表示になったはずだ。
+すると、よくわからない表示になったはずだ。そこで、PropertiesのScale Arrayが「angle」になっているのを「velocity」に修正して、もう一度Applyを押す。
+
+![scale_array](fig/scale_array.png)
+
+すると、以下のような表示になったはずだ。
 
 ![TGV](fig/tgv.png)
 
@@ -200,6 +204,105 @@ python tgv.py
 
 また、矢印の「色」は角度でつけている。これはColoringのところに「angle」とあることかわかるだろう。波動関数の場合と同様、カラーマップを修正できるので、いろいろ遊んでみると良い。
 
-### Gray-Scott
+このように、VTKファイルでは、同じ点に複数の物理量を定義できる。詳細は仕様を参照のこと。
 
+### 非構造格子
 
+これまでは、系に規則的な格子が存在し、そこに物理量が定義されていた。次は非構造格子(Unstructured Grid)の可視化を試してみよう。
+
+ディレクトリ`unstructured`に`sphere.py`があるので実行せよ。
+
+```sh
+cd unstructured
+python sphere.py
+```
+
+同じディレクトリに`sphere.vtk`ができるので、ParaViewで開いてApplyせよ。
+
+その後、また「Glyph」フィルターを適用せよ。以下のような表示が得られるはずだ。
+
+![sphere.png](fig/sphere.png)
+
+このデータは、まず球面上にランダムに点を生成し、それを「非構造格子点」としている。そして、それぞれの点に、ベクトル場とスカラー場を定義している。ベクトル場は球の自転方向の向きで、大きさと色はz座標を利用している。このVTKファイルを出力するコード(`sphere.py`)は46行と短いので、興味があれば内容を見てみよ。
+
+### Gray-Scott模型
+
+最後にシミュレーション結果をアニメーションとして可視化してみよう。シミュレーションするのはGray-Scott模型と呼ばれる、反応拡散方程式の一種である。Gray-Scottモデルは、活性化因子と抑制因子の二種類が、お互いに反応しながら拡散する様子をモデル化したものだ。
+
+ディレクトリ`gray-scott`に`gs.py`があるので実行せよ。
+
+```sh
+cd gray-scott
+python gs.py
+```
+
+なお、`matplotlib`モジュールが無い、`numba`モジュールが無いなどと文句を言われたら`pip`で入れること。
+
+```sh
+pip install matplotlib
+pip install numba
+```
+
+実行すると、`conf000.vtk`から`conf119.vtk`までの120個のファイルが作成される。これをParaViewで開こう。
+
+ParaViewでは、連番のファイルは`conf..vtk`のように`..`で表示され、まとめて読み込むことができる。
+
+![gs open](fig/gs_open.png)
+
+Applyしたら、まずは「最後のフレーム」ボタンを押そう。
+
+![last frame](fig/last_frame.png)
+
+不思議な白っぽい模様が現れたはずだ。その状態で、PropertiesのColoringにある「Rescale to Data Range」ボタンを押す。
+
+![rescale](fig/rescale.png)
+
+これにより、白っぽかった画像が赤っぽくなったはずだ。これは、データの範囲を、一番最後のフレームに合わせる、という意味だ。最初のフレームの振幅が大きいため、それに合わせると以降のフレームで変化がわかりにくい。
+
+さて、このままでも可視化はできているのだが、もう少し加工して見やすくしよう。
+
+まずは「Delaunay 2D」フィルタを適用する。Filterメニューから探しても良いが、ParaViewには大量のフィルタがあって探すのが大変なので、検索することにしよう。「Filter」メニューから「Search」を選ぼう。検索ウィンドウが表示されるので「de」まで入力する。
+
+![filter search](fig/filter_search.png)
+
+すると、上のボタンに「Delaunay 2D」が候補として現れるので、そのボタンを押してApplyする。すると、以下のように画像が鮮やかになったはずだ。
+
+![delaunay2d.png](fig/delaunay2d.png)
+
+さらに、この画像を三次元的に盛り上げよう。「Filter」→「Search」から、今度は「Warp by Scalar」を選ぶ。「wa」と入力すれば候補として現れるはずだ。
+
+![warp](fig/filter_warp.png)
+
+これを選んだ後、PropertiesのScale Factorを10に修正してからApplyを押す。これは、デフォルトの1では値が小さすぎて盛り上がりがよく見えないためだ。
+
+![scale factor](fig/scale_factor.png)
+
+以下のように盛り上がった画像が得られたら、2Dと書かれたボタンを押して3D表示に変える。
+
+![2d](fig/2d.png)
+
+3D表示にした瞬間、画像が小さくなりすぎてしまうことがある。その場合は「-Z」ボタンを押すと復帰できる。
+
+![minus z](fig/minusz.png)
+
+あとは適当にマウスでぐりぐりして、よさそうなアングルを見つけたら、「再生」ボタンを押そう。
+
+![play](fig/play.png)
+
+アニメーションが表示されるはずだ。
+
+![gs.png](fig/gs.png)
+
+アニメーションとして保存したい場合は、「File」→「Save Animation」から連番PNGを出力し、ImageMagickでアニメーションGIFにするなり、FFmpegでmp4にするなりできる。参考のためにコマンドだけ書いておく。インストール方法などは各自調べること。以下は`gs.0000.png`などという形で連番で出力した場合だ。
+
+ImageMagickを使ってアニメーションGiFを作る場合。
+
+```sh
+convert -delay 5 -loop 0 -resize 50% gs.*.png gs.gif
+```
+
+FFmpegでmp4ファイルを作る場合。
+
+```sh
+ffmpeg -i gs.%04d.png  -pix_fmt yuv420p gs.mp4
+```
