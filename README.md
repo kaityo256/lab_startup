@@ -20,9 +20,10 @@
 * [TensorFlowでFashion-MNISTを学習させてウェブで読み込む](tensorflow/README.md)
 * [Dockerの簡単な使い方](docker/README.md)
 * [ParaViewの使い方](paraview/README.md)
+* [バッチシステムの使い方](pbs/README.md)
 
 ## ライセンス
 
-Copyright (C) 2020 Hiroshi Watanabe
+Copyright (C) 2020 - present Hiroshi Watanabe
 
 この文章と絵(pptxファイルを含む)はクリエイティブ・コモンズ 4.0 表示 (CC-BY 4.0) で提供する。
