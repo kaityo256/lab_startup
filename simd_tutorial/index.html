@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+
+<style>
+  .markdown-body {
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 45px;
+  }
+  p.caption{
+    display:none;
+  }
+  img {width: 100%}
+
+  @media (max-width: 767px) {
+    .markdown-body {
+      padding: 15px;
+    }
+  }
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://kaityo256.github.io/sevendayshpc/github-markdown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<article class="markdown-body">
+<h1 id="簡単なsimd化">簡単なSIMD化</h1>
+<p>Lennard-Jonesポテンシャルの力の計算を題材に、Intel AVX2命令セットを用いたSIMD化を体験してみる。</p>
+<h2 id="参考文献">参考文献</h2>
+<p>SIMD化については、以下を参考にすること。</p>
+<ul>
+<li><a href="https://qiita.com/kaityo256/items/5be3ce71a6ff9522a0e6">LJの力計算のSIMD化ステップ・バイ・ステップ その0</a></li>
+<li><a href="https://kaityo256.github.io/sevendayshpc/day7/index.html">一週間でなれる！スパコンプログラマ day7</a></li>
+</ul>
+<h2 id="分子動力学法の基礎">分子動力学法の基礎</h2>
+<p>まず、SIMD化をする前に、全体のシミュレーションのどこを最適化しようとしているのかを理解しよう。</p>
+<p>分子動力学法は、粒子間に働く力を計算し、その力にもとづいて運動量を変化させ、その運動量の変化を考慮してまた力を計算し・・・という処理を繰り返すことで粒子を動かすシミュレーション方法だ。シミュレーションは、以下のようなステップで実行される。</p>
+<ol style="list-style-type: decimal">
+<li>初期条件を作る(粒子の初期位置と初期速度を与える)</li>
+<li>粒子間距離からお互いにかかる力を計算する</li>
+<li>力から力積を計算し、運動量を更新する</li>
+<li>運動量から座標を更新する</li>
+<li>ステップ2へ戻る</li>
+</ol>
+<p>その他、状況に応じて温度制御をしたり、物理量の測定をしたりするが、上記のステップのうちもっとも計算が重い場所(ホットスポットと呼ぶ)は力の計算で、計算時間の9割以上を占める場合が多い。したがって、そこを高速化すると全体の計算時間も高速化される。逆に、ホットスポットではない場所を高速化しても計算速度向上には貢献しない。</p>
+<p>以下では、「力の計算(と、運動量の更新)」のみを切り出したコードについてSIMD化を試みる。</p>
+<h2 id="lennard-jonesポテンシャルの力計算について">Lennard-Jonesポテンシャルの力計算について</h2>
+<p>二体の等方ポテンシャルを考える。これは、二つの粒子間に働く力が、お互いの距離<span class="math inline">\(r\)</span>だけで決まるモデルだ。まず、二つの粒子が距離<span class="math inline">\(r\)</span>だけ離れた場所にいるときのポテンシャルエネルギー<span class="math inline">\(V(r)\)</span>を考える。粒子間に働く力は、その<span class="math inline">\(r\)</span>に関する微分に負符号をつけたもの、すなわち<span class="math inline">\(f(r) = -V&#39;(r)\)</span>だ。</p>
+<p>シミュレーションでは三次元空間を考えるが、以下では簡単のために二次元を考えよう。二つの粒子の粒子番号をiとjとする。慣例により、それぞれi粒子、j粒子と呼ぼう。i粒子の座標を<span class="math inline">\((q^i_x, q^i_y)\)</span>、j粒子の座標を<span class="math inline">\((q^j_x, q^j_y)\)</span>とする。i粒子から見たj粒子の相対座標ベクトルは</p>
+<p><span class="math display">\[
+\vec{r} = (dx, dy) = (q^j_x - q^i_x, q^j_y - q^i_y)
+\]</span></p>
+<p>となる。相対距離<span class="math inline">\(r\)</span>は</p>
+<p><span class="math display">\[
+r = |r| = \sqrt{dx^2 + dy^2}
+\]</span></p>
+<p>であるが、計算では<span class="math inline">\(r^2\)</span>のまま扱うことが多い。</p>
+<p>さて、Lennard-Jonesポテンシャルは以下のような関数だ。</p>
+<p><span class="math display">\[
+V(r) = 4 \left(r^{-12} - r^{-6} \right)
+\]</span></p>
+<p>ただし、簡単のためにエネルギースケール<span class="math inline">\(\varepsilon\)</span>や粒子直径<span class="math inline">\(\sigma\)</span>は1としている。</p>
+<p>力は<span class="math inline">\(f(r) = -V&#39;(r)\)</span>であるから、</p>
+<p><span class="math display">\[
+f(r) = \frac{48}{r^{13}} - \frac{24}{r^7}
+\]</span></p>
+<p>さて、この力は「i粒子から見てj粒子から受ける力」を表しており、例えば引力なら<span class="math inline">\(j\)</span>粒子の方向へ引っ張られており、斥力なら遠ざかる方向に押されれている。すなわちベクトル量である。x方向に受ける力を <span class="math inline">\(f_x\)</span>とすると、</p>
+<p><span class="math display">\[
+f_x = f \times \frac{dx}{r}
+\]</span></p>
+<p>である。</p>
+<div class="figure">
+<img src="fig/force.png" alt="力の成分" />
+<p class="caption">力の成分</p>
+</div>
+<p>この力が時間<span class="math inline">\(dt\)</span>だけ継続した場合、x方向に受ける力積<span class="math inline">\(I_x\)</span>は</p>
+<p><span class="math display">\[
+I_x = f_x dt
+\]</span></p>
+<p>である。以上から</p>
+<p><span class="math display">\[
+I_x = f \times \frac{dx}{r} \times dt
+\]</span></p>
+<p>となる。ここで、</p>
+<p><span class="math display">\[
+df \equiv f \times \frac{dt}{r}
+\]</span></p>
+<p>とすると、</p>
+<p><span class="math display">\[
+df = \left(\frac{48}{r^{14}} - \frac{24}{r^8} \right)
+\]</span></p>
+<p>となり、<span class="math inline">\(r^2\)</span>だけで計算できる量となる(平方根の計算が不要になる)。時間<span class="math inline">\(dt\)</span>の間に受ける力積<span class="math inline">\(I_x\)</span>は</p>
+<p><span class="math display">\[
+I_x = df \times dx
+\]</span></p>
+<p>であり、i粒子の運動量 <span class="math inline">\(p_x^i\)</span>は、時間刻み<span class="math inline">\(dt\)</span>の間に</p>
+<p><span class="math display">\[
+p_x^i = p_x^i + df \times dx
+\]</span></p>
+<p>という変化を受ける。これが時間刻み<span class="math inline">\(dt\)</span>の間に<span class="math inline">\(i\)</span>粒子が<span class="math inline">\(j\)</span>粒子より受ける力積である。作用反作用の法則から、<span class="math inline">\(j\)</span>粒子の運動量は</p>
+<p><span class="math display">\[
+p_j^i = p_j^i - df \times dx
+\]</span></p>
+<p>と変化を受ける。この計算を<span class="math inline">\(y\)</span>座標や<span class="math inline">\(z\)</span>座標についても行えば、ある<span class="math inline">\(i\)</span>粒子と<span class="math inline">\(j\)</span>粒子のペアに対する力の計算と運動量の更新は完了である。これをすべてのペアについて行えば、運動量の更新の1ステップが完了する。</p>
+<p>なお、</p>
+<p><span class="math display">\[
+df = \left(\frac{48}{r^{14}} - \frac{24}{r^8} \right)
+\]</span></p>
+<p>は、計算回数をへらすために項をまとめて</p>
+<p><span class="math display">\[
+df = \frac{48 - 24 r^6}{r^{14}}
+\]</span></p>
+<p>と変形しておく。</p>
+<h2 id="simd化">SIMD化</h2>
+<h3 id="simd化練習用コードの使い方">SIMD化練習用コードの使い方</h3>
+<p>それでは実際にSIMD化をしてみよう。SIMD化の練習のためのリポジトリを用意したので、適当なディレクトリ(例えばgithub)にてそれをcloneしよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span> github
+<span class="fu">git</span> clone https://github.com/kaityo256/lj_simd_test.git
+<span class="bu">cd</span> lj_simd_test</code></pre></div>
+<p>このリポジトリには<code>lj.cpp</code>がある。まずはコンパイルして実行してみよう。<code>make</code>すると実行バイナリ<code>a.out</code>ができる。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">make</span>
+$ <span class="ex">./a.out</span>
+<span class="va">N=</span>4000, <span class="ex">simple</span>   4313 [ms]
+<span class="va">N=</span>4000, <span class="ex">simd</span>     4329 [ms]
+<span class="ex">Check</span> OK</code></pre></div>
+<p>このプログラムは全く同じ力の計算を、単純なループで計算する関数<code>calc_force_simple</code>と、これからSIMD化する関数<code>calc_force_simd</code>を100回ずつ実行し、その実行時間を計測しつつ、実行結果が一致することを確認するものだ。両者の実行結果が一致すれば「Check OK」、不一致なら「Check Failed」と表示される。関数calc_force_simdは、一部だけSIMD命令が使われている。この関数を「Check OK」の状態を保ちながらSIMD化していき、最終的に二倍以上の実行速度向上を目指す(つまり、simdの実行時間をsimpleの半分以下とする)のが目標である。</p>
+<p>まずはそのまま挑戦してほしいが、慣れていなければかなり難しいと思われる。以下、少しずつヒントを出すので、適宜参照しながら行ってほしい。</p>
+<h2 id="step1ループアンローリング">Step1：ループアンローリング</h2>
+<h3 id="ループアンローリングとは">ループアンローリングとは</h3>
+<p>SIMD化においてまず行うことは、ループのアンロール(Loop unrolling)である。AVX2の256ビットレジスタを使ったSIMD化では、倍精度浮動小数点数を4つ同時に計算できる。したがって、4つの独立な計算を作らなければならない。そのための方法がループアンローリングである。</p>
+<p>以下のようなループを考えよう。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="cf">for</span>(<span class="dt">int</span> i=<span class="dv">0</span>;i&lt;<span class="dv">20</span>;i++){
+    printf(<span class="st">&quot;</span><span class="sc">%d\n</span><span class="st">&quot;</span>,i);
+}</code></pre></div>
+<p>これは、0から19までの数字を表示するだけのプログラムだ。C言語の<code>for</code>文は、ループカウンタの初期化、ループの継続条件、ループカウンタのインクリメントの3つを指定する。ここでは、</p>
+<ul>
+<li><code>int i=0</code> 0からスタートで</li>
+<li><code>i&lt;20</code> i=20になったら終了(つまりi=19まで実行される)</li>
+<li><code>i++</code> ループ一回ごとに iに1を加える</li>
+</ul>
+<p>という意味である。</p>
+<p>このループを以下のように変形する。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; <span class="dv">20</span>; i += <span class="dv">4</span>) {
+  printf(<span class="st">&quot;</span><span class="sc">%d\n</span><span class="st">&quot;</span>, i);
+  printf(<span class="st">&quot;</span><span class="sc">%d\n</span><span class="st">&quot;</span>, i + <span class="dv">1</span>);
+  printf(<span class="st">&quot;</span><span class="sc">%d\n</span><span class="st">&quot;</span>, i + <span class="dv">2</span>);
+  printf(<span class="st">&quot;</span><span class="sc">%d\n</span><span class="st">&quot;</span>, i + <span class="dv">3</span>);
+}</code></pre></div>
+<p>実行結果は同じであるが、1ループごとに、ループカウンタが4つずつ増えている。その代わり、ループ内で行う仕事が4倍に増えた。これを4倍のループアンローリングと呼ぶ。アンロールする前と等価な処理をしているが、ループ内に独立な処理が4つ現れたことがわかる。これをまとめていっきにやろう、というのがSIMD化の第一歩である。</p>
+<h3 id="ループの端数処理">ループの端数処理</h3>
+<p>さて、先程は20回のループであったので4で割り切れたが、4で割り切れない場合もある。その場合は「余りのループ」を処理してやらないといけない。例えば、もともと22回のループであったとしよう。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; <span class="dv">22</span>; i++) {
+  printf(<span class="st">&quot;</span><span class="sc">%d\n</span><span class="st">&quot;</span>, i);
+}</code></pre></div>
+<p>これを4倍にアンロールするには、</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> i = <span class="dv">0</span>;
+<span class="cf">for</span> (; i + <span class="dv">4</span> &lt; <span class="dv">22</span>; i += <span class="dv">4</span>) {
+  printf(<span class="st">&quot;</span><span class="sc">%d\n</span><span class="st">&quot;</span>, i);
+  printf(<span class="st">&quot;</span><span class="sc">%d\n</span><span class="st">&quot;</span>, i + <span class="dv">1</span>);
+  printf(<span class="st">&quot;</span><span class="sc">%d\n</span><span class="st">&quot;</span>, i + <span class="dv">2</span>);
+  printf(<span class="st">&quot;</span><span class="sc">%d\n</span><span class="st">&quot;</span>, i + <span class="dv">3</span>);
+}
+<span class="cf">for</span> (; i &lt; <span class="dv">22</span>; i++) {
+  printf(<span class="st">&quot;</span><span class="sc">%d\n</span><span class="st">&quot;</span>, i);
+}</code></pre></div>
+<p>とする。まず、ループ内でのみ有効であったループカウンタ<code>i</code>をループの外に出した。そして、ループの継続条件を <code>i &lt; 22</code>から <code>i + 4 &lt; 22</code>にした。これで <code>i+3</code>が22を超えることはなくなった。</p>
+<p>さて、4倍展開されたループが終わった時点で変数 <code>i</code>には20が入っている。それは、<code>i=16</code>までは <code>i+4 &lt; 22</code>が満たされているが、次のループの <code>i=20</code>では満たされなくなったためだ。</p>
+<p>あとは、そこから最後までもとのループを回せば良い。これをループの端数処理と呼ぶ。ループの端数はSIMD化できないので、SIMD化するのは前のループのみとなる。</p>
+<h3 id="多重ループのループアンローリング">多重ループのループアンローリング</h3>
+<p>しばしばループは多重ループとなる。特に分子動力学法においては、i粒子に関するループと、i粒子と相互作用するj粒子のループの二重ループとなることが多い。例えば以下は二重ループの例である。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">  <span class="at">const</span> <span class="dt">int</span> N = <span class="dv">10</span>;
+  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; N - <span class="dv">1</span>; i++) {
+    <span class="cf">for</span> (<span class="dt">int</span> j = i + <span class="dv">1</span>; j &lt; N; j++) {
+      printf(<span class="st">&quot;</span><span class="sc">%d</span><span class="st"> </span><span class="sc">%d\n</span><span class="st">&quot;</span>, i, j);
+    }
+  }</code></pre></div>
+<p>さて、多重ループをSIMD化する場合、外側と内側のループのどちらかをアンロールしてやる必要がある。どちらをアンロール(SIMD化)する方が良いかはコードに依存するが、とりあえず内側をアンロールしてやることにしよう。つまり、以下のようなループを4倍にアンロールする。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="cf">for</span> (<span class="dt">int</span> j = i + <span class="dv">1</span>; j &lt; N; j++) {
+  printf(<span class="st">&quot;</span><span class="sc">%d</span><span class="st"> </span><span class="sc">%d\n</span><span class="st">&quot;</span>, i, j);
+}</code></pre></div>
+<p>アンロールのやり方は先程と同様だ。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> j = i + <span class="dv">1</span>;
+<span class="cf">for</span> (; j + <span class="dv">3</span> &lt; N; j+=<span class="dv">4</span>) {
+  printf(<span class="st">&quot;</span><span class="sc">%d</span><span class="st"> </span><span class="sc">%d\n</span><span class="st">&quot;</span>, i, j);
+  printf(<span class="st">&quot;</span><span class="sc">%d</span><span class="st"> </span><span class="sc">%d\n</span><span class="st">&quot;</span>, i, j + <span class="dv">1</span>);
+  printf(<span class="st">&quot;</span><span class="sc">%d</span><span class="st"> </span><span class="sc">%d\n</span><span class="st">&quot;</span>, i, j + <span class="dv">2</span>);
+  printf(<span class="st">&quot;</span><span class="sc">%d</span><span class="st"> </span><span class="sc">%d\n</span><span class="st">&quot;</span>, i, j + <span class="dv">3</span>);
+}
+
+<span class="cf">for</span> (; j &lt; N; j++) {
+  printf(<span class="st">&quot;</span><span class="sc">%d</span><span class="st"> </span><span class="sc">%d\n</span><span class="st">&quot;</span>, i, j);
+}</code></pre></div>
+<h3 id="ステップ1課題">ステップ1：課題</h3>
+<p>関数<code>calc_force_simd</code>の内側のループを4倍にアンロールせよ。ただし、アンロール前と結果は一致しなければならない。</p>
+<p>後のために、4倍展開した内側のループの冒頭で</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> j_0 = j;
+<span class="dt">int</span> j_1 = j + <span class="dv">1</span>;
+<span class="dt">int</span> j_2 = j + <span class="dv">2</span>;
+<span class="dt">int</span> j_3 = j + <span class="dv">3</span>;</code></pre></div>
+<p>というループカウンタを用意し、それまで <code>j</code>を使っていたものを4倍に増やしてからそれぞれ<code>j_0</code>,<code>j_1</code>, <code>j_2,</code>,<code>j_3</code>に置換すれば良い。</p>
+<p>例えば先程の</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="cf">for</span> (<span class="dt">int</span> j = i + <span class="dv">1</span>; j &lt; N; j++) {
+  printf(<span class="st">&quot;</span><span class="sc">%d</span><span class="st"> </span><span class="sc">%d\n</span><span class="st">&quot;</span>, i, j);
+}</code></pre></div>
+<p>を4倍展開する例なら、まずはループの端数処理とループカウンタのインクリメントを4倍にする処理を書く。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> j = i + <span class="dv">1</span>;
+<span class="cf">for</span> (; j + <span class="dv">3</span> &lt; N; j+=<span class="dv">4</span>) {
+  printf(<span class="st">&quot;</span><span class="sc">%d</span><span class="st"> </span><span class="sc">%d\n</span><span class="st">&quot;</span>, i, j);
+}
+
+<span class="cf">for</span> (; j &lt; N; j++) {
+  printf(<span class="st">&quot;</span><span class="sc">%d</span><span class="st"> </span><span class="sc">%d\n</span><span class="st">&quot;</span>, i, j);
+}</code></pre></div>
+<p>このままでは、4倍展開したループ内の処理が足りないので増やすのだが、まずループカウンタを4つに増やす。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> j_0 = j;
+<span class="dt">int</span> j_1 = j + <span class="dv">1</span>;
+<span class="dt">int</span> j_2 = j + <span class="dv">2</span>;
+<span class="dt">int</span> j_3 = j + <span class="dv">3</span>;</code></pre></div>
+<p>次に、ループ内の処理を4倍に増やす。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">  printf(<span class="st">&quot;</span><span class="sc">%d</span><span class="st"> </span><span class="sc">%d\n</span><span class="st">&quot;</span>, i, j);
+  printf(<span class="st">&quot;</span><span class="sc">%d</span><span class="st"> </span><span class="sc">%d\n</span><span class="st">&quot;</span>, i, j);
+  printf(<span class="st">&quot;</span><span class="sc">%d</span><span class="st"> </span><span class="sc">%d\n</span><span class="st">&quot;</span>, i, j);
+  printf(<span class="st">&quot;</span><span class="sc">%d</span><span class="st"> </span><span class="sc">%d\n</span><span class="st">&quot;</span>, i, j);</code></pre></div>
+<p>最後に、<code>j</code>を先程増やしたループカンタに変える。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">  printf(<span class="st">&quot;</span><span class="sc">%d</span><span class="st"> </span><span class="sc">%d\n</span><span class="st">&quot;</span>, i, j_0);
+  printf(<span class="st">&quot;</span><span class="sc">%d</span><span class="st"> </span><span class="sc">%d\n</span><span class="st">&quot;</span>, i, j_1);
+  printf(<span class="st">&quot;</span><span class="sc">%d</span><span class="st"> </span><span class="sc">%d\n</span><span class="st">&quot;</span>, i, j_2);
+  printf(<span class="st">&quot;</span><span class="sc">%d</span><span class="st"> </span><span class="sc">%d\n</span><span class="st">&quot;</span>, i, j_3);</code></pre></div>
+<p>アンロールされたループ内では、生のループカウンタ<code>j</code>が残っていてはいけない。このように関数<code>calc_force_simd</code>をアンロールせよ。</p>
+<p>アンロールしたら、</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">make</span>
+<span class="ex">./a.out</span></code></pre></div>
+<p>として実行し、<code>Check OK</code>が出ることを確認せよ。</p>
+</article>
+</body>
+</html>
