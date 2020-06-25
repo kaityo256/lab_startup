@@ -21,6 +21,7 @@
 * [Dockerの簡単な使い方](docker/README.md)
 * [ParaViewの使い方](paraview/README.md)
 * [バッチシステムの使い方](pbs/README.md)
+* [簡単なSIMD化](simd_tutorial/README.md)
 
 ## ライセンス
 
