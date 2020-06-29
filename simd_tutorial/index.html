@@ -238,7 +238,7 @@ $ <span class="ex">./a.out</span>
 <span class="cf">for</span> (; j &lt; N; j++) {
   printf(<span class="st">&quot;</span><span class="sc">%d</span><span class="st"> </span><span class="sc">%d\n</span><span class="st">&quot;</span>, i, j);
 }</code></pre></div>
-<h3 id="ステップ1課題">ステップ1：課題</h3>
+<h3 id="ステップ1ループアンロール">ステップ1：ループアンロール</h3>
 <p>関数<code>calc_force_simd</code>の内側のループを4倍にアンロールせよ。ただし、アンロール前と結果は一致しなければならない。</p>
 <p>後のために、4倍展開した内側のループの冒頭で</p>
 <div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> j_0 = j;
@@ -279,6 +279,65 @@ $ <span class="ex">./a.out</span>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">make</span>
 <span class="ex">./a.out</span></code></pre></div>
 <p>として実行し、<code>Check OK</code>が出ることを確認せよ。</p>
+<h3 id="ステップ2j粒子のメモリアクセスのsimd化">ステップ2：j粒子のメモリアクセスのSIMD化</h3>
+<p>C++では多くの場合、ローカル変数はレジスタに、配列はメモリに配置される。例えば、</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">double</span> qix = q[i][X];</code></pre></div>
+<p>というコードは、<code>qix</code>に割り当てられたレジスタに、<code>q[i][X]</code>のアドレスからデータをロードしてくる、という処理として実行される。</p>
+<p>さて、SIMD化とは、データを複数まとめてレジスタに載せ、そのまま計算し、メモリにまとめて書き戻すようにコードを修正する作業である。そのため、SIMD化には「メモリアクセスのSIMD化」と「演算のSIMD化」の二種類あることになる。このうち前者、「メモリアクセスのSIMD化」をしてみよう。</p>
+<h4 id="ステップ2-1-ロードストアをまとめる">ステップ2-1: ロード、ストアをまとめる</h4>
+<p>素直にループ展開してあれば、</p>
+<ul>
+<li>j_0粒子の座標を読み込んで力積を計算して運動量を書き戻す</li>
+<li>j_1粒子の座標を読み込んで力積を計算して運動量を書き戻す</li>
+<li>j_2粒子の座標を読み込んで力積を計算して運動量を書き戻す</li>
+<li>j_3粒子の座標を読み込んで力積を計算して運動量を書き戻す</li>
+</ul>
+<p>と、順番に処理されていると思う。このうち、メモリアクセスをSIMD化するため、まず座標の読み込みをループの先頭に、運動量の書き戻しをループの最後にまとめよ。</p>
+<p>つまり、</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">      <span class="co">// アンロール用のループカウンタ</span>
+      <span class="dt">int</span> j_0 = j;
+      <span class="dt">int</span> j_1 = j + <span class="dv">1</span>;
+      <span class="dt">int</span> j_2 = j + <span class="dv">2</span>;
+      <span class="dt">int</span> j_3 = j + <span class="dv">3</span>;
+      <span class="co">//j_0粒子の座標を読み込んで、相対ベクトルを作るところ</span>
+      <span class="dt">double</span> dx_0 = q[j_0][X] - qix;
+      <span class="dt">double</span> dy_0 = q[j_0][Y] - qiy;
+      <span class="dt">double</span> dz_0 = q[j_0][Z] - qiz;
+      <span class="co">//j_1粒子の座標を読み込んで、相対ベクトルを作るところ、以下j_2, j_3も同様</span>
+
+      <span class="co">// ...</span>
+
+      <span class="co">// (中略)　ここで 力を計算する</span>
+
+      <span class="co">// j_0粒子の力積の書き戻し</span>
+      p[j_0][X] -= df_0 * dx_0;
+      p[j_0][Y] -= df_0 * dy_0;
+      p[j_0][Z] -= df_0 * dz_0;
+      <span class="co">// j_1粒子の力積の書き戻し、以下j_2, j_3も同様</span>
+
+      pix += df_3 * dx_3;
+      piy += df_3 * dy_3;
+      piz += df_3 * dz_3;
+    } <span class="co">//内側のループ終了</span></code></pre></div>
+<p>という順番に入れ替えよ。入れ替えたら実行し、<code>Check OK</code>が出ることを確認すること。</p>
+<h4 id="ステップ2-2-ロードストアのsimd化">ステップ2-2: ロード、ストアのSIMD化</h4>
+<p>以下の処理を考えよう。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">double</span> dx_0 = q[j_0][X] - qix;</code></pre></div>
+<p>これは、</p>
+<ol style="list-style-type: decimal">
+<li><code>q[j_0][X]</code>のアドレスからデータを取ってくる</li>
+<li>その値から<code>qix</code>を引く</li>
+<li>その結果を<code>dx_0</code>に代入する</li>
+</ol>
+<p>という処理からなる。このうち、<code>qix</code>, <code>dx_0</code>はレジスタを使っており、「<code>q[j_0][X]</code>のアドレスからデータを取ってくる」ところにメモリアクセスがある。メモリからデータを取ってくることを「ロード (load)」と呼ぶ。これをSIMDを使ってまとめてやってしまおう。</p>
+<p>いま、三次元シミュレーションをしているのに、座標データは4次元で定義してある。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">double</span> <span class="ex">__attribute__((aligned(32)))</span> q[N][<span class="dv">4</span>] = {}; <span class="co">//座標</span></code></pre></div>
+<p><code>__attribute__</code>はメモリアラインの指定だが、ここでは触れない。</p>
+<p>すると、ダミーの座標軸をwとすると、メモリ上には「x0, y0, z0, w0, x1, y1, z1, w1, ...」とデータが並んでいる。</p>
+<p>さて、AVX2のSIMDレジスタは256ビットであり、64ビットの倍精度浮動小数のデータを4つ保持できる。そのため「メモリから4つまとめてデータをロードするSIMD命令」が存在する。それが<code>vmovapd</code>命令だ。対応する組み込み関数は<code>_mm256_load_pd</code>である。この関数は、アドレスを指定すると、そこから連続で4つの倍精度実数をSIMDレジスタにロードしてくれる。この命令を使って、x, y, z成分をまとめてロードしよう。</p>
+<p><code>_mm256_load_pd</code>関数は、以下のように使う。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">__m256d vqj_0 = _mm256_load_pd((<span class="dt">double</span> *)(q + j));</code></pre></div>
+<p>これにより、j粒子の座標4成分が、<code>vqj_0</code>にまとめてロードされる。なぜ<code>(double *)(q + j)</code>というアドレスを指定するかは多次元配列とポインタについて学べばわかるはずだ。</p>
 </article>
 </body>
 </html>
