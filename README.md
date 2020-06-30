@@ -11,6 +11,7 @@
 * [Gitのインストールと動作の確認](git/README.md)
 * [SSHエージェント転送の設定](ssh/README.md)
 * [GitHubのアカウント作成と基本的な操作](github/README.md)
+* [Git Bashでg++を使えるようにする](gccwin/README.md)
 
 ## 開発編
 
