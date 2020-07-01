@@ -4,20 +4,217 @@ make(メイク)は、ビルドツールと呼ばれるソフトウェアで、�
 
 ## makeの基本的な使い方
 
-makeは、makefileというファイルに依存関係と処理を記述する。まずは、簡単なmakefileを書いてみよう。
+makeは、makefileというファイルに「ルール」と呼ばれる **依存関係** と**処理**をまとめたもの記述する。
+
+```makefile
+ターゲット: 依存するファイル1 依存するファイル2...
+    コマンド
+```
+
+という形になる。ルールは
+
+* ターゲット：このルールが作りたいもの
+* 依存ファイル： ターゲットを作る際に必要なもの
+* コマンド：必要な物が全て揃った後に実行されるコマンド
+
+から構成される。
+
+まずは、簡単なmakefileを書いてみよう。リポジトリの`hello`というディレクトリに入ろう。そこには`hello.txt`というテキストファイルが置いてある。
 
 ```sh
-cd hello
-vim makefile
+$ cd hello
+$ cat hello.txt
+Hello Make!
+```
+
+この`cat hello.txt`をmakeにやらせてみよう。vim で`makefile`を開き、以下の内容を入力せよ
+
+```makefile
+all:
+    cat hello.txt
+```
+
+これは
+
+* `all`というターゲットを作るルールで
+* `all`には何も必要なファイル(依存関係)などはなく
+* コマンドは`cat hello.txt`である
+
+というルールである。
+
+記述の際、以下の点に注意せよ。
+
+* `all`の後にコロンを入れる
+* `all`の後に空行をいれてはならない
+* `cat hello.txt`の前は「タブ」を入力する(vimの設定によっては、`all:`で改行した時に自動的にタブが入るかもしれない)
+
+入力が終わったら、実行してみよう。端末で`make`を実行せよ。
+
+```sh
+$ make
+cat hello.txt
+Hello Make!
+```
+
+この動作について説明しよう。
+
+* まず、`make`はファイルを指定されずに実行されると、デフォルトのメイクファイルである`Makefile`もしくは`makefile`を探しに行く
+* `make`はターゲットを指定しないと、デフォルトターゲットである`all`を指定したことになる
+* `all`は何も必要なものがないので、コマンドが実行される
+* makeは、これから実行するコマンド(今回は`cat hello.txt`)を表示する
+* 最後に、`cat hello.txt`の実行結果として`Hello Make!`が表示された。
+
+なお、コマンドに`@`をつけるとそのコマンドは表示されない。
+
+```makefile
+all:
+    @cat hello.txt
+```
+
+```sh
+$ make
+Hello Make!
+```
+
+なお、もう一度makeすると、もう一度コマンドが実行される。
+
+```sh
+$ make
+Hello Make!
+```
+
+makeは「ターゲットが存在しない」もしくは「ターゲットが依存するファイルが存在しないか、ターゲットより新しい」場合にコマンドを実行する。今回はターゲット`all`のコマンドを実行しても、`all`が作成されないので、何度でも実行される。
+
+## 依存関係の記述
+
+次に、依存関係を記述してみよう。同じディレクトリ(`hello`)で、makefileを以下のように書き直そう。
+
+```makefile
+all: result.txt
+
+result.txt: hello.txt
+    cat hello.txt > result.txt
+```
+
+これは、
+
+* ターゲットallは `result.txt`に依存しており、`all`に関しては何もしなくて良い(コマンドが無い)
+* ターゲット`result.txt`は `hello.txt`に依存しており、作成するコマンドは `cat hello.txt > result.txt`である。
+
+ことを表している。makeしてみよう。
+
+```sh
+$ make
+cat hello.txt > result.txt
+```
+
+コマンドが実行され、`result.txt`が作成された。catで確認せよ。
+
+```sh
+$ cat result.txt
+Hello Make!
+```
+
+さて、前回と違って、今回はもう一度makeを実行すると、コマンドは実行されない。
+
+```sh
+$ make
+make: `all' に対して行うべき事はありません.
+```
+
+実行されると、makeは以下のように考える。
+
+* allを作るためには、result.txtが必要だ
+* result.txtはhello.txtに依存している
+* result.txtは既にあり、hello.txtよりもタイムスタンプが新しいのでコマンドは実行しなくてよい
+* result.txtが既にある場合、allは何もする必要がない(コマンドがない)
+* したがって、makeは何もコマンドを実行する必要はない
+
+以上から、makeは何もしない。
+
+次に、依存関係の処理について見てみよう。上記でmakeが何もしなかったは、`result.txt`のタイムスタンプが`hello.txt`より新しかったからだ。そこで、`hello.txt`のタイムスタンプを新しくしてみよう。タイムスタンプを変えるには`touch`コマンドを使う。
+
+```sh
+$ touch hello.txt
+$ make
+cat hello.txt > result.txt
+```
+
+makeすると、`hello.txt`から`result.txt`が作り直された。このように、makeはターゲットが依存するファイルのタイムスタンプをチェックして、どのターゲットを実行するべきかを決める。
+
+## C++の分割コンパイル
+
+次に、もう少し実戦的な例を見てみよう。リポジトリの`cpp`に移動せよ。
+
+```sh
+cd ..
+cd cpp
+```
+
+そこには、以下の三つのファイルがある。
+
+`main.cpp`
+
+```cpp
+#include "param.hpp"
+#include <cstdio>
+
+void show(void);
+
+int main(void) {
+  printf("main: N is %d\n", N);
+  show();
+}
+```
+
+`sub.cpp`
+
+```cpp
+#include "param.hpp"
+#include <cstdio>
+
+void show(void){
+  printf("sub:  N is %d\n",N);
+}
+```
+
+`param.hpp`
+
+```cpp
+const int N = 10;
+```
+
+パラメタを定義した`param.hpp`というヘッダファイルがあり、それを`main.cpp`と`sub.cpp`が依存している状況だ。
+
+まずは手動でビルドしてみよう。C/C++は、分割コンパイルができる。まずはソースファイルからオブジェクトファイルを作成し、それをリンクすることで実行バイナリを作成するのだが、ソースからオブジェクトファイルを作るところをファイル毎に行うことができる。
+
+コンパイラに`-c`オプションをつけると、コンパイルしてオブジェクトファイルを出力し、リンクしない。
+
+```sh
+$ g++ -c main.cpp
+$ g++ -c sub.cpp
+$ ls *.o
+main.o  sub.o
+```
+
+作成されたオブジェクトファイルをリンクで「くっつける」と実行バイナリができあがる。
+
+```sh
+$ g++ main.o sub.o
+$ ./a.out
+main: N is 10
+sub:  N is 10
+```
+
+実際にリンクしているのは「リンカ」と呼ばれるプログラムなのだが、`g++`が適切にコンパイラやリンカを呼び出して対処しているので、我々はあまり気にしなくて良い。
+
+この分割コンパイル、リンクをするmakefileを書いてみよう。
+
+```makefile
 ```
 
 
 
-
-
-書くもの
-
-* all
 * clean(疑似ターゲット)
 * サフィックスルール
 * 依存関係の自動生成
