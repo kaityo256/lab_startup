@@ -208,12 +208,147 @@ sub:  N is 10
 
 実際にリンクしているのは「リンカ」と呼ばれるプログラムなのだが、`g++`が適切にコンパイラやリンカを呼び出して対処しているので、我々はあまり気にしなくて良い。
 
-この分割コンパイル、リンクをするmakefileを書いてみよう。
+さて、ここで`param.hpp`の内容を修正しよう。
 
-```makefile
+```cpp
+const int N = 20;
 ```
 
+そして、`sub.cpp`の再コンパイルを忘れ、`main.cpp`のみ再コンパイルして、リンクしてしまったとしよう。
 
+```sh
+$ g++ -c main.cpp
+$ g++ main.o sub.o
+$ ./a.out
+main: N is 20
+sub:  N is 10
+```
+
+この場合でも実行バイナリは更新され、実行できるのだが、本来同じであるべき値がずれてしまっている。このような依存関係を認識し、自動的に必要なファイルを再コンパイルしてくれるのがmakeである。
+
+### クリーン
+
+依存関係をどう扱うかは後で説明することにして、まずは分割コンパイル、リンクをするmakefileを書いてみよう。
+
+```makefile
+all: a.out
+
+a.out: main.o sub.o
+    g++ main.o sub.o
+
+main.o: main.cpp
+    g++ -c main.cpp
+
+sub.o: sub.cpp
+    g++ -c sub.cpp
+```
+
+書けたら、実行バイナリやオブジェクトファイルを削除してからmakeしてみよう。
+
+```sh
+$ rm -f a.out *.o
+$ make
+g++ -c main.cpp
+g++ -c sub.cpp
+g++ main.o sub.o
+$ ./a.out
+main: N is 20
+sub:  N is 20
+```
+
+`a.out`をビルドするための一連の動作をmakeがやってくれた。また、全てゼロからビルドしたから当たり前だが、値が正しく表示される、正しい実行バイナリができている。この、「全てゼロからビルド」するために、中間ファイルやターゲットを削除することを「クリーン」と呼ぶ。makefileでは、慣習として`clean`というターゲット名で「クリーン」のためのルールを記述する。
+
+先ほどの`makefile`の一番最後に、以下のルールを追加せよ。
+
+```makefile
+clean:
+    rm -f a.out *.o
+```
+
+これにより、`make clean`と打つと、実行バイナリやオブジェクトファイルが削除される。
+
+```sh
+$ make clean
+rm -f a.out *.o
+```
+
+これにより
+
+```sh
+make clean
+make
+```
+
+すれば、必ずクリーンな状態からビルドすることができる。
+
+### パターンルール
+
+次に、ソースファイルから、オブジェクトファイルを作るコマンドが同じなので、ファイルが増えた時に毎回似たような処理を書くのは面倒だ。まとめてしまおう。
+
+makefileの以下の部分を削除する。
+
+```makefile
+main.o: main.cpp
+    g++ -c main.cpp
+
+sub.o: sub.cpp
+    g++ -c sub.cpp
+```
+
+削除後に、以下のルールを追加しよう。
+
+```makefile
+%.o: %.cpp
+    g++ -c $<
+```
+
+これは「パターンルール」と呼ばれる構文で、「`%.o`というファイル名にマッチするものは、`%.cpp`から以下のコマンドで作れますよ」ということをmakeに教える。
+
+`$<`とは、マクロ、もしくは自動変数と呼ばれるもので、「必要条件」に展開される。
+
+最終的に、makefileは以下のようになったはずだ。
+
+```makefile
+all: a.out
+
+a.out: main.o sub.o
+            g++ main.o sub.o
+
+%.o: %.cpp
+        g++ -c $<
+
+clean:
+        rm -f a.out *.o
+```
+
+実際にmakeしてみよう。
+
+```sh
+$ make clean
+rm -f a.out *.o
+$ make
+g++ -c main.cpp
+g++ -c sub.cpp
+g++ main.o sub.o
+```
+
+正しくビルドできた。
+
+### 依存関係の出力とインクルード
+
+ここまでで、makefileは`a.out`は`main.o`、`sub.o`に、`main.o`は`main.cpp`に、`sub.o`は`sub.cpp`に依存することを認識しているが、`main.cpp`と`sub.cpp`が`param.hpp`に依存していることは知らない。
+
+したがって、`param.hpp`を修正すると
+
+
+これを教えるには、`makefile`に
+
+```makefile
+main.o: main.cpp param.hpp
+sub.o: sub.cpp param.hpp
+```
+
+と、依存関係を記述してやらなければならない。しかし、そもそも「複雑なプロジェクトでは
 
 * clean(疑似ターゲット)
 * サフィックスルール
