@@ -338,20 +338,225 @@ g++ main.o sub.o
 
 ここまでで、makefileは`a.out`は`main.o`、`sub.o`に、`main.o`は`main.cpp`に、`sub.o`は`sub.cpp`に依存することを認識しているが、`main.cpp`と`sub.cpp`が`param.hpp`に依存していることは知らない。
 
-したがって、`param.hpp`を修正すると
+したがって、makefileに正しく依存関係を記述してあげる必要があるのだが、そもそも「人間は複雑な依存関係を処理できなくてミスするよね」というのがスタート地点なのに、人間に「makefileに正しく依存関係を書け」というのもおかしな話である。なので、依存関係の抽出もプログラムにやらせよう。`g++`には、依存関係を抽出してmakefile用に出力してくれるオプション`-MM`が存在する。
 
-
-これを教えるには、`makefile`に
-
-```makefile
+```sh
+$ g++ -MM *.cpp
 main.o: main.cpp param.hpp
 sub.o: sub.cpp param.hpp
 ```
 
-と、依存関係を記述してやらなければならない。しかし、そもそも「複雑なプロジェクトでは
+これを、リダイレクトでファイルに落とそう。
 
-* clean(疑似ターゲット)
-* サフィックスルール
-* 依存関係の自動生成
-* shellコマンド
-* make
+```sh
+g++ -MM *.cpp > makefile.dep
+```
+
+できた依存関係記述ファイルを、makefileでインクルードしてやる。makefileのインクルードは`-include`で行う。makefileの最後に以下の文を記述せよ。
+
+```makefile
+-include makefile.dep
+```
+
+最終的に、makefileは以下のようになったはずだ。
+
+```makefile
+all: a.out
+
+a.out: main.o sub.o
+      g++ main.o sub.o
+
+%.o: %.cpp
+  g++ -c $<
+
+clean:
+  rm -f a.out *.o
+
+-include makefile.dep
+```
+
+このmakefileが、正しく依存関係を認識しているか調べてみよう。まずはクリーンビルドする。
+
+```sh
+make clean
+make
+```
+
+この状態で、`sub.cpp`だけ更新してからmakeしてみよう。
+
+```sh
+$ touch sub.cpp
+$ make
+g++ -c sub.cpp
+g++ main.o sub.o
+```
+
+正しく、`sub.cpp`のみ再コンパイルされて、実行できた。
+
+次に`param.hpp`を更新してからmakeしてみよう。
+
+```sh
+$ touch param.hpp
+$ make
+g++ -c main.cpp
+g++ -c sub.cpp
+g++ main.o sub.o
+```
+
+正しく依存関係を認識し、`param.hpp`に依存する`main.cpp`と`sub.cpp`がどちらも再コンパイルされた。
+
+### 変数の利用
+
+最後に、変数を使ってみよう。場面によって、コンパイラが違うことがある。違うコンパイラを使う場合、
+
+```makefile
+a.out: main.o sub.o
+            g++ main.o sub.o
+
+%.o: %.cpp
+        g++ -c $<
+```
+
+の二か所に出現する`g++`を修正しなければならない。「〇〇したら××しなければならない」は危険信号だ。一か所だけ修正したら全部修正できるように、変数を使おう。
+
+makefileの変数は、`変数名=値`で宣言し、利用は変数名を`$()`で囲んだ`$(変数名)`とする。
+
+まずは`makefile`の冒頭で、コンパイラを変数で定義しよう。慣習としてC++コンパイラは`CXX`とする。
+
+```makefile
+CXX=g++
+```
+
+そして、`g++`とあるところを`$(CXX)`に置換する。
+
+最終的に、以下のようなmakefileになるはずだ。
+
+```makefile
+CXX=g++
+
+all: a.out
+
+a.out: main.o sub.o
+            $(CXX) main.o sub.o
+
+%.o: %.cpp
+        $(CXX) -c $<
+
+clean:
+        rm -f a.out *.o
+
+-include makefile.dep
+```
+
+GNU makeは非常に多機能だが、ここまででよく使う機能はだいたいカバーできたはずだ。
+
+## 並列ビルドと変数置換
+
+makeは依存関係があるものならなんでも使える。特に、変数置換と並列ビルドと組み合わせると、簡単なデータ処理などで便利な時がある。
+
+リポジトリの`makej`ディレクトリに入ってみよう。
+
+その中には、`input0.dat`から`input9.dat`までの10個のインプットファイルと、`convert.py`がある。`convert.py`にデータを食わせると、変換されたデータが出てくるものとしよう。
+
+例えば
+
+```sh
+python convert.py < input0.dat > output0.dat
+```
+
+などとする。`convert.py`は単に入力をそのまま出力するだけのスクリプトだが、時間のかかる処理を模擬するために、内部で一秒待っている。
+
+さて、これを10個のデータ全部に対してやりたい。もちろん、インプットデータが修正されたら、修正されたところだけアウトプットデータを修正したい。これをmakeにやらせよう。
+
+まず、手元にあるものは`input0.dat`から`input9.dat`だ。これを変数`INPUT`に代入する。
+
+```makefile
+INPUTS=$(shell ls input*.dat)
+```
+
+GNU Makeでは、`変数名=$(shell コマンド)`とすると、そのコマンドを実行した結果を変数に代入できる。この場合、`INPUTS`には`input0.dat input1.dat ... input9.dat`が代入される。
+
+欲しいのは、これらを全て変換した`output0.dat output1.dat ... output9.dat`だ。これをINPUTから作るために、変数の置換を利用する。
+
+```makefile
+OUTPUTS=$(INPUTS:input%=output%)
+```
+
+このように`DEST=$(SRC:パターン=パターン)`と記述することで、変換した結果を得ることができる。
+
+今回のケースでは、`input0.dat`が`input%`にマッチし、`%`が`0.dat`となる。この`%`を`output%`を代入すると`output0.dat`が得られる。`input1.dat`なども同様である。こうして`OUTPUTS`に`output0.dat ... output9.dat`が代入された。
+
+最終的に欲しいもの(ビルドターゲット)は`OUTPUTS`であるから、`all`ターゲットは
+
+```makefile
+all: $(OUTPUTS)
+```
+
+と書けばよい。
+
+以上を実装した、以下のようなmakefileが用意されている。
+
+```makefile
+INPUTS=$(shell ls input*.dat)
+OUTPUTS=$(INPUTS:input%=output%)
+
+
+all: $(OUTPUTS)
+
+output%: input%
+  python convert.py < $< > $@
+
+clean:
+  rm -f $(OUTPUTS)
+```
+
+`input?.dat`から`output?.dat`を作るルール
+
+```makefile
+output%: input%
+  python convert.py < $< > $@
+```
+
+にある`$@`は自動変数の一種で、ターゲットに展開される。
+
+早速makeしてみよう。ただし、時間も測ってみる。
+
+```sh
+$ time make
+python convert.py < input0.dat > output0.dat
+python convert.py < input1.dat > output1.dat
+python convert.py < input2.dat > output2.dat
+python convert.py < input3.dat > output3.dat
+python convert.py < input4.dat > output4.dat
+python convert.py < input5.dat > output5.dat
+python convert.py < input6.dat > output6.dat
+python convert.py < input7.dat > output7.dat
+python convert.py < input8.dat > output8.dat
+python convert.py < input9.dat > output9.dat
+make  0.33s user 1.66s system 15% cpu 12.898 total
+```
+
+内部で1秒待つので、最低でも10秒かかる。ここでは13秒かかっていた。
+
+では、並列ビルドを試してみよう。並列ビルドは`make -j 並列数`で指定する。例えば、5並列で処理してみよう。
+
+```sh
+$ make clean
+$ time make -j 5
+python convert.py < input0.dat > output0.dat
+python convert.py < input1.dat > output1.dat
+python convert.py < input2.dat > output2.dat
+python convert.py < input3.dat > output3.dat
+python convert.py < input4.dat > output4.dat
+python convert.py < input5.dat > output5.dat
+python convert.py < input6.dat > output6.dat
+python convert.py < input7.dat > output7.dat
+python convert.py < input8.dat > output8.dat
+python convert.py < input9.dat > output9.dat
+make -j 5  0.66s user 1.78s system 90% cpu 2.680 total
+```
+
+5個ずつ処理されたのがわかると思う。なお、makeの`-j`オプションは**並列数を省略すると並列実行可能なタスクを全て同時に実行しようとする**。したがって、100個データがある場合は、100個プロセスを立ち上げて100個同時に実行する。非常にシステムに負荷をかけるため、並列ビルドをする時には必ず並列数を指定する癖をつけておくこと。最高でもCPUコア数までとする。
+
+
+
