@@ -19,9 +19,17 @@ makeは、makefileというファイルに「ルール」と呼ばれる **依�
 
 から構成される。
 
-まずは、簡単なmakefileを書いてみよう。リポジトリの`hello`というディレクトリに入ろう。そこには`hello.txt`というテキストファイルが置いてある。
+まずは、簡単なmakefileを書いてみよう。まずは`github`ディレクトリに入り、練習用のリポジトリ`kaityo256/make_tutorial`をcloneせよ。
 
 ```sh
+cd github
+git clone https://github.com/kaityo256/make_tutorial.git
+```
+
+cloneできたら、リポジトリの`hello`というディレクトリに入ろう。そこには`hello.txt`というテキストファイルが置いてある。
+
+```sh
+$ cd make_tutorial
 $ cd hello
 $ cat hello.txt
 Hello Make!
@@ -558,5 +566,93 @@ make -j 5  0.66s user 1.78s system 90% cpu 2.680 total
 
 5個ずつ処理されたのがわかると思う。なお、makeの`-j`オプションは**並列数を省略すると並列実行可能なタスクを全て同時に実行しようとする**。したがって、100個データがある場合は、100個プロセスを立ち上げて100個同時に実行する。非常にシステムに負荷をかけるため、並列ビルドをする時には必ず並列数を指定する癖をつけておくこと。最高でもCPUコア数までとする。
 
+## 実戦的な例：アニメーション作成
+
+先ほどの並列ビルドは、単に入力をそのまま出力に出すだけだった。もう少し実戦的な例として、シミュレーションデータを可視化して、アニメーションを作成してみよう。
+
+リポジトリの`spiral`ディレクトリに入ろう。
+
+```sh
+cd ..
+cd spiral
+```
+
+まず、シミュレーションをして、途中の結果をダンプする処理をしよう。
+
+```sh
+$ python3 makedata.py
+spiral00.dat
+spiral01.dat
+spiral02.dat
+spiral03.dat
+spiral04.dat
+spiral05.dat
+spiral06.dat
+spiral07.dat
+spiral08.dat
+spiral09.dat
+spiral10.dat
+spiral11.dat
+spiral12.dat
+spiral13.dat
+spiral14.dat
+spiral15.dat
+```
+
+実行すると`spiral00.dat`から`spiral15.dat`までの16個のデータが出力されたはずだ。これがシミュレーションデータだと思うことにしよう。
+
+このデータを処理して、画像ファイルとして出力するスクリプト`convert.py`が用意してある。実行してみよう。
+
+```sh
+$ python3 spiral00.dat
+spiral00.png
+```
+
+`spiral00.png`が出てきたはずだ。`eog`で見てみよう。
+
+```sh
+eog spiral00.png
+```
+
+らせん模様が見えただろうか？これを全て変換したいが、いちいちコマンドを入力するのは面倒だし、シミュレーションの途中でも可視化したいし、シミュレーションが終わったら、可視化していないデータのみ変換したい。こんな時はmakeの出番だ。
+
+```makefile
+DAT=$(shell ls *.dat)
+PNG=$(DAT:%.dat=%.png)
+
+all: $(PNG)
 
 
+%.png: %.dat
+        python3 convert.py $<
+
+
+gif: $(PNG)
+        convert -delay 5 -loop 0 -resize 50% spiral*.png spiral.gif
+
+clean:
+        rm -f spiral.gif spiral*.dat spiral*.png
+```
+
+もう何をやっているかはわかると思う。早速`make`してみよう。せっかくなので並列ビルドしてしまおう。
+
+```sh
+make -j
+```
+
+`spiral00.png`は作成済みであるから、`spiral01.png`から`spiral15.png`が作成されたはずだ。せっかく連番ファイルがえきたので、アニメーションgifを作ってみよう。ImageMagickのコマンドを毎回入力するのは面倒なので、それもmakeにやらせよう。
+
+```sh
+$ make gif
+convert -delay 5 -loop 0 -resize 50% spiral*.png spiral.gif
+```
+
+`spiral.gif`が作成されたはずだ。見てみよう。
+
+```sh
+eog spiral.gif
+```
+
+うずまきがグルグル回っただろうか。
+
+とにかく「何か依存関係のある処理」を自動化するのにmakeは便利だ。単に便利というのみならず、人為的なミスも防ぐし、自動化しておくと「あれ？このデータからこの画像はどうやって作るんだっけ？」と忘れた時に、makeを見ればやり方を思い出すだろう。論文を書く時にも、データを更新したらmake一発で図も更新してPDFまで作る環境を作っておくことが望ましい。

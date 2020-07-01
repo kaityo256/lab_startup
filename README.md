@@ -17,6 +17,7 @@
 
 * [gnuplotの使い方](gnuplot/README.md)
 * [GitHubのフォークとLAMMPS](github_lammps/README.md)
+* [GNU Makeの使い方](make/README.md)
 * [C++のコンパイルとSIMDの確認](simd/README.md)
 * [TensorFlowでFashion-MNISTを学習させてウェブで読み込む](tensorflow/README.md)
 * [Dockerの簡単な使い方](docker/README.md)
