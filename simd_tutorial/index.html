@@ -173,8 +173,8 @@ $ <span class="ex">./a.out</span>
 <span class="ex">Check</span> OK</code></pre></div>
 <p>このプログラムは全く同じ力の計算を、単純なループで計算する関数<code>calc_force_simple</code>と、これからSIMD化する関数<code>calc_force_simd</code>を100回ずつ実行し、その実行時間を計測しつつ、実行結果が一致することを確認するものだ。両者の実行結果が一致すれば「Check OK」、不一致なら「Check Failed」と表示される。関数calc_force_simdは、一部だけSIMD命令が使われている。この関数を「Check OK」の状態を保ちながらSIMD化していき、最終的に二倍以上の実行速度向上を目指す(つまり、simdの実行時間をsimpleの半分以下とする)のが目標である。</p>
 <p>まずはそのまま挑戦してほしいが、慣れていなければかなり難しいと思われる。以下、少しずつヒントを出すので、適宜参照しながら行ってほしい。</p>
-<h2 id="step1ループアンローリング">Step1：ループアンローリング</h2>
-<h3 id="ループアンローリングとは">ループアンローリングとは</h3>
+<h3 id="step1ループアンローリング">Step1：ループアンローリング</h3>
+<h4 id="ループアンローリングとは">ループアンローリングとは</h4>
 <p>SIMD化においてまず行うことは、ループのアンロール(Loop unrolling)である。AVX2の256ビットレジスタを使ったSIMD化では、倍精度浮動小数点数を4つ同時に計算できる。したがって、4つの独立な計算を作らなければならない。そのための方法がループアンローリングである。</p>
 <p>以下のようなループを考えよう。</p>
 <div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="cf">for</span>(<span class="dt">int</span> i=<span class="dv">0</span>;i&lt;<span class="dv">20</span>;i++){
@@ -195,7 +195,7 @@ $ <span class="ex">./a.out</span>
   printf(<span class="st">&quot;</span><span class="sc">%d\n</span><span class="st">&quot;</span>, i + <span class="dv">3</span>);
 }</code></pre></div>
 <p>実行結果は同じであるが、1ループごとに、ループカウンタが4つずつ増えている。その代わり、ループ内で行う仕事が4倍に増えた。これを4倍のループアンローリングと呼ぶ。アンロールする前と等価な処理をしているが、ループ内に独立な処理が4つ現れたことがわかる。これをまとめていっきにやろう、というのがSIMD化の第一歩である。</p>
-<h3 id="ループの端数処理">ループの端数処理</h3>
+<h4 id="ループの端数処理">ループの端数処理</h4>
 <p>さて、先程は20回のループであったので4で割り切れたが、4で割り切れない場合もある。その場合は「余りのループ」を処理してやらないといけない。例えば、もともと22回のループであったとしよう。</p>
 <div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; <span class="dv">22</span>; i++) {
   printf(<span class="st">&quot;</span><span class="sc">%d\n</span><span class="st">&quot;</span>, i);
@@ -214,7 +214,7 @@ $ <span class="ex">./a.out</span>
 <p>とする。まず、ループ内でのみ有効であったループカウンタ<code>i</code>をループの外に出した。そして、ループの継続条件を <code>i &lt; 22</code>から <code>i + 4 &lt; 22</code>にした。これで <code>i+3</code>が22を超えることはなくなった。</p>
 <p>さて、4倍展開されたループが終わった時点で変数 <code>i</code>には20が入っている。それは、<code>i=16</code>までは <code>i+4 &lt; 22</code>が満たされているが、次のループの <code>i=20</code>では満たされなくなったためだ。</p>
 <p>あとは、そこから最後までもとのループを回せば良い。これをループの端数処理と呼ぶ。ループの端数はSIMD化できないので、SIMD化するのは前のループのみとなる。</p>
-<h3 id="多重ループのループアンローリング">多重ループのループアンローリング</h3>
+<h4 id="多重ループのループアンローリング">多重ループのループアンローリング</h4>
 <p>しばしばループは多重ループとなる。特に分子動力学法においては、i粒子に関するループと、i粒子と相互作用するj粒子のループの二重ループとなることが多い。例えば以下は二重ループの例である。</p>
 <div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">  <span class="at">const</span> <span class="dt">int</span> N = <span class="dv">10</span>;
   <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; N - <span class="dv">1</span>; i++) {
@@ -238,7 +238,7 @@ $ <span class="ex">./a.out</span>
 <span class="cf">for</span> (; j &lt; N; j++) {
   printf(<span class="st">&quot;</span><span class="sc">%d</span><span class="st"> </span><span class="sc">%d\n</span><span class="st">&quot;</span>, i, j);
 }</code></pre></div>
-<h3 id="ステップ1ループアンロール">ステップ1：ループアンロール</h3>
+<h4 id="ステップ1ループアンロール">ステップ1：ループアンロール</h4>
 <p>関数<code>calc_force_simd</code>の内側のループを4倍にアンロールせよ。ただし、アンロール前と結果は一致しなければならない。</p>
 <p>後のために、4倍展開した内側のループの冒頭で</p>
 <div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> j_0 = j;
@@ -320,7 +320,7 @@ $ <span class="ex">./a.out</span>
       piz += df_3 * dz_3;
     } <span class="co">//内側のループ終了</span></code></pre></div>
 <p>という順番に入れ替えよ。入れ替えたら実行し、<code>Check OK</code>が出ることを確認すること。</p>
-<h4 id="ステップ2-2-ロードストアのsimd化">ステップ2-2: ロード、ストアのSIMD化</h4>
+<h4 id="ステップ2-2-座標のロードのsimd化">ステップ2-2: 座標のロードのSIMD化</h4>
 <p>以下の処理を考えよう。</p>
 <div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">double</span> dx_0 = q[j_0][X] - qix;</code></pre></div>
 <p>これは、</p>
@@ -336,8 +336,366 @@ $ <span class="ex">./a.out</span>
 <p>すると、ダミーの座標軸をwとすると、メモリ上には「x0, y0, z0, w0, x1, y1, z1, w1, ...」とデータが並んでいる。</p>
 <p>さて、AVX2のSIMDレジスタは256ビットであり、64ビットの倍精度浮動小数のデータを4つ保持できる。そのため「メモリから4つまとめてデータをロードするSIMD命令」が存在する。それが<code>vmovapd</code>命令だ。対応する組み込み関数は<code>_mm256_load_pd</code>である。この関数は、アドレスを指定すると、そこから連続で4つの倍精度実数をSIMDレジスタにロードしてくれる。この命令を使って、x, y, z成分をまとめてロードしよう。</p>
 <p><code>_mm256_load_pd</code>関数は、以下のように使う。</p>
-<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">__m256d vqj_0 = _mm256_load_pd((<span class="dt">double</span> *)(q + j));</code></pre></div>
-<p>これにより、j粒子の座標4成分が、<code>vqj_0</code>にまとめてロードされる。なぜ<code>(double *)(q + j)</code>というアドレスを指定するかは多次元配列とポインタについて学べばわかるはずだ。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">__m256d vqj_0 = _mm256_load_pd((<span class="dt">double</span> *)(q + j_0));</code></pre></div>
+<p>これにより、j_0粒子の座標4成分が、<code>vqj_0</code>にまとめてロードされる。なぜ<code>(double *)(q + j_0)</code>というアドレスを指定するかは多次元配列とポインタについて学べばわかるはずだ。</p>
+<p>さて、正しくロードできたかどうかを確認してみよう。</p>
+<p><code>vqj_0</code>に、<code>q[j_0][X]</code>、<code>q[j_0][Y]</code>、<code>q[j_0][Z]</code>が入っているはずなので、表示してみる。SIMD化したいループの、座標データを読み込んでいるあたりに、以下を入力せよ。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">      __m256d vqj_0 = _mm256_load_pd((<span class="dt">double</span> *)(q + j_0));
+      print256d(vqj_0);
+      printf(<span class="st">&quot;</span><span class="sc">%f</span><span class="st"> </span><span class="sc">%f</span><span class="st"> </span><span class="sc">%f\n</span><span class="st">&quot;</span>, q[j_0][Z], q[j_0][Y], q[j_0][X]);
+      exit(<span class="dv">1</span>);</code></pre></div>
+<p>これは、</p>
+<ul>
+<li>j_0粒子の4つの成分をまとめて<code>vqj_0</code>にロードし、 <code>_mm256_load_pd</code></li>
+<li>その内容を表示し、 <code>print256d(vqj_0)</code></li>
+<li>それが欲しい値と一致しているか確認し、<code>printf</code></li>
+<li>その場で実行を停止させる <code>exit</code></li>
+</ul>
+<p>と言う処理をしている。これを実行すると、<code>exit</code>で実行が止まる。これを入れないとループがそのまま実行され、大量の表示が流れてしまう。「欲しい値を表示し、直後に停止させる」のはデバッグの基本テクニックなので覚えておきたい。</p>
+<p>実際に実行すると、以下のような表示になるはずだ。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">0.000000</span> 0.000944 -0.003837 0.494421
+<span class="ex">0.000944</span> -0.003837 0.494421</code></pre></div>
+<p>一行目が<code>vqj_0</code>の値で、「w, z, y, x」成分の順番になっている。二行目がj_0粒子の座標で、両者が一致していることがわかる。</p>
+<p>一致していることがわかったら、<code>vqj_0</code>にまとめられた4つの値をバラそう。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">double</span> qjx_0 = vqj_0[X];
+<span class="dt">double</span> qjy_0 = vqj_0[Y];
+<span class="dt">double</span> qjz_0 = vqj_0[Z];</code></pre></div>
+<p>最終的には、4つまとめたレジスタのまま計算し、そのまま書き戻すのだが、まずはデータのロードとストアのみをSIMD化するため、このようにまとめてロードしたベクトルデータをスカラデータにバラす。</p>
+<p>すると、i粒子との相対座標は以下のように計算できる。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">double</span> dx_0 = qjx_0 - qix;
+<span class="dt">double</span> dy_0 = qjy_0 - qiy;
+<span class="dt">double</span> dz_0 = qjz_0 - qiz;</code></pre></div>
+<p>つまり、もともとは以下の形であったコードが、</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">double</span> dx_0 = q[j_0][X] - qix;
+<span class="dt">double</span> dy_0 = q[j_0][Y] - qiy;
+<span class="dt">double</span> dz_0 = q[j_0][Z] - qiz;</code></pre></div>
+<p>以下のようになる。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">__m256d vqj_0 = _mm256_load_pd((<span class="dt">double</span> *)(q + j_0));
+<span class="dt">double</span> qjx_0 = vqj_0[X];
+<span class="dt">double</span> qjy_0 = vqj_0[Y];
+<span class="dt">double</span> qjz_0 = vqj_0[Z];
+<span class="dt">double</span> dx_0 = qjx_0 - qix;
+<span class="dt">double</span> dy_0 = qjy_0 - qiy;
+<span class="dt">double</span> dz_0 = qjz_0 - qiz;</code></pre></div>
+<p>もとのコードはコメントとして残しておこう。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="co">/*</span>
+<span class="co">double dx_0 = q[j_0][X] - qix;</span>
+<span class="co">double dy_0 = q[j_0][Y] - qiy;</span>
+<span class="co">double dz_0 = q[j_0][Z] - qiz;</span>
+<span class="co">*/</span></code></pre></div>
+<p>ここまでやったら、コンパイル、実行して<code>Check OK</code>が出ることを確認せよ。<code>j_0</code>についてできたら、<code>j_1</code>、<code>j_2</code>、<code>j_3</code>についても行うこと。その際、まとめてやらずに、一つずつ<code>Check OK</code>を確認すること。なお、ここで実行速度が遅くなってもかまわない。SIMD化は、一般に途中のステップで実行速度が遅くなる場合が多い。</p>
+<h4 id="ステップ2-3-運動量の書き戻しのsimd化">ステップ2-3: 運動量の書き戻しのSIMD化</h4>
+<p>次に、力積の書き戻しのSIMD化を行う。ここまで正しく修正できていれば、SIMD化対象ループの最後に、以下のように書き戻しのコードがまとまっているはずだ。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">p[j_0][X] -= df_0 * dx_0;
+p[j_0][Y] -= df_0 * dy_0;
+p[j_0][Z] -= df_0 * dz_0;
+<span class="co">// j_1, j_2, j_3も同様</span></code></pre></div>
+<p>このうち、</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">p[j_0][X] -= df_0 * dx_0;</code></pre></div>
+<p>というコードでは、以下のような処理をしている。</p>
+<ol style="list-style-type: decimal">
+<li><code>p[j_0][X]</code>からデータを取ってくる</li>
+<li><code>df_0 * dx_0</code>を計算し、そのデータから引く</li>
+<li>その結果を<code>p[j_0][X]</code>のアドレスに書き戻す</li>
+</ol>
+<p>運動量の場合は座標と異なり、メモリからの読み込みと書き戻しの両方がある。書き戻しのことをストア(store)と呼ぶ。このロードとストアをSIMDでまとめてやってしまおう。</p>
+<p>まとめてロードしてバラすところまでは座標と同じだ。そのあと、バラした<code>pjx_0</code>等に力積の効果を計算する。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">__m256d vpj_0 = _mm256_load_pd((<span class="dt">double</span> *)(p + j_0));
+<span class="dt">double</span> pjx_0 = vpj_0[X];
+<span class="dt">double</span> pjy_0 = vpj_0[Y];
+<span class="dt">double</span> pjz_0 = vpj_0[Z];
+
+<span class="co">// ここで pjx_0, pjy_0, pjz_0を適切に計算せよ</span></code></pre></div>
+<p><code>pjx_0, pjy_0, pjz_0</code>が正しく計算できたら、SIMDレジスタにまとめてから書き戻す。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">vpj_0 = _mm256_set_pd(<span class="fl">0.0</span>, pjz_0, pjy_0, pjx_0);
+_mm256_store_pd((<span class="dt">double</span> *)(p + j_0), vpj_0);</code></pre></div>
+<p>不要になったスカラーコードはコメントアウトしておこう。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="co">/*</span>
+<span class="co">p[j_0][X] -= df_0 * dx_0;</span>
+<span class="co">p[j_0][Y] -= df_0 * dy_0;</span>
+<span class="co">p[j_0][Z] -= df_0 * dz_0;</span>
+<span class="co">*/</span></code></pre></div>
+<p>正しく計算できていれば、コンパイル、実行して<code>Check OK</code>が出るはずである。チェックに失敗したら座標の時と同様に、print文デバッグを活用せよ。</p>
+<p><code>j_0</code>について書き戻しが正しくできたら、<code>j_1</code>、<code>j_2</code>、<code>j_3</code>についても同様に修正せよ。</p>
+<p>ここまで正しく修正できたら、<code>q[j_0][X]</code>や<code>p[j_0][X]</code>に直接触ることなく、必ず<code>_mm256_load_pd</code>や<code>_mm256_store_pd</code>経由でアクセスするコードになっているはずである。</p>
+<h4 id="ステップ2-4-相対座標ベクトルのsimd化">ステップ2-4: 相対座標ベクトルのSIMD化</h4>
+<p>さて、SIMDによるロード命令により</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">__m256d vqj_0 = _mm256_load_pd((<span class="dt">double</span> *)(q + j_0));</code></pre></div>
+<p>で、j0粒子の座標3成分(余分な分を合わせて4成分)が、<code>vqj_0</code>にパックされている。同様に、<code>vqi</code>には、i粒子の座標成分が入っている。これを引き算すると、相対ベクトルが得られるはずだ。</p>
+<p>j0粒子とi粒子の相対座標ベクトルを作るコードはここだ。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">      <span class="dt">double</span> qjx_0 = vqj_0[X];
+      <span class="dt">double</span> qjy_0 = vqj_0[Y];
+      <span class="dt">double</span> qjz_0 = vqj_0[Z];
+      <span class="dt">double</span> dx_0 = qjx_0 - qix;
+      <span class="dt">double</span> dy_0 = qjy_0 - qiy;
+      <span class="dt">double</span> dz_0 = qjz_0 - qiz;</code></pre></div>
+<p>これにより<code>(dx_0, dy_0, dz_0)</code>が相対座標ベクトルとなる。これは、SIMDレジスタ同士の引き算<code>vqi - vqj_0</code>一発でできるはずだ。確認してみよう。相対座標ベクトルを<code>dr_0</code>としよう。ベクトルであるとがわかるように頭に<code>v</code>をつけて、<code>vdr_0</code>という変数を作る。以下のコードを<code>dx_0, dy_0, dz_0</code>を計算した後に挿入し、プログラムを実行してみよ。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">__m256d vdr_0 = vqj_0 - vqi;
+print256d(vdr_0);
+printf(<span class="st">&quot;</span><span class="sc">%f</span><span class="st"> </span><span class="sc">%f</span><span class="st"> </span><span class="sc">%f\n</span><span class="st">&quot;</span>, dz_0, dy_0, dx_0);
+exit(<span class="dv">1</span>);</code></pre></div>
+<p>結果は以下のようになるはずだ。</p>
+<pre class="txt"><code>0.000000 -0.008433 -0.010537 0.501711
+-0.008433 -0.010537 0.501711</code></pre>
+<p>スカラーで計算した<code>(dz_0, dy_0, dx_0)</code>と、SIMDで一気に計算した<code>vdr_0</code>の成分が一致していることがわかる。なお、SIMDレジスタでのデータの並びが「0, z, y, x」という順番になっており、余分なデータが一つあることに注意。</p>
+<p>これにより、以下のコードが</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">__m256d vqj_0 = _mm256_load_pd((<span class="dt">double</span> *)(q + j_0));
+<span class="dt">double</span> qjx_0 = vqj_0[X];
+<span class="dt">double</span> qjy_0 = vqj_0[Y];
+<span class="dt">double</span> qjz_0 = vqj_0[Z];
+<span class="dt">double</span> dx_0 = qjx_0 - qix;
+<span class="dt">double</span> dy_0 = qjy_0 - qiy;
+<span class="dt">double</span> dz_0 = qjz_0 - qiz;</code></pre></div>
+<p>以下のコードに変換できる。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">__m256d vqj_0 = _mm256_load_pd((<span class="dt">double</span> *)(q + j_0));
+__m256d vdr_0 = vqi - vqj_0;
+<span class="dt">double</span> dx_0 = vdr_0[X];
+<span class="dt">double</span> dy_0 = vdr_0[Y];
+<span class="dt">double</span> dz_0 = vdr_0[Z];</code></pre></div>
+<p>この変換をした後に、コンパイル、実行して「Check OK」となることを確認せよ。確認できたら<code>j_1</code>、<code>j_2</code>、<code>j_3</code>についても同様な変換を施し、「Check OK」となることを確認せよ。</p>
+<h3 id="ステップ3力計算のsimd化">ステップ3：力計算のSIMD化</h3>
+<h4 id="ステップ3-1力計算のsimd化">ステップ3-1：力計算のSIMD化</h4>
+<p>我々の目的は、i粒子と、4つのj粒子(j0, j1, j2, j3)の力の計算をまとめて行うことである。力の計算には、相対距離の二乗r2が分かればよい。したがって、(r2_0, r2_1, r2_2, r2_3)という4つの成分を持つSIMDベクトルを作れば良いことになる。</p>
+<p>TODO: 図を作る</p>
+<p>先ほどまでの手順で、以下の4つのベクトルを作ることができている。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">vdr_0 = (dx_0, dy_0, dz_0, <span class="dv">0</span>);
+vdr_1 = (dx_1, dy_1, dz_1, <span class="dv">0</span>);
+vdr_2 = (dx_2, dy_2, dz_2, <span class="dv">0</span>);
+vdr_3 = (dx_3, dy_3, dz_3, <span class="dv">0</span>);</code></pre></div>
+<p>ここから、</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">vr2 = (r2_0, r2_1, r2_2, r2_3);</code></pre></div>
+<p>というベクトルを作ることができれば、4つの相対ベクトルが1つのレジスタに入っているので、あとは独立に力の計算ができることになる。しかし、<code>vdr_0</code>などは、同じインデックスの異なる成分が入っており、<code>vr2</code>には異なるインデックスの同じ成分を入れる必要がある。そのためにはSIMDベクトルの転置が必要になるのだが、それは後回しにして、この変換ができたとして、力の計算をSIMDで行おう。</p>
+<p>まずは、<code>vr2</code>を手で作ってしまおう。<code>r2_0, r2_1, r2_2, r2_3</code>を計算しているところを一か所にまとめよ(r2_1などを上の方にカットアンドペーストする)。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">double</span> r2_0 = dx_0 * dx_0 + dy_0 * dy_0 + dz_0 * dz_0;
+<span class="dt">double</span> r2_1 = dx_1 * dx_1 + dy_1 * dy_1 + dz_1 * dz_1;
+<span class="dt">double</span> r2_2 = dx_2 * dx_2 + dy_2 * dy_2 + dz_2 * dz_2;
+<span class="dt">double</span> r2_3 = dx_3 * dx_3 + dy_3 * dy_3 + dz_3 * dz_3;</code></pre></div>
+<p>そして、これらをまとめてSIMDベクトルを作る。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">__m256d vr2 = _mm256_set_pd(r2_3, r2_2, r2_1, r2_0);</code></pre></div>
+<p><code>_mm256_set_pd</code>の引数の順序は逆順になるので注意。</p>
+<p><code>r2</code>が計算できたので、ここから</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">double</span> r6 = r2 * r2 * r2;
+<span class="dt">double</span> df = (<span class="fl">24.0</span> * r6 - <span class="fl">48.0</span>) / (r6 * r6 * r2) * dt;</code></pre></div>
+<p>という計算をSIMDで行う。後の便利のために、<code>dt</code>を定数に分けてかけておこう。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">double</span> r6 = r2 * r2 * r2;
+<span class="dt">double</span> df = (<span class="fl">24.0</span> * dt * r6 - <span class="fl">48.0</span> * dt) / (r6 * r6 * r2) * dt;</code></pre></div>
+<p>定数<code>24 * dt</code>、<code>48 * dt</code>をかける部分があるが、これは<code>(24.0 * dt, 24.0 * dt, 24.0 * dt, 24.0 * dt)</code>といった四成分同じベクトルを用意してかけることになる。これを定数として定義しておこう。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="at">const</span> __m256d vc24 = _mm256_set_pd(<span class="dv">24</span> * dt, <span class="dv">24</span> * dt, <span class="dv">24</span> * dt, <span class="dv">24</span> * dt);
+<span class="at">const</span> __m256d vc48 = _mm256_set_pd(<span class="dv">48</span> * dt, <span class="dv">48</span> * dt, <span class="dv">48</span> * dt, <span class="dv">48</span> * dt);</code></pre></div>
+<p>すると、力の計算は</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">__m256d vr6 = vr2 * vr2 * vr2;
+__m256d vdf = (vc24 * vr6 - vc48) / (vr6 * vr6 * vr2);</code></pre></div>
+<p>と書くことができる。これで<code>vdf</code>には</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">vdf = (df_0, df_1, df_2, df_3);</code></pre></div>
+<p>という値が入ったはずである。確認してみよう。<code>vdf</code>と<code>df_0, df_1, df_2, df_3</code>が全て計算できた後に、以下のコードを挿入せよ。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">print256d(vdf);
+printf(<span class="st">&quot;</span><span class="sc">%f</span><span class="st"> </span><span class="sc">%f</span><span class="st"> </span><span class="sc">%f</span><span class="st"> </span><span class="sc">%f\n</span><span class="st">&quot;</span>, df_3, df_2, df_1, df_0);
+exit(<span class="dv">1</span>);</code></pre></div>
+<p>繰り返しになるが、SIMD化の作業は、等価なスカラー計算とSIMD計算を比較し、一致することを確認しながら置き換えていく作業である。実行結果は以下のようになるはずだ。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dv">-0</span>.<span class="dv">242032</span> <span class="dv">-7688</span>.<span class="dv">386395</span> <span class="dv">-7142</span>.<span class="dv">190355</span> <span class="dv">-7399</span>.<span class="dv">547596</span>
+<span class="dv">-0</span>.<span class="dv">242032</span> <span class="dv">-7688</span>.<span class="dv">386395</span> <span class="dv">-7142</span>.<span class="dv">190355</span> <span class="dv">-7399</span>.<span class="dv">547596</span></code></pre></div>
+<p>一致していることが確認できたら、先ほどのテストコードは削除してよい。</p>
+<p>これにより、以下のコードはコメントアウト(もしくは削除)してよい。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="co">/*</span>
+<span class="co">double r6_0 = r2_0 * r2_0 * r2_0;</span>
+<span class="co">double df_0 = (24.0 * r6_0 - 48.0) / (r6_0 * r6_0 * r2_0) * dt;</span>
+
+<span class="co">double r6_1 = r2_1 * r2_1 * r2_1;</span>
+<span class="co">double df_1 = (24.0 * r6_1 - 48.0) / (r6_1 * r6_1 * r2_1) * dt;</span>
+
+<span class="co">double r6_2 = r2_2 * r2_2 * r2_2;</span>
+<span class="co">double df_2 = (24.0 * r6_2 - 48.0) / (r6_2 * r6_2 * r2_2) * dt;</span>
+
+<span class="co">double r6_3 = r2_3 * r2_3 * r2_3;</span>
+<span class="co">double df_3 = (24.0 * r6_3 - 48.0) / (r6_3 * r6_3 * r2_3) * dt;</span>
+<span class="co">*/</span></code></pre></div>
+<p>その代わり、後で<code>df_0, df_1, df_2, df_3</code>が必要なので、<code>vdf</code>からバラしておこう。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">double</span> df_0 = vdf[<span class="dv">0</span>];
+<span class="dt">double</span> df_1 = vdf[<span class="dv">1</span>];
+<span class="dt">double</span> df_2 = vdf[<span class="dv">2</span>];
+<span class="dt">double</span> df_3 = vdf[<span class="dv">3</span>];</code></pre></div>
+<p>ここまでの状態でコンパイル、実行して「Check OK」となることを確認せよ。OKになったら、不要なコメントを削除してよい。</p>
+<h4 id="ステップ3-2j粒子の力積の計算のsimd化">ステップ3-2：j粒子の力積の計算のSIMD化</h4>
+<p>力の計算が終わったら、各成分の力積を計算し、運動量に加えて書き戻す処理がある。</p>
+<p>例えば、j0粒子の運動量の書き戻しは以下のようになっている。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">__m256d vpj_0 = _mm256_load_pd((<span class="dt">double</span> *)(p + j_0));
+<span class="dt">double</span> pjx_0 = vpj_0[X];
+<span class="dt">double</span> pjy_0 = vpj_0[Y];
+<span class="dt">double</span> pjz_0 = vpj_0[Z];
+pjx_0 -= df_0 * dx_0;
+pjy_0 -= df_0 * dy_0;
+pjz_0 -= df_0 * dz_0;
+vpj_0 = _mm256_set_pd(<span class="fl">0.0</span>, pjz_0, pjy_0, pjx_0);
+_mm256_store_pd((<span class="dt">double</span> *)(p + j_0), vpj_0);</code></pre></div>
+<p>ここで、</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">pjx_0 -= df_0 * dx_0;
+pjy_0 -= df_0 * dy_0;
+pjz_0 -= df_0 * dz_0;</code></pre></div>
+<p>の計算に注目する。ここまでの時点で既に<code>vdr_0</code>には<code>(dx_0, dy_0, dz_0, 0)</code>が入っているため、</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">__mm256d vdf_0 = (df_0, df_0, df_0, df_0);</code></pre></div>
+<p>というベクトル変数があれば、<code>vdf_0 * vdf_0</code>一発で先ほどの計算が実行できることになる(4つ計算が走るが、一つ<code>df_0*0</code>という無駄な計算が走ることに注意)。</p>
+<p>TODO: 図解必要？</p>
+<p>いま、</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">vdf = (df_0, df_1, df_2, df_3);</code></pre></div>
+<p>となっている。ここから、<code>vdf_0</code>を作りたい。つまり、<code>vdf</code>の最初の要素を4成分全てに複製したようなベクトルが欲しい。このような処理のために、SIMDには「シャッフル命令」が用意されている。シャッフル命令は、SIMDレジスタの中身を入れ替えたり、複製したり、二つのSIMDレジスタを混ぜたりするための命令だ。ここでは、一つSIMDレジスタの値を任意に並び変えることができるpermute命令(<code>VPERMPD</code>)を使おう。</p>
+<p>この命令は、もともとレジスタが持つ値が(0,1,2,3)であった場合、(0,0,0,0)から(3,3,3,3)まで任意の数を作ることができる。どの要素をどこにコピーするかは、4進法で決める。以下は、(0,1,2,3)を持つベクトルから、(3,2,3,1)を作るためのコードだ。整数<code>imm</code>を4進法表記した時に、各桁が「srcのどこを使うか」を指定している。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">__m256d src = _mm256_set_pd(<span class="fl">3.0</span>,<span class="fl">2.0</span>,<span class="fl">1.0</span>,<span class="fl">0.0</span>);
+<span class="at">const</span> <span class="dt">int</span> imm = <span class="dv">1</span>*<span class="dv">64</span> + <span class="dv">3</span>*<span class="dv">16</span> + <span class="dv">2</span>*<span class="dv">4</span> + <span class="dv">3</span>*<span class="dv">1</span>; <span class="co">// 1323</span>
+print256d(_mm256_permute4x64_pd(src,imm));
+<span class="co">// 1.000000 3.000000 2.000000 3.000000</span></code></pre></div>
+<div class="figure">
+<img src="fig/permute.png" alt="permute" />
+<p class="caption">permute</p>
+</div>
+<p>下位ビットを右に書く慣習により、ベクトルとしての値が(3,2,3,1)である時、上記の表記では(1,3,2,3)となることに注意。</p>
+<p>さて、0番目の要素を全てにコピーしたい場合、4進法表記した場合は0000、つまり</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="at">const</span> <span class="dt">int</span> imm = <span class="dv">0</span>*<span class="dv">64</span> + <span class="dv">0</span>*<span class="dv">16</span> + <span class="dv">0</span>*<span class="dv">4</span> + <span class="dv">0</span>*<span class="dv">1</span>;</code></pre></div>
+<p>とすれば良いことがわかるだろう。つまり<code>imm</code>として0を指定すればよい。</p>
+<p>そこで、j0粒子の運動量の書き戻しの直前に、以下のようなコードを書こう。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">__m256d vdf_0 = _mm256_permute4x64_pd(vdf, <span class="dv">0</span>);
+print256d(vdf_0);
+printf(<span class="st">&quot;</span><span class="sc">%f\n</span><span class="st">&quot;</span>, df_0);
+exit(<span class="dv">1</span>);</code></pre></div>
+<p>これは、<code>vdf</code>の第ゼロ成分を、4つにコピーした<code>vdf_0</code>が作れているかの確認だ。実行すると以下のような結果が得られる。</p>
+<pre class="txt"><code>-7399.547596 -7399.547596 -7399.547596 -7399.547596
+-7399.547596</code></pre>
+<p>確かに、<code>df_0</code>の値を4成分に持つ<code>vdf_0</code>が作られたことがわかる。</p>
+<p>これを使うと、j0粒子の運動量の書き戻しは、</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">__m256d vdf_0 = _mm256_permute4x64_pd(vdf, <span class="dv">0</span>);
+__m256d vpj_0 = _mm256_load_pd((<span class="dt">double</span> *)(p + j_0));
+vpj_0 -= vdf_0 * vdr_0;
+_mm256_store_pd((<span class="dt">double</span> *)(p + j_0), vpj_0);</code></pre></div>
+<p>と書くことができる。j1粒子、j2粒子、j3粒子も全く同様だが、<code>_mm256_permute4x64_pd(vdf, 0)</code>の第二引数<code>0</code>の値は異なる。それぞれ4進法で、1111,2222,3333となるような数字を代入し、j1～j3粒子の運動量の書き戻しを全てSIMD化せよ。その際、一度にやらずに一つずつコンパイル、実行し、「Check OK」が出ることを確認すること。</p>
+<h4 id="ステップ3-3i粒子の力積の計算のsimd化">ステップ3-3：i粒子の力積の計算のSIMD化</h4>
+<p>ここまで、かなりの部分がSIMD化されたが、i粒子に関しては全くSIMD化されていない。i粒子の力積の計算をまとめると以下のようになっている。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">pix += df_0 * dx_0;
+piy += df_0 * dy_0;
+piz += df_0 * dz_0;
+pix += df_1 * dx_1;
+piy += df_1 * dy_1;
+piz += df_1 * dz_1;
+pix += df_2 * dx_2;
+piy += df_2 * dy_2;
+piz += df_2 * dz_2;
+pix += df_3 * dx_3;
+piy += df_3 * dy_3;
+piz += df_3 * dz_3;</code></pre></div>
+<p>既に、内側のループの外でi粒子の運動量をまとめてロードしている。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">__m256d vpi = _mm256_load_pd((<span class="dt">double</span> *)(p + i));</code></pre></div>
+<p>後は、j粒子と同様に計算することができるので、先ほどの12行のコードは</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">vpi += vdf_0 * vdr_0;
+vpi += vdf_1 * vdr_1;
+vpi += vdf_2 * vdr_2;
+vpi += vdf_3 * vdr_3;</code></pre></div>
+<p>とまとめることができる。レジスタ<code>vpi</code>に入っている情報は、内側のループが終わった直後に書き戻せば良い。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">_mm256_store_pd(&amp;(p[i][<span class="dv">0</span>]), vpi);</code></pre></div>
+<p>さて、この修正をしてコンパイル、実行すると、「Check Failed」と出るはずだ。これはSIMD化により端数処理と不整合が起きたためである。</p>
+<p>端数処理は以下のようになっている。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">    <span class="cf">for</span> (; j &lt; N; j++) {
+      <span class="dt">double</span> dx = q[j][X] - qix;
+      <span class="dt">double</span> dy = q[j][Y] - qiy;
+      <span class="dt">double</span> dz = q[j][Z] - qiz;
+      <span class="dt">double</span> r2 = dx * dx + dy * dy + dz * dz;
+      <span class="dt">double</span> r6 = r2 * r2 * r2;
+      <span class="dt">double</span> df = (<span class="fl">24.0</span> * r6 - <span class="fl">48.0</span>) / (r6 * r6 * r2) * dt;
+      p[j][X] -= df * dx;
+      p[j][Y] -= df * dy;
+      p[j][Z] -= df * dz;
+      pix += df * dx;
+      piy += df * dy;
+      piz += df * dz;
+    }
+    <span class="co">// 内側のループで積算したi粒子への力積を書き戻す</span>
+    vpi = _mm256_set_pd(<span class="fl">0.0</span>, piz, piy, pix);
+    _mm256_store_pd(&amp;(p[i][<span class="dv">0</span>]), vpi);</code></pre></div>
+<p>ここで、i粒子の運動量を一時的に保持している<code>pix, piy, piz</code>は、SIMD化するループの「前」で、以下のように定義されている。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">__m256d vpi = _mm256_load_pd((<span class="dt">double</span> *)(p + i));
+<span class="dt">double</span> pix = vpi[X];
+<span class="dt">double</span> piy = vpi[Y];
+<span class="dt">double</span> piz = vpi[Z];</code></pre></div>
+<p>SIMD化する前は<code>pix, piy, piz</code>が更新されていたため、これをそのまま使えばよかったが、SIMD化後はこの値が全く更新されていないので、そのまま使うとSIMDループ内の更新がなかったことになってしまう。</p>
+<p>これを修正する方法はいくつかあるが、安直には<code>pix, piy, piz</code>の値を更新することだろう。端数ループの直線で以下のコードを追加する。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">pix = p[i][X];
+piy = p[i][Y];
+piz = p[i][Z];</code></pre></div>
+<p>これで<code>pix, piy, piz</code>にSIMD化ループで更新された値が入るので、「Check OK」となるはずだ。</p>
+<p>このあたりから、コンパイルすると「unused variable」の警告が出るかもしれない。これは「定義されたけど使われていない変数があるよ」というメッセージだ。例えば</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">double</span> df_0 = vdf[<span class="dv">0</span>];</code></pre></div>
+<p>などはもうSIMD化による不要になったので削除してかまわない。</p>
+<h3 id="ステップ4-転置">ステップ4: 転置</h3>
+<p>SIMD化の理想は、最も内側のループの計算を全てSIMDレジスタで行うことである。ここまでのステップでほとんど全ての計算がSIMD化されているが、最後、相対ベクトル</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">vdr_0 = (dx_0, dy_0, dz_0, <span class="dv">0</span>);
+vdr_1 = (dx_1, dy_1, dz_1, <span class="dv">0</span>);
+vdr_2 = (dx_2, dy_2, dz_2, <span class="dv">0</span>);
+vdr_3 = (dx_3, dy_3, dz_3, <span class="dv">0</span>);</code></pre></div>
+<p>から、相対距離の二乗のベクトル</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">vr2 = (vr_0, vr_1, vr_2, vr_3);</code></pre></div>
+<p>に持っていくところだけスカラーコードが残っている。ここをSIMD化するためには、まず、<code>vdr_0</code>～<code>vdr_3</code>を転置して、</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">vdx = (dx_0, dx_1, dx_2, dx_3);
+vdy = (dy_0, dy_1, dy_2, dy_3);
+vdz = (dz_0, dz_1, dz_2, dz_3);</code></pre></div>
+<p>を作ればよい。そうすれば、相対距離の二乗のベクトルは</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">vr2 = vdx * vdx + vdy * vdy + vdz * vdz;</code></pre></div>
+<p>として得られる。</p>
+<p><code>vdr_0, vdr_1, vdr_2, vdr_3</code>から<code>vdx, vdy, vdz</code>を得る変換が転置なのは、以下の図を見ればわかるだろう。</p>
+<div class="figure">
+<img src="fig/transpose.png" alt="transpose" />
+<p class="caption">transpose</p>
+</div>
+<p>なお、図では「下位ビットを右に書く」という約束があるため、ベクトルとして書いた時と逆になることに注意。</p>
+<p>転置をするためには、</p>
+<ul>
+<li><code>_mm256_unpacklo_pd</code> (UNPCKLPD)</li>
+<li><code>_mm256_unpackhi_pd</code> (UNPCKHPD)</li>
+<li><code>_mm256_permute2f128_pd</code> (vperm2f128)</li>
+</ul>
+<p>という三つの組み込み関数を駆使する。SIMDに慣れていない人がいきなり転置を書くのは難しいだろうから、最初にコードを書いてしまうと、以下のようにする。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">__m256d tmp0 = _mm256_unpacklo_pd(vdr_0, vdr_1);
+__m256d tmp1 = _mm256_unpackhi_pd(vdr_0, vdr_1);
+__m256d tmp2 = _mm256_unpacklo_pd(vdr_2, vdr_3);
+__m256d tmp3 = _mm256_unpackhi_pd(vdr_2, vdr_3);
+
+__m256d vdx = _mm256_permute2f128_pd(tmp0, tmp2, <span class="dv">2</span>*<span class="dv">16+1</span>*<span class="dv">0</span>);
+__m256d vdy = _mm256_permute2f128_pd(tmp1, tmp3, <span class="dv">2</span>*<span class="dv">16+1</span>*<span class="dv">0</span>);
+__m256d vdz = _mm256_permute2f128_pd(tmp0, tmp2, <span class="dv">3</span>*<span class="dv">16+1</span>*<span class="dv">1</span>);</code></pre></div>
+<p>最初の<code>unpacklo</code>と<code>unpackhi</code>は、二つのレジスタを互い違いに混ぜる命令だ。</p>
+<div class="figure">
+<img src="fig/unpacklohi.png" alt="unpacklo and hi" />
+<p class="caption">unpacklo and hi</p>
+</div>
+<p>これにより、x,y,z座標を二つずつまとめたレジスタ<code>tmp0, tmp1, tmp2, tmp3</code>を作る。</p>
+<p>次に使う、<code>permute2f128</code>は、128ビット(箱二つ)ごとの塊で、二つのレジスタを混ぜる命令である。二つのレジスタがあり、128ビットごとのまとまりで「どれを使うか」で4通り選ぶことができる。それを下位128ビット、上位128ビットそれぞれで選ぶ。下位128ビット(右側)としてどれを選ぶかの数字と、上位128ビット(左側)の選ぶ数字を16倍して足したものを第三引数<code>imm</code>に渡す。</p>
+<p>以下の図を見れば、なぜ与える数字が<code>2*16+0*1</code>や<code>3*16+1*1</code>になるのか理解できる・・・かもしれない。</p>
+<div class="figure">
+<img src="fig/permute2f128.png" alt="permute2f128.png" />
+<p class="caption">permute2f128.png</p>
+</div>
+<p>いずれにせよ、先ほどのSIMD命令を使うことで、<code>vdr_0, vdr_1, vdr_2, vdr_3</code>から<code>vdx, vdy, vdz</code>を作ることができた。そこから相対距離の二乗ベクトルを作るには</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">__m256d vr2 = vdx * vdx + vdy * vdy + vdz * vdz;</code></pre></div>
+<p>とすれば良かったから、最終的に書くべきコードは以下のようになる。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">__m256d tmp0 = _mm256_unpacklo_pd(vdr_0, vdr_1);
+__m256d tmp1 = _mm256_unpackhi_pd(vdr_0, vdr_1);
+__m256d tmp2 = _mm256_unpacklo_pd(vdr_2, vdr_3);
+__m256d tmp3 = _mm256_unpackhi_pd(vdr_2, vdr_3);
+
+__m256d vdx = _mm256_permute2f128_pd(tmp0, tmp2, <span class="dv">2</span>*<span class="dv">16+1</span>*<span class="dv">0</span>);
+__m256d vdy = _mm256_permute2f128_pd(tmp1, tmp3, <span class="dv">2</span>*<span class="dv">16+1</span>*<span class="dv">0</span>);
+__m256d vdz = _mm256_permute2f128_pd(tmp0, tmp2, <span class="dv">3</span>*<span class="dv">16+1</span>*<span class="dv">1</span>);
+
+__m256d vr2 = vdx * vdx + vdy * vdy + vdz * vdz;</code></pre></div>
+<p>これにより、以下のような相対座標の各要素を求めるコードや、</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">double</span> dx_0 = vdr_0[X];
+<span class="dt">double</span> dy_0 = vdr_0[Y];
+<span class="dt">double</span> dz_0 = vdr_0[Z];</code></pre></div>
+<p>以下のような相対座標から相対距離の二乗を求めるコードが不要となる。</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">double</span> r2_0 = dx_0 * dx_0 + dy_0 * dy_0 + dz_0 * dz_0;
+<span class="dt">double</span> r2_1 = dx_1 * dx_1 + dy_1 * dy_1 + dz_1 * dz_1;
+<span class="dt">double</span> r2_2 = dx_2 * dx_2 + dy_2 * dy_2 + dz_2 * dz_2;
+<span class="dt">double</span> r2_3 = dx_3 * dx_3 + dy_3 * dy_3 + dz_3 * dz_3;</code></pre></div>
+<p>これらをコメントアウトすることで、SIMD化したループ内に、<code>double</code>型の変数が全くなくなり、全ての計算を<code>__m256d</code>型の変数で行えるようになった。すなわち、内側のループはSIMD化率が100%となった。</p>
+<p>以上の修正をしたのち、コンパイル、実行してどのくらいの速度になった確認せよ。速度向上率はマシンやコンパイラのバージョンにも依存するが、最低でも2倍以上高速化された(実行時間が半分以下になった)はずである。</p>
+<h2 id="まとめ">まとめ</h2>
+<p>全粒子が相互作用する、いわゆる「カットオフ無し」のLennard-Jonesポテンシャル相互作用の力の計算をSIMD化した。最後の転置だけちょっと難しいが、それ以外は「面倒なだけで、やると決めれば単純作業」であることがわかるだろう。これがSIMD化である。SIMD化は難しくはない。しかし、SIMD化の方法に複数の選択肢がある時、事前にどれが最速か予想するのが難しいため、結局全部一度組んでみないといけないところが面倒である。</p>
 </article>
 </body>
 </html>
