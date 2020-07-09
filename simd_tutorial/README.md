@@ -612,7 +612,7 @@ double dz_0 = qjz_0 - qiz;
 
 ```cpp
 __m256d vqj_0 = _mm256_load_pd((double *)(q + j_0));
-__m256d vdr_0 = vqi - vqj_0;
+__m256d vdr_0 = vqj_0 - vqi;
 double dx_0 = vdr_0[X];
 double dy_0 = vdr_0[Y];
 double dz_0 = vdr_0[Z];

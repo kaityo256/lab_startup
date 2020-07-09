@@ -448,7 +448,7 @@ exit(<span class="dv">1</span>);</code></pre></div>
 <span class="dt">double</span> dz_0 = qjz_0 - qiz;</code></pre></div>
 <p>以下のコードに変換できる。</p>
 <div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">__m256d vqj_0 = _mm256_load_pd((<span class="dt">double</span> *)(q + j_0));
-__m256d vdr_0 = vqi - vqj_0;
+__m256d vdr_0 = vqj_0 - vqi;
 <span class="dt">double</span> dx_0 = vdr_0[X];
 <span class="dt">double</span> dy_0 = vdr_0[Y];
 <span class="dt">double</span> dz_0 = vdr_0[Z];</code></pre></div>
