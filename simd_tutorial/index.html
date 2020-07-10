@@ -478,7 +478,7 @@ vdr_3 = (dx_3, dy_3, dz_3, <span class="dv">0</span>);</code></pre></div>
 <span class="dt">double</span> df = (<span class="fl">24.0</span> * r6 - <span class="fl">48.0</span>) / (r6 * r6 * r2) * dt;</code></pre></div>
 <p>という計算をSIMDで行う。後の便利のために、<code>dt</code>を定数に分けてかけておこう。</p>
 <div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">double</span> r6 = r2 * r2 * r2;
-<span class="dt">double</span> df = (<span class="fl">24.0</span> * dt * r6 - <span class="fl">48.0</span> * dt) / (r6 * r6 * r2) * dt;</code></pre></div>
+<span class="dt">double</span> df = (<span class="fl">24.0</span> * dt * r6 - <span class="fl">48.0</span> * dt) / (r6 * r6 * r2);</code></pre></div>
 <p>定数<code>24 * dt</code>、<code>48 * dt</code>をかける部分があるが、これは<code>(24.0 * dt, 24.0 * dt, 24.0 * dt, 24.0 * dt)</code>といった四成分同じベクトルを用意してかけることになる。これを定数として定義しておこう。</p>
 <div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="at">const</span> __m256d vc24 = _mm256_set_pd(<span class="dv">24</span> * dt, <span class="dv">24</span> * dt, <span class="dv">24</span> * dt, <span class="dv">24</span> * dt);
 <span class="at">const</span> __m256d vc48 = _mm256_set_pd(<span class="dv">48</span> * dt, <span class="dv">48</span> * dt, <span class="dv">48</span> * dt, <span class="dv">48</span> * dt);</code></pre></div>
