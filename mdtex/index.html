@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+
+<style>
+  .markdown-body {
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 45px;
+  }
+  p.caption{
+    display:none;
+  }
+  img {width: 100%}
+
+  @media (max-width: 767px) {
+    .markdown-body {
+      padding: 15px;
+    }
+  }
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://kaityo256.github.io/sevendayshpc/github-markdown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<article class="markdown-body">
+<h1 id="markdown記法とlatex記法">Markdown記法とLaTeX記法</h1>
+<h2 id="markdown記法">Markdown記法</h2>
+<p>もともとはプレーンテキストをHTMLに変換することを目的として作られた「マークアップ言語」の一つ。様々な拡張がなされ、今ではPDF他、様々な形式に変換できる。方言が多いのが特徴(問題)。</p>
+<h3 id="見出し">見出し</h3>
+<ul>
+<li><code>#</code></li>
+<li><code>##</code></li>
+<li><code>###</code></li>
+</ul>
+<p>VSCodeではアウトラインとして表示される。</p>
+<h3 id="番号つきリスト">番号つきリスト</h3>
+<p>「行頭に数字＋ピリオド」で番号付きリストを作ることができる。</p>
+<ol style="list-style-type: decimal">
+<li>One</li>
+<li>Two</li>
+<li>Three</li>
+</ol>
+<p>Markdownに書く番号そのものは無視される。</p>
+<ol style="list-style-type: decimal">
+<li>One</li>
+<li>Two</li>
+<li>Three</li>
+</ol>
+<p>インデントすることで入れ子にできる。</p>
+<ol style="list-style-type: decimal">
+<li>One
+<ol style="list-style-type: decimal">
+<li>Hey</li>
+<li>Hi!</li>
+</ol></li>
+<li>Two
+<ol style="list-style-type: decimal">
+<li>Hey</li>
+<li>Hi!</li>
+</ol></li>
+</ol>
+<h3 id="番号無しリスト">番号無しリスト</h3>
+<p>名Bullet listとも。行頭に<code>*</code>か<code>-</code>をつけることでリストを作ることができる。<code>*</code>と<code>-</code>は混ぜても良い(推奨しないが)。</p>
+<ul>
+<li>Hey</li>
+<li>Hi</li>
+<li>Hello</li>
+</ul>
+<p>インデントすることで入れ子にすることもできる。</p>
+<ul>
+<li>Hey</li>
+<li>Hey</li>
+<li>Hey</li>
+<li>Hey</li>
+</ul>
+<p>番号つきリストと混ぜることもできる。</p>
+<ol style="list-style-type: decimal">
+<li>One
+<ul>
+<li>O</li>
+<li>n</li>
+<li>e</li>
+</ul></li>
+<li>Two
+<ul>
+<li>T</li>
+<li>w</li>
+<li>o</li>
+</ul></li>
+</ol>
+<h3 id="リンク">リンク</h3>
+<p><code>[テキスト](URL)</code>の形でリンクを作ることができる。</p>
+<p><a href="https://www.yahoo.co.jp">Yahoo</a></p>
+<h3 id="画像">画像</h3>
+<p><code>![テキスト](URL)</code>の形で画像を表示することができる。</p>
+<p><a href="https://www.google.co.jp">Google</a>に行って、ロゴのURLをコピーして、以下の作成せよ。</p>
+<div class="figure">
+<img src="https://www.google.co.jp/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" alt="Google" />
+<p class="caption">Google</p>
+</div>
+<p>画像はローカルファイルも表示できる。</p>
+<h3 id="コードブロック">コードブロック</h3>
+<p>バッククォートを三つ続けたもので囲んだものはコードブロックとなる。最初のバッククォートの後に言語名を書くと、シンタックスハイライトされる場合がある。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">if</span> a<span class="op">==</span><span class="dv">0</span>:
+    <span class="bu">print</span>(<span class="st">&quot;Hello Python&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="cf">if</span> ( a==<span class="dv">0</span> ){
+    printf(<span class="st">&quot;Hello C++</span><span class="sc">\n</span><span class="st">&quot;</span>);
+}</code></pre></div>
+<h3 id="インライン要素">インライン要素</h3>
+<p>文の中に埋め込める要素をインライン要素と呼ぶ。</p>
+<p><code>*</code>で囲むと強調(イタリック) <em>強調</em></p>
+<p><code>**</code> で囲むと強調(ボールド) <strong>強調</strong></p>
+<p><code>~~</code>で囲むと打ち消し <del>打ち消し</del></p>
+<p><code>`</code>で囲むとコードブロック <code>Ruby</code></p>
+<h2 id="数式">数式</h2>
+<p><code>$</code> で囲むとインライン数式 <span class="math inline">\(E=mc^2\)</span></p>
+<p><code>$$</code>で囲むとブロックの数式</p>
+<p><span class="math display">\[
+E=mc^2
+\]</span></p>
+<h2 id="latex記法">LaTeX記法</h2>
+<p>LaTeXとは「組版システム」である。多くの論文がLaTeXかWordで書かれている。LaTeXは、テキストで記述されたものを印刷に向いた形式に変換するためのシステムだが、その中に数式を表現する記法があり、便利なのでLaTeXから離れて使われるようになっている。</p>
+<p>以下、LaTeXの数式記述について簡単に紹介する。</p>
+<h3 id="基本">基本</h3>
+<p>アルファベットをそのまま書くとイタリックになる。通常、変数はイタリックで表示する。</p>
+<p><span class="math display">\[
+abcdefg
+\]</span></p>
+<p><code>^</code>で上付き、<code>_</code>で下付き文字が表現できる。</p>
+<p><span class="math display">\[
+a^2
+\]</span></p>
+<p><span class="math display">\[
+x_i
+\]</span></p>
+<p>二文字以上を上付き、下付きにしたい場合は中カッコで囲む。</p>
+<p><span class="math display">\[
+a^12
+\]</span></p>
+<p><span class="math display">\[
+a^{12}
+\]</span></p>
+<p>LaTeXは、バックスラッシュから始まるコマンドをもつ。例えばギリシャ文字が入力できる。</p>
+<p><span class="math display">\[
+\alpha
+\beta
+\gamma
+\delta
+\zeta
+\eta
+\theta
+\]</span></p>
+<p>最初を大文字にすると、大文字のギリシャ文字が入力できる。</p>
+<p><span class="math display">\[
+\Alpha
+\Beta
+\Gamma
+\Delta
+\Zeta
+\Eta
+\Theta
+\]</span></p>
+<p><code>\mathrm{}</code>で囲むと立体になる。</p>
+<p><span class="math display">\[
+a \mathrm{a}
+\]</span></p>
+<p>数式において、「変数は斜体、意味のある言葉は立体」という約束がある。</p>
+<p>例えばi番目の粒子のx座標であれば</p>
+<p><span class="math display">\[
+x_i
+\]</span></p>
+<p>とするが、「等温環境(isothermal)」な状況における物理量A、という意味であれば</p>
+<p><span class="math display">\[
+A_\mathrm{i}
+\]</span></p>
+<p>とiを立体にする(iは意味のある言葉だから)</p>
+<p>同様に、sin, cos等の関数も立体にする。通常は<code>\sin</code>, <code>\cos</code>などとする。</p>
+<p><span class="math display">\[
+\sin
+\cos
+\]</span></p>
+<p>分数</p>
+<p><span class="math display">\[
+\frac{a}{b}
+\]</span></p>
+<p>カッコ</p>
+<p><span class="math display">\[
+(\frac{a}{b})
+\]</span></p>
+<p><span class="math display">\[
+\left( \frac{a}{b} \right)
+\]</span></p>
+<p><span class="math display">\[
+\left[ \frac{a}{b} \right]
+\]</span></p>
+<p>カッコの片方をなくす場合はピリオド</p>
+<p><span class="math display">\[
+\left( \frac{a}{b} \right.
+\]</span></p>
+<p><span class="math display">\[
+\left. \frac{a}{b} \right|_a=1
+\]</span></p>
+<p>数式の=を揃える</p>
+<p><span class="math display">\[
+\begin{aligned}
+x &amp;= y \\
+&amp;= z
+\end{aligned}
+\]</span></p>
+<p>行列</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+a &amp; b\\
+c &amp; d
+\end{pmatrix}
+\]</span></p>
+<p><span class="math display">\[
+\begin{bmatrix}
+a &amp; b\\
+c &amp; d
+\end{bmatrix}
+\]</span></p>
+<p>和</p>
+<p><span class="math display">\[
+\sum_i^N x_i
+\]</span></p>
+<p>あとは適当にググること。</p>
+</article>
+</body>
+</html>
