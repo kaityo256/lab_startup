@@ -73,29 +73,56 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <body>
 <article class="markdown-body">
 <h1 id="markdown記法とlatex記法">Markdown記法とLaTeX記法</h1>
+<h2 id="準備">準備</h2>
+<p>VSCodeを開き、<code>test.md</code>という名前でファイルを新規作成せよ。拡張機能(Shift+Ctrl+X)で、「Markdown+Math」をインストールせよ。その状態で、</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="ss">$$</span>
+<span class="ss">E = mc^2</span>
+<span class="ss">$$</span></code></pre></div>
+<p>と入力し、「Ctrl+K, V (Ctrl+Kを押してから、Ctrlを離してV)」もしくは、コマンドパレットから「Markdown: プレビューを横に表示」を入力せよ。</p>
+<p>拡張機能が正しくインストールされていれば、以下の画面のように右側に数式が表示されたはずだ。</p>
+<div class="figure">
+<img src="fig/tex_preview.png" alt="tex_preview" />
+<p class="caption">tex_preview</p>
+</div>
+<p>以下、VSCodeでプレビューを見ながらMarkdownやLaTeX記法を書いてみる。</p>
 <h2 id="markdown記法">Markdown記法</h2>
-<p>もともとはプレーンテキストをHTMLに変換することを目的として作られた「マークアップ言語」の一つ。様々な拡張がなされ、今ではPDF他、様々な形式に変換できる。方言が多いのが特徴(問題)。</p>
+<p>もともとはプレーンテキストをHTMLに変換することを目的として作られた「マークアップ言語」の一つ。様々な拡張がなされ、今ではPDF他、様々な形式に変換できる。方言が多いのが特徴(問題)。GitHubではMarkdownはHTMLに変換して表示されるため、ドキュメントのデファクトスタンダードになっている。ただし、GitHubではMarkdown中の数式は表示されないので注意。</p>
 <h3 id="見出し">見出し</h3>
-<ul>
-<li><code>#</code></li>
-<li><code>##</code></li>
-<li><code>###</code></li>
-</ul>
-<p>VSCodeではアウトラインとして表示される。</p>
+<p><code>#</code>ではじまる文章は見出しになる。<code>#</code>、<code>##</code>など、<code>#</code>の数で見出しのレベルを表現する。 上の「見出し」は</p>
+<div class="sourceCode"><pre class="sourceCode md"><code class="sourceCode markdown"><span class="fu">### 見出し</span></code></pre></div>
+<p>と書いてある。</p>
+<p>見出しは、VSCodeではアウトラインとして表示される。アウトラインの表示順は「名前」や「位置」があるが、通常は「位置」でソートした方がわかりやすい。</p>
+<div class="figure">
+<img src="fig/outline.png" alt="outline" />
+<p class="caption">outline</p>
+</div>
 <h3 id="番号つきリスト">番号つきリスト</h3>
 <p>「行頭に数字＋ピリオド」で番号付きリストを作ることができる。</p>
+<div class="sourceCode"><pre class="sourceCode md"><code class="sourceCode markdown">1. <span class="fl">One</span>
+<span class="fl">2. Two</span>
+<span class="fl">3. Three</span></code></pre></div>
 <ol style="list-style-type: decimal">
 <li>One</li>
 <li>Two</li>
 <li>Three</li>
 </ol>
 <p>Markdownに書く番号そのものは無視される。</p>
+<div class="sourceCode"><pre class="sourceCode md"><code class="sourceCode markdown">1. <span class="fl">One</span>
+<span class="fl">1. Two</span>
+<span class="fl">1. Three</span></code></pre></div>
+<p>上記のように書いても以下のように表示される。</p>
 <ol style="list-style-type: decimal">
 <li>One</li>
 <li>Two</li>
 <li>Three</li>
 </ol>
 <p>インデントすることで入れ子にできる。</p>
+<div class="sourceCode"><pre class="sourceCode md"><code class="sourceCode markdown">1. <span class="fl">One</span>
+<span class="fl">    1. Hey</span>
+<span class="fl">    1. Hi!</span>
+<span class="fl">1. Two</span>
+<span class="fl">    1. Hey</span>
+<span class="fl">    2. Hi!</span></code></pre></div>
 <ol style="list-style-type: decimal">
 <li>One
 <ol style="list-style-type: decimal">
@@ -110,12 +137,19 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ol>
 <h3 id="番号無しリスト">番号無しリスト</h3>
 <p>名Bullet listとも。行頭に<code>*</code>か<code>-</code>をつけることでリストを作ることができる。<code>*</code>と<code>-</code>は混ぜても良い(推奨しないが)。</p>
+<div class="sourceCode"><pre class="sourceCode md"><code class="sourceCode markdown">* <span class="fl">Hey</span>
+<span class="fl">- Hi</span>
+<span class="fl">* Hello</span></code></pre></div>
 <ul>
 <li>Hey</li>
 <li>Hi</li>
 <li>Hello</li>
 </ul>
 <p>インデントすることで入れ子にすることもできる。</p>
+<div class="sourceCode"><pre class="sourceCode md"><code class="sourceCode markdown">* <span class="fl">Hey</span>
+<span class="fl">   * Hey</span>
+<span class="fl">- Hey</span>
+<span class="fl">   - Hey</span></code></pre></div>
 <ul>
 <li>Hey</li>
 <li>Hey</li>
@@ -123,6 +157,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>Hey</li>
 </ul>
 <p>番号つきリストと混ぜることもできる。</p>
+<div class="sourceCode"><pre class="sourceCode md"><code class="sourceCode markdown">1. <span class="fl">One</span>
+<span class="fl">    * O</span>
+<span class="fl">    * n</span>
+<span class="fl">    * e</span>
+<span class="fl">2. Two</span>
+<span class="fl">    * T</span>
+<span class="fl">    * w</span>
+<span class="fl">    * o</span></code></pre></div>
 <ol style="list-style-type: decimal">
 <li>One
 <ul>
@@ -139,10 +181,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ol>
 <h3 id="リンク">リンク</h3>
 <p><code>[テキスト](URL)</code>の形でリンクを作ることができる。</p>
+<div class="sourceCode"><pre class="sourceCode md"><code class="sourceCode markdown"><span class="ot">[Yahoo](https://www.yahoo.co.jp)</span></code></pre></div>
 <p><a href="https://www.yahoo.co.jp">Yahoo</a></p>
 <h3 id="画像">画像</h3>
 <p><code>![テキスト](URL)</code>の形で画像を表示することができる。</p>
-<p><a href="https://www.google.co.jp">Google</a>に行って、ロゴのURLをコピーして、以下の作成せよ。</p>
+<p><a href="https://www.google.co.jp">Google</a>に行って、ロゴのURLをコピーして、以下を入力せよ。</p>
+<div class="sourceCode"><pre class="sourceCode md"><code class="sourceCode markdown"><span class="al">![Google](https://www.google.co.jp/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png)</span></code></pre></div>
+<p>以下のように表示されるはずだ。</p>
 <div class="figure">
 <img src="https://www.google.co.jp/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" alt="Google" />
 <p class="caption">Google</p>
@@ -172,24 +217,49 @@ E=mc^2
 <p>以下、LaTeXの数式記述について簡単に紹介する。</p>
 <h3 id="基本">基本</h3>
 <p>アルファベットをそのまま書くとイタリックになる。通常、変数はイタリックで表示する。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">abcdefg</code></pre></div>
 <p><span class="math display">\[
 abcdefg
 \]</span></p>
 <p><code>^</code>で上付き、<code>_</code>で下付き文字が表現できる。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">a^2</code></pre></div>
 <p><span class="math display">\[
 a^2
 \]</span></p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">x_i</code></pre></div>
 <p><span class="math display">\[
 x_i
 \]</span></p>
-<p>二文字以上を上付き、下付きにしたい場合は中カッコで囲む。</p>
+<p>二文字以上を上付き、下付きにしたい場合は中括弧で囲む。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">a^12</code></pre></div>
+<p>この例では、最初の1だけが上になり、<code>a^1 * 2</code>の意味になってしまう。</p>
 <p><span class="math display">\[
 a^12
 \]</span></p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">a^{12}</code></pre></div>
+<p>こうすればaの12乗の意味になる。</p>
 <p><span class="math display">\[
 a^{12}
 \]</span></p>
+<p>上付きと下付きを同時につけることもできる。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">x_i^2</code></pre></div>
+<p><span class="math display">\[
+x_i^2
+\]</span></p>
+<p><code>^</code>と<code>_</code>の順序はどちらでも良い。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">x^2_i</code></pre></div>
+<p><span class="math display">\[
+x^2_i
+\]</span></p>
+<h3 id="コマンド">コマンド</h3>
 <p>LaTeXは、バックスラッシュから始まるコマンドをもつ。例えばギリシャ文字が入力できる。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="fu">\alpha</span>
+<span class="fu">\beta</span>
+<span class="fu">\gamma</span>
+<span class="fu">\delta</span>
+<span class="fu">\zeta</span>
+<span class="fu">\eta</span>
+<span class="fu">\theta</span></code></pre></div>
 <p><span class="math display">\[
 \alpha
 \beta
@@ -200,6 +270,13 @@ a^{12}
 \theta
 \]</span></p>
 <p>最初を大文字にすると、大文字のギリシャ文字が入力できる。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="fu">\Alpha</span>
+<span class="fu">\Beta</span>
+<span class="fu">\Gamma</span>
+<span class="fu">\Delta</span>
+<span class="fu">\Zeta</span>
+<span class="fu">\Eta</span>
+<span class="fu">\Theta</span></code></pre></div>
 <p><span class="math display">\[
 \Alpha
 \Beta
@@ -209,54 +286,164 @@ a^{12}
 \Eta
 \Theta
 \]</span></p>
-<p><code>\mathrm{}</code>で囲むと立体になる。</p>
+<p>その他、様々な記号がある。</p>
+<p>右向き矢印。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="fu">\rightarrow</span></code></pre></div>
+<p><span class="math display">\[
+\rightarrow
+\]</span></p>
+<p>点。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">a, b, <span class="fu">\cdots</span>, z</code></pre></div>
+<p><span class="math display">\[
+a, b, \cdots, z
+\]</span></p>
+<p>記号類で、「無限」は<code>\infinity</code>ではなく<code>\infty</code>などで注意。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="fu">\infty</span></code></pre></div>
+<p><span class="math display">\[
+\infty
+\]</span></p>
+<h3 id="修飾">修飾</h3>
+<p>頭に点を打つ。時間微分でよく使う。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="fu">\dot</span>{x}</code></pre></div>
+<p><span class="math display">\[
+\dot{x}
+\]</span></p>
+<p>二つ点を打つ(時間の二階微分など)。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="fu">\ddot</span>{x}</code></pre></div>
+<p><span class="math display">\[
+\ddot{x}
+\]</span></p>
+<p>頭に矢印をつけてベクトルにする。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="fu">\vec</span>{x}</code></pre></div>
+<p><span class="math display">\[
+\vec{x}
+\]</span></p>
+<p>その他ハットをつけるなど、大量にコマンドがあるので、必要に応じて調べること。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="fu">\hat</span>{x}</code></pre></div>
+<p><span class="math display">\[
+\hat{x}
+\]</span></p>
+<h3 id="積分記号など">積分記号など</h3>
+<p><code>\int</code>で積分記号を表示できる。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">F(x) = <span class="fu">\int</span> f(x) <span class="fu">\mathrm</span>{d} x</code></pre></div>
+<p><span class="math display">\[
+F(x) = \int f(x) \mathrm{d} x
+\]</span></p>
+<p>積分範囲は、下付き文字と上付き文字で表現できる。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="fu">\int</span>_{-<span class="fu">\infty</span>}^{<span class="fu">\infty</span>} <span class="fu">\mathrm</span>{e}^{-x^2} <span class="fu">\mathrm</span>{d} x = <span class="fu">\sqrt</span>{<span class="fu">\pi</span>}</code></pre></div>
+<p><span class="math display">\[
+\int_{-\infty}^{\infty} \mathrm{e}^{-x^2} \mathrm{d} x = \sqrt{\pi}
+\]</span></p>
+<p><code>\sum</code>で和を表現できる。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">f(x+h) = <span class="fu">\sum</span>_{k=0}^<span class="fu">\infty</span> <span class="fu">\frac</span>{h^k f^{k}(x)}{k!} </code></pre></div>
+<p><span class="math display">\[
+f(x+h) = \sum_{k=0}^\infty \frac{h^k f^{k}(x)}{k!} 
+\]</span></p>
+<p><code>\prod</code>で積も表現できる。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="fu">\prod</span>_i x_i</code></pre></div>
+<p><span class="math display">\[
+\prod_i x_i
+\]</span></p>
+<h3 id="立体と斜体">立体と斜体</h3>
+<p>LaTeXの数式では、デフォルトでは斜体になるが、<code>\mathrm{}</code>で囲むと立体になる。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">a <span class="fu">\mathrm</span>{a}</code></pre></div>
+<p>この例では、最初が斜体、次が立体になる。</p>
 <p><span class="math display">\[
 a \mathrm{a}
 \]</span></p>
 <p>数式において、「変数は斜体、意味のある言葉は立体」という約束がある。</p>
 <p>例えばi番目の粒子のx座標であれば</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">x_i</code></pre></div>
 <p><span class="math display">\[
 x_i
 \]</span></p>
-<p>とするが、「等温環境(isothermal)」な状況における物理量A、という意味であれば</p>
+<p>とiは斜体にするが、「等温環境(isothermal)」な状況における物理量A、という意味であれば</p>
 <p><span class="math display">\[
 A_\mathrm{i}
 \]</span></p>
-<p>とiを立体にする(iは意味のある言葉だから)</p>
-<p>同様に、sin, cos等の関数も立体にする。通常は<code>\sin</code>, <code>\cos</code>などとする。</p>
+<p>とiを立体にする(iは意味のある言葉だから)。</p>
+<p>sin, cos等の関数も立体にする。通常は<code>\sin</code>, <code>\cos</code>などコマンドを使う。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="fu">\sin</span>(x) <span class="fu">\cos</span>(x)</code></pre></div>
 <p><span class="math display">\[
-\sin
-\cos
+\sin(x) \cos(x)
 \]</span></p>
-<p>分数</p>
+<p>これは</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">sin(x) cos(x)</code></pre></div>
+<p>とコマンドを使わずに書いてしまうと意味が異なるばかりか</p>
+<p><span class="math display">\[
+sin(x) cos(x)
+\]</span></p>
+<p>と、かなり見栄えが悪くなるのでちゃんとしたい。</p>
+<p>ネイピア数のeも立体にする。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="fu">\mathrm</span>{e}^x</code></pre></div>
+<p><span class="math display">\[
+\mathrm{e}^x
+\]</span></p>
+<p>ネイピア数を立体で書くかどうかは国や分野による。面倒なので<code>e^x</code>と書いてしまうことも多い。論文を投稿する際には、その論文誌の規定に従うこと。</p>
+<p>微分のdも意味のある文字なので、例えば積分は</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">F(x) = <span class="fu">\int</span> f(x) <span class="fu">\mathrm</span>{d} x</code></pre></div>
+<p><span class="math display">\[
+F(x) = \int f(x) \mathrm{d} x
+\]</span></p>
+<p>と、dxのdだけ立体にする(分野もある)。それに従うと例えば微分も</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="fu">\frac</span>{<span class="fu">\mathrm</span>{d} y}{<span class="fu">\mathrm</span>{d} x}</code></pre></div>
+<p><span class="math display">\[
+\frac{\mathrm{d} y}{\mathrm{d} x}
+\]</span></p>
+<p>などと書かなければならず、面倒なので気にしない場合もある。少なくともWikipediaでは微分のdもネイピア数のeも立体にしていないようだ。繰り返しになるが、論文を投稿する際には論文誌の規定に従うこと。</p>
+<h3 id="括弧の大きさと対応">括弧の大きさと対応</h3>
+<p><code>\frac{分子}{分母}</code>により、分数を表現できる。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="fu">\frac</span>{a}{b}</code></pre></div>
 <p><span class="math display">\[
 \frac{a}{b}
 \]</span></p>
-<p>カッコ</p>
+<p>分数をそのまま括弧で囲むと大きさが合わず見栄えがわるくなる。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">(<span class="fu">\frac</span>{a}{b})</code></pre></div>
 <p><span class="math display">\[
 (\frac{a}{b})
 \]</span></p>
+<p>このような場合、<code>\left(</code>と<code>\right)</code>で囲むことで、括弧の大きさが自動調整される。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="fu">\left</span>( <span class="fu">\frac</span>{a}{b} <span class="fu">\right</span>)</code></pre></div>
+<p>括弧は丸括弧だけでなく角括弧なども利用できる。</p>
 <p><span class="math display">\[
 \left( \frac{a}{b} \right)
 \]</span></p>
 <p><span class="math display">\[
 \left[ \frac{a}{b} \right]
 \]</span></p>
-<p>カッコの片方をなくす場合はピリオド</p>
+<p>括弧の片方をなくす場合は、<code>\right.</code>などと、括弧の代わりにピリオドを打つ</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="fu">\left</span>( <span class="fu">\frac</span>{a}{b} <span class="fu">\right</span>.</code></pre></div>
 <p><span class="math display">\[
 \left( \frac{a}{b} \right.
 \]</span></p>
+<p>これは、微分に値を代入する時などに使う。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="fu">\left</span>. <span class="fu">\frac</span>{dy}{dx} <span class="fu">\right</span>|_{x=1}</code></pre></div>
 <p><span class="math display">\[
-\left. \frac{a}{b} \right|_a=1
+\left. \frac{dy}{dx} \right|_{x=1}
 \]</span></p>
-<p>数式の=を揃える</p>
+<h3 id="環境">環境</h3>
+<p>環境とは<code>\begin{環境名}</code>と<code>\end{環境名}</code>で囲まれた領域である。</p>
+<p>式変形をする時など、=を縦に揃えたい時がある。その場合は<code>aligned</code>環境を使う。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="kw">\begin</span>{<span class="ex">aligned</span>}
+(x+y)^2 &amp;= (x+y) (x+y) <span class="fu">\\</span>
+&amp;= x(x+y) + y (x+y) <span class="fu">\\</span>
+&amp;= x^2 + xy + yx + y^2 <span class="fu">\\</span>
+&amp;= x^2 + 2xy+y^2
+<span class="kw">\end</span>{<span class="ex">aligned</span>}</code></pre></div>
+<p><code>\\</code>で改行され、表示されない<code>&amp;</code>が縦に揃うようにレイアウトされる。</p>
 <p><span class="math display">\[
 \begin{aligned}
-x &amp;= y \\
-&amp;= z
+(x+y)^2 &amp;= (x+y) (x+y) \\
+&amp;= x(x+y) + y (x+y) \\
+&amp;= x^2 + xy + yx + y^2 \\
+&amp;= x^2 + 2xy+y^2
 \end{aligned}
 \]</span></p>
-<p>行列</p>
+<p>行列は<code>patrix</code>環境を使う。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="kw">\begin</span>{<span class="ex">pmatrix</span>}
+<span class="ss">a &amp; b</span><span class="sc">\\</span>
+<span class="ss">c &amp; d</span>
+<span class="kw">\end</span>{<span class="ex">pmatrix</span>}</code></pre></div>
 <p><span class="math display">\[
 \begin{pmatrix}
 a &amp; b\\
@@ -269,11 +456,7 @@ a &amp; b\\
 c &amp; d
 \end{bmatrix}
 \]</span></p>
-<p>和</p>
-<p><span class="math display">\[
-\sum_i^N x_i
-\]</span></p>
-<p>あとは適当にググること。</p>
+<p>必要なものはたいていあるので、後は適当にググること。</p>
 </article>
 </body>
 </html>
