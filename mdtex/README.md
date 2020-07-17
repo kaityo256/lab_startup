@@ -300,23 +300,13 @@ $$
 最初を大文字にすると、大文字のギリシャ文字が入力できる。
 
 ```tex
-\Alpha
-\Beta
 \Gamma
 \Delta
-\Zeta
-\Eta
-\Theta
 ```
 
 $$
-\Alpha
-\Beta
 \Gamma
 \Delta
-\Zeta
-\Eta
-\Theta
 $$
 
 その他、様々な記号がある。
@@ -331,7 +321,7 @@ $$
 \rightarrow
 $$
 
-点。
+点々。
 
 ```tex
 a, b, \cdots, z
@@ -341,7 +331,7 @@ $$
 a, b, \cdots, z
 $$
 
-記号類で、「無限」は`\infinity`ではなく`\infty`などで注意。
+記号類も多数あるので適宜調べれば良いが、「無限」は`\infinity`ではなく`\infty`なので注意。
 
 ```tex
 \infty
