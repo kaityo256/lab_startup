@@ -15,6 +15,7 @@
 
 ## 開発編
 
+* [Vimの使い方](vim/README.md)
 * [gnuplotの使い方](gnuplot/README.md)
 * [GitHubのフォークとLAMMPS](github_lammps/README.md)
 * [GNU Makeの使い方](make/README.md)
