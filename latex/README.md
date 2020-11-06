@@ -14,3 +14,4 @@ PCにLaTeXの処理系をインストールし、実行できるようにする�
 
 [ミラーサイト](https://texwiki.texjp.org/?MacTeX#mirror)からMacTex.pkgをダウンロードする。どこでも良いが、例えばJ[AISTのサイト](http://ftp.jaist.ac.jp/pub/CTAN/systems/mac/mactex/)からダウンロードすると良いだろう。
 
+ダウンロードしたMacTex.pkgをダブルクリックし、「続ける」「同意する」「インストール」などのボタンを押していけばインストールが始まる。
