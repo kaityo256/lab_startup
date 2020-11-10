@@ -137,13 +137,15 @@ dvipdfmx testj.dvi
 
 ### latexmkのセットアップ
 
-ホームディレクトリに、以下の内容の`.latexmkrc`ファイルを作成する。端末を開き、`cd`でホームディレクトリに移動してから、
+さて、LaTeXは、リファレンスの解決、目次の作成などで何度かコンパイルする必要がある。また、PDFにするのにいちいち`dvipdfmx`を呼び出すのも面倒だ。そこで`latexmk`というツールを使ってコンパイルとPDF作成を自動化する。そのための設定ファイルを作ろう。
+
+ホームディレクトリに、以下の内容の`.latexmkrc`ファイルを作成する。端末を開き、ホームディレクトリで
 
 ```sh
 code .latexmkrc
 ```
 
-でVS Codeを開いて、以下をコピペして保存せよ。
+を実行してVS Codeを開いて、以下をコピペして保存せよ。
 
 ```perl
 #!/usr/bin/env perl
@@ -154,3 +156,62 @@ $makeindex = 'memindex %O -o %D %S';
 $pdf_mode = 3;
 $dvipdf = 'dvipdfmx %O -o %D %S';
 ```
+
+この状態で、先程作った　`testj.tex`のあるディレクトリに移動し、`testj.dvi`と`testj.pdf`を削除してから`latexmk`を実行してみよう。
+
+```sh
+rm -f testj.dvi testj.pdf
+latexmk testj
+```
+
+一気にPDFまで作成されるはずだ。
+
+## VS Codeの設定
+
+次にVS CodeからTeXをコンパイル、プレビューできるようにしよう。まず、拡張機能「LaTeX Workshop」をインストールせよ。拡張機能のメニューを開き、「latex」で検索するとLaTeX Workshopが表示されるはずなので、「インストール」をクリックする。
+
+「Code」メニューの「基本設定」→「設定」から設定メニューを開く。そこで「latex.tools」と検索すると「Latex-workshop › Latex: Tools」が見つかるので、その下にある「setting.jsonで編集」をクリック。
+
+![latex-tools](fig/latex_tools.png)
+
+すると、以下のような設定が見つかる。
+
+```json
+    "latex-workshop.latex.tools": [
+        {
+            "name": "latexmk",
+            "command": "latexmk",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-pdf",
+                "-outdir=%OUTDIR%",
+                "%DOC%"
+            ],
+            "env": {}
+        },
+```
+
+このうち、"args"の項目を全て削除して保存する。
+
+```json
+    "latex-workshop.latex.tools": [
+        {
+            "name": "latexmk",
+            "command": "latexmk",
+            "env": {}
+        },
+```
+
+この状態で、この状態で、先程作った`testj.tex`をVS Codeで開こう。TeXファイルを開いた状態で「保存」をするとビルドが走る。なお、Macでは保存時に「Formatting failed. Please refer to LaTeX Workshop Output for details.」というエラーが出ることがある。その場合はターミナルで
+
+```sh
+cpan install Log::Log4perl
+```
+
+を実行すると直る場合がある。
+
+無事にビルドが走ったら、PDFをプレビューをしよう。コマンドパレットから「LaTeX Workshop: View LaTeX PDF file」を選ぶか、WindowsならCtrl+Alt+V，MacならCmd+alt+Vで、右側にPDFが表示される。
+
+以後、TeXソースファイルを修正し、保存するたびにプレビューが更新される。

@@ -162,6 +162,56 @@ E = mc^2
 <img src="fig/testj_pdf.png" alt="testj_pdf.png" />
 <p class="caption">testj_pdf.png</p>
 </div>
+<h3 id="latexmkのセットアップ">latexmkのセットアップ</h3>
+<p>さて、LaTeXは、リファレンスの解決、目次の作成などで何度かコンパイルする必要がある。また、PDFにするのにいちいち<code>dvipdfmx</code>を呼び出すのも面倒だ。そこで<code>latexmk</code>というツールを使ってコンパイルとPDF作成を自動化する。そのための設定ファイルを作ろう。</p>
+<p>ホームディレクトリに、以下の内容の<code>.latexmkrc</code>ファイルを作成する。端末を開き、ホームディレクトリで</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">code</span> .latexmkrc</code></pre></div>
+<p>を実行してVS Codeを開いて、以下をコピペして保存せよ。</p>
+<div class="sourceCode"><pre class="sourceCode perl"><code class="sourceCode perl"><span class="kw">#!/usr/bin/env perl</span>
+
+<span class="dt">$latex</span> = <span class="kw">&#39;</span><span class="st">platex -synctex=1 %O %S</span><span class="kw">&#39;</span>;
+<span class="dt">$bibtex</span> = <span class="kw">&#39;</span><span class="st">pbibtex %O %B</span><span class="kw">&#39;</span>;
+<span class="dt">$makeindex</span> = <span class="kw">&#39;</span><span class="st">memindex %O -o %D %S</span><span class="kw">&#39;</span>;
+<span class="dt">$pdf_mode</span> = <span class="dv">3</span>;
+<span class="dt">$dvipdf</span> = <span class="kw">&#39;</span><span class="st">dvipdfmx %O -o %D %S</span><span class="kw">&#39;</span>;</code></pre></div>
+<p>この状態で、先程作った　<code>testj.tex</code>のあるディレクトリに移動し、<code>testj.dvi</code>と<code>testj.pdf</code>を削除してから<code>latexmk</code>を実行してみよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">rm</span> -f testj.dvi testj.pdf
+<span class="ex">latexmk</span> testj</code></pre></div>
+<p>一気にPDFまで作成されるはずだ。</p>
+<h2 id="vs-codeの設定">VS Codeの設定</h2>
+<p>次にVS CodeからTeXをコンパイル、プレビューできるようにしよう。まず、拡張機能「LaTeX Workshop」をインストールせよ。拡張機能のメニューを開き、「latex」で検索するとLaTeX Workshopが表示されるはずなので、「インストール」をクリックする。</p>
+<p>「Code」メニューの「基本設定」→「設定」から設定メニューを開く。そこで「latex.tools」と検索すると「Latex-workshop › Latex: Tools」が見つかるので、その下にある「setting.jsonで編集」をクリック。</p>
+<div class="figure">
+<img src="fig/latex_tools.png" alt="latex-tools" />
+<p class="caption">latex-tools</p>
+</div>
+<p>すると、以下のような設定が見つかる。</p>
+<div class="sourceCode"><pre class="sourceCode json"><code class="sourceCode json">    <span class="er">&quot;latex-workshop.latex.tools&quot;:</span> <span class="ot">[</span>
+        <span class="fu">{</span>
+            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;latexmk&quot;</span><span class="fu">,</span>
+            <span class="dt">&quot;command&quot;</span><span class="fu">:</span> <span class="st">&quot;latexmk&quot;</span><span class="fu">,</span>
+            <span class="dt">&quot;args&quot;</span><span class="fu">:</span> <span class="ot">[</span>
+                <span class="st">&quot;-synctex=1&quot;</span><span class="ot">,</span>
+                <span class="st">&quot;-interaction=nonstopmode&quot;</span><span class="ot">,</span>
+                <span class="st">&quot;-file-line-error&quot;</span><span class="ot">,</span>
+                <span class="st">&quot;-pdf&quot;</span><span class="ot">,</span>
+                <span class="st">&quot;-outdir=%OUTDIR%&quot;</span><span class="ot">,</span>
+                <span class="st">&quot;%DOC%&quot;</span>
+            <span class="ot">]</span><span class="fu">,</span>
+            <span class="dt">&quot;env&quot;</span><span class="fu">:</span> <span class="fu">{}</span>
+        <span class="fu">}</span><span class="ot">,</span></code></pre></div>
+<p>このうち、&quot;args&quot;の項目を全て削除して保存する。</p>
+<div class="sourceCode"><pre class="sourceCode json"><code class="sourceCode json">    <span class="er">&quot;latex-workshop.latex.tools&quot;:</span> <span class="ot">[</span>
+        <span class="fu">{</span>
+            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;latexmk&quot;</span><span class="fu">,</span>
+            <span class="dt">&quot;command&quot;</span><span class="fu">:</span> <span class="st">&quot;latexmk&quot;</span><span class="fu">,</span>
+            <span class="dt">&quot;env&quot;</span><span class="fu">:</span> <span class="fu">{}</span>
+        <span class="fu">}</span><span class="ot">,</span></code></pre></div>
+<p>この状態で、この状態で、先程作った<code>testj.tex</code>をVS Codeで開こう。TeXファイルを開いた状態で「保存」をするとビルドが走る。なお、Macでは保存時に「Formatting failed. Please refer to LaTeX Workshop Output for details.」というエラーが出ることがある。その場合はターミナルで</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">cpan</span> install Log::Log4perl</code></pre></div>
+<p>を実行すると直る場合がある。</p>
+<p>無事にビルドが走ったら、PDFをプレビューをしよう。コマンドパレットから「LaTeX Workshop: View LaTeX PDF file」を選ぶか、WindowsならCtrl+Alt+V，MacならCmd+alt+Vで、右側にPDFが表示される。</p>
+<p>以後、TeXソースファイルを修正し、保存するたびにプレビューが更新される。</p>
 </article>
 </body>
 </html>
