@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+
+<style>
+  .markdown-body {
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 45px;
+  }
+  p.caption{
+    display:none;
+  }
+  img {width: 100%}
+
+  @media (max-width: 767px) {
+    .markdown-body {
+      padding: 15px;
+    }
+  }
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://kaityo256.github.io/sevendayshpc/github-markdown.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<article class="markdown-body">
+<h1 id="latexのインストール">LaTeXのインストール</h1>
+<p>PCにLaTeX(ラテック・レイテック)の処理系をインストールし、実行できるようにする。かんたんな使い方を覚え、卒業論文用のリポジトリを作成し、指導教員をコラボレータとして招待する。</p>
+<h2 id="インストール">インストール</h2>
+<h3 id="windowsの場合">Windowsの場合</h3>
+<p><a href="https://www.tug.org/texlive/acquire-netinstall.html">Installing TeX Live over the Internet</a>から、 install-tl-windows.exeをダウンロードし、実行する。セキュリティの問題から、単にクリックしただけでは保存が実行されない場合がある。その場合は右クリックから「名前をつけて保存」を選び、ブラウザが文句を言った場合は「継続」を押すなどしてダウンロードすることができる(Chromeの場合）。また、実行時にWindowsが「WindowsによってPCが保護されました」などと言って実行させてくれない場合がある。この時には「詳細情報」をクリックして「実行」を押せば実行できる。</p>
+<p>最初に「Install」「Unpack」のどちらかが選べるが、デフォルトの「Install」のままNextを押す。そして「Install」をクリックする。しばらくすると「TeX Live 2020インストーラ」というダイアログが出てくるので、何も変更しないまま「インストール」をクリック。フルインストールに <strong>1〜2時間ほど</strong> かかるので、時間に余裕がある時に行うこと。</p>
+<p>以下のような画面になったら「閉じる」を押して終了して良い。</p>
+<div class="figure">
+<img src="fig/install_win.png" alt="install_win.png" />
+<p class="caption">install_win.png</p>
+</div>
+<h3 id="macの場合">Macの場合</h3>
+<p><a href="https://texwiki.texjp.org/?TeX%20Live#tlnet">ミラーサイト</a>から<code>install-tl-unx.tar.gz</code>をダウンロードする。どこでも良いが、例えばJ<a href="http://ftp.jaist.ac.jp/pub/CTAN/systems/texlive/tlnet/">JAISTのサイト</a>からダウンロードすると良いだろう。</p>
+<p>ターミナルを開き、以下を実行せよ(コピペで良い)。以下では「ダウンロード」にダウンロードしたと仮定しているが、もしデスクトップに落としたなら<code>mv ~/Desktop/install-tl-unx.tar.gz .</code>に変更せよ。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">mkdir</span> temp
+<span class="bu">cd</span> temp
+<span class="fu">mv</span> ~/Downloads/install-tl-unx.tar.gz .
+<span class="fu">tar</span> xvf install-tl-unx.tar.gz
+<span class="fu">sudo</span> ./install-tl -no-gui -repository http://ftp.jaist.ac.jp/pub/CTAN/systems/texlive/tlnet/</code></pre></div>
+<p>すると、以下のような画面が表示されるので、「高度な設定」を選ぶ。</p>
+<div class="figure">
+<img src="fig/install1.png" alt="install1.png" />
+<p class="caption">install1.png</p>
+</div>
+<p>以下の画面で「シンボリックリンクを標準ディレクトリに作成」にチェックを入れてから「インストール」をクリックする。</p>
+<div class="figure">
+<img src="fig/install2.png" alt="install2.png" />
+<p class="caption">install2.png</p>
+</div>
+<p>フルインストールに <strong>30分ほど</strong> かかるので、時間に余裕がある時に行うこと。</p>
+<p>以下の画面が出てきたら「閉じる」をクリックして終了して良い(PATHに追加せよなどと書いてあるが、今回はシンボリックリンクを指定しているため設定不要)。</p>
+<div class="figure">
+<img src="fig/install3.png" alt="install3.png" />
+<p class="caption">install3.png</p>
+</div>
+<h3 id="インストールの確認">インストールの確認</h3>
+<p>無事にLaTeXがインストールされたか確認するためにターミナルで以下を実行してみよ。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">latex</span> -v
+<span class="ex">platex</span> -v</code></pre></div>
+<pre class="txt"><code>pdfTeX 3.14159265-2.6-1.40.21 (TeX Live 2020)
+...</code></pre>
+<p>とか</p>
+<pre class="txt"><code>e-pTeX 3.14159265-p3.8.3-191112-2.6 (utf8.euc) (TeX Live 2020)
+...</code></pre>
+<p>などと表示されれば成功している。なお、Windowsの場合は「TeX Live 2020」が「Tex Live 2020/W32TeX」になっている。</p>
+<h3 id="コンパイルの確認">コンパイルの確認</h3>
+<p>適当なディレクトリ(例えば<code>~/temp</code>)を作り、そこに移動せよ。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span>
+<span class="fu">mkdir</span> temp
+<span class="bu">cd</span> temp</code></pre></div>
+<p>そこで、以下の内容の<code>test.tex</code>を作成せよ。PowerShellもしくはターミナルで<code>code test.tex</code>と入力すればVS Codeが開くので、そこで以下をコピペ、保存する。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="bu">\documentclass</span>{<span class="ex">article</span>}
+<span class="kw">\begin</span>{<span class="ex">document</span>}
+
+Hello <span class="fu">\LaTeX</span>.
+
+<span class="ss">\[</span>
+<span class="ss">E = mc^2</span>
+<span class="ss">\]</span>
+
+<span class="kw">\end</span>{<span class="ex">document</span>}</code></pre></div>
+<p>この状態で、コンパイルする。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">latex</span> test.tex</code></pre></div>
+<p>すると、同じディレクトリに<code>test.dvi</code>というファイルができたはずである。このDVIファイルをPDFに変換する。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">dvipdfmx</span> test.dvi</code></pre></div>
+<p><code>dvipdfm</code>というコマンドもあるので注意。最後がxで終わる方を使うこと。これにより同じディレクトリに<code>test.pdf</code>が作成されたはずなので開く。以下のような内容になっていれば成功である。</p>
+<div class="figure">
+<img src="fig/test_pdf.png" alt="test_pdf.png" />
+<p class="caption">test_pdf.png</p>
+</div>
+<p>次に、日本語のLaTeXファイルのコンパイルを確認する。</p>
+<p>以下の内容の<code>testj.tex</code>を作成せよ。</p>
+<pre class="tex4"><code>\documentclass{jarticle}
+\begin{document}
+
+こんにちは \LaTeX.
+
+\[
+E = mc^2
+\]
+
+\end{document}</code></pre>
+<p><code>documentclass</code>の中身が<code>article</code>から<code>jarticle</code>になっていることに注意。これをコンパイルし、PDFに変換する。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">platex</span> testj.tex
+<span class="ex">dvipdfmx</span> testj.dvi</code></pre></div>
+<p>コンパイルコマンドが<code>latex</code>ではなく<code>platex</code>になっていることに注意。正しく処理されていれば以下のようなPDFファイルが作成されたはずである。</p>
+<div class="figure">
+<img src="fig/testj_pdf.png" alt="testj_pdf.png" />
+<p class="caption">testj_pdf.png</p>
+</div>
+</article>
+</body>
+</html>
