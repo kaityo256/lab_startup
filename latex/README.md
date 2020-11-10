@@ -134,3 +134,23 @@ dvipdfmx testj.dvi
 コンパイルコマンドが`latex`ではなく`platex`になっていることに注意。正しく処理されていれば以下のようなPDFファイルが作成されたはずである。
 
 ![testj_pdf.png](fig/testj_pdf.png)
+
+### latexmkのセットアップ
+
+ホームディレクトリに、以下の内容の`.latexmkrc`ファイルを作成する。端末を開き、`cd`でホームディレクトリに移動してから、
+
+```sh
+code .latexmkrc
+```
+
+でVS Codeを開いて、以下をコピペして保存せよ。
+
+```perl
+#!/usr/bin/env perl
+
+$latex = 'platex -synctex=1 %O %S';
+$bibtex = 'pbibtex %O %B';
+$makeindex = 'memindex %O -o %D %S';
+$pdf_mode = 3;
+$dvipdf = 'dvipdfmx %O -o %D %S';
+```
