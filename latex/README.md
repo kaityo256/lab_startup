@@ -25,7 +25,8 @@ mkdir temp
 cd temp
 mv ~/Downloads/install-tl-unx.tar.gz .
 tar xvf install-tl-unx.tar.gz
-sudo ./install-tl -no-gui -repository http://ftp.jaist.ac.jp/pub/CTAN/systems/texlive/tlnet/
+cd install-tl-20201108
+sudo ./install-tl -repository http://ftp.jaist.ac.jp/pub/CTAN/systems/texlive/tlnet/
 ```
 
 すると、以下のような画面が表示されるので、「高度な設定」を選ぶ。
