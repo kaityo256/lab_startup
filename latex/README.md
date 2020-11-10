@@ -207,7 +207,7 @@ latexmk testj
 この状態で、この状態で、先程作った`testj.tex`をVS Codeで開こう。TeXファイルを開いた状態で「保存」をするとビルドが走る。なお、Macでは保存時に「Formatting failed. Please refer to LaTeX Workshop Output for details.」というエラーが出ることがある。その場合はターミナルで
 
 ```sh
-cpan install Log::Log4perl
+cpan install Log::Log4perl YAML/Tiny.pm File/HomeDir.pm
 ```
 
 を実行すると直る場合がある。

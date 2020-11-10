@@ -208,7 +208,7 @@ E = mc^2
             <span class="dt">&quot;env&quot;</span><span class="fu">:</span> <span class="fu">{}</span>
         <span class="fu">}</span><span class="ot">,</span></code></pre></div>
 <p>この状態で、この状態で、先程作った<code>testj.tex</code>をVS Codeで開こう。TeXファイルを開いた状態で「保存」をするとビルドが走る。なお、Macでは保存時に「Formatting failed. Please refer to LaTeX Workshop Output for details.」というエラーが出ることがある。その場合はターミナルで</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">cpan</span> install Log::Log4perl</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">cpan</span> install Log::Log4perl YAML/Tiny.pm File/HomeDir.pm</code></pre></div>
 <p>を実行すると直る場合がある。</p>
 <p>無事にビルドが走ったら、PDFをプレビューをしよう。コマンドパレットから「LaTeX Workshop: View LaTeX PDF file」を選ぶか、WindowsならCtrl+Alt+V，MacならCmd+alt+Vで、右側にPDFが表示される。</p>
 <p>以後、TeXソースファイルを修正し、保存するたびにプレビューが更新される。</p>
