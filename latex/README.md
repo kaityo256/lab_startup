@@ -2,7 +2,7 @@
 
 PCにLaTeX(ラテック・レイテック)の処理系をインストールし、実行できるようにする。かんたんな使い方を覚え、卒業論文用のリポジトリを作成し、指導教員をコラボレータとして招待する。
 
-## インストール
+## インストールとVS Codeの設定
 
 ### Windowsの場合
 
@@ -166,7 +166,7 @@ latexmk testj
 
 一気にPDFまで作成されるはずだ。
 
-## VS Codeの設定
+### VS Codeの設定
 
 次にVS CodeからTeXをコンパイル、プレビューできるようにしよう。まず、拡張機能「LaTeX Workshop」をインストールせよ。拡張機能のメニューを開き、「latex」で検索するとLaTeX Workshopが表示されるはずなので、「インストール」をクリックする。
 
@@ -218,3 +218,205 @@ cpan install Log::Log4perl YAML/Tiny.pm File/HomeDir.pm
 
 もし保存時にビルドが走らなければ、「設定」で「autobuild.run」で検索して出てくる「Latex-workshop › Latex › Auto Build: Run」のドロップダウンリストを「never」から「onFileChange」に変更せよ。
 
+## LaTeXの基本
+
+適当なディレクトリ(例えば`~/textest`)を作り、そこに移動せよ。そこでVS Codeで`test.tex`を新規作成せよ。
+
+```sh
+mkdir textest
+cd textest
+code test.tex
+```
+
+作成された`test.tex`に以下の内容を記述、保存して、コンパイルとプレビューができることを確認せよ。
+
+```tex
+\documentclass{jarticle}
+\begin{document}
+こんにちは。
+\end{document}
+```
+
+以下、プレビュー画面を右に表示したままこの文章を修正していく。
+
+LaTeXのコマンドは、大きく分けて二つにわかれる。一つは「\コマンド名{}」の形をとるものだ。Pythonで言えば関数のようなものであり、{}の中に引数を取る。
+
+もう一つは`\begin{hoge}`と`\end{hoge}`で囲まれる領域を作るもので、「環境」と呼ばれる。例えば`\begin{document}`から`\end{document}`はdocument環境を作り、その中に本文を記述する。
+
+なお、`\documentclass{jarticle}`と`\begin{document}`の間を「プリアンブル」と呼び、必要なパッケージの宣言をする(Pythonのimportにあたる)。
+
+### 文章と修飾
+
+LaTeXの文章はそのままかけば良い。ただし、一度の改行は同じパラグラフとみなされる。
+
+```tex
+こんにちは。
+さようなら。
+```
+
+これをコンパイルすると、「こんにちは。さようなら。」と続けて表示される。別のパラグラフにしたい場合は、
+
+```tex
+こんにちは。
+
+さようなら。
+```
+
+と二回の改行をいれる。なお、二回以上改行をいれても無視される。
+
+強調のために太字にしたい場合は、その部分を`\textbf{}`で囲む。
+
+```tex
+こんにちは。
+
+さようなら。次の部分を\textbf{強調}します。
+```
+
+### 数式と参照
+
+LaTeXでは数式は`$`で囲まれたインライン数式と、`\[`と`\]`で囲まれた別行立ての数式がある。
+
+```tex
+文中の数式は$E=mc^2$のように書く。
+
+別行立ての数式は
+\[
+ E = mc^2   
+\]
+と書く。
+```
+
+別行立ての数式は`equation`環境を使うと式番号がつく。
+
+```tex
+\begin{equation}
+E=mc^2
+\end{equation}
+```
+
+式番号を文中で参照するためには、式に`\label{ラベル名}`でラベルをつけ、文中で`\ref{ラベル名}`で参照する。ラベル名は自由に付けて良いが、慣習的に式の場合は`eq:ラベル`、図の場合は`fig:ラベル名`、テーブルの場合は`tbl:ラベル名`などと、名前空間を使うことが多い。今回は`eq:test`という名前のラベルをつけてみよう。
+
+```tex
+\begin{equation}
+E=mc^2 \label{eq:test}
+\end{equation}
+```
+
+この状態で、この式の後に以下の文章を挿入し、コンパイルせよ。
+
+```tex
+数式(\ref{eq:test})を参照のこと。
+```
+
+`\ref{ラベル名}`は、対応する数式の数字に変換されるため、括弧にいれたければ上記のように`(\ref{ラベル名})`とする必要があることに注意。
+
+このように、LaTeXにはどの式をどこで参照するかを解決する仕組みが備わっている。ラベルを書くのが面倒だからといって「式(1)のように」などと式番号を直接書かないこと。絶対に後でごちゃごちゃになって後悔することになる。`\[ \]`によるラベル無し数式と、`equation`環境によるラベルあり数式の使い分けだが、とりあえずラベル無しで書いておいて、後で参照が必要になったら`equation`環境に書き直すのが良いだろう。
+
+### 図の挿入
+
+LaTeXでは図を挿入することができる。LaTeXでは様々なフォーマットの図を扱えるが、原則としてPDFで貼り付けるのが良いだろう。
+
+適当なPythonコードを書いてPDFを作成しよう。TeXファイルと同じディレクトリに`test.py`を作成し、以下を入力せよ。
+
+```py
+import numpy as np
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+
+
+x = np.arange(0, 2*np.pi, 2*np.pi*0.01)
+y = np.sin(x)
+
+plt.plot(x,y)
+plt.savefig("sin.pdf")
+```
+
+これを
+
+```sh
+python test.py
+```
+
+として実行すると`sin.pdf`ができる。これをLaTeXに取り込むには、まずプリアンブルで`graphicx`パッケージを取り込む。
+
+```tex
+\documentclass{jarticle}
+\usepackage[dvipdfmx]{graphicx}
+\begin{document}
+```
+
+`graphics`ではなく`graphicx`(最後がx)であることに注意。この状態で、
+
+```tex
+\includegraphics{sin.pdf}
+```
+
+と入力し、ビルドしてみよ。おそらく警告が一つ出たはずだ。左下にある(i)マークをクリックすると
+
+```txt
+Overfull \hbox (145.3509pt too wide)
+```
+
+という表示が出ている。これは「表示領域から何かがはみ出ているよ」という警告で、LaTeXを使っていると良く見かけるものだ。今回のケースでは図が大きすぎるために表示領域からはみ出してしまっているので、小さくしよう。サイズを指定するためには、`\includegraphics`にオプションとして`width`を指定する。
+
+```tex
+\includegraphics[width=10cm]{sin.pdf}
+```
+
+これで警告は消えるはずだ。
+
+さて、科学技術論文において、図を生で入れることはほとんどない。多くの場合「図番号」と「図の説明」を入れることだろう。そのためには`figure`環境を使う。先ほどの`includegraphics`命令を`figure`環境の中にいれよう。
+
+```tex
+\begin{figure}
+\includegraphics[width=10cm]{sin.pdf}
+\end{figure}
+```
+
+この状態でビルドすると、図が文中から別の場所(おそらく上部)に移動したはずだ。さて、この図に説明をつけよう。そのためには`figure`環境に`caption`命令を入れる。
+
+```tex
+\begin{figure}
+\includegraphics[width=10cm]{sin.pdf}
+\caption{正弦波のグラフ。}
+\end{figure}
+```
+
+ビルドすると、図の説明(キャプション)とともに、図番号が自動で入ったはずだ。この図もラベルをつけて参照することができる。
+
+
+```tex
+\begin{figure}
+\includegraphics[width=10cm]{sin.pdf}
+\caption{正弦波のグラフ。}
+\label{fig:sin}
+\end{figure}
+
+正弦波のグラフを図\ref{fig:sin}に示す。
+```
+
+上記をビルドして、「正弦波のグラフを図1に示す。」となれば成功だ。
+
+繰り返しになるが、式番号や図番号については **必ず** ラベルによる参照を行うこと。数が少ないからといって直接書いていると後で泣きを見る。どうせVS Codeその他のLaTeXに対応したエディタには補完機能があるため、さほど手間ではない。
+
+なお、`\includegraphics`だけの場合は、その位置に図が挿入されるが、`figure`環境を使うと図の挿入場所は自動で決められる。基本的にはLaTeXに任せておけば良いが、どうしても「ページの上が良い」「下が良い」「絶対ここが良い」といった希望がある場合は、オプションで希望をLaTeXに伝えることができる。例えば
+
+```tex
+\begin{figure}[htbp]
+```
+
+とすると、順番に「この場所(here, h)」「上(top, t)」「下(bottom, b)」「独立したページ (page, p)」を意味しており、記述した順番で挿入を試みる。試しに上記のオプション`[htbp]`をつけてビルドしなおしてみよ。おそらく`h`が優先され、`\includegraphics`の場所に図が移動すると思われる。
+
+また、デフォルトでは、図はページの左側に寄せられてしまうため、図が小さいと見栄えが悪い。その場合は`\includegraphics`の直前に`\centering`を入れると良い。
+
+```tex
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=10cm]{sin.pdf}
+    \caption{正弦波のグラフ。}
+    \label{fig:sin}
+\end{figure}
+```
+
+図が中央寄せになったはずである。
