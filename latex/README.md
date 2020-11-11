@@ -215,3 +215,6 @@ cpan install Log::Log4perl YAML/Tiny.pm File/HomeDir.pm
 無事にビルドが走ったら、PDFをプレビューをしよう。コマンドパレットから「LaTeX Workshop: View LaTeX PDF file」を選ぶか、WindowsならCtrl+Alt+V，MacならCmd+alt+Vで、右側にPDFが表示される。
 
 以後、TeXソースファイルを修正し、保存するたびにプレビューが更新される。
+
+もし保存時にビルドが走らなければ、「設定」で「autobuild.run」で検索して出てくる「Latex-workshop › Latex › Auto Build: Run」のドロップダウンリストを「never」から「onFileChange」に変更せよ。
+
