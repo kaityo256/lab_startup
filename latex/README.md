@@ -220,15 +220,16 @@ cpan install Log::Log4perl YAML/Tiny.pm File/HomeDir.pm
 
 ## LaTeXの基本
 
-適当なディレクトリ(例えば`~/textest`)を作り、そこに移動せよ。そこでVS Codeで`test.tex`を新規作成せよ。
+適当なディレクトリ(例えば`~/textest`)を作り、そこに移動して、ディレクトリをVS Codeで開く。
+
 
 ```sh
 mkdir textest
 cd textest
-code test.tex
+code .
 ```
 
-作成された`test.tex`に以下の内容を記述、保存して、コンパイルとプレビューができることを確認せよ。
+その状態でファイルを新規作成し、以下の内容を記述、`test.tex`という名前で保存して、コンパイルとプレビューができることを確認せよ。
 
 ```tex
 \documentclass{jarticle}
@@ -584,3 +585,142 @@ eprint = {
 という手順を取ると良い。BibTeXファイルは手で管理しても良いが、[JabRef](http://www.jabref.org/)や[Mendeley](https://www.mendeley.com/)といった文献管理ソフトで管理したほうが効率的であろう。
 
 いずれにせよ、文献ファイルはTeXファイルと一緒に必ずGitその他のVCSで管理すること。
+
+### セクション
+
+#### セクションの入れ方
+
+論文には「イントロダクション」「背景」「手法」「結果」といった構造がある。その構造を表すのにセクション(節)を使う。いま、`test.tex`は以下のようになっているはず(多少違っていてもかまわない)。
+
+```tex
+\documentclass{jarticle}
+\usepackage[dvipdfmx]{graphicx}
+\begin{document}
+こんにちは。
+
+さようなら。次の部分を\textbf{強調}します。
+
+文中の数式は$E=mc^2$のように書く。
+
+別行立ての数式は
+\[
+    E = mc^2
+\]
+と書く。
+
+\begin{equation}
+    E=mc^2 \label{eq:test}
+\end{equation}
+
+数式(\ref{eq:test})を参照のこと。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=10cm]{sin.pdf}
+    \caption{正弦波のグラフ。}
+    \label{fig:sin}
+\end{figure}
+
+正弦波のグラフを図\ref{fig:sin}に示す。
+
+本稿の執筆にはLaTeX\cite{okumura2020}を用いる。渡辺らは気泡生成のシミュレーションを行った\cite{watanabe2019}。
+
+%\begin{thebibliography}{99}
+%    \bibitem{okumura2020} 奥村 晴彦、黒木 裕介、LaTeX2ε美文書作成入門、技術評論社、2020.
+%\end{thebibliography}
+
+\bibliographystyle{junsrt}
+\bibliography{reference}
+
+\end{document}
+```
+
+ここに`\section`命令をいれよう。とりあえず「はじめに」「数式の入れ方」「図の入れ方」「参考文献の入れ方」の五つのセクションを以下のように入れてみよう。
+
+```tex
+\documentclass{jarticle}
+\usepackage[dvipdfmx]{graphicx}
+\begin{document}
+
+\section{はじめに}
+こんにちは。
+
+さようなら。次の部分を\textbf{強調}します。
+
+\section{数式の入れ方}
+
+文中の数式は$E=mc^2$のように書く。
+...
+
+\section{図の入れ方}
+
+\begin{figure}[htbp]
+...
+
+\section{参考文献の入れ方}
+
+本稿の執筆にはLaTeX\cite{okumura2020}を用いた。
+...
+\end{document}
+```
+
+この状態でビルドし、正しく節が設定されることを確認せよ。
+
+#### セクションの参照
+
+セクションにもラベルをつけて参照できる。まずは先ほどのセクションに以下のようにラベルをつけよう。
+
+```tex
+\section{はじめに} \label{sec:introduction}
+...
+\section{数式の入れ方} \label{sec:equation}
+...
+\section{図の入れ方} \label{sec:figure}
+...
+\section{参考文献の入れ方} \label{sec:reference}
+```
+
+一般に、イントロダクションの一番最後に論文の構成を記述することが多い。「はじめに」の最後、「数式の入れ方」の直前に以下の文章を記述し、コンパイルせよ。コピペしても良いが、VS Codeから記述してラベルの補完を確認するとなお良い。
+
+```tex
+本論文の構成は以下の通り。まず第\ref{sec:equation}節にて数式の入れ方を述べる。次に第\ref{sec:figure}節にて図の入れ方を述べる。最後に第\ref{sec:reference}にて参考文献の入れ方を紹介した後、将来への展望について述べる。
+````
+
+#### 目次
+
+セクションがあると、目次も自動で作ることができる。`\begin{document}`の直後に
+
+```tex
+\tableofcontents
+```
+
+と入力してビルドしてみよ。目次が表示されるはずである。
+
+#### タイトルと著者
+
+タイトルや著者を設定することもできる。どこでも良いが、プリアンブル(`\begin{document}`の直前あたり)に以下を入力せよ。
+
+```tex
+\title{LaTeXのテスト}
+\author{自分の名前}
+```
+
+そして、`\begin{document}`の直後、`\tableofcontents`の直前に以下を入力せよ。
+
+```tex
+\maketitle
+```
+
+タイトル、著者、日付が表示されたはずである。
+
+## トラブル対応
+
+LaTeXは参照の解決のため、何度もコンパイルが必要な場合がある。原則として`latexmk`が依存関係を自動認識し、必要な回数だけコンパイルしてくれるはずだが、何かの原因でビルドが止まらなくなったり、正しくビルドされなくなったりすることがある。
+
+### ビルドが止まらなくなった場合
+
+VS Codeの左にある「TeX」をクリックする。するとLATEXのメニューが開くので、「Build LaTeX Project」のメニュー左の「>」をクリックして開き、「Terminate current compilation」をクリックするとビルドが止まる。
+
+### プレビューが更新されなくなった場合
+
+保存してビルドが走ってもプレビューが更新されない場合、中間ファイル(auxiliary)がおかしくなっている場合がある。その場合は「Clean up auxiliary files」をクリックして、中間ファイルを削除してから「Build LaTeX project」をクリックして再ビルドするとうまくいくことが多い。
