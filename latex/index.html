@@ -214,11 +214,11 @@ E = mc^2
 <p>以後、TeXソースファイルを修正し、保存するたびにプレビューが更新される。</p>
 <p>もし保存時にビルドが走らなければ、「設定」で「autobuild.run」で検索して出てくる「Latex-workshop › Latex › Auto Build: Run」のドロップダウンリストを「never」から「onFileChange」に変更せよ。</p>
 <h2 id="latexの基本">LaTeXの基本</h2>
-<p>適当なディレクトリ(例えば<code>~/textest</code>)を作り、そこに移動せよ。そこでVS Codeで<code>test.tex</code>を新規作成せよ。</p>
+<p>適当なディレクトリ(例えば<code>~/textest</code>)を作り、そこに移動して、ディレクトリをVS Codeで開く。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">mkdir</span> textest
 <span class="bu">cd</span> textest
-<span class="ex">code</span> test.tex</code></pre></div>
-<p>作成された<code>test.tex</code>に以下の内容を記述、保存して、コンパイルとプレビューができることを確認せよ。</p>
+<span class="ex">code</span> .</code></pre></div>
+<p>その状態でファイルを新規作成し、以下の内容を記述、<code>test.tex</code>という名前で保存して、コンパイルとプレビューができることを確認せよ。</p>
 <div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="bu">\documentclass</span>{<span class="ex">jarticle</span>}
 <span class="kw">\begin</span>{<span class="ex">document</span>}
 こんにちは。
@@ -416,6 +416,103 @@ eprint = {
 </ul>
 <p>という手順を取ると良い。BibTeXファイルは手で管理しても良いが、<a href="http://www.jabref.org/">JabRef</a>や<a href="https://www.mendeley.com/">Mendeley</a>といった文献管理ソフトで管理したほうが効率的であろう。</p>
 <p>いずれにせよ、文献ファイルはTeXファイルと一緒に必ずGitその他のVCSで管理すること。</p>
+<h3 id="セクション">セクション</h3>
+<h4 id="セクションの入れ方">セクションの入れ方</h4>
+<p>論文には「イントロダクション」「背景」「手法」「結果」といった構造がある。その構造を表すのにセクション(節)を使う。いま、<code>test.tex</code>は以下のようになっているはず(多少違っていてもかまわない)。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="bu">\documentclass</span>{<span class="ex">jarticle</span>}
+<span class="bu">\usepackage</span>[dvipdfmx]{<span class="ex">graphicx</span>}
+<span class="kw">\begin</span>{<span class="ex">document</span>}
+こんにちは。
+
+さようなら。次の部分を<span class="fu">\textbf</span>{強調}します。
+
+文中の数式は<span class="ss">$E=mc^2$</span>のように書く。
+
+別行立ての数式は
+<span class="ss">\[</span>
+<span class="ss">    E = mc^2</span>
+<span class="ss">\]</span>
+と書く。
+
+<span class="kw">\begin</span>{<span class="ex">equation</span>}
+<span class="ss">    E=mc^2 </span><span class="sc">\label</span><span class="ss">{eq:test}</span>
+<span class="kw">\end</span>{<span class="ex">equation</span>}
+
+数式(<span class="kw">\ref</span>{<span class="ex">eq:test</span>})を参照のこと。
+
+<span class="kw">\begin</span>{<span class="ex">figure</span>}[htbp]
+    <span class="fu">\centering</span>
+    <span class="bu">\includegraphics</span>[width=10cm]{<span class="ex">sin.pdf</span>}
+    <span class="fu">\caption</span>{正弦波のグラフ。}
+    <span class="kw">\label</span>{<span class="ex">fig:sin</span>}
+<span class="kw">\end</span>{<span class="ex">figure</span>}
+
+正弦波のグラフを図<span class="kw">\ref</span>{<span class="ex">fig:sin</span>}に示す。
+
+本稿の執筆にはLaTeX<span class="kw">\cite</span>{<span class="ex">okumura2020</span>}を用いる。渡辺らは気泡生成のシミュレーションを行った<span class="kw">\cite</span>{<span class="ex">watanabe2019</span>}。
+
+<span class="co">%\begin{thebibliography}{99}</span>
+<span class="co">%    \bibitem{okumura2020} 奥村 晴彦、黒木 裕介、LaTeX2ε美文書作成入門、技術評論社、2020.</span>
+<span class="co">%\end{thebibliography}</span>
+
+<span class="bu">\bibliographystyle</span>{<span class="ex">junsrt</span>}
+<span class="bu">\bibliography</span>{<span class="ex">reference</span>}
+
+<span class="kw">\end</span>{<span class="ex">document</span>}</code></pre></div>
+<p>ここに<code>\section</code>命令をいれよう。とりあえず「はじめに」「数式の入れ方」「図の入れ方」「参考文献の入れ方」の五つのセクションを以下のように入れてみよう。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="bu">\documentclass</span>{<span class="ex">jarticle</span>}
+<span class="bu">\usepackage</span>[dvipdfmx]{<span class="ex">graphicx</span>}
+<span class="kw">\begin</span>{<span class="ex">document</span>}
+
+<span class="kw">\section</span>{はじめに}
+こんにちは。
+
+さようなら。次の部分を<span class="fu">\textbf</span>{強調}します。
+
+<span class="kw">\section</span>{数式の入れ方}
+
+文中の数式は<span class="ss">$E=mc^2$</span>のように書く。
+...
+
+<span class="kw">\section</span>{図の入れ方}
+
+<span class="kw">\begin</span>{<span class="ex">figure</span>}[htbp]
+...
+
+<span class="kw">\section</span>{参考文献の入れ方}
+
+本稿の執筆にはLaTeX<span class="kw">\cite</span>{<span class="ex">okumura2020</span>}を用いた。
+...
+<span class="kw">\end</span>{<span class="ex">document</span>}</code></pre></div>
+<p>この状態でビルドし、正しく節が設定されることを確認せよ。</p>
+<h4 id="セクションの参照">セクションの参照</h4>
+<p>セクションにもラベルをつけて参照できる。まずは先ほどのセクションに以下のようにラベルをつけよう。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="kw">\section</span>{はじめに} <span class="kw">\label</span>{<span class="ex">sec:introduction</span>}
+...
+<span class="kw">\section</span>{数式の入れ方} <span class="kw">\label</span>{<span class="ex">sec:equation</span>}
+...
+<span class="kw">\section</span>{図の入れ方} <span class="kw">\label</span>{<span class="ex">sec:figure</span>}
+...
+<span class="kw">\section</span>{参考文献の入れ方} <span class="kw">\label</span>{<span class="ex">sec:reference</span>}</code></pre></div>
+<p>一般に、イントロダクションの一番最後に論文の構成を記述することが多い。「はじめに」の最後、「数式の入れ方」の直前に以下の文章を記述し、コンパイルせよ。コピペしても良いが、VS Codeから記述してラベルの補完を確認するとなお良い。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">本論文の構成は以下の通り。まず第<span class="kw">\ref</span>{<span class="ex">sec:equation</span>}節にて数式の入れ方を述べる。次に第<span class="kw">\ref</span>{<span class="ex">sec:figure</span>}節にて図の入れ方を述べる。最後に第<span class="kw">\ref</span>{<span class="ex">sec:reference</span>}にて参考文献の入れ方を紹介した後、将来への展望について述べる。</code></pre></div>
+<h4 id="目次">目次</h4>
+<p>セクションがあると、目次も自動で作ることができる。<code>\begin{document}</code>の直後に</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="fu">\tableofcontents</span></code></pre></div>
+<p>と入力してビルドしてみよ。目次が表示されるはずである。</p>
+<h4 id="タイトルと著者">タイトルと著者</h4>
+<p>タイトルや著者を設定することもできる。どこでも良いが、プリアンブル(<code>\begin{document}</code>の直前あたり)に以下を入力せよ。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="fu">\title</span>{LaTeXのテスト}
+<span class="fu">\author</span>{自分の名前}</code></pre></div>
+<p>そして、<code>\begin{document}</code>の直後、<code>\tableofcontents</code>の直前に以下を入力せよ。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="fu">\maketitle</span></code></pre></div>
+<p>タイトル、著者、日付が表示されたはずである。</p>
+<h2 id="トラブル対応">トラブル対応</h2>
+<p>LaTeXは参照の解決のため、何度もコンパイルが必要な場合がある。原則として<code>latexmk</code>が依存関係を自動認識し、必要な回数だけコンパイルしてくれるはずだが、何かの原因でビルドが止まらなくなったり、正しくビルドされなくなったりすることがある。</p>
+<h3 id="ビルドが止まらなくなった場合">ビルドが止まらなくなった場合</h3>
+<p>VS Codeの左にある「TeX」をクリックする。するとLATEXのメニューが開くので、「Build LaTeX Project」のメニュー左の「&gt;」をクリックして開き、「Terminate current compilation」をクリックするとビルドが止まる。</p>
+<h3 id="プレビューが更新されなくなった場合">プレビューが更新されなくなった場合</h3>
+<p>保存してビルドが走ってもプレビューが更新されない場合、中間ファイル(auxiliary)がおかしくなっている場合がある。その場合は「Clean up auxiliary files」をクリックして、中間ファイルを削除してから「Build LaTeX project」をクリックして再ビルドするとうまくいくことが多い。</p>
 </article>
 </body>
 </html>
