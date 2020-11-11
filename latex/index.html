@@ -73,7 +73,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <article class="markdown-body">
 <h1 id="latexのインストール">LaTeXのインストール</h1>
 <p>PCにLaTeX(ラテック・レイテック)の処理系をインストールし、実行できるようにする。かんたんな使い方を覚え、卒業論文用のリポジトリを作成し、指導教員をコラボレータとして招待する。</p>
-<h2 id="インストール">インストール</h2>
+<h2 id="インストールとvs-codeの設定">インストールとVS Codeの設定</h2>
 <h3 id="windowsの場合">Windowsの場合</h3>
 <p><a href="https://www.tug.org/texlive/acquire-netinstall.html">Installing TeX Live over the Internet</a>から、 install-tl-windows.exeをダウンロードし、実行する。セキュリティの問題から、単にクリックしただけでは保存が実行されない場合がある。その場合は右クリックから「名前をつけて保存」を選び、ブラウザが文句を言った場合は「継続」を押すなどしてダウンロードすることができる(Chromeの場合）。また、実行時にWindowsが「WindowsによってPCが保護されました」などと言って実行させてくれない場合がある。この時には「詳細情報」をクリックして「実行」を押せば実行できる。</p>
 <p>最初に「Install」「Unpack」のどちらかが選べるが、デフォルトの「Install」のままNextを押す。そして「Install」をクリックする。しばらくすると「TeX Live 2020インストーラ」というダイアログが出てくるので、何も変更しないまま「インストール」をクリック。フルインストールに <strong>1〜2時間ほど</strong> かかるので、時間に余裕がある時に行うこと。</p>
@@ -178,7 +178,7 @@ E = mc^2
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">rm</span> -f testj.dvi testj.pdf
 <span class="ex">latexmk</span> testj</code></pre></div>
 <p>一気にPDFまで作成されるはずだ。</p>
-<h2 id="vs-codeの設定">VS Codeの設定</h2>
+<h3 id="vs-codeの設定">VS Codeの設定</h3>
 <p>次にVS CodeからTeXをコンパイル、プレビューできるようにしよう。まず、拡張機能「LaTeX Workshop」をインストールせよ。拡張機能のメニューを開き、「latex」で検索するとLaTeX Workshopが表示されるはずなので、「インストール」をクリックする。</p>
 <p>「Code」メニューの「基本設定」→「設定」から設定メニューを開く。そこで「latex.tools」と検索すると「Latex-workshop › Latex: Tools」が見つかるので、その下にある「setting.jsonで編集」をクリック。</p>
 <div class="figure">
@@ -212,6 +212,210 @@ E = mc^2
 <p>を実行すると直る場合がある。</p>
 <p>無事にビルドが走ったら、PDFをプレビューをしよう。コマンドパレットから「LaTeX Workshop: View LaTeX PDF file」を選ぶか、WindowsならCtrl+Alt+V，MacならCmd+alt+Vで、右側にPDFが表示される。</p>
 <p>以後、TeXソースファイルを修正し、保存するたびにプレビューが更新される。</p>
+<p>もし保存時にビルドが走らなければ、「設定」で「autobuild.run」で検索して出てくる「Latex-workshop › Latex › Auto Build: Run」のドロップダウンリストを「never」から「onFileChange」に変更せよ。</p>
+<h2 id="latexの基本">LaTeXの基本</h2>
+<p>適当なディレクトリ(例えば<code>~/textest</code>)を作り、そこに移動せよ。そこでVS Codeで<code>test.tex</code>を新規作成せよ。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">mkdir</span> textest
+<span class="bu">cd</span> textest
+<span class="ex">code</span> test.tex</code></pre></div>
+<p>作成された<code>test.tex</code>に以下の内容を記述、保存して、コンパイルとプレビューができることを確認せよ。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="bu">\documentclass</span>{<span class="ex">jarticle</span>}
+<span class="kw">\begin</span>{<span class="ex">document</span>}
+こんにちは。
+<span class="kw">\end</span>{<span class="ex">document</span>}</code></pre></div>
+<p>以下、プレビュー画面を右に表示したままこの文章を修正していく。</p>
+<p>LaTeXのコマンドは、大きく分けて二つにわかれる。一つは「」の形をとるものだ。Pythonで言えば関数のようなものであり、{}の中に引数を取る。</p>
+<p>もう一つは<code>\begin{hoge}</code>と<code>\end{hoge}</code>で囲まれる領域を作るもので、「環境」と呼ばれる。例えば<code>\begin{document}</code>から<code>\end{document}</code>はdocument環境を作り、その中に本文を記述する。</p>
+<p>なお、<code>\documentclass{jarticle}</code>と<code>\begin{document}</code>の間を「プリアンブル」と呼び、必要なパッケージの宣言をする(Pythonのimportにあたる)。</p>
+<h3 id="文章と修飾">文章と修飾</h3>
+<p>LaTeXの文章はそのままかけば良い。ただし、一度の改行は同じパラグラフとみなされる。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">こんにちは。
+さようなら。</code></pre></div>
+<p>これをコンパイルすると、「こんにちは。さようなら。」と続けて表示される。別のパラグラフにしたい場合は、</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">こんにちは。
+
+さようなら。</code></pre></div>
+<p>と二回の改行をいれる。なお、二回以上改行をいれても無視される。</p>
+<p>強調のために太字にしたい場合は、その部分を<code>\textbf{}</code>で囲む。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">こんにちは。
+
+さようなら。次の部分を<span class="fu">\textbf</span>{強調}します。</code></pre></div>
+<h3 id="数式と参照">数式と参照</h3>
+<p>LaTeXでは数式は<code>$</code>で囲まれたインライン数式と、<code>\[</code>と<code>\]</code>で囲まれた別行立ての数式がある。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">文中の数式は<span class="ss">$E=mc^2$</span>のように書く。
+
+別行立ての数式は
+<span class="ss">\[</span>
+<span class="ss"> E = mc^2   </span>
+<span class="ss">\]</span>
+と書く。</code></pre></div>
+<p>別行立ての数式は<code>equation</code>環境を使うと式番号がつく。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="kw">\begin</span>{<span class="ex">equation</span>}
+<span class="ss">E=mc^2</span>
+<span class="kw">\end</span>{<span class="ex">equation</span>}</code></pre></div>
+<p>式番号を文中で参照するためには、式に<code>\label{ラベル名}</code>でラベルをつけ、文中で<code>\ref{ラベル名}</code>で参照する。ラベル名は自由に付けて良いが、慣習的に式の場合は<code>eq:ラベル</code>、図の場合は<code>fig:ラベル名</code>、テーブルの場合は<code>tbl:ラベル名</code>などと、名前空間を使うことが多い。今回は<code>eq:test</code>という名前のラベルをつけてみよう。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="kw">\begin</span>{<span class="ex">equation</span>}
+<span class="ss">E=mc^2 </span><span class="sc">\label</span><span class="ss">{eq:test}</span>
+<span class="kw">\end</span>{<span class="ex">equation</span>}</code></pre></div>
+<p>この状態で、この式の後に以下の文章を挿入し、コンパイルせよ。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">数式(<span class="kw">\ref</span>{<span class="ex">eq:test</span>})を参照のこと。</code></pre></div>
+<p><code>\ref{ラベル名}</code>は、対応する数式の数字に変換されるため、括弧にいれたければ上記のように<code>(\ref{ラベル名})</code>とする必要があることに注意。</p>
+<p>このように、LaTeXにはどの式をどこで参照するかを解決する仕組みが備わっている。ラベルを書くのが面倒だからといって「式(1)のように」などと式番号を直接書かないこと。絶対に後でごちゃごちゃになって後悔することになる。<code>\[ \]</code>によるラベル無し数式と、<code>equation</code>環境によるラベルあり数式の使い分けだが、とりあえずラベル無しで書いておいて、後で参照が必要になったら<code>equation</code>環境に書き直すのが良いだろう。</p>
+<h3 id="図の挿入">図の挿入</h3>
+<p>LaTeXでは図を挿入することができる。LaTeXでは様々なフォーマットの図を扱えるが、原則としてPDFで貼り付けるのが良いだろう。</p>
+<p>適当なPythonコードを書いてPDFを作成しよう。TeXファイルと同じディレクトリに<code>test.py</code>を作成し、以下を入力せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> numpy <span class="im">as</span> np
+<span class="im">import</span> matplotlib
+matplotlib.use(<span class="st">&#39;Agg&#39;</span>)
+<span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
+
+
+x <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="dv">2</span><span class="op">*</span>np.pi, <span class="dv">2</span><span class="op">*</span>np.pi<span class="op">*</span><span class="fl">0.01</span>)
+y <span class="op">=</span> np.sin(x)
+
+plt.plot(x,y)
+plt.savefig(<span class="st">&quot;sin.pdf&quot;</span>)</code></pre></div>
+<p>これを</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">python</span> test.py</code></pre></div>
+<p>として実行すると<code>sin.pdf</code>ができる。これをLaTeXに取り込むには、まずプリアンブルで<code>graphicx</code>パッケージを取り込む。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="bu">\documentclass</span>{<span class="ex">jarticle</span>}
+<span class="bu">\usepackage</span>[dvipdfmx]{<span class="ex">graphicx</span>}
+<span class="kw">\begin</span>{<span class="ex">document</span>}</code></pre></div>
+<p><code>graphics</code>ではなく<code>graphicx</code>(最後がx)であることに注意。この状態で、</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="bu">\includegraphics</span>{<span class="ex">sin.pdf</span>}</code></pre></div>
+<p>と入力し、ビルドしてみよ。おそらく警告が一つ出たはずだ。左下にある(i)マークをクリックすると</p>
+<pre class="txt"><code>Overfull \hbox (145.3509pt too wide)</code></pre>
+<p>という表示が出ている。これは「表示領域から何かがはみ出ているよ」という警告で、LaTeXを使っていると良く見かけるものだ。今回のケースでは図が大きすぎるために表示領域からはみ出してしまっているので、小さくしよう。サイズを指定するためには、<code>\includegraphics</code>にオプションとして<code>width</code>を指定する。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="bu">\includegraphics</span>[width=10cm]{<span class="ex">sin.pdf</span>}</code></pre></div>
+<p>これで警告は消えるはずだ。</p>
+<p>さて、科学技術論文において、図を生で入れることはほとんどない。多くの場合「図番号」と「図の説明」を入れることだろう。そのためには<code>figure</code>環境を使う。先ほどの<code>includegraphics</code>命令を<code>figure</code>環境の中にいれよう。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="kw">\begin</span>{<span class="ex">figure</span>}
+<span class="bu">\includegraphics</span>[width=10cm]{<span class="ex">sin.pdf</span>}
+<span class="kw">\end</span>{<span class="ex">figure</span>}</code></pre></div>
+<p>この状態でビルドすると、図が文中から別の場所(おそらく上部)に移動したはずだ。さて、この図に説明をつけよう。そのためには<code>figure</code>環境に<code>caption</code>命令を入れる。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="kw">\begin</span>{<span class="ex">figure</span>}
+<span class="bu">\includegraphics</span>[width=10cm]{<span class="ex">sin.pdf</span>}
+<span class="fu">\caption</span>{正弦波のグラフ。}
+<span class="kw">\end</span>{<span class="ex">figure</span>}</code></pre></div>
+<p>ビルドすると、図の説明(キャプション)とともに、図番号が自動で入ったはずだ。この図もラベルをつけて参照することができる。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="kw">\begin</span>{<span class="ex">figure</span>}
+<span class="bu">\includegraphics</span>[width=10cm]{<span class="ex">sin.pdf</span>}
+<span class="fu">\caption</span>{正弦波のグラフ。}
+<span class="kw">\label</span>{<span class="ex">fig:sin</span>}
+<span class="kw">\end</span>{<span class="ex">figure</span>}
+
+正弦波のグラフを図<span class="kw">\ref</span>{<span class="ex">fig:sin</span>}に示す。</code></pre></div>
+<p>上記をビルドして、「正弦波のグラフを図1に示す。」となれば成功だ。</p>
+<p>繰り返しになるが、式番号や図番号については <strong>必ず</strong> ラベルによる参照を行うこと。数が少ないからといって直接書いていると後で泣きを見る。どうせVS Codeその他のLaTeXに対応したエディタには補完機能があるため、さほど手間ではない。</p>
+<p>なお、<code>\includegraphics</code>だけの場合は、その位置に図が挿入されるが、<code>figure</code>環境を使うと図の挿入場所は自動で決められる。基本的にはLaTeXに任せておけば良いが、どうしても「ページの上が良い」「下が良い」「絶対ここが良い」といった希望がある場合は、オプションで希望をLaTeXに伝えることができる。例えば</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="kw">\begin</span>{<span class="ex">figure</span>}[htbp]</code></pre></div>
+<p>とすると、順番に「この場所(here, h)」「上(top, t)」「下(bottom, b)」「独立したページ (page, p)」を意味しており、記述した順番で挿入を試みる。試しに上記のオプション<code>[htbp]</code>をつけてビルドしなおしてみよ。おそらく<code>h</code>が優先され、<code>\includegraphics</code>の場所に図が移動すると思われる。</p>
+<p>また、デフォルトでは、図はページの左側に寄せられてしまうため、図が小さいと見栄えが悪い。その場合は<code>\includegraphics</code>の直前に<code>\centering</code>を入れると良い。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="kw">\begin</span>{<span class="ex">figure</span>}[htbp]
+    <span class="fu">\centering</span>
+    <span class="bu">\includegraphics</span>[width=10cm]{<span class="ex">sin.pdf</span>}
+    <span class="fu">\caption</span>{正弦波のグラフ。}
+    <span class="kw">\label</span>{<span class="ex">fig:sin</span>}
+<span class="kw">\end</span>{<span class="ex">figure</span>}</code></pre></div>
+<p>図が中央寄せになったはずである。</p>
+<h3 id="参考文献の入れ方">参考文献の入れ方</h3>
+<p>科学技術論文では、何より「引用」が重要である。その研究分野においてどこまで何がわかっていて、これから使う手法は誰が開発、提案したもので、得られた結果は先行研究と比較してどうだったのかを、全て文献を引用しながら明らかにしなければならない。そのために論文の最後には「参考文献」として論文や書籍を並べ、本文中では番号を使って引用する。この際、本文中に出てこない論文を「参考文献」に入れてはならず、さらに「出現順」「年号順」「アルファベット順」など、適切な順序で並べる必要がある。これを手でやっていては必ず破綻するが、当然のことながらLaTeXに任せれば自動でやってくれる。</p>
+<p>LaTeXで参考文献を入れるには、手で入れる方法とbibtexにより半自動で入れる方法がある。原則として論文はbibtexを使うことを推奨するが、まずは手で入れる方法を紹介する。</p>
+<h4 id="手で入れる方法">手で入れる方法</h4>
+<p>まず、以下のような文献リストを文中の最後(<code>\end{document}</code>)に入れる。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="kw">\begin</span>{<span class="ex">thebibliography</span>}{99}
+<span class="fu">\bibitem</span>{okumura2020} 奥村 晴彦、黒木 裕介、LaTeX2ε美文書作成入門、技術評論社、2020.
+<span class="kw">\end</span>{<span class="ex">thebibliography</span>}</code></pre></div>
+<p>ここで<code>{99}</code>とあるのは、文献番号が何桁になるかをLaTeXに教えるためのもので、この場合は「二桁ですよ」と教えている。十件以内の場合は<code>{9}</code>、百件以上引用する場合は<code>{999}</code>などと指定するが、通常は<code>{99}</code>で良いだろう。</p>
+<p>この状態でビルドすると、「参考文献」という欄が作成されたはずだ。</p>
+<p>文献を文中で引用するには、<code>\cite{ラベル}</code>コマンドを使う。文献のラベルは<code>\bibitem{ラベル} 内容</code>という形式で指定できる。<code>\ref{ラベル}</code>と異なり、慣習的にこちらは名前空間を使わないようだ(もちろん使っても良い)。個人的には「筆頭著者名+出版年」を使っているが、個人で分かりやすければどのような名前をつけても自由だ。この場合は<code>okumura2020</code>が文献ラベルである。早速、引用してみよう。<code>thebibliography</code>環境の直前あたりに以下を記述せよ。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">本稿の執筆にはLaTeX<span class="kw">\cite</span>{<span class="ex">okumura2020</span>}を用いる。</code></pre></div>
+<p>これでコンパイルすると</p>
+<pre class="txt"><code>本稿の執筆にはLaTeX[1]を用いる。</code></pre>
+<p>となるはずだ。</p>
+<h4 id="bibtexを使う方法">bibtexを使う方法</h4>
+<p>先ほど、本文中に言及がないにも関わらず、文献リストに「LaTeX2ε美文書作成入門」が表示されていた。原則として文中で言及していない文献は文献リストに掲載してはならない。しかし、引用文献を追加したり削除したりしているうちに、どれに言及してどれに言及していないかの管理が面倒になるだろう。そこで、bibtexというファイルを使って文献リストを管理する。</p>
+<p>まずは文献ファイルを作ろう。TeXファイルと同じディレクトリに<code>reference.bib</code>というファイルを作成し、以下の内容を記述せよ。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">@book{okumura2020,
+  author    = {奥村 晴彦 and 黒木 裕},
+  title     = {LaTeX2ε美文書作成入門},
+  publisher = {技術評論社},
+  year      = {2020}
+}</code></pre></div>
+<p>ここで<code>@book</code>とあるのはbibtexエントリと呼ばれ、種類ごとに必須となる項目が異なる。<code>book</code>の場合は著者(author)、タイトル(title)、出版社(publisher)、出版年(year)が必須項目だ。<code>@book</code>の直後に文献ラベルをつける。著者名は<code>and</code>で区切ること。</p>
+<p>このBibTeXファイルを利用するには、先ほどの<code>thebibliography</code>の代わりに以下を指定する。手で書いた文献リストはコメントアウトしておこう。LaTeXは<code>%</code>から行末まではコメントと解釈されて無視される。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="co">%\begin{thebibliography}{99}</span>
+<span class="co">%    \bibitem{okumura2020} 奥村 晴彦、黒木 裕介、LaTeX2ε美文書作成入門、技術評論社、2020.</span>
+<span class="co">%\end{thebibliography}</span>
+
+<span class="bu">\bibliographystyle</span>{<span class="ex">junsrt</span>}
+<span class="bu">\bibliography</span>{<span class="ex">reference</span>}</code></pre></div>
+<p><code>\bibliographystyle{junsrt}</code>は文献リストのスタイルをあらわす。<code>junsrt</code>は出現順にソートせよ、という意味だ。<code>\bibliography{reference}</code>はBibTeXファイルを指定する。拡張子を省くことに注意せよ。</p>
+<p>この状態でビルドすると、参考文献が更新されるはずだ。</p>
+<p>さて、BibTeXファイルを手で書くのは手間だ。多くの場合、出版社はbibtexエントリをエクスポートする機能を持っている。試してみよう。</p>
+<p>適当な論文、例えば<a href="https://aip.scitation.org/doi/10.1063/1.4903811">J. Chem. Phys. 141, 234703 (2014)</a>のページに行ってみよう。これはアメリカ物理学協会(AIP)のJ. Chem. Phys.というジャーナルに掲載された論文だ。このページの上部に「TOOLS」というタブがあるのでクリックすると「Download Citation」という項目があるので選ぶ。「Include」では「Citation for this article (この記事だけ)」、「Format」では「BibTex」を選んで「DOWNLOAD ARTICLE CITATION DATA」をクリックすると、以下のようなbibtexエントリがダウンロードできる。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">@article{doi:10.1063/1.4903811,
+author = {Watanabe,Hiroshi  and Suzuki,Masaru  and Inaoka,Hajime  and Ito,Nobuyasu },
+title = {Ostwald ripening in multiple-bubble nuclei},
+journal = {The Journal of Chemical Physics},
+volume = {141},
+number = {23},
+pages = {234703},
+year = {2014},
+doi = {10.1063/1.4903811},
+
+URL = { 
+        https://doi.org/10.1063/1.4903811
+    
+},
+eprint = { 
+        https://doi.org/10.1063/1.4903811
+    
+}
+
+}</code></pre></div>
+<p>これを先ほどの<code>reference.bib</code>ファイルに追加し、<code>test.tex</code>に以下のような文章を追加しよう。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">渡辺らは気泡生成のシミュレーションを行った<span class="kw">\cite</span>{<span class="ex">doi:10.1063/1.4903811</span>}。</code></pre></div>
+<p>再度ビルドすると、</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">渡辺らは気泡生成のシミュレーションを行った[2].</code></pre></div>
+<p>などと表示されたはずだ。</p>
+<p>せっかくなので別の出版社も試してみよう。今度は日本物理学会の論文、<a href="https://journals.jps.jp/doi/10.7566/JPSJ.88.024004">J. Phys. Soc. Jpn. 88, 024004 (2019)</a>のサイトに行ってみる。右の欄に「Download Citation」とあるのでそこをクリックすると、Citation Managerのページに飛ぶので、Formatとして「BibTex」を選んで「Download citation data」をクリックする。すると以下のようなデータがダウンロードできる。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">@article{doi:10.7566/JPSJ.88.024004,
+author = {Watanabe ,Hiroshi and Morita ,Satoshi and Todo ,Synge and Kawashima ,Naoki},
+title = {Fast Algorithm for Generating Random Bit Strings and Multispin Coding for Directed Percolation},
+journal = {Journal of the Physical Society of Japan},
+volume = {88},
+number = {2},
+pages = {024004},
+year = {2019},
+doi = {10.7566/JPSJ.88.024004},
+
+URL = { 
+        https://doi.org/10.7566/JPSJ.88.024004
+    
+},
+eprint = { 
+        https://doi.org/10.7566/JPSJ.88.024004
+    
+}
+
+}</code></pre></div>
+<p>いま、文献ラベルとしてDOIである<code>doi:10.7566/JPSJ.88.024004</code>が指定されているが、これでは分かりづらいので、<code>watanabe2019</code>に変更しよう。</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">@article{watanabe2019,</code></pre></div>
+<p>この状態で<code>reference.bib</code>に追加し、texファイルに</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">渡辺らは気泡生成のシミュレーションを行った<span class="kw">\cite</span>{<span class="ex">watanabe2019</span>}。</code></pre></div>
+<p>という文章を追加してコンパイルする。</p>
+<pre class="txt"><code>渡辺らは気泡生成のシミュレーションを行った[2]。</code></pre>
+<p>と、文献番号が解決されたはずだ。番号は出現順に振られるため、先ほどの文章と順序を入れ替えると番号も変わる。</p>
+<p>まとめると、参考文献を管理する際は、</p>
+<ul>
+<li>BibTeXファイルを使う</li>
+<li>bibitemエントリはpublisherからダウンロードする</li>
+<li>文献ラベルがDOIになっていることが多いので、自分でわかりやすい名前に変える</li>
+<li>BibTeXファイルに追加する</li>
+</ul>
+<p>という手順を取ると良い。BibTeXファイルは手で管理しても良いが、<a href="http://www.jabref.org/">JabRef</a>や<a href="https://www.mendeley.com/">Mendeley</a>といった文献管理ソフトで管理したほうが効率的であろう。</p>
+<p>いずれにせよ、文献ファイルはTeXファイルと一緒に必ずGitその他のVCSで管理すること。</p>
 </article>
 </body>
 </html>

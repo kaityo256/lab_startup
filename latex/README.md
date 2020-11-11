@@ -471,9 +471,9 @@ LaTeXで参考文献を入れるには、手で入れる方法とbibtexにより
 }
 ```
 
-ここで`@book`とあるのはbibtexエントリと呼ばれ、種類ごとに必須となる項目が異なる。`book`の場合は著者(author)、タイトル(title)、出版社(publisher)、出版年(year)が必須項目だ。`@book`の直後に文献ラベルをつける。
+ここで`@book`とあるのはbibtexエントリと呼ばれ、種類ごとに必須となる項目が異なる。`book`の場合は著者(author)、タイトル(title)、出版社(publisher)、出版年(year)が必須項目だ。`@book`の直後に文献ラベルをつける。著者名は`and`で区切ること。
 
-このbibファイルを利用するには、先ほどの`thebibliography`の代わりに以下を指定する。手で書いた文献リストはコメントアウトしておこう。LaTeXは`%`から行末まではコメントと解釈されて無視される。
+このBibTeXファイルを利用するには、先ほどの`thebibliography`の代わりに以下を指定する。手で書いた文献リストはコメントアウトしておこう。LaTeXは`%`から行末まではコメントと解釈されて無視される。
 
 ```tex
 %\begin{thebibliography}{99}
@@ -484,5 +484,103 @@ LaTeXで参考文献を入れるには、手で入れる方法とbibtexにより
 \bibliography{reference}
 ```
 
-`\bibliographystyle{junsrt}`は文献リストのスタイルをあらわす。`junsrt`は出現順にソートせよ、という意味だ。`\bibliography{reference}`はbibファイルを指定する。拡張子を省くことに注意せよ。
+`\bibliographystyle{junsrt}`は文献リストのスタイルをあらわす。`junsrt`は出現順にソートせよ、という意味だ。`\bibliography{reference}`はBibTeXファイルを指定する。拡張子を省くことに注意せよ。
 
+この状態でビルドすると、参考文献が更新されるはずだ。
+
+さて、BibTeXファイルを手で書くのは手間だ。多くの場合、出版社はbibtexエントリをエクスポートする機能を持っている。試してみよう。
+
+適当な論文、例えば[J. Chem. Phys. 141, 234703 (2014)](https://aip.scitation.org/doi/10.1063/1.4903811)のページに行ってみよう。これはアメリカ物理学協会(AIP)のJ. Chem. Phys.というジャーナルに掲載された論文だ。このページの上部に「TOOLS」というタブがあるのでクリックすると「Download Citation」という項目があるので選ぶ。「Include」では「Citation for this article (この記事だけ)」、「Format」では「BibTex」を選んで「DOWNLOAD ARTICLE CITATION DATA」をクリックすると、以下のようなbibtexエントリがダウンロードできる。
+
+```tex
+@article{doi:10.1063/1.4903811,
+author = {Watanabe,Hiroshi  and Suzuki,Masaru  and Inaoka,Hajime  and Ito,Nobuyasu },
+title = {Ostwald ripening in multiple-bubble nuclei},
+journal = {The Journal of Chemical Physics},
+volume = {141},
+number = {23},
+pages = {234703},
+year = {2014},
+doi = {10.1063/1.4903811},
+
+URL = { 
+        https://doi.org/10.1063/1.4903811
+    
+},
+eprint = { 
+        https://doi.org/10.1063/1.4903811
+    
+}
+
+}
+```
+
+これを先ほどの`reference.bib`ファイルに追加し、`test.tex`に以下のような文章を追加しよう。
+
+```tex
+渡辺らは気泡生成のシミュレーションを行った\cite{doi:10.1063/1.4903811}。
+```
+
+再度ビルドすると、
+
+```tex
+渡辺らは気泡生成のシミュレーションを行った[2].
+```
+
+などと表示されたはずだ。
+
+せっかくなので別の出版社も試してみよう。今度は日本物理学会の論文、[J. Phys. Soc. Jpn. 88, 024004 (2019)](https://journals.jps.jp/doi/10.7566/JPSJ.88.024004)のサイトに行ってみる。右の欄に「Download Citation」とあるのでそこをクリックすると、Citation Managerのページに飛ぶので、Formatとして「BibTex」を選んで「Download citation data」をクリックする。すると以下のようなデータがダウンロードできる。
+
+```tex
+@article{doi:10.7566/JPSJ.88.024004,
+author = {Watanabe ,Hiroshi and Morita ,Satoshi and Todo ,Synge and Kawashima ,Naoki},
+title = {Fast Algorithm for Generating Random Bit Strings and Multispin Coding for Directed Percolation},
+journal = {Journal of the Physical Society of Japan},
+volume = {88},
+number = {2},
+pages = {024004},
+year = {2019},
+doi = {10.7566/JPSJ.88.024004},
+
+URL = { 
+        https://doi.org/10.7566/JPSJ.88.024004
+    
+},
+eprint = { 
+        https://doi.org/10.7566/JPSJ.88.024004
+    
+}
+
+}
+```
+
+いま、文献ラベルとしてDOIである`doi:10.7566/JPSJ.88.024004`が指定されているが、これでは分かりづらいので、`watanabe2019`に変更しよう。
+
+```tex
+@article{watanabe2019,
+```
+
+この状態で`reference.bib`に追加し、texファイルに
+
+```tex
+渡辺らは気泡生成のシミュレーションを行った\cite{watanabe2019}。
+```
+
+という文章を追加してコンパイルする。
+
+```txt
+渡辺らは気泡生成のシミュレーションを行った[2]。
+```
+
+と、文献番号が解決されたはずだ。番号は出現順に振られるため、先ほどの文章と順序を入れ替えると番号も変わる。
+
+まとめると、参考文献を管理する際は、
+
+* BibTeXファイルを使う
+* bibitemエントリはpublisherからダウンロードする
+* 文献ラベルがDOIになっていることが多いので、自分でわかりやすい名前に変える
+* BibTeXファイルに追加する
+
+という手順を取ると良い。BibTeXファイルは手で管理しても良いが、[JabRef](http://www.jabref.org/)や[Mendeley](https://www.mendeley.com/)といった文献管理ソフトで管理したほうが効率的であろう。
+
+いずれにせよ、文献ファイルはTeXファイルと一緒に必ずGitその他のVCSで管理すること。
