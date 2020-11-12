@@ -337,7 +337,7 @@ plt.savefig(<span class="st">&quot;sin.pdf&quot;</span>)</code></pre></div>
 <p>先ほど、本文中に言及がないにも関わらず、文献リストに「LaTeX2ε美文書作成入門」が表示されていた。原則として文中で言及していない文献は文献リストに掲載してはならない。しかし、引用文献を追加したり削除したりしているうちに、どれに言及してどれに言及していないかの管理が面倒になるだろう。そこで、bibtexというファイルを使って文献リストを管理する。</p>
 <p>まずは文献ファイルを作ろう。TeXファイルと同じディレクトリに<code>reference.bib</code>というファイルを作成し、以下の内容を記述せよ。</p>
 <div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">@book{okumura2020,
-  author    = {奥村 晴彦 and 黒木 裕},
+  author    = {奥村 晴彦 and 黒木 裕介},
   title     = {LaTeX2ε美文書作成入門},
   publisher = {技術評論社},
   year      = {2020}
@@ -403,9 +403,9 @@ eprint = {
 <p>いま、文献ラベルとしてDOIである<code>doi:10.7566/JPSJ.88.024004</code>が指定されているが、これでは分かりづらいので、<code>watanabe2019</code>に変更しよう。</p>
 <div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">@article{watanabe2019,</code></pre></div>
 <p>この状態で<code>reference.bib</code>に追加し、texファイルに</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">渡辺らは気泡生成のシミュレーションを行った<span class="kw">\cite</span>{<span class="ex">watanabe2019</span>}。</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">渡辺らはランダムビット生成を行った<span class="kw">\cite</span>{<span class="ex">watanabe2019</span>}。</code></pre></div>
 <p>という文章を追加してコンパイルする。</p>
-<pre class="txt"><code>渡辺らは気泡生成のシミュレーションを行った[2]。</code></pre>
+<pre class="txt"><code>渡辺らはランダムビット生成を行った[2]。</code></pre>
 <p>と、文献番号が解決されたはずだ。番号は出現順に振られるため、先ほどの文章と順序を入れ替えると番号も変わる。</p>
 <p>まとめると、参考文献を管理する際は、</p>
 <ul>
@@ -510,8 +510,16 @@ eprint = {
 <h2 id="トラブル対応">トラブル対応</h2>
 <p>LaTeXは参照の解決のため、何度もコンパイルが必要な場合がある。原則として<code>latexmk</code>が依存関係を自動認識し、必要な回数だけコンパイルしてくれるはずだが、何かの原因でビルドが止まらなくなったり、正しくビルドされなくなったりすることがある。</p>
 <h3 id="ビルドが止まらなくなった場合">ビルドが止まらなくなった場合</h3>
+<div class="figure">
+<img src="fig/terminate.png" alt="terminate.png" />
+<p class="caption">terminate.png</p>
+</div>
 <p>VS Codeの左にある「TeX」をクリックする。するとLATEXのメニューが開くので、「Build LaTeX Project」のメニュー左の「&gt;」をクリックして開き、「Terminate current compilation」をクリックするとビルドが止まる。</p>
 <h3 id="プレビューが更新されなくなった場合">プレビューが更新されなくなった場合</h3>
+<div class="figure">
+<img src="fig/cleanup.png" alt="cleanup.png" />
+<p class="caption">cleanup.png</p>
+</div>
 <p>保存してビルドが走ってもプレビューが更新されない場合、中間ファイル(auxiliary)がおかしくなっている場合がある。その場合は「Clean up auxiliary files」をクリックして、中間ファイルを削除してから「Build LaTeX project」をクリックして再ビルドするとうまくいくことが多い。</p>
 </article>
 </body>

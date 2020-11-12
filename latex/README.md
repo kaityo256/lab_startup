@@ -465,7 +465,7 @@ LaTeXで参考文献を入れるには、手で入れる方法とbibtexにより
 
 ```tex
 @book{okumura2020,
-  author    = {奥村 晴彦 and 黒木 裕},
+  author    = {奥村 晴彦 and 黒木 裕介},
   title     = {LaTeX2ε美文書作成入門},
   publisher = {技術評論社},
   year      = {2020}
@@ -564,13 +564,13 @@ eprint = {
 この状態で`reference.bib`に追加し、texファイルに
 
 ```tex
-渡辺らは気泡生成のシミュレーションを行った\cite{watanabe2019}。
+渡辺らはランダムビット生成を行った\cite{watanabe2019}。
 ```
 
 という文章を追加してコンパイルする。
 
 ```txt
-渡辺らは気泡生成のシミュレーションを行った[2]。
+渡辺らはランダムビット生成を行った[2]。
 ```
 
 と、文献番号が解決されたはずだ。番号は出現順に振られるため、先ほどの文章と順序を入れ替えると番号も変わる。
@@ -719,8 +719,12 @@ LaTeXは参照の解決のため、何度もコンパイルが必要な場合が
 
 ### ビルドが止まらなくなった場合
 
+![terminate.png](fig/terminate.png)
+
 VS Codeの左にある「TeX」をクリックする。するとLATEXのメニューが開くので、「Build LaTeX Project」のメニュー左の「>」をクリックして開き、「Terminate current compilation」をクリックするとビルドが止まる。
 
 ### プレビューが更新されなくなった場合
+
+![cleanup.png](fig/cleanup.png)
 
 保存してビルドが走ってもプレビューが更新されない場合、中間ファイル(auxiliary)がおかしくなっている場合がある。その場合は「Clean up auxiliary files」をクリックして、中間ファイルを削除してから「Build LaTeX project」をクリックして再ビルドするとうまくいくことが多い。
