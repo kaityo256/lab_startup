@@ -28,6 +28,10 @@
 * [簡単なSIMD化](simd_tutorial/README.md)
 * [Markdown記法とLaTeX記法](mdtex/README.md)
 
+## 執筆編
+
+* [卒業論文の準備](graduate_thesis/README.md)
+
 ## ライセンス
 
 Copyright (C) 2020 - present Hiroshi Watanabe
