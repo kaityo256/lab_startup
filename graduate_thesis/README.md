@@ -14,7 +14,7 @@
 
 ```sh
 cd github
-cp ~/Download/graduate_thesis-main.zip
+cp ~/Downloads/graduate_thesis-main.zip .
 unzip graduate_thesis-main.zip
 ```
 
