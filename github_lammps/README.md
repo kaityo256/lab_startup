@@ -503,3 +503,53 @@ def save_file(filename, atoms):
 * 球ではなく立方体をぶつけてみる (面ではなく角でぶつけると面白いかもしれない)
 
 などを試してみて、ローカルで修正したらコミットし、自分のリポジトリにpushしてみよ。
+
+## VMDによるアニメーション作成
+
+VMDによりアニメーションを作成する。まずはターミナルから`ffmpeg`が存在することを確認せよ。
+
+```sh
+$ ffmpeg -L
+ffmpeg version 4.0.2 Copyright (c) 2000-2018 the FFmpeg developers
+(snip)
+```
+
+LAMMPSをインストールしていれば`ffmpeg`もインストールされているはずだが、もしインストールされていなければインストールすること。
+
+以下、`lammps_collision`のtrajectoryが読み込まれていることを前提とする。
+
+まず、VMDのOpenGL Displayで適当な角度を指定する。液滴衝突であれば、例えばこんな角度にする。
+
+![vmd_animation1](fig/vmd_animation1.png)
+
+この状態で、VMD Mainの「Extensions」→「Visualization」→「Movie Maker」を選ぶ。すると「VMD Movie Generator」が起動する。
+
+![vmd_animation2](fig/vmd_animation2.png)
+
+まずはWorking directoryを指定する。特に理由がなければ、`lammps_collision`をクローンしたディレクトリを指定すると良いだろう。このディレクトリにイメージが大量に生成されるので、デスクトップなどを指定しないように。
+
+`Name of movie`は、連番ファイル名の基本の名前となる。なんでも良いが、ここでは`test`としておく。「Format」はなんでも良いが、例えばMPEG-1(VideoMach)としておく。
+
+以上の設定をした上で「Make Movie」をクリックすると、Working Directoryに指定したディレクトリに`test.00012.bmp`といったファイルが大量に作成される。最後に「videomach.exeが見つからない」というエラーが表示されるが「いいえ」を押して、次に出るダイアログもOKを押して終了してかまわない。
+
+![vmd_animation3](fig/vmd_animation3.png)
+
+この状態で、Working Directoryに指定したディレクトリに大量のBMPファイルがあるはずである。
+
+![vmd_animation4](fig/vmd_animation4.png)
+
+このBMPファイルからアニメーションGIFを作るには、ターミナルからBMPファイルがあるディレクトリで以下を実行する。
+
+```sh
+ffmpeg -i test.%05d.bmp collision.gif
+```
+
+これは「test.(五桁の整数の連番).bmpというファイルから、collision.gifを作れ」という意味だ。
+
+MPEGファイルを作りたければ、
+
+```sh
+ffmpeg -i test.%05d.bmp collision.mpg
+```
+
+とすればよい。同様に、連番のイメージファイルさえ作れば、FFMPEGを用いてアニメーションGIFでもMPEGでも作れるので使い方を覚えておきたい。
