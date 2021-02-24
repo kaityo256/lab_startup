@@ -29,13 +29,13 @@
 * mingw32-base-bin
 * mingw32-gcc-g++-bin
 
-の二つにチェックを入れる。チェックボックスをクリックするとメニューが出るので「Mark for Instllation」を選ぶこと。
+の二つにチェックを入れる。チェックボックスをクリックするとメニューが出るので「Mark for Installation」を選ぶこと。
 
-二つにチェックが入った状態で、メニューの「Instllation」から「Apply Changes」をクリックする。
+二つにチェックが入った状態で、メニューの「Installation」から「Apply Changes」をクリックする。
 
 ![Apply](fig/apply.png)
 
-「Ok to proceed?」と聞かれたら「Apply」を選ぶと選んだインストールが始まる。終わったら「Close」して、MinGW Instllation Managerを終了してよい。
+「Ok to proceed?」と聞かれたら「Apply」を選ぶと選んだインストールが始まる。終わったら「Close」して、MinGW Installation Managerを終了してよい。
 
 ## Git Bashにパスを通す
 

@@ -118,7 +118,7 @@ source tf/bin/activate
 
 まず、データを学習させよう。機械学習の定番データといえば、手書き数字認識のMNIST(Modified National Institute of Standards and Technology)データセットだが、今回使うデータは「Fashion-MNIST」と呼ばれるもので、10種類の衣類を区別するものだ。
 
-![Fasihon-MNIST](fig/fashion-mnist.png)
+![Fashion-MNIST](fig/fashion-mnist.png)
 
 これは28ピクセル x 28ピクセルの白黒画像である。各ピクセルは0から255までの輝度を持っているが、これを0から1までの実数に変換し、784次元の一次元ベクトルにしてニューラルネットに食わせて学習させる。
 
@@ -203,7 +203,7 @@ GitHubの、自分のリポジトリを見てみよう。ブラウザをリロ�
 
 以下のような画面が出てきたら成功だ。
 
-![Fasihon-MNIST Check](fig/fashion_mnist_check.png)
+![Fashion-MNIST Check](fig/fashion_mnist_check.png)
 
 左に何か絵を描くと、それを28 x 28ピクセルに変換したデータが右に表示され、さらにそのデータを784次元のベクトルとして訓練済みニューラルネットに食わせた結果、その絵が何であるかを判定してくれる。
 
