@@ -87,7 +87,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>次に、現在、ローカルに保存されているイメージを確認しよう。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">docker</span> images
 <span class="ex">REPOSITORY</span>          TAG                 IMAGE ID            CREATED             SIZE
-<span class="ex">ubuntu</span>              18.04               c3c304cb4f22        6 weeks ago         64.2MB</code></pre></div>
+<span class="ex">ubuntu</span>              18.04               329ed837d508        13 days ago         63.3MB</code></pre></div>
 <p>ubuntuの18.04があるはずだ(うちの研究室では)。イメージがない場合、リモートから取ってくることができる。それが<code>pull</code>コマンドだ。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">docker</span> pull ubuntu:18.04</code></pre></div>
 <p>これは、ubuntuの「18.04」というタグのついたイメージを持ってきなさい、という命令だ。タグは、多くの場合バージョンの指定に使われる。省略すると<code>latest</code>を指定したことになる。</p>
