@@ -37,7 +37,7 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 ```sh
 $ docker images
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
-ubuntu              18.04               c3c304cb4f22        6 weeks ago         64.2MB
+ubuntu              18.04               329ed837d508        13 days ago         63.3MB
 ```
 
 ubuntuの18.04があるはずだ(うちの研究室では)。イメージがない場合、リモートから取ってくることができる。それが`pull`コマンドだ。
