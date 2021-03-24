@@ -137,8 +137,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h2 id="学習とエクスポート">学習とエクスポート</h2>
 <p>まず、データを学習させよう。機械学習の定番データといえば、手書き数字認識のMNIST(Modified National Institute of Standards and Technology)データセットだが、今回使うデータは「Fashion-MNIST」と呼ばれるもので、10種類の衣類を区別するものだ。</p>
 <div class="figure">
-<img src="fig/fashion-mnist.png" alt="Fasihon-MNIST" />
-<p class="caption">Fasihon-MNIST</p>
+<img src="fig/fashion-mnist.png" alt="Fashion-MNIST" />
+<p class="caption">Fashion-MNIST</p>
 </div>
 <p>これは28ピクセル x 28ピクセルの白黒画像である。各ピクセルは0から255までの輝度を持っているが、これを0から1までの実数に変換し、784次元の一次元ベクトルにしてニューラルネットに食わせて学習させる。</p>
 <p>このデータはウェブに公開されているため、ダウンロードから学習まで一発でできる。まずはニューラルネットを学習させ、その結果を保存しよう。以下を実行せよ。</p>
@@ -190,8 +190,8 @@ Model was saved.</code></pre>
 <p>すると、GitHub Pagesのところに「Your site is ready to be published at https://youraccount.github.io/fashion_mnist_check/.」という文章が表示されるので、「数分待ってから」アクセスする。</p>
 <p>以下のような画面が出てきたら成功だ。</p>
 <div class="figure">
-<img src="fig/fashion_mnist_check.png" alt="Fasihon-MNIST Check" />
-<p class="caption">Fasihon-MNIST Check</p>
+<img src="fig/fashion_mnist_check.png" alt="Fashion-MNIST Check" />
+<p class="caption">Fashion-MNIST Check</p>
 </div>
 <p>左に何か絵を描くと、それを28 x 28ピクセルに変換したデータが右に表示され、さらにそのデータを784次元のベクトルとして訓練済みニューラルネットに食わせた結果、その絵が何であるかを判定してくれる。</p>
 <div class="figure">

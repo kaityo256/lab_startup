@@ -116,7 +116,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>その後、Ubuntuのターミナルを開いて、<code>.bashrc</code>ファイルを開く。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">vim</span> .bashrc</code></pre></div>
 <p>そして、最後に以下の行を記入する。入力は面倒であろうから、以下をコピペして良い。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">export</span> <span class="va">DISPLAY=</span><span class="kw">`</span><span class="fu">hostname</span> <span class="kw">|</span> <span class="fu">xargs</span> dig +short <span class="kw">|</span> <span class="fu">grep</span> 192.168.<span class="kw">`</span>:0.0</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">export</span> <span class="va">DISPLAY=</span><span class="kw">`</span><span class="fu">hostname</span> <span class="kw">|</span> <span class="fu">xargs</span> dig +short <span class="kw">|</span> <span class="fu">grep</span> 192.168.11<span class="kw">`</span>:0.0</code></pre></div>
 <p>編集が終わったら以下で再読み込みをしよう。これは今回のみで、次回の起動からは不要だ。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">source</span> .bashrc</code></pre></div>
 <p>これで準備完了だ。</p>
