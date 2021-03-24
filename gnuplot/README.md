@@ -188,6 +188,10 @@ gnuplot> p "test.dat" w lp pt 6 ps 2 lc 2
 
 線色には数字の他、色名を直接指定することもできる。
 
+```sh
+gnuplot> p "test.dat" w lp pt 6 ps 2 lc "red"
+```
+
 ![p "test.dat" w lp pt 6 ps 2 lc "red"](fig/test_dat_lc_red.png)
 
 色の名前をダブルクォーテーションで囲むのを忘れないこと。
