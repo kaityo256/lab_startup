@@ -4,6 +4,7 @@
 
 「上から順」にセットアップしていくことを想定しており、下の物は上のセットアップが終わっていることが前提となっているものがある。
 
+* [WSL2のセットアップ(Windowsのみ)](wsl2/README.md)
 * [Pythonのインストール](python/README.md)
 * [VSCodeのインストール](vscode/README.md)
 * [LAMMPSとVMDのインストール](lammps/README.md)
@@ -12,8 +13,6 @@
 * [SSHエージェント転送の設定](ssh/README.md)
 * [X Window Systemのインストール](X11/README.md)
 * [GitHubのアカウント作成と基本的な操作](github/README.md)
-* [Git Bashでg++を使えるようにする](gccwin/README.md)
-* [LaTeXのインストール](latex/README.md)
 
 ## 開発編
 
@@ -32,6 +31,14 @@
 ## 執筆編
 
 * [卒業論文の準備](graduate_thesis/README.md)
+
+## 古い情報
+
+以下はWindowsでWSL2を使わなかった時の情報。
+
+* [Git Bashでg++を使えるようにする](gccwin/README.md)
+* [LaTeXのインストール](latex/README.md)
+
 
 ## ライセンス
 

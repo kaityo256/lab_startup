@@ -73,45 +73,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <article class="markdown-body">
 <h1 id="gnuplotの使い方">gnuplotの使い方</h1>
 <p>これから、なんらかの数値計算を行うと、何かデータが出力される。それをグラフにしなければならない。エクセルを始めデータからグラフにするアプリケーションは多数あるが、ここではgnuplot(グニュプロット、グニュープロット)の使い方を覚えよう。</p>
-<p>gnuplotは長い歴史を持つツールで、非常に多機能なので、その全ての機能を覚えるのは難しい。以下では必要最低限の使い方だけを覚え、後は必要に応じて機能を調べていくと良い。</p>
-<h2 id="x-window-systemのインストール">X Window Systemのインストール</h2>
-<p>そのうちローカルにインストールして利用するのが良いが、とりあえずは研究室サーバに接続して利用することにしよう。そのためにはX Window Systemのインストールが必要だ。</p>
-<h3 id="macの準備">Macの準備</h3>
-<p>まだインストールしていない場合は、XQuartzをインストールする。<a href="https://www.xquartz.org/" class="uri">https://www.xquartz.org/</a>から、<code>XQuartz-2.7.11.dmg</code>をダウンロードし、インストールする。</p>
-<p>XQuartzは「アプリケーション」→「ユーティリティ」にインストールされるので起動する。「xterm」というウィンドウが開けばインストールできてる。</p>
-<p>その後、XQuartzの「環境設定」の「セキュリティ」タブで、「接続を認証」と「ネットワーク・クライアントからの接続を許可」の両方にチェックを入れる(デフォルトで「接続を認証」にはチェックが入っているはず)。</p>
-<p>さらに、ターミナルから</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">defaults</span> write org.macosforge.xquartz.X11 enable_iglx -bool true</code></pre></div>
-<p>を実行しておく。以上の変更を適用するためにXQuartzを再起動すること。</p>
-<p>その後、ターミナルを開けば準備完了である。</p>
-<h3 id="windowsの準備">Windowsの準備</h3>
-<p><a href="https://sourceforge.net/projects/vcxsrv/" class="uri">https://sourceforge.net/projects/vcxsrv/</a>から、VcXsrvをインストールする。</p>
-<p>インストール後に、XLaunchを起動する。Windows 10なら「ここに入力して検索」と表示されている検索窓にXLaunchと入力すれば起動する。</p>
-<p>起動後にいろいろ聞かれるが、全てデフォルトのまま「次へ」を押して最後に「完了」を押せばよい。</p>
-<p>その後、Git Bashを開いて、<code>.bashrc</code>ファイルを開く。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">vim</span> .bashrc</code></pre></div>
-<p>そして、以下の行を記入する(既にこのファイルがある場合は追加する)。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">export</span> <span class="va">DISPLAY=</span>localhost:0.0</code></pre></div>
-<p>編集が終わったら以下で再読み込みをしよう。これは今回のみで、次回のGit Bashの起動からは不要だ。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">source</span> .bashrc</code></pre></div>
-<p>なお、次回Git Bashを起動時に</p>
-<pre class="txt"><code>WARNING: Found ~/.bashrc but no ~/.bash_profile, ~/.bash_login or ~/.profile.
-
-This looks like an incorrect setup.
-A ~/.bash_profile that loads ~/.bashrc will be created for you.</code></pre>
-<p>といった警告が出るが、これは「.bashrcがあるのに.bash_profileが無かったから作っておいたよ」というメッセージで、次回起動からは表示されないので気にしなくて良い。</p>
-<p>これで準備完了だ。</p>
-<h2 id="接続とx-window-systemの確認">接続とX Window Systemの確認</h2>
-<p>研究室のサーバにsshで接続せよ。ただし、その際に <code>-AY</code>オプションをつけること。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">ssh</span> username@servername.hogehoge.ac.jp -AY</code></pre></div>
-<p>接続出来たら、X Window Systemが使えることを確認しよう(俗に「Xを飛ばす」と言う)。以下を実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">xeyes</span></code></pre></div>
-<p>以下のような、マウスを追いかける目玉が表示されたら成功だ。</p>
-<div class="figure">
-<img src="fig/xeyes.png" alt="xeyes" />
-<p class="caption">xeyes</p>
-</div>
-<h2 id="gnuplotを使う">Gnuplotを使う</h2>
+<p>gnuplotは長い歴史を持つツールであり、非常に多機能なので、その全ての機能を覚えるのは難しい。以下では必要最低限の使い方だけを覚え、後は必要に応じて機能を調べていくと良い。</p>
+<h2 id="基本的な使い方">基本的な使い方</h2>
 <h3 id="関数のプロット">関数のプロット</h3>
 <p>まずはgnuplotを起動しよう。研究室サーバにログインし、<code>gnuplot</code>を実行せよ。</p>
 <p>以下のような表示がされ、入力待ちとなる。</p>
@@ -132,6 +95,10 @@ A ~/.bash_profile that loads ~/.bashrc will be created for you.</code></pre>
 <span class="ex">gnuplot</span><span class="op">&gt;</span>        </code></pre></div>
 <p>gnuplotは、様々な関数をプロットできる。例えばsin(x)を表示してみよう。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">gnuplot</span><span class="op">&gt;</span> plot sin(x)</code></pre></div>
+<div class="figure">
+<img src="fig/sinx.png" alt="test.png" />
+<p class="caption">test.png</p>
+</div>
 <p>サインカーブが表示されたはずだ。何も指定しないと、x軸は-10から10、y軸の範囲は自動で設定される。軸の範囲を変えてみよう。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">gnuplot</span><span class="op">&gt;</span> plot [-20:20] sin(x)</code></pre></div>
 <p>すると、x軸の範囲が-20から20に変更されたはずだ。</p>
@@ -203,13 +170,27 @@ A ~/.bash_profile that loads ~/.bashrc will be created for you.</code></pre>
 <p class="caption">with linespoints</p>
 </div>
 <p><code>linespoints</code>を指定した状態で、かつ点のタイプやサイズを変更することもできる。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">gnuplot</span><span class="op">&gt;</span> p <span class="st">&quot;test.dat&quot;</span> w lp pt 6 ps 2</code></pre></div>
 <div class="figure">
 <img src="fig/test_dat_lp_pt_ps.png" alt="with linespoints pt 6 ps 2" />
 <p class="caption">with linespoints pt 6 ps 2</p>
 </div>
-<h3 id="フィッティング">フィッティング</h3>
+<p>また、線やポイントの色を変えるには<code>linecolor(lc)</code>で指定できる。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">gnuplot</span><span class="op">&gt;</span> p <span class="st">&quot;test.dat&quot;</span> w lp pt 6 ps 2 lc 2</code></pre></div>
+<div class="figure">
+<img src="fig/test_dat_lc.png" alt="p &quot;test.dat&quot; w lp pt 6 ps 2 lc 2" />
+<p class="caption">p &quot;test.dat&quot; w lp pt 6 ps 2 lc 2</p>
+</div>
+<p>線色には数字の他、色名を直接指定することもできる。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">gnuplot</span><span class="op">&gt;</span> p <span class="st">&quot;test.dat&quot;</span> w lp pt 6 ps 2 lc <span class="st">&quot;red&quot;</span></code></pre></div>
+<div class="figure">
+<img src="fig/test_dat_lc_red.png" alt="p &quot;test.dat&quot; w lp pt 6 ps 2 lc &quot;red&quot;" />
+<p class="caption">p &quot;test.dat&quot; w lp pt 6 ps 2 lc &quot;red&quot;</p>
+</div>
+<p>色の名前をダブルクォーテーションで囲むのを忘れないこと。</p>
+<h2 id="フィッティング">フィッティング</h2>
 <p>gnuplotでは自由に関数を定義して、パラメータのフィッティングをすることができる。まずは比例するようなデータに対して傾きをフィッティングしてみよう。</p>
-<h4 id="簡単なフィッティング">簡単なフィッティング</h4>
+<h3 id="簡単なフィッティング">簡単なフィッティング</h3>
 <p>まず、データと曲線は重ねて表示することができる。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">gnuplot</span><span class="op">&gt;</span> p <span class="st">&quot;test.dat&quot;</span>, x</code></pre></div>
 <div class="figure">
@@ -247,7 +228,7 @@ a               1.000</code></pre>
 <span class="ex">0.998181818193914</span></code></pre></div>
 <p>また、もう一度<code>f(x)</code>と一緒にデータを表示すれば、フィッティング後の値が使われる。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">gnuplot</span><span class="op">&gt;</span> p <span class="st">&quot;test.dat&quot;</span>, f(x)</code></pre></div>
-<h4 id="誤差を考慮したフィッティング">誤差を考慮したフィッティング</h4>
+<h3 id="誤差を考慮したフィッティング">誤差を考慮したフィッティング</h3>
 <p>gnuplotは、誤差を考慮したフィッティングもできる。以下のデータを考えよう(<code>test2.dat</code>)。</p>
 <pre class="txt"><code>1 1.01 0.1
 2 1.99 0.1
@@ -282,9 +263,9 @@ a               1.000</code></pre>
 <p class="caption">誤差を考慮した場合</p>
 </div>
 <p>信頼性の低いデータの重みが小さくなり、直線が他の信頼性の高いデータを貫いたことがわかる。</p>
-<h3 id="ファイルからの実行">ファイルからの実行</h3>
+<h2 id="ファイルからの実行">ファイルからの実行</h2>
 <p>gnuplotは、コマンドを入力して実行していくタイプのプロッターだが、このコマンドをあらかじめファイルに保存しておき、gnuplotに食わせることでプロットすることができる。</p>
-<p>gnuplotは、プロットを画面に表示するだけでなく、PNGやPostScript、PDFなどの形式でも出力可能だが、このようなファイルに出力する場合は、コマンドを手で入力するのではなく、ファイルに保存して、gnuplotに食わせて出力したほうが良い。これにより、 <strong>生データからグラフまで一発で作成する</strong> 環境が整うからだ。科学において、論文の不正の多くはグラフの捏造や修正により行われる。不正を疑われた時、生データと、そのデータから論文に使われたグラフと同じものが「後から」作れることは非常に大事である。</p>
+<p>gnuplotは、プロットを画面に表示するだけでなく、PNGやPostScript、PDFなどの形式でも出力可能だが、このようなファイルに出力する場合は、コマンドを手で入力するのではなく、ファイルに保存して、gnuplotに食わせて出力したほうが良い。これにより、 <strong>生データからグラフまで一発で作成する</strong> 環境が整うからだ。科学において、論文の不正の多くはグラフの捏造や修正により行われる。不正を疑われた時、生データと、そのデータから論文に使われたグラフと同じものが「後から」作れることは非常に大事である。また、論文を執筆する際、例えば精度の低いデータで仮の図を作って論文を書いておき、後から精度の高いものに更新することがよくある。その時に、コマンド一発で更新されたデータから図を作ることができると作業効率が良い。</p>
 <p>さて、出力先を画面ではなくPNGなどにする場合は<code>set terminal</code>を用いる。また、出力ファイル名は<code>set output ファイル名</code>で指定する。その他は全く同じである。</p>
 <p>プロットファイル<code>test.plt</code>を用意しよう。(まだgnuplotを実行中ならそれを終了してから)<code>vi test.plt</code>を実行し、以下の内容を記述して保存、終了せよ。</p>
 <pre class="txt"><code>set terminal pngcairo
@@ -292,14 +273,72 @@ set output &quot;test.png&quot;
 
 p sin(x)</code></pre>
 <p>その後、このファイルをgnuplotに食わせよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">gnuplot</span> test.plt</code></pre></div>
-<p>正しく記述されていれば、同じディレクトリに<code>test.png</code>が作成されたはずだ。表示してみよう。Linux (CentOS)でPNGを表示するには<code>eog</code>を用いる。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">eog</span> test.png</code></pre></div>
-<div class="figure">
-<img src="fig/sinx.png" alt="test.png" />
-<p class="caption">test.png</p>
-</div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">gnuplot</span> test.plt</code></pre></div>
+<p>正しく記述されていれば、同じディレクトリに<code>test.png</code>が作成されたはずだ。表示してみよう。Linux (CentOS)でPNGを表示するには<code>eog</code>、Macなら<code>open</code>、WindowsのWSLでは<code>explorer.exe</code>で開くことができる。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">eog</span> test.png <span class="co"># CentOS</span>
+<span class="ex">open</span> test.png <span class="co"># Mac</span>
+<span class="ex">explorer.exe</span> test.png <span class="co"># Windows</span></code></pre></div>
+<p>Windowsでいちいち<code>explorer.exe</code>とうつのは面倒なので、以下のようなaliasを作っておくと良い。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">alias</span> open=explorer.exe </code></pre></div>
+<p>論文用に図を作る場合は、PDFにするのが良いだろう。<code>test.plt</code>を以下のように修正せよ。</p>
+<pre class="txt"><code>set terminal pdfcairo
+set output &quot;test.pdf&quot;
+
+p sin(x)</code></pre>
+<p>実行したディレクトリに<code>test.pdf</code>が作成されたはずなので確認せよ。</p>
 <p>論文に使う図でなくても、普段から図は必ずプロットファイル経由で作成する癖をつけておいた方がよい。コマンドから図を作った場合、一か月もすれば間違いなくどういう操作をしたか忘れてしまう。生データとプロットファイルをペアで保存して、プロットファイルと図のファイル名を揃えておけば、「このプロットファイルをgnuplotに食わせればこのファイルができる」と思い出すことができるし、いつでも生データから同じ図を作ることができる。</p>
+<h2 id="その他便利な機能">その他便利な機能</h2>
+<p>gnuplotは非常に多機能であり、図の作成に必要なことはほぼなんでもできる。そのすべての機能を紹介することは不可能だが、ここでいくつか便利な機能を紹介しておく。</p>
+<h3 id="ラベルの設定">ラベルの設定</h3>
+<p><code>set xlabel</code>でx軸のラベルを設定できる。まずはサインカーブをプロットしよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">gnuplot</span><span class="op">&gt;</span> p sin(x)</code></pre></div>
+<p>この状態でx軸のラベルを設定する。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">gnuplot</span><span class="op">&gt;</span> set xlabel <span class="st">&quot;Temperature&quot;</span></code></pre></div>
+<p>設定しただけでは反映されない。<code>replot</code>により再描画しよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">gnuplot</span><span class="op">&gt;</span> rep</code></pre></div>
+<div class="figure">
+<img src="fig/label1.png" alt="label1.png" />
+<p class="caption">label1.png</p>
+</div>
+<p>軸の名前が設定されたはずだ。</p>
+<h4 id="フォントの設定">フォントの設定</h4>
+<p>軸のフォントサイズが小さいので、もう少し大きくしたい場合は、<code>font</code>コマンドを追加する。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">gnuplot</span><span class="op">&gt;</span> set xlabel <span class="st">&quot;Time&quot;</span> font <span class="st">&quot;Helvetica,40&quot;</span></code></pre></div>
+<p>このように<code>font</code>の後で「フォント名、フォントサイズ」と指定するとフォントやサイズを変更できる。</p>
+<div class="figure">
+<img src="fig/label2.png" alt="label2.png" />
+<p class="caption">label2.png</p>
+</div>
+<h4 id="ギリシャ文字">ギリシャ文字</h4>
+<p>gnuplotはラベルなどにギリシャ文字を表示できる。例えばx軸に「β」を表示したい場合は以下のようにする。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">gnuplot</span><span class="op">&gt;</span> set xlabel <span class="st">&quot;{/Symbol b}&quot;</span></code></pre></div>
+<div class="figure">
+<img src="fig/label3.png" alt="label3.png" />
+<p class="caption">label3.png</p>
+</div>
+<p>中括弧で囲まれた中に<code>/Symbol 対応する文字</code>を書く。βに対応するのはbだ。</p>
+<h4 id="上付き下付き文字">上付き、下付き文字</h4>
+<p>上付き、下付き文字も設定できる。ギリシャ文字と組み合わせることもできる。上付き文字はハット「^」で、下付き文字はアンダースコア「_」で書く。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">gnuplot</span><span class="op">&gt;</span> set xlabel <span class="st">&quot;{/Symbol b}^c&quot;</span>
+<span class="ex">gnuplot</span><span class="op">&gt;</span> set xlabel <span class="st">&quot;{/Symbol b}_c&quot;</span></code></pre></div>
+<p>なお、二文字以上の言葉を上付き、下付きにしたい場合は中括弧で囲む。そうでないと、最初の文字だけが上付き、下付きになる。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">gnuplot</span><span class="op">&gt;</span> set xlabel <span class="st">&quot;{/Symbol b}_{temp}&quot;</span></code></pre></div>
+<h3 id="サンプリング数の変更">サンプリング数の変更</h3>
+<p>gnuplotは、関数を折れ線グラフで表示している。一般には十分な解像度で表示されるが、場合によってはデフォルトの設定では解像度が不足するかもしれない。その場合は<code>set samples</code>で適切な値を設定してやる。</p>
+<p>例えば、-30 &lt; x &lt; 30の範囲でサインカーブを表示すると、デフォルトでは解像度が不足し、ガタガタになる。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">gnuplot</span><span class="op">&gt;</span> p [-30:30] sin(x)</code></pre></div>
+<div class="figure">
+<img src="fig/samples1.png" alt="fig/samples1.png" />
+<p class="caption">fig/samples1.png</p>
+</div>
+<p>サンプル数を1000などにしてやればなめらかな線になる。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">gnuplot</span><span class="op">&gt;</span> set samples 1000
+<span class="ex">gnuplot</span><span class="op">&gt;</span> rep</code></pre></div>
+<div class="figure">
+<img src="fig/samples2.png" alt="fig/samples2.png" />
+<p class="caption">fig/samples2.png</p>
+</div>
+<p>ただし、点の数が増えるため、PDFなどで出力する場合はファイルサイズも大きくなるので注意。</p>
 </article>
 </body>
 </html>

@@ -67,7 +67,7 @@ vim .bashrc
 そして、最後に以下の行を記入する。入力は面倒であろうから、以下をコピペして良い。
 
 ```sh
-export DISPLAY=`hostname | xargs dig +short | grep 192.168.`:0.0
+export DISPLAY=`hostname | xargs dig +short | grep 192.168.11`:0.0
 ```
 
 編集が終わったら以下で再読み込みをしよう。これは今回のみで、次回の起動からは不要だ。
