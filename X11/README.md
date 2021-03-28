@@ -78,6 +78,18 @@ source .bashrc
 
 これで準備完了だ。
 
+また、ファイアウォールの設定によっては表示がうまくいかない場合がある。その場合は以下の手順でファイアウォールの設定でVcXsrvへの接続を許可する必要がある。
+
+「Windows Defender ファイアウォール」を起動し、「Windows Defender ファイアウォールを介したアプリまたは機能を許可」を選ぶ。
+
+![defender1.png](fig/defender1.png)
+
+許可されたアプリの一覧からVcXsrvを見つけて「パブリック」にチェックが入っていなければチェックを入れる。
+
+![defender2.png](fig/defender2.png)
+
+これでWSLからVcXsrvへの接続が許可されるはずだ。
+
 ## 接続とX Window Systemの確認
 
 研究室のサーバにsshで接続せよ。ただし、その際に `-AY`オプションをつけること。
