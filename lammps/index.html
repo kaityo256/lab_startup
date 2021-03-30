@@ -220,7 +220,11 @@ Total wall time: 0:00:00</code></pre>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">open</span> .</code></pre></div>
 <p>と入力し、そのフォルダを開く。まだopenをエイリアス設定していない場合は</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">alias</span> open=explorer.exe</code></pre></div>
-<p>としておくこと。<code>.bashrc</code>に記載しておくことが望ましい。フォルダが開いたら、パスが表示されている場所に「vmd」と入力すると、このディレクトリをカレントディレクトリとしてVMDが起動する。</p>
+<p>としておくこと。<code>.bashrc</code>に記載しておくことが望ましい。フォルダが開いたら、パスが表示されている場所(以下の赤で囲った部分)に「vmd」と入力すると、このディレクトリをカレントディレクトリとしてVMDが起動する。</p>
+<div class="figure">
+<img src="fig/folder.png" alt="フォルダ" />
+<p class="caption">フォルダ</p>
+</div>
 <p>VMDが起動したら、「VMD Main」の「File」から「New Molecule」を選び、「Browse」を押して先ほどの<code>dump.melt</code>を選ぶ。</p>
 <p>file typeとして「LAMMPS Trajectory」を選んでから「Load」を押す。</p>
 <div class="figure">
