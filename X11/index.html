@@ -120,6 +120,18 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>編集が終わったら以下で再読み込みをしよう。これは今回のみで、次回の起動からは不要だ。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">source</span> .bashrc</code></pre></div>
 <p>これで準備完了だ。</p>
+<p>また、ファイアウォールの設定によっては表示がうまくいかない場合がある。その場合は以下の手順でファイアウォールの設定でVcXsrvへの接続を許可する必要がある。</p>
+<p>「Windows Defender ファイアウォール」を起動し、「Windows Defender ファイアウォールを介したアプリまたは機能を許可」を選ぶ。</p>
+<div class="figure">
+<img src="fig/defender1.png" alt="defender1.png" />
+<p class="caption">defender1.png</p>
+</div>
+<p>許可されたアプリの一覧からVcXsrvを見つけて「パブリック」にチェックが入っていなければチェックを入れる。</p>
+<div class="figure">
+<img src="fig/defender2.png" alt="defender2.png" />
+<p class="caption">defender2.png</p>
+</div>
+<p>これでWSLからVcXsrvへの接続が許可されるはずだ。</p>
 <h2 id="接続とx-window-systemの確認">接続とX Window Systemの確認</h2>
 <p>研究室のサーバにsshで接続せよ。ただし、その際に <code>-AY</code>オプションをつけること。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">ssh</span> username@servername.hogehoge.ac.jp -AY</code></pre></div>
