@@ -12,34 +12,26 @@
 
 ### Windows
 
-Windowsの場合、[https://git-scm.com/](https://git-scm.com/)からWindows用のインストーラをダウンロード、インストールする。右の方に「Download 2.26.0 for Windows」というボタンがあるはずなのでクリック。
+WSL2のUbuntuを使う。
 
-* Information: そのままNext
-* Select Components: 「Git LFS」以外のチェックを外す。
-* ![Select Components](fig/git_select_components.png)
-* Choosing the default editor used by Git: デフォルトの「Use Vim」のまま
-* Adjusting your PATH environment: デフォルトの「Git from the command line and also from 3rd-party software」のまま
-* Choosing the SSH executable: デフォルトの「Use OpenSSH」のまま
-* Choosing HTTPS transport backend: デフォルトの「Use the OpenSSL library」のまま
-* Configuring the line ending conversions: 「Checkout as-is, commit Unix-style line endings」を選ぶ
-* ![Line ending](fig/git_line_ending.png)
-* Configuring the terminal emulator to use with Git Bash: デフォルトのUse MinTTYのまま
-* Configuring extra options: デフォルトでは「Enable symbolic links」が外れているが、これも含めて全てにチェックを入れる。
-* ![Extra Options](fig/git_extra_options.png)
+```sh
+sudo apt update
+sudo apt install git
+```
 
-あとはインストールを待つ。インストール終了後、Git Bashというものがインストールされているので実行し、
+を実行せよ。インストールが完了したら、
 
 ```sh
 git --version
 ```
 
-と入力して、
+を実行せよ。
 
 ```txt
-git version 2.26.0.windows.1
+git version 2.25.1
 ```
 
-と表示されれば成功である。また、Windowsのコマンドプロンプトからも実行できることを確認しておこう。「コマンドプロンプト」を実行し、同様にgitのバージョンを確認せよ。実行できたらインストール完了である。
+と表示されればインストール完了である。
 
 ### Mac
 
@@ -68,7 +60,7 @@ git version 2.26.0
 
 Gitのインストールが完了したら、「ユーザ名」と「メールアドレス」の設定を行う。ユーザ名とメールアドレスは、GitHub等で公開リポジトリを作った場合には誰からも見られる状態となることに注意。
 
-WindowsではGit Bashで、Macではターミナルを開き、以下を実行する。
+ターミナルで以下を実行する。
 
 ```sh
 git config --global user.name "ユーザー名"
@@ -117,13 +109,31 @@ git config --global alias.ci "commit -a"
         ci = commit -a
 ```
 
+また、UbuntuのデフォルトエディタはGNU Nanoになっており、正直使いづらいのでVimにしておこう。
+
+```sh
+git config --global core.editor vim
+```
+
+`.gitconfig`は以下のようになったはずだ。
+
+```txt
+[user]
+        name = 先ほど設定したユーザー名
+        email = 先ほど設定したメールアドレス
+[alias]
+        co = checkout
+        st = status -s
+        ci = commit -a
+[core]
+  editor = vim
+```
+
 これでGitの利用準備が整った。
 
 ## Gitの動作確認
 
 それでは、実際にGitを使ってリポジトリを作成し、基本的な操作を学んでみよう。最初にコマンドラインから、次にVSCode上から操作する。今後、コマンドライン、VSCodeどちらでGitを利用しても良いが、コマンドラインから使えるようになることを推奨する。
-
-以下、WindowsはGit Bashで、Macはターミナルで実行すること。どちらも「ターミナル」と呼ぶ。
 
 途中、わけがわからなくなったら、ディレクトリごと消してやり直すこと。
 
@@ -189,7 +199,7 @@ ls -la
 git status
 ```
 
-以下のような表示が得られるはずである。
+以下のような表示が得られるはずである。なお、環境変数`LANG`が日本語になっていると、日本語のメッセージが表示される。
 
 ```txt
 On branch master
@@ -232,15 +242,6 @@ git st
 ```sh
 git add README.md
 ```
-
-なお、Windowsでは
-
-```txt
-warning: CRLF will be replaced by LF in README.md.
-The file will have its original line endings in your working directory
-```
-
-といった警告が出るが、これは「改行コードを変換するよ」という意味であり、とりあえず気にしなくて良い。
 
 現在の状態を見てみよう。
 
