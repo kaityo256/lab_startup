@@ -75,31 +75,54 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Lammps (Large-scale Atomic/Molecular Massively Parallel Simulator)は、サンディア国立研究所の古典分子動力学プログラムだ。性能が良く、比較的容易に使えて、並列化もなされているため、広く使われている。</p>
 <h2 id="lammpsのインストール">Lammpsのインストール</h2>
 <h3 id="windows">Windows</h3>
-<p>まずは<a href="https://rpm.lammps.org/windows/">ここ</a>からLammpsをダウンロードしよう。並列版もあるが、とりあえずはシリアル版(並列化されていない)として、<code>LAMMPS-64bit-stable.exe</code>をダウンロードして、実行する。「WindowsによってPCが保護されました」というダイアログが出てきたら、「詳細情報」を押すと「実行」が出てくるので、それをクリックしてインストールする。</p>
+<p>WSLで以下を実行する(<a href="https://qiita.com/tkmtSo/items/34a0098cb967f2a9fdfe">参考</a>)。</p>
+<p>まずは必要なパッケージをインストールしよう。MPI版はとりあえず作らないが、後のために念の為にMPIライブラリも入れておく。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">sudo</span> apt install -y build-essential libopenmpi-dev</code></pre></div>
+<p>次に、Lammpsをダウンロード、インストールする。どのディレクトリでも良いが、例えばbuildというディレクトリを作って、そこにクローンする。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">mkdir</span> build
+<span class="bu">cd</span> build
+<span class="fu">git</span> clone git://github.com/lammps/lammps.git</code></pre></div>
+<p>クローンしたら、その中に入ってビルドしよう。とりあえずはシリアル版(非並列版)を作る。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span> lammps
+<span class="bu">cd</span> src
+<span class="fu">make</span> serial</code></pre></div>
+<p>ビルドが成功したら、<code>lmp_serial</code>というプログラムができているはずだ。実行してみよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="bu">echo</span> info <span class="kw">|</span> <span class="ex">./lmp_serial</span>  
+<span class="ex">LAMMPS</span> (30 Oct 2021)
+
+<span class="ex">Info-Info-Info-Info-Info-Info-Info-Info-Info-Info-Info</span>
+<span class="ex">Printed</span> on Tue Mar 30 16:27:23 2021
+
+
+<span class="ex">Info-Info-Info-Info-Info-Info-Info-Info-Info-Info-Info</span>
+
+<span class="ex">Total</span> wall time: 0:00:00</code></pre></div>
+<p>上記のようなバージョン情報が表示されれば問題なくインストールされている。正しくビルドできていたら、<code>lmp_serial</code>をパスの通った場所にコピーしておこう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">sudo</span> cp lmp_serial /usr/local/bin</code></pre></div>
+<p>上記を実行するとパスワードが求められるので入力すること。</p>
 <h3 id="mac">Mac</h3>
 <p>「ターミナル」で以下を実行しよう。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">brew</span> install lammps</code></pre></div>
+<p>インストールが完了したら以下を実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="bu">echo</span> info <span class="kw">|</span> <span class="ex">lmp_serial</span>  
+<span class="ex">LAMMPS</span> (29 Oct 2020)
+
+<span class="ex">Info-Info-Info-Info-Info-Info-Info-Info-Info-Info-Info</span>
+<span class="ex">Printed</span> on Tue Mar 30 16:29:46 2021
+
+
+<span class="ex">Info-Info-Info-Info-Info-Info-Info-Info-Info-Info-Info</span>
+
+<span class="ex">Total</span> wall time: 0:00:00</code></pre></div>
+<p>上記のようなバージョン情報が表示されれば問題なくインストールされている。</p>
 <h2 id="サンプルコードの実行">サンプルコードの実行</h2>
 <p>インストールが完了したら、サンプルコードを実行してみよう。</p>
 <h3 id="windows-1">Windows</h3>
-<p>Windowsの場合、Lammpsのサンプルファイルは<code>C:\Program Files\LAMMPS 64-bit 3Mar2020\Examples</code>にある。そこに移動して「melt」というフォルダをコピーしよう。</p>
-<p>その後、自分のユーザフォルダに移動する。エクスプローラーで、「PC」→「Windows (C:)」→「ユーザー」→「自分のアカウント名」でいけるはず。</p>
-<p>そこに「lammps」というフォルダを作り、その中に入ってから、先ほどコピーした「melt」を貼り付けよう。</p>
-<p>次に、Windows Powershellを起動する。デフォルトでユーザーフォルダが表示されるはず。そこで、</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span> lammps
-<span class="bu">cd</span> melt</code></pre></div>
-<p>としてから、<code>ls</code>と打ってみよう。正しくコピーされていれば、以下のような表示になるはず。</p>
-<pre class="txt"><code>
-
-    ディレクトリ: C:\Users\watanabe\lammps\melt
-
-
-Mode                LastWriteTime         Length Name
-----                -------------         ------ ----
--a----       2020/03/06      2:02            596 in.melt
--a----       2020/03/06      2:02           2939 log.27Nov18.melt.g++.1</code></pre>
+<p>Windowsの場合は、先程ビルドのためにcloneしたファイルの中にサンプルコードがある。上記の指示に従っていれば</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span> ~/build/lammps/example/melt</code></pre></div>
+<p>で目的の場所にいけるはず。異なるディレクトリにクローンした場合は適宜読み替えること。</p>
 <p>この状態で、以下を実行しよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">cat</span> .\in.melt <span class="kw">|</span> <span class="ex">lmp_serial.exe</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">lmp_serial</span> <span class="op">&lt;</span> in.melt</code></pre></div>
 <p>いろいろ表示されて、最後に</p>
 <pre class="txt"><code>Total # of neighbors = 151513
 Ave neighs/atom = 37.8783
@@ -112,11 +135,9 @@ Total wall time: 0:00:00</code></pre>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span>
 <span class="fu">mkdir</span> lammps
 <span class="bu">cd</span> lammps
-<span class="fu">cp</span> -r /usr/local/Cellar/lammps/2020-03-03/share/lammps/examples/melt .
+<span class="fu">cp</span> -r /usr/local/Cellar/lammps/2020-10-29/share/lammps/examples/melt .
 <span class="bu">cd</span> melt</code></pre></div>
-<p>ここまでやったら<code>ls</code>と入力してみよ。正しくコピーされていれば以下の３つのファイルがあるはずである。</p>
-<pre class="txt"><code>in.melt  log.27Nov18.melt.g++.1  log.27Nov18.melt.g++.4</code></pre>
-<p>ではLammpsを実行しよう。</p>
+<p>この状態で、以下を実行しよう。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">lmp_serial</span> <span class="op">&lt;</span> in.melt </code></pre></div>
 <p>最後に</p>
 <pre class="txt"><code>Total # of neighbors = 151513
@@ -127,20 +148,14 @@ Total wall time: 0:00:00</code></pre>
 <p>と表示されれば成功である。</p>
 <h2 id="in.meltの修正">in.meltの修正</h2>
 <p>次に、<code>in.melt</code>を修正しよう。</p>
-<p>PowerShellもしくはターミナルで当該フォルダを開いているのなら、</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">code</span> in.melt</code></pre></div>
 <p>と入力すれば、VSCodeで直接<code>in.melt</code>が開かれるはず。</p>
-<p>また、Windowsであれば、コピーした(ユーザーフォルダの下にある)<code>melt</code>フォルダの中の<code>in.melt</code>ファイルを右クリックすると、「Codeで開く」という項目があるはずだ。それを選ぶと、<code>in.melt</code>ファイルがVSCodeで開かれるはずである。</p>
 <p>VSCodeでin.meltを開いたら、以下の行を探す。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="co">#dump       id all atom 50 dump.melt</span></code></pre></div>
 <p>この行頭の<code>#</code>を削除して保存しよう。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">dump</span>        id all atom 50 dump.melt</code></pre></div>
 <p>この状態で、またlammpsを実行しよう。</p>
-<p>WindowsならPowerShellで、</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">cat</span> .\in.melt <span class="kw">|</span> <span class="ex">lmp_serial.exe</span></code></pre></div>
-<p>Macならターミナルで</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">lmp_serial</span> <span class="op">&lt;</span> in.melt </code></pre></div>
-<p>と実行する。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">lmp_serial</span> <span class="op">&lt;</span> in.melt</code></pre></div>
 <p>すると、今度は同じフォルダに<code>dump.melt</code>が作成されたはずだ。<code>ls</code>で確認せよ。これは原子の起動を保存したファイルで、これを後からVMDで読み込んで可視化する。</p>
 <h2 id="vmdのインストール">VMDのインストール</h2>
 <h3 id="windows-2">Windows</h3>
@@ -149,7 +164,6 @@ Total wall time: 0:00:00</code></pre>
 <p>次に「Version 1.9.3 (2016-11-30) Platforms:」の、「Windows OpenGL (Microsoft Windows XP/Vista/7/8/10 (32-bit) using OpenGL)」を選ぶ。</p>
 <p>すると、「Registration/Login」画面が現れるので、メールアドレスと、適当なパスワードを入力する。初回登録時には「New User Registration」画面となるので、必要事項を入力の上で「Register」を押す。</p>
 <p>ライセンスに同意することを示すと、ダウンロードが始まる。ダウンロードが完了したら、インストールする。特に設定項目はない。</p>
-<p>Windows 10なら、左下の「ここに入力して検索」で「vmd」で検索すればVMDが起動する。</p>
 <h3 id="mac-2">Mac</h3>
 <p>最新版のMacではVMDが実行できないため、やや手間だがDocker経由で実行する。</p>
 <h4 id="xquartzのインストール">XQuartzのインストール</h4>
@@ -201,7 +215,27 @@ Total wall time: 0:00:00</code></pre>
 <pre class="txt"><code>Can&#39;t open display: watanabe-mbp.local:0</code></pre>
 <p>などと言われたらXQuartzが起動していないので起動せよ。</p>
 <h2 id="vmdによる可視化">VMDによる可視化</h2>
-<p>VMDが起動したら、「VMD Main」の「File」から「New Molecule」を選び、「Browse」を押して先ほどの<code>dump.melt</code>を選ぶ。Macの場合は<code>/lammps</code>の中にあるはず。</p>
+<h3 id="windowsの場合">Windowsの場合</h3>
+<p>WSLにおいて、まず<code>dump.melt</code>が存在するディレクトリで</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">open</span> .</code></pre></div>
+<p>と入力し、そのフォルダを開く。まだopenをエイリアス設定していない場合は</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">alias</span> open=explorer.exe</code></pre></div>
+<p>としておくこと。<code>.bashrc</code>に記載しておくことが望ましい。フォルダが開いたら、パスが表示されている場所に「vmd」と入力すると、このディレクトリをカレントディレクトリとしてVMDが起動する。</p>
+<p>VMDが起動したら、「VMD Main」の「File」から「New Molecule」を選び、「Browse」を押して先ほどの<code>dump.melt</code>を選ぶ。</p>
+<p>file typeとして「LAMMPS Trajectory」を選んでから「Load」を押す。</p>
+<div class="figure">
+<img src="fig/vmd_dialog.png" alt="VMD" />
+<p class="caption">VMD</p>
+</div>
+<p>すると、直線が多数重なったような画面が出たはずだ。この状態で、「VMD Main」の画面で「dump.melt」の行を選び、「Graphics」の「Representation」を選ぶ。</p>
+<p>ここで、「Drawing Method」を「VDW」にすると、画面が玉に変わるはず。その状態で「Sphere Scale」を小さくしよう。0.3くらいがちょうどよいと思う。</p>
+<div class="figure">
+<img src="fig/vmd_representation.png" alt="Representation" />
+<p class="caption">Representation</p>
+</div>
+<p>この状態で、VMD Mainの右下にある再生ボタン「Play Forward」を押せば、原子が凍った状態から解けていくアニメーション(6フレームしかないが)が表示されるはずである。マウスでドラッグすると角度を変えられるので試してみよ。</p>
+<h3 id="macの場合">Macの場合</h3>
+<p>VMDが起動したら、「VMD Main」の「File」から「New Molecule」を選び、「Browse」を押して先ほどの<code>dump.melt</code>を選ぶ。<code>/lammps</code>の中にあるはず。</p>
 <p>file typeとして「LAMMPS Trajectory」を選んでから「Load」を押す。</p>
 <div class="figure">
 <img src="fig/vmd_dialog.png" alt="VMD" />

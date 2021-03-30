@@ -78,26 +78,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>今後、「どのファイルがどんな状態にあるか」「歴史はどうなっているか」をイメージしながらGitを操作すると良い。</p>
 <h2 id="gitのインストール">Gitのインストール</h2>
 <h3 id="windows">Windows</h3>
-<p>Windowsの場合、<a href="https://git-scm.com/" class="uri">https://git-scm.com/</a>からWindows用のインストーラをダウンロード、インストールする。右の方に「Download 2.26.0 for Windows」というボタンがあるはずなのでクリック。</p>
-<ul>
-<li>Information: そのままNext</li>
-<li>Select Components: 「Git LFS」以外のチェックを外す。</li>
-<li><img src="fig/git_select_components.png" alt="Select Components" /></li>
-<li>Choosing the default editor used by Git: デフォルトの「Use Vim」のまま</li>
-<li>Adjusting your PATH environment: デフォルトの「Git from the command line and also from 3rd-party software」のまま</li>
-<li>Choosing the SSH executable: デフォルトの「Use OpenSSH」のまま</li>
-<li>Choosing HTTPS transport backend: デフォルトの「Use the OpenSSL library」のまま</li>
-<li>Configuring the line ending conversions: 「Checkout as-is, commit Unix-style line endings」を選ぶ</li>
-<li><img src="fig/git_line_ending.png" alt="Line ending" /></li>
-<li>Configuring the terminal emulator to use with Git Bash: デフォルトのUse MinTTYのまま</li>
-<li>Configuring extra options: デフォルトでは「Enable symbolic links」が外れているが、これも含めて全てにチェックを入れる。</li>
-<li><img src="fig/git_extra_options.png" title="fig:" alt="Extra Options" /></li>
-</ul>
-<p>あとはインストールを待つ。インストール終了後、Git Bashというものがインストールされているので実行し、</p>
+<p>WSL2のUbuntuを使う。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">sudo</span> apt update
+<span class="fu">sudo</span> apt install git</code></pre></div>
+<p>を実行せよ。インストールが完了したら、</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> --version</code></pre></div>
-<p>と入力して、</p>
-<pre class="txt"><code>git version 2.26.0.windows.1</code></pre>
-<p>と表示されれば成功である。また、Windowsのコマンドプロンプトからも実行できることを確認しておこう。「コマンドプロンプト」を実行し、同様にgitのバージョンを確認せよ。実行できたらインストール完了である。</p>
+<p>を実行せよ。</p>
+<pre class="txt"><code>git version 2.25.1</code></pre>
+<p>と表示されればインストール完了である。</p>
 <h3 id="mac">Mac</h3>
 <p>Macの場合は、Homebrewからインストールする。ターミナルから</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">brew</span> update
@@ -109,7 +97,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>と表示されればインストール完了である。</p>
 <h2 id="gitの初期設定">Gitの初期設定</h2>
 <p>Gitのインストールが完了したら、「ユーザ名」と「メールアドレス」の設定を行う。ユーザ名とメールアドレスは、GitHub等で公開リポジトリを作った場合には誰からも見られる状態となることに注意。</p>
-<p>WindowsではGit Bashで、Macではターミナルを開き、以下を実行する。</p>
+<p>ターミナルで以下を実行する。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> config --global user.name <span class="st">&quot;ユーザー名&quot;</span>
 <span class="fu">git</span> config --global user.email <span class="st">&quot;メールアドレス&quot;</span></code></pre></div>
 <p>特にこだわりがなければ、ユーザ名は自分の英語名(私は &quot;H. Watanabe&quot;にしている)、メールアドレスは普段使うメールアドレスにしておけば良い(携帯のアドレスなどは避けること)。</p>
@@ -137,10 +125,21 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
         co = checkout
         st = status -s
         ci = commit -a</code></pre>
+<p>また、UbuntuのデフォルトエディタはGNU Nanoになっており、正直使いづらいのでVimにしておこう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> config --global core.editor vim</code></pre></div>
+<p><code>.gitconfig</code>は以下のようになったはずだ。</p>
+<pre class="txt"><code>[user]
+        name = 先ほど設定したユーザー名
+        email = 先ほど設定したメールアドレス
+[alias]
+        co = checkout
+        st = status -s
+        ci = commit -a
+[core]
+  editor = vim</code></pre>
 <p>これでGitの利用準備が整った。</p>
 <h2 id="gitの動作確認">Gitの動作確認</h2>
 <p>それでは、実際にGitを使ってリポジトリを作成し、基本的な操作を学んでみよう。最初にコマンドラインから、次にVSCode上から操作する。今後、コマンドライン、VSCodeどちらでGitを利用しても良いが、コマンドラインから使えるようになることを推奨する。</p>
-<p>以下、WindowsはGit Bashで、Macはターミナルで実行すること。どちらも「ターミナル」と呼ぶ。</p>
 <p>途中、わけがわからなくなったら、ディレクトリごと消してやり直すこと。</p>
 <h3 id="リポジトリの作成">リポジトリの作成</h3>
 <p>まず、適当なテスト用ディレクトリを作り、その中で作業しよう。<code>git</code>というディレクトリを作り、さらにその中に<code>test</code>というディレクトリを作ろう。</p>
@@ -175,7 +174,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <p>この状態を確認してみよう。ターミナルで以下を実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> status</code></pre></div>
-<p>以下のような表示が得られるはずである。</p>
+<p>以下のような表示が得られるはずである。なお、環境変数<code>LANG</code>が日本語になっていると、日本語のメッセージが表示される。</p>
 <pre class="txt"><code>On branch master
 
 No commits yet
@@ -196,10 +195,6 @@ nothing added to commit but untracked files present (use &quot;git add&quot; to 
 <h3 id="インデックスへの追加">インデックスへの追加</h3>
 <p>さて、<code>Untracked</code>な状態のファイルを、Gitの管理下に置こう。そのためには、<code>git add</code>を実行する。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> add README.md</code></pre></div>
-<p>なお、Windowsでは</p>
-<pre class="txt"><code>warning: CRLF will be replaced by LF in README.md.
-The file will have its original line endings in your working directory</code></pre>
-<p>といった警告が出るが、これは「改行コードを変換するよ」という意味であり、とりあえず気にしなくて良い。</p>
 <p>現在の状態を見てみよう。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> st</code></pre></div>
 <p>こんな表示になるはずだ。</p>

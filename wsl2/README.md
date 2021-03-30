@@ -61,3 +61,41 @@ wsl --set-default-version 2
 インストール後の最初に起動でUNIX usernameとパスワードを聞かれるので、アカウント名とパスワードを入力する。
 
 以上でWSL2のインストールは完了である。
+
+## 環境設定
+
+### デスクトップへのシンボリックリンク
+
+WSL側からWindows側のデスクトップにシンボリックリンクを張っておくと後々便利だ。
+
+```sh
+ln -s /mnt/c/Users/username/Desktop
+```
+
+上記の「username」を自分のWindowsのアカウント名にすること。アカウント名がわからない場合はWSLで以下のコマンドを実行することで確認できる。
+
+```sh
+cmd.exe /c echo %USERNAME% 2> /dev/null
+```
+
+### explorer.exeへのエイリアス
+
+WSLのディレクトリをエクスプローラで開くことができると便利だ。以下の一行を`.bashrc`の最後に記載しておくこと。
+
+```sh
+alias open=explorer.exe
+```
+
+保存したら、
+
+```sh
+source .bashrc
+```
+
+で読み込んだ後、
+
+```sh
+open .
+```
+
+により、現在のディレクトリがエクスプローラで開かれることを確認せよ。

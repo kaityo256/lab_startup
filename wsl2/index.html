@@ -108,6 +108,20 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>検索窓に「Microsoft Store」と入力してMicrosoft Storeを開く。右上の「検索」に「ubuntu」と入力し、現れた候補の中から「Ubuntu 20.04 LTS」を選択、インストールする。</p>
 <p>インストール後の最初に起動でUNIX usernameとパスワードを聞かれるので、アカウント名とパスワードを入力する。</p>
 <p>以上でWSL2のインストールは完了である。</p>
+<h2 id="環境設定">環境設定</h2>
+<h3 id="デスクトップへのシンボリックリンク">デスクトップへのシンボリックリンク</h3>
+<p>WSL側からWindows側のデスクトップにシンボリックリンクを張っておくと後々便利だ。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">ln</span> -s /mnt/c/Users/username/Desktop</code></pre></div>
+<p>上記の「username」を自分のWindowsのアカウント名にすること。アカウント名がわからない場合はWSLで以下のコマンドを実行することで確認できる。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">cmd.exe</span> /c echo %USERNAME% <span class="op">2&gt;</span> /dev/null</code></pre></div>
+<h3 id="explorer.exeへのエイリアス">explorer.exeへのエイリアス</h3>
+<p>WSLのディレクトリをエクスプローラで開くことができると便利だ。以下の一行を<code>.bashrc</code>の最後に記載しておくこと。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">alias</span> open=explorer.exe</code></pre></div>
+<p>保存したら、</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">source</span> .bashrc</code></pre></div>
+<p>で読み込んだ後、</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">open</span> .</code></pre></div>
+<p>により、現在のディレクトリがエクスプローラで開かれることを確認せよ。</p>
 </article>
 </body>
 </html>

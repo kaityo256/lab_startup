@@ -6,7 +6,52 @@ Lammps (Large-scale Atomic/Molecular Massively Parallel Simulator)は、サン�
 
 ### Windows
 
-まずは[ここ](https://rpm.lammps.org/windows/)からLammpsをダウンロードしよう。並列版もあるが、とりあえずはシリアル版(並列化されていない)として、`LAMMPS-64bit-stable.exe`をダウンロードして、実行する。「WindowsによってPCが保護されました」というダイアログが出てきたら、「詳細情報」を押すと「実行」が出てくるので、それをクリックしてインストールする。
+WSLで以下を実行する([参考](https://qiita.com/tkmtSo/items/34a0098cb967f2a9fdfe))。
+
+まずは必要なパッケージをインストールしよう。MPI版はとりあえず作らないが、後のために念の為にMPIライブラリも入れておく。
+
+```sh
+sudo apt install -y build-essential libopenmpi-dev
+```
+
+次に、Lammpsをダウンロード、インストールする。どのディレクトリでも良いが、例えばbuildというディレクトリを作って、そこにクローンする。
+
+```sh
+mkdir build
+cd build
+git clone git://github.com/lammps/lammps.git
+```
+
+クローンしたら、その中に入ってビルドしよう。とりあえずはシリアル版(非並列版)を作る。
+
+```sh
+cd lammps
+cd src
+make serial
+```
+
+ビルドが成功したら、`lmp_serial`というプログラムができているはずだ。実行してみよう。
+
+```sh
+$ echo info | ./lmp_serial  
+LAMMPS (30 Oct 2021)
+
+Info-Info-Info-Info-Info-Info-Info-Info-Info-Info-Info
+Printed on Tue Mar 30 16:27:23 2021
+
+
+Info-Info-Info-Info-Info-Info-Info-Info-Info-Info-Info
+
+Total wall time: 0:00:00
+```
+
+上記のようなバージョン情報が表示されれば問題なくインストールされている。正しくビルドできていたら、`lmp_serial`をパスの通った場所にコピーしておこう。
+
+```sh
+sudo cp lmp_serial /usr/local/bin
+```
+
+上記を実行するとパスワードが求められるので入力すること。
 
 ### Mac
 
@@ -16,43 +61,41 @@ Lammps (Large-scale Atomic/Molecular Massively Parallel Simulator)は、サン�
 brew install lammps
 ```
 
+インストールが完了したら以下を実行せよ。
+
+```sh
+$ echo info | lmp_serial  
+LAMMPS (29 Oct 2020)
+
+Info-Info-Info-Info-Info-Info-Info-Info-Info-Info-Info
+Printed on Tue Mar 30 16:29:46 2021
+
+
+Info-Info-Info-Info-Info-Info-Info-Info-Info-Info-Info
+
+Total wall time: 0:00:00
+```
+
+上記のようなバージョン情報が表示されれば問題なくインストールされている。
+
 ## サンプルコードの実行
 
 インストールが完了したら、サンプルコードを実行してみよう。
 
 ### Windows
 
-Windowsの場合、Lammpsのサンプルファイルは`C:\Program Files\LAMMPS 64-bit 3Mar2020\Examples`にある。そこに移動して「melt」というフォルダをコピーしよう。
-
-その後、自分のユーザフォルダに移動する。エクスプローラーで、「PC」→「Windows (C:)」→「ユーザー」→「自分のアカウント名」でいけるはず。
-
-そこに「lammps」というフォルダを作り、その中に入ってから、先ほどコピーした「melt」を貼り付けよう。
-
-次に、Windows Powershellを起動する。デフォルトでユーザーフォルダが表示されるはず。そこで、
+Windowsの場合は、先程ビルドのためにcloneしたファイルの中にサンプルコードがある。上記の指示に従っていれば
 
 ```sh
-cd lammps
-cd melt
+cd ~/build/lammps/example/melt
 ```
 
-としてから、`ls`と打ってみよう。正しくコピーされていれば、以下のような表示になるはず。
-
-```txt
-
-
-    ディレクトリ: C:\Users\watanabe\lammps\melt
-
-
-Mode                LastWriteTime         Length Name
-----                -------------         ------ ----
--a----       2020/03/06      2:02            596 in.melt
--a----       2020/03/06      2:02           2939 log.27Nov18.melt.g++.1
-```
+で目的の場所にいけるはず。異なるディレクトリにクローンした場合は適宜読み替えること。
 
 この状態で、以下を実行しよう。
 
 ```sh
-cat .\in.melt | lmp_serial.exe
+lmp_serial < in.melt
 ```
 
 いろいろ表示されて、最後に
@@ -75,17 +118,11 @@ Total wall time: 0:00:00
 cd
 mkdir lammps
 cd lammps
-cp -r /usr/local/Cellar/lammps/2020-03-03/share/lammps/examples/melt .
+cp -r /usr/local/Cellar/lammps/2020-10-29/share/lammps/examples/melt .
 cd melt
 ```
 
-ここまでやったら`ls`と入力してみよ。正しくコピーされていれば以下の３つのファイルがあるはずである。
-
-```txt
-in.melt  log.27Nov18.melt.g++.1  log.27Nov18.melt.g++.4
-```
-
-ではLammpsを実行しよう。
+この状態で、以下を実行しよう。
 
 ```sh
 lmp_serial < in.melt 
@@ -107,15 +144,11 @@ Total wall time: 0:00:00
 
 次に、`in.melt`を修正しよう。
 
-PowerShellもしくはターミナルで当該フォルダを開いているのなら、
-
 ```sh
 code in.melt
 ```
 
 と入力すれば、VSCodeで直接`in.melt`が開かれるはず。
-
-また、Windowsであれば、コピーした(ユーザーフォルダの下にある)`melt`フォルダの中の`in.melt`ファイルを右クリックすると、「Codeで開く」という項目があるはずだ。それを選ぶと、`in.melt`ファイルがVSCodeで開かれるはずである。
 
 VSCodeでin.meltを開いたら、以下の行を探す。
 
@@ -131,19 +164,9 @@ dump		id all atom 50 dump.melt
 
 この状態で、またlammpsを実行しよう。
 
-WindowsならPowerShellで、
-
 ```sh
-cat .\in.melt | lmp_serial.exe
+lmp_serial < in.melt
 ```
-
-Macならターミナルで
-
-```sh
-lmp_serial < in.melt 
-```
-
-と実行する。
 
 すると、今度は同じフォルダに`dump.melt`が作成されたはずだ。`ls`で確認せよ。これは原子の起動を保存したファイルで、これを後からVMDで読み込んで可視化する。
 
@@ -160,8 +183,6 @@ lmp_serial < in.melt
 すると、「Registration/Login」画面が現れるので、メールアドレスと、適当なパスワードを入力する。初回登録時には「New User Registration」画面となるので、必要事項を入力の上で「Register」を押す。
 
 ライセンスに同意することを示すと、ダウンロードが始まる。ダウンロードが完了したら、インストールする。特に設定項目はない。
-
-Windows 10なら、左下の「ここに入力して検索」で「vmd」で検索すればVMDが起動する。
 
 ### Mac
 
@@ -274,7 +295,39 @@ Can't open display: watanabe-mbp.local:0
 
 ## VMDによる可視化
 
-VMDが起動したら、「VMD Main」の「File」から「New Molecule」を選び、「Browse」を押して先ほどの`dump.melt`を選ぶ。Macの場合は`/lammps`の中にあるはず。
+### Windowsの場合
+
+WSLにおいて、まず`dump.melt`が存在するディレクトリで
+
+```sh
+open .
+```
+
+と入力し、そのフォルダを開く。まだopenをエイリアス設定していない場合は
+
+```sh
+alias open=explorer.exe
+```
+
+としておくこと。`.bashrc`に記載しておくことが望ましい。フォルダが開いたら、パスが表示されている場所に「vmd」と入力すると、このディレクトリをカレントディレクトリとしてVMDが起動する。
+
+VMDが起動したら、「VMD Main」の「File」から「New Molecule」を選び、「Browse」を押して先ほどの`dump.melt`を選ぶ。
+
+file typeとして「LAMMPS Trajectory」を選んでから「Load」を押す。
+
+![VMD](fig/vmd_dialog.png)
+
+すると、直線が多数重なったような画面が出たはずだ。この状態で、「VMD Main」の画面で「dump.melt」の行を選び、「Graphics」の「Representation」を選ぶ。
+
+ここで、「Drawing Method」を「VDW」にすると、画面が玉に変わるはず。その状態で「Sphere Scale」を小さくしよう。0.3くらいがちょうどよいと思う。
+
+![Representation](fig/vmd_representation.png)
+
+この状態で、VMD Mainの右下にある再生ボタン「Play Forward」を押せば、原子が凍った状態から解けていくアニメーション(6フレームしかないが)が表示されるはずである。マウスでドラッグすると角度を変えられるので試してみよ。
+
+### Macの場合
+
+VMDが起動したら、「VMD Main」の「File」から「New Molecule」を選び、「Browse」を押して先ほどの`dump.melt`を選ぶ。`/lammps`の中にあるはず。
 
 file typeとして「LAMMPS Trajectory」を選んでから「Load」を押す。
 
