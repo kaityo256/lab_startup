@@ -95,6 +95,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>を実行せよ。</p>
 <pre class="txt"><code>git version 2.26.0</code></pre>
 <p>と表示されればインストール完了である。</p>
+<h3 id="デフォルトブランチについて">デフォルトブランチについて</h3>
+<p>Gitのデフォルトブランチは<code>master</code>という名前だが、これを<code>main</code>に変えようという動きがある。また、GitHubではすでにデフォルトブランチが<code>main</code>になっている。これをうけて、Git 2.28より、デフォルトブランチを指定できるようになった。デフォルトブランチを<code>main</code>に変更する場合は以下を実行する。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> config --global init.defaultBranch main</code></pre></div>
+<p>ただし、現時点(2020年3月31日)でUbuntuで入るGitが2.25.1なので、以下はデフォルトブランチが<code>master</code>のままで作業する。</p>
 <h2 id="gitの初期設定">Gitの初期設定</h2>
 <p>Gitのインストールが完了したら、「ユーザ名」と「メールアドレス」の設定を行う。ユーザ名とメールアドレスは、GitHub等で公開リポジトリを作った場合には誰からも見られる状態となることに注意。</p>
 <p>ターミナルで以下を実行する。</p>
@@ -279,13 +283,13 @@ index 8ae0569..58c814b 100644
 </ul>
 <p>という作業を繰り返す。実際、多人数で開発する場合はこうして「きれいな歴史」を作る方が良いのだが、当面は一人で開発するので、<code>git add</code>を省略して良い。</p>
 <p><code>git add</code>を省略するには、コミットする時に<code>git commit -a</code>オプションをつけて、「修正されたファイル全てをコミットする」ようにすれば良い。先ほど<code>commit -a</code>に<code>ci</code>という別名(エイリアス)をつけたので、今後はそれを使うことにしよう。</p>
-<p>まず、VSCodeでさらにファイルを修正しよう。<code>README.md</code>に以下の行を付け加えよう。</p>
+<p>まず、VSCodeでさらにファイルを修正しよう。<code>README.md</code>に以下の行を付け加えよう。やはり最後の改行を忘れないように。</p>
 <pre class="txt"><code># Test
 
 Hello git
 Bye git
 </code></pre>
-<p>この状態で、<code>git add</code>せずに<code>git commit</code>しようとすると、「何をコミットするか指定が無いよ」と怒られる。</p>
+<p>この状態で、<code>git add</code>せずに<code>git commit</code>しようとすると、「何をコミットするか指定が無いよ(インデックスに何も無いよ)」と怒られる。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">git</span> commit -m <span class="st">&quot;modifies README.md&quot;</span>
 <span class="ex">On</span> branch master
 <span class="ex">Changes</span> not staged for commit:
@@ -294,35 +298,36 @@ Bye git
         <span class="ex">modified</span>:   README.md
 
 <span class="ex">no</span> changes added to commit (use <span class="st">&quot;git add&quot;</span> and/or <span class="st">&quot;git commit -a&quot;</span>)</code></pre></div>
-<p>しかし、<code>git ci</code>を使うと、<code>git add</code>なしにコミットできる。</p>
+<p>上記メッセージには、まず<code>git add</code>するか、<code>git commit -a</code>しろとあるので、ここでは後者を実行しよう。先程<code>git commit -a</code>に<code>git ci</code>という別名をつけたので、<code>git ci</code>を使えば<code>git add</code>なしにいきなりコミットできる。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> ci -m <span class="st">&quot;modifies README.md&quot;</span></code></pre></div>
-<p>以後は<code>git ci</code>を使ってよい。</p>
+<p>以後、慣れるまでは場合は<code>git ci</code>を使うことで<code>git add</code>を省略して良い。</p>
 <h3 id="歴史の確認">歴史の確認</h3>
 <p>これまでの歴史を確認して見よう。上記の通りに作業して来たなら、3つのコミットが作成されたはずだ。<code>git log</code>で歴史を振り返ってみよう。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">git</span> log
-<span class="ex">commit</span> 6d3fcfa23562ce623d0fd6f7f37e79be42e0093d (HEAD -<span class="op">&gt;</span> master)
+<span class="ex">commit</span> e63355285c9fd1929925568522dbc321e9b3e8c7 (HEAD -<span class="op">&gt;</span> master)
 <span class="ex">Author</span>: H. Watanabe <span class="op">&lt;</span>kaityo@users.sourceforge.jp<span class="op">&gt;</span>
-<span class="ex">Date</span>:   Sat Apr 11 19:48:28 2020 +0900
+<span class="ex">Date</span>:   Wed Mar 31 12:01:12 2021 +0900
 
     <span class="ex">modifies</span> README.md
 
-<span class="ex">commit</span> 301d9a7d00911bf70e86db11eea197471eed3f27
+<span class="ex">commit</span> 2eb03e9589b263f4d2ab61b09644da49134d8e21
 <span class="ex">Author</span>: H. Watanabe <span class="op">&lt;</span>kaityo@users.sourceforge.jp<span class="op">&gt;</span>
-<span class="ex">Date</span>:   Sat Apr 11 19:41:41 2020 +0900
+<span class="ex">Date</span>:   Wed Mar 31 11:38:38 2021 +0900
 
     <span class="ex">adds</span> new line
 
-<span class="ex">commit</span> 06f9a1243e4b3c94a5fe9842196792278fb2ea64
+<span class="ex">commit</span> 85f4e334b0094170d4382c7a86e4a185f12e3cd1
 <span class="ex">Author</span>: H. Watanabe <span class="op">&lt;</span>kaityo@users.sourceforge.jp<span class="op">&gt;</span>
-<span class="ex">Date</span>:   Sat Apr 11 19:12:11 2020 +0900
+<span class="ex">Date</span>:   Wed Mar 31 11:35:44 2021 +0900
 
     <span class="ex">initial</span> commit</code></pre></div>
-<p>いつ、誰が、どのコミットを作ったかが表示される。<code>commit</code>の後の英数字は「コミットハッシュ」と呼ばれ、コミットにつけられた識別子である。これは環境によって異なるため、同じ操作をしても異なるハッシュが作成される。</p>
+<p>いつ、誰が、どのコミットを作ったかが表示される。最初に設定した名前とメールアドレスはここに表示される。GitHubなどでpublicなリポジトリを作った場合、全世界に公開されるので注意。</p>
+<p><code>commit</code>の後の英数字は「コミットハッシュ」と呼ばれ、コミットにつけられた識別子である。これは環境によって異なるため、同じ操作をしても異なるハッシュが作成される。</p>
 <p>デフォルトの表示では見づらいので、一コミット一行で表示しても良い。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">git</span> log --oneline
-<span class="ex">6d3fcfa</span> (HEAD -<span class="op">&gt;</span> master) <span class="ex">modifies</span> README.md
-<span class="ex">301d9a7</span> adds new line
-<span class="ex">06f9a12</span> initial commit</code></pre></div>
+<span class="ex">e633552</span> (HEAD -<span class="op">&gt;</span> master) <span class="ex">modifies</span> README.md
+<span class="ex">2eb03e9</span> adds new line
+<span class="ex">85f4e33</span> initial commit</code></pre></div>
 <p>個人的にはこちらの方が見やすいので、<code>l</code>を<code>log --oneline</code>のエイリアスにしてしまっても良いと思う。もしそうしたい場合は、</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> config --global alias.l <span class="st">&quot;log --oneline&quot;</span></code></pre></div>
 <p>を実行せよ。以後、</p>
@@ -361,12 +366,187 @@ Git from VSCode
 </div>
 <p>これでコミットができた。ちゃんとコミットされたかどうか、ターミナルから確認してみよう。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">git</span> log --oneline
-<span class="ex">5203526</span> (HEAD -<span class="op">&gt;</span> master) <span class="ex">commit</span> from VSCode
-<span class="ex">6d3fcfa</span> modifies README.md
-<span class="ex">301d9a7</span> adds new line
-<span class="ex">06f9a12</span> initial commit</code></pre></div>
+<span class="ex">c67341b</span> (HEAD -<span class="op">&gt;</span> master) <span class="ex">commit</span> from VSCode
+<span class="ex">e633552</span> modifies README.md
+<span class="ex">2eb03e9</span> adds new line
+<span class="ex">85f4e33</span> initial commit</code></pre></div>
 <p>VSCodeから作ったコミットが反映されていることがわかる。</p>
 <p>基本的にVSCodeからGitの全ての操作を行うことができるが、当面の間はコマンドラインから実行した方が良い。慣れてきたらVSCodeその他のGUIツールを使うと良いだろう。</p>
+<h2 id="マージと衝突の処理">マージと衝突の処理</h2>
+<p>Gitでは、原則としてmaster/mainブランチでは作業をしない。通常は、ブランチを切って、作業はブランチ上で行い、master/mainブランチにはマージするのみ、とする運用を採用することが多い。</p>
+<p>以下では、ブランチの切り方、マージの仕方、またマージに失敗(衝突)したときの対処方法をかんたんに見ておこう。</p>
+<h3 id="ブランチの作成と切り替え">ブランチの作成と切り替え</h3>
+<p>ブランチを作成するには、<code>git branch ブランチ名</code>とする。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> branch newbranch</code></pre></div>
+<p><code>git branch</code>を実行すると、ブランチ一覧を見ることができる。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">git</span> branch
+<span class="ex">*</span> master
+  <span class="ex">newbranch</span></code></pre></div>
+<p>ここで、<code>*</code>がついているブランチが、今見ているブランチ、すなわちHEADがついているブランチである。<code>git branch</code>でブランチを作成しても、「今見ているブランチ」は変更されないので注意。</p>
+<p>ブランチを切り替えるには、<code>git checkout ブランチ名</code>を使う。我々は省略形<code>co</code>を定義しているのでそれを使っても良い。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">git</span> checkout newbranch
+<span class="ex">Switched</span> to branch <span class="st">&#39;newbranch&#39;</span></code></pre></div>
+<p>ブランチ名はタブ補完も効くので適宜活用すること。</p>
+<p>切り替わったかどうかを見てみよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">git</span> branch
+  <span class="ex">master</span>
+<span class="ex">*</span> newbranch</code></pre></div>
+<p><code>newbranch</code>に<code>*</code>がついていることがわかる。</p>
+<p>ブランチを削除するには、<code>git branch -d ブランチ名</code>とする。「今見ているブランチ」は削除できないので、一度<code>master</code>に戻ってから削除しよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> checkout master
+<span class="fu">git</span> branch -d newbranch</code></pre></div>
+<p>消えたか見てみよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">git</span> branch
+<span class="ex">*</span> master</code></pre></div>
+<p>先程作成したブランチが消えた。</p>
+<p>さて、ブランチを作成するとき、すぐにその作成したブランチに移りたいことの方が良い。ブランチの作成と、そのブランチへの切り替えを同時に行うには<code>git checkout -b ブランチ名</code>とする。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">git</span> checkout -b newbranch
+<span class="ex">Switched</span> to a new branch <span class="st">&#39;newbranch&#39;</span></code></pre></div>
+<p>先程と異なり、「新しいブランチにスイッチしたよ」というメッセージが表示される。確認してみよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">git</span> branch
+  <span class="ex">master</span>
+<span class="ex">*</span> newbranch</code></pre></div>
+<p>新しいブランチが作成され、そのブランチにスイッチしていることがわかる。</p>
+<h3 id="ブランチ上での作業">ブランチ上での作業</h3>
+<p>まず、現在の状況を確認してみよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">git</span> log --oneline
+<span class="ex">c67341b</span> (HEAD -<span class="op">&gt;</span> newbranch, master) <span class="ex">commit</span> from VSCode
+<span class="ex">e633552</span> modifies README.md
+<span class="ex">2eb03e9</span> adds new line
+<span class="ex">85f4e33</span> initial commit</code></pre></div>
+<p>このログから、</p>
+<ul>
+<li>newbranchとmasterというブランチは、c67341bというコミットを指している</li>
+<li>HEADはnewbranchを指している</li>
+</ul>
+<p>ということがわかる。ブランチはコミットの別名であり、新しいブランチを作っただけでまだ何も作業をしていないため、現在はブランチは二つとも同じコミットを指している。ただし、HEADが<code>newbranch</code>を指しているため、今後の変更は<code>newbranch</code>に対して行われる。</p>
+<p>この状態で、また<code>README.md</code>を修正しよう。最後の一行を追記して保存せよ。</p>
+<pre class="txt"><code># Test
+
+Hello git
+Bye git
+Git from VSCode
+modified at newbranch
+</code></pre>
+<p>この状態でコミットしよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> ci -m <span class="st">&quot;modified at newbranch&quot;</span></code></pre></div>
+<p>またログを見てみる。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">git</span> log --oneline
+<span class="ex">8f4db0d</span> (HEAD -<span class="op">&gt;</span> newbranch) <span class="ex">modified</span> at newbranch
+<span class="ex">c67341b</span> (master) <span class="ex">commit</span> from VSCode
+<span class="ex">e633552</span> modifies README.md
+<span class="ex">2eb03e9</span> adds new line
+<span class="ex">85f4e33</span> initial commit</code></pre></div>
+<p>このログから</p>
+<ul>
+<li>新しいコミット(8f4db0d)が作成された</li>
+<li><code>newbranch</code>は新しいコミットを指している</li>
+<li><code>master</code>は古いコミット(c67341b)を指したまま</li>
+<li><code>HEAD</code>は<code>newbranch</code>を指している</li>
+</ul>
+<p>ということがわかる。コミットすると歴史が増え、<code>HEAD</code>が指しているブランチが一緒に動く、と理解すると良い。</p>
+<h3 id="マージ">マージ</h3>
+<p>次に、<code>newbranch</code>で行った修正を<code>master</code>に反映しよう。ブランチを移動する。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> checkout master</code></pre></div>
+<p>すると、VSCodeが表示する中身も古い状態に戻る。</p>
+<pre class="txt"><code># Test
+
+Hello git
+Bye git
+Git from VSCode
+</code></pre>
+<p>この状態で<code>newbranch</code>の変更を<code>master</code>に反映させるには、<code>git merge</code>コマンドを使う。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">git</span> merge newbranch
+<span class="ex">Updating</span> c67341b..8f4db0d
+<span class="ex">Fast-forward</span>
+ <span class="ex">README.md</span> <span class="kw">|</span> <span class="ex">1</span> +
+ <span class="ex">1</span> file changed, 1 insertion(+)</code></pre></div>
+<p>VS Codeの表示が、先程修正したものに変わっていることを確認せよ。</p>
+<p>ここで「Fast-forward」とあるのは、「<code>master</code>ブランチを移動させただけで、コミットは作成されていないよ」ということを意味する。ログを見てみよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">8f4db0d</span> (HEAD -<span class="op">&gt;</span> master, newbranch) <span class="ex">modified</span> at newbranch
+<span class="ex">c67341b</span> commit from VSCode
+<span class="ex">e633552</span> modifies README.md
+<span class="ex">2eb03e9</span> adds new line
+<span class="ex">85f4e33</span> initial commit</code></pre></div>
+<p>先程とコミットの連なり(歴史)は全く変わっておらず、<code>master</code>の指す先がc67341bから8f4db0dに変わっただけなのがわかる。また、<code>HEAD</code>が<code>master</code>を指していることにも注意。原則としてGitでは、<code>HEAD</code>が指しているブランチに対して作業を行う。</p>
+<p>不要になったブランチは消しておこう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">git</span> branch -d newbranch
+<span class="ex">Deleted</span> branch newbranch (was 8f4db0d)<span class="ex">.</span></code></pre></div>
+<h3 id="衝突">衝突</h3>
+<p>さて、Gitは複数名で編集作業を行うためのツールなので、自分がなにかを修正してる際に、他の人が同じファイルを修正してしまった、ということがあるだろう。両方の修正を取り込むことができれば問題ないが、同じファイルの同じ場所を修正してしまった場合、どちらの修正をどのように取り込むかを決めなくてはならない。</p>
+<p>このように、二つのブランチをマージしようとして、自動でマージできない状態を「衝突(conflict)」と呼ぶ。以下では、意図的に衝突を起こし、その修正をしてみよう。</p>
+<p>まず、新しいブランチ<code>conflict</code>を作り、そちらに移動する。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> checkout -b conflict</code></pre></div>
+<p>VSCodeで、最後にこんな行を付け加えよう。</p>
+<pre class="txt"><code># Test
+
+Hello git
+Bye git
+Git from VSCode
+modified at newbranch
+modified at conflict</code></pre>
+<p>そしてコミットして、<code>master</code>に戻る。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">git</span> commit -a -m <span class="st">&quot;modified at conflict&quot;</span>
+[<span class="ex">conflict</span> ab8cbff] modified at conflict
+ <span class="ex">1</span> file changed, 1 insertion(+)
+
+$ <span class="fu">git</span> checkout master
+<span class="ex">Switched</span> to branch <span class="st">&#39;master&#39;</span></code></pre></div>
+<p>ここでは、新たに<code>ab8cbff</code>というコミットが作られたことがわかる。</p>
+<p>さて、<code>master</code>でも同じ箇所を修正しよう。</p>
+<pre class="txt"><code># Test
+
+Hello git
+Bye git
+Git from VSCode
+modified at newbranch
+modified at master</code></pre>
+<p>そしてコミットする。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">git</span> commit -a -m <span class="st">&quot;modified at master&quot;</span>
+[<span class="ex">master</span> 2f3fb32] modified at master
+ <span class="ex">1</span> file changed, 1 insertion(+)</code></pre></div>
+<p>新たに<code>2f3fb32</code>というコミットが作られた。</p>
+<p>さて、もともと<code>8f4db0d</code>というコミットがあったのだが、ここから<code>ab8cbff</code>というコミットと<code>2f3fb32</code>というコミットが作られ、歴史が分岐した。ここで<code>conflict</code>ブランチで作業をしていたのを思い出し、マージを試みる。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">git</span> merge conflict
+<span class="ex">Auto-merging</span> README.md
+<span class="ex">CONFLICT</span> (content)<span class="bu">:</span> Merge conflict in README.md
+<span class="ex">Automatic</span> merge failed<span class="kw">;</span> <span class="ex">fix</span> conflicts and then commit the result.</code></pre></div>
+<p>「自動でマージできず、衝突(conflict)したのでなんとかしてね」と言われている。この状態でstatusを見るとこうなる。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">git</span> status -s
+<span class="ex">UU</span> README.md</code></pre></div>
+<p><code>UU</code>とあるのが衝突しているファイルだ。エディタで見るとこのように表示されるはず。</p>
+<div class="figure">
+<img src="fig/vscode_conflict.png" alt="vscode conflict" />
+<p class="caption">vscode conflict</p>
+</div>
+<p>ここで、どちらの修正を取り込むかを聞かれているので、適切なものを選ぶ。ここでは「両方の変更を取り込む」を選んでみよう。内容はこうなるはず。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="co"># Test</span>
+
+<span class="ex">Hello</span> git
+<span class="ex">Bye</span> git
+<span class="ex">Git</span> from VSCode
+<span class="ex">modified</span> at newbranch
+<span class="ex">modified</span> at master
+<span class="ex">modified</span> at conflict</code></pre></div>
+<p>一般に、コードなどが衝突した場合は、どちらか(もしくは両方)を取り込むといった単純な対応ではうまくいかず、意図する動作になるように修正が必要なことが多いが、ここではこれで修正が済んだことにして、コミットしよう。Gitに「衝突が解決したよ」と伝えるには、<code>git add</code>を使う。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> add README.md</code></pre></div>
+<p>この状態でコミットすると、分岐した歴史が一つに戻る。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> commit -m <span class="st">&quot;merged&quot;</span>
+[<span class="ex">master</span> 91a8668] merged</code></pre></div>
+<p>ログを見てみよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">git</span> log --oneline
+<span class="ex">91a8668</span> (HEAD -<span class="op">&gt;</span> master) <span class="ex">merged</span>
+<span class="ex">2f3fb32</span> modified at master
+<span class="ex">ab8cbff</span> (conflict) <span class="ex">modified</span> at conflict
+<span class="ex">8f4db0d</span> modified at newbranch
+<span class="ex">c67341b</span> commit from VSCode
+<span class="ex">e633552</span> modifies README.md
+<span class="ex">2eb03e9</span> adds new line
+<span class="ex">85f4e33</span> initial commit</code></pre></div>
+<p><code>master</code>で作ったコミット<code>2f3fb32</code>の後に、新たなコミット<code>91a8668</code>が作られていることがわかる。また、<code>conflict</code>ブランチが取り残されていることにも注意。<code>conflict</code>ブランチの世界線では、まだ<code>master</code>が新たにコミットを作っており、さらに自分の修正を取り込んだことを知らない。しかし、<code>master</code>ブランチの世界線では<code>conflict</code>ブランチの修正は取り込んであるため、もはや<code>conflict</code>ブランチは不要だ。消してしまおう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">git</span> branch -d conflict
+<span class="ex">Deleted</span> branch conflict (was ab8cbff)<span class="ex">.</span></code></pre></div>
+<p>マージ済みであることがわかっているブランチは、問題なく消すことができる。マージされていないブランチは「マージされていないよ」と警告が出て消すことができないので、マージするか、取り込まなくても良いことがわかっている場合は<code>git branch -D ブランチ名</code>で強制的に消すことができる。</p>
 </article>
 </body>
 </html>
