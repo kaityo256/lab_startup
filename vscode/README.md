@@ -46,6 +46,26 @@ conda : 用語 'conda' は、コマンドレット、関数、スクリプト �
 
 というエラーが表示される。これを防ぐには「ファイル」→「基本設定」→「設定」を開き、検索窓に「Activate」と入力すると「Python > Terminal: Activate Environment」が見つかるはず。そこの「Activate Python Environment in Terminal created using the Extension.」のチェックを外せば良い。これでVSCodeからPythonを実行する環境が整った。
 
+### WSLとの連携
+
+Windowsマシンでは、原則としてWindows Subsystem for Linux (WSL)上で作業を行う。VSCodeは、WindowsでもWSL上でもシームレスに利用できるが、そのためにプラグインを入れておく必要がある。
+
+VSCodeの左のメニューからExtentionsのアイコン(ブロックのマーク)をクリックし、現れた検索窓に「WSL」と入力すると「Remote-WSL」が表示されるので、「Install」をクリックする。
+
+![WSL](fig/wsl.png)
+
+これをインストールした状態で、WSLのターミナルから適当なディレクトリで
+
+```sh
+code .
+```
+
+を実行する。VS Codeが開いて、左下に「WSL:Ubuntu」と表示されれば成功だ。
+
+![WSL-VSCode](fig/wsl_vscode.png)
+
+以降、WSLのファイルをシームレスにVS Codeで編集できるようになる。
+
 ## Mac編
 
 ### ダウンロードとインストール
