@@ -73,7 +73,6 @@ Enter passphrase (empty for no passphrase): # ここはパスフレーズを入�
 Enter same passphrase again: # もう一度同じパスフレーズを入力
 Your identification has been saved in /c/Users/watanabe/.ssh/id_rsa
 Your public key has been saved in /c/Users/watanabe/.ssh/id_rsa.pub
-
 ```
 
 最初に鍵の置き場所を聞かれるが、これはデフォルトのままで良い。次に秘密鍵の「パスフレーズ」を聞かれる。これは「なし」にもできるのだが、必ず設定すること。パスフレーズはLastPassなどで生成して、Secure Note等に保存しておこう。
@@ -120,6 +119,14 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC4/wWKWxcmPu6ygGXdGk6IQZsH5JxSbRfakGZ1KQDb
 
 公開鍵の登録は、GitHubにアクセスするパソコンごとに行う。今後、別のマシンでGitHubにアクセスしたくなったら、そのマシンで秘密鍵、公開鍵のペアを作成し、同様な手続きでGitHubに公開鍵を登録すること。
 
+また、SSHエージェントを用いて鍵を覚えさせておこう。ホームディレクトリで
+
+```sh
+ssh-add
+```
+
+と入力して、パスフレーズを入力しておけば、以後、Macなら再ログインまで、WSLならターミナルを閉じるまで、SSHのパスフレーズを聞かれなくなる(必要になったら自動で入力される)。
+
 ## GitHubの操作
 
 ### リポジトリの作成とクローン
@@ -141,8 +148,7 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC4/wWKWxcmPu6ygGXdGk6IQZsH5JxSbRfakGZ1KQDb
 * Repository name: リポジトリの名前。Gitでアクセスするので、英数字だけにしよう。ここでは`test`としておく。
 * Descrption: リポジトリの説明(任意)。ここは日本語でも良いが、とりあえず「test repository」にしておこう。
 * Public/Private: ここで「Public」を選ぶと、全世界の人から見ることができるリポジトリとなる。とりあえずは「Private (自分だけがアクセスできる)」を選んでおこう。
-* Initialize this repository with a README: リポジトリには監修としてREADMEというドキュメントをつける。ここをチェックすると自動で作ってくれる。
-* Add a license: このリポジトリのファイルをどのようなライセンスで公開するか。ライセンスについては後で説明するが、とりあえず「MIT License」を選んでおこう。
+* Initialize this repository with: リポジトリを作成する際に一緒に作るもの。ここをチェックすると自動で作ってくれる。ここでは、「Add a README file」と「Choose a license」をチェックしよう。「Choose a license」をクリックすると選択性が現れるが、ここでは「MIT License」を選んでおこう。
 
 以上の設定をして「Create repository」をクリックすると、リポジトリが作成され、以下のような画面が表示される。
 
@@ -152,7 +158,7 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC4/wWKWxcmPu6ygGXdGk6IQZsH5JxSbRfakGZ1KQDb
 
 このリポジトリを、ローカルマシンにクローンしてみよう。
 
-右にある「Clone or download」をクリックし、「Use ssh」をクリックする。
+右にある「↓ Code」をクリックし、「SSH」をクリックする。
 
 ![Use SSH](fig/use_ssh.png)
 
@@ -223,7 +229,7 @@ git push
 
 ![修正されたリポジトリ](fig/modified_readme.png)
 
-下に表示されている`README.md`の内容が変更されている。さらに、コミット数が「2 commits」になっており、`README.md`のコミットメッセージが「modified README.md」になっていることもわかる。
+下に表示されている`README.md`の内容が変更されている。`README.md`のコミットメッセージが「modified README.md」になっていることもわかる。
 
 以上で、「GitHubでリポジトリを作成し、ローカルにクローンする」作業が完了した。以上の作業をまとめると以下のようになる。
 
@@ -278,20 +284,18 @@ Repository nameは`test2`、Descriptionは無くても良いが、とりあえ�
 
 ![Empty Repository](fig/test2_empty.png)
 
-そこには「次にすべきこと」がいくつか書いてあるが、ここでは「既に存在するリポジトリをpushする」を選びたいので、そこに書かれているコマンド、
+そこには「次にすべきこと」がいくつか書いてあるが、ここでは「既に存在するリポジトリをpushする(push an existing repository from the command line)」を選びたいので、そこに書かれているコマンド、
 
 ```sh
 git remote add origin git@github.com:アカウント名/test2.git
-git push -u origin master
+git branch -M main
+git push -u origin main
 ```
 
-を、先ほどのリポジトリ(`test2`ディレクトリの中)で実行する。右にある「コピー」ボタンをクリックすると、コマンド内容がコピーされるので、ターミナルに貼り付けて実行しても良い。
+を、先ほどのリポジトリ(`test2`ディレクトリの中)で実行する。右にある「コピー」ボタンをクリックすると、コマンド内容がコピーされるので、ターミナルに貼り付けて実行しても良い。実行すると、ローカルで作成されたリポジトリが、GitHubに作られた空のリポジトリにコピーされる。
 
-またパスワードを聞かれるので入力すると、ローカルで作成されたリポジトリが、GitHubに作られた空のリポジトリにコピーされる。
+この状態で、もう一度GitHubの当該リポジトリを見てみよう。ブラウザをリロードせよ。リポジトリに`README.md`が作成された状態になるはずだ。
 
-この状態で、もう一度GitHubの当該リポジトリを見てみよう。ブラウザをリロードせよ。以下のような画面になるはずだ。
-
-![Created](fig/test2_created.png)
 
 以上の操作をまとめると、以下のようになる。
 
@@ -303,13 +307,15 @@ GitHubでリポジトリを作ってからローカルにcloneした場合は、
 
 ```sh
 git remote add origin git@github.com:アカウント名/test2.git
-git push -u origin master
+git branch -M main
+git push -u origin main
 ```
 
 という操作は、
 
 1. `git@github.com:アカウント名/test2.git`というリポジトリに`origin`という名前をつけて保存する。
-2. 先ほど名前をつけた`origin`というリポジトリに`master`ブランチを`push`する。その際、この`master`ブランチと`origin`を紐づける(`-u`オプション)
+2. ローカルのブランチ名を`main`に変更する
+2. 先ほど名前をつけた`origin`というリポジトリに`main`ブランチを`push`する。その際、この`main`ブランチと`origin`を紐づける(`-u`オプション)
 
 ということをやっている。
 
