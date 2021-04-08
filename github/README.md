@@ -326,11 +326,11 @@ git push -u origin main
 
 ### ITS
 
-Gitでは、原則としてメインブランチで作業をしない。これから作業をする内容によってブランチを切って、そのブランチ上で作業し、完成したらメインブランチにマージする、という作業を繰り返すことで開発をすすめる。それぞれの作業に対応するブランチを作業ブランチ(トピックブランチ)と呼ぶ。
+Gitでは、原則としてメインブランチで作業をしない。これから作業をする内容によってブランチを作成し、そのブランチ上で作業し、完成したらメインブランチにマージする、という作業を繰り返すことで開発をすすめる。それぞれの作業に対応するブランチを作業ブランチ(トピックブランチ)と呼ぶ。
 
 一般に、必要な作業は複数同時に発生する。このとき、どのタスクを実行中で、どのタスクが手つかずか、タスク管理をしたくなる。原則としてタスクと作業ブランチは一対一に対応するのであるから、それらをツールで一度に管理したくなるのは自然であろう。それがGitHubのissueである。
 
-GitHubを使った開発では、
+GitHubを使う場合、
 
 * これから行う作業をissueに登録する。
 * 登録されたissueのうち、これから手をつけるissueに対応した作業ブランチを作成する
@@ -339,24 +339,33 @@ GitHubを使った開発では、
 
 という流れで開発をすすめる。issueとは「課題」という意味であり、一般に課題を管理するシステムをIssue Tracking System (ITS)と呼ぶ。一種のTodo リストだと思えば良い。GitHubはITSの機能を持っている。
 
-### Issueの切り方
+### Issueの作り方
 
-* Issuesをクリックし、「New Issue」ボタンを押す。
-* Titleに「READMEの修正」
+では、既存のリポジトリでissueを作ってみよう。GitHubのページで、先ほど作った`test`リポジトリに移動し、以下の作業をせよ。
+
+* 上のタブから「Issues」をクリックし、「New Issue」ボタンを押す。
+* Titleに「READMEの修正」と書く
 * コメントに「内容を追加」と書く。
 * Labelsとして「enhancement」を選ぶ。
-* 以上で「Submit new issue」を押す
 
-「READMEの修正 #1」というタイトルがついたはず。この「#1」がissue番号であり、後で使う。この画面は後で見るので、ブラウザを閉じないこと。
+こんな画面になったはず。
 
-次にローカルのリポジトリで`feat/1/README`というブランチを作る。
+![new_issue](fig/new_issue.png)
+
+以上で「Submit new issue」を押すとissueが作成され、「READMEの修正 #1」というタイトルがついたはずだ。この「#1」がissue番号であり、後で使う。
+
+![issue open](fig/issue_open.png)
+
+この画面は後で使うので、そのままブラウザを閉じないこと。
+
+次にローカルのリポジトリで、このissueに対応するブランチを作成する。ブランチの命名規則には様々な流儀があるが、先ほどつけたラベル、issue番号、そして修正内容を含めるのが一般的だ。ここではディレクトリ型の命名規則を採用しよう。ディレクトリ型の命名規則では「ラベル/issue番号/内容」という名前のブランチを作成する。今回、「enhancement」というラベルをつけたが、これは「新しい機能(feature)を追加する」という意味なので、「feat」とする。あとはissue番号1番、READMEの修正なので、全てまとめて`feat/1/README`というブランチを作ることにする。
 
 ```sh
 $ git co -b feat/1/README
 Switched to a new branch 'feat/1/README'
 ```
 
-`README.md`に一行追加する。
+このブランチ上で、`README.md`に一行追加しよう。
 
 ```md
 # test
@@ -366,13 +375,14 @@ Hello GitHub
 modifies README
 ```
 
-コミットする時に、`closes #1`というメッセージにする。
+コミットする時に、`closes #1`というメッセージにする。シャープ`#`を忘れたり、全角にしたり、数字との間に空白を挟んだりしないこと。
 
 ```sh
-git commit -a -m "closes #1" 
+git add README.md
+git commit -m "closes #1" 
 ```
 
-修正を`main`に取り込む。
+修正を`main`に取り込もう。
 
 ```sh
 $ git checkout main
@@ -383,15 +393,17 @@ Fast-forward
  1 file changed, 1 insertion(+)
 ```
 
-修正をpushする。
+以上の修正をpushする。pushする前に、先ほどのissueの画面をブラウザで表示しておくこと。
 
 ```sh
 git push
 ```
 
-先程のissueの画面を見てみよう。自動的にissueが閉じられたはずだ。このように、`fixes`、`closes`といった動詞と`#1`のような形でissue番号が含まれたコミットメッセージを含むコミットがpushされると、GitHubがそれを検知して自動的に対応するissueを閉じてくれる。
+先程のissueの画面を見てみよう。push後に自動的にissueが閉じられたはずだ。
 
-また、関連するissueなど、別のissueに言及したい場合、GitHubで「#1」などと書けばリンクが張られる。
+![issue closed](fig/issue_closed.png)
+
+このように、`fixes`、`closes`といった動詞と`#1`のような形でissue番号が含まれたコミットメッセージを含むコミットがpushされると、GitHubがそれを検知して自動的に対応するissueを閉じてくれる。
 
 不要になったブランチは消しておこう。
 
@@ -402,7 +414,28 @@ Deleted branch feat/1/README (was bfefb58).
 
 ## Projectの利用
 
-* Automated Kanbanの利用
+issueには「open (未完了)」と「closed (完了)」の二状態しかないが、issueが増えてくると、いまどのissueがどういう状態なのかをより細かく管理したくなる。例えば未完了と完了の間に、「作業中」という状態が欲しくなる。このような状態を管理するのがProjectだ。以下では、もっとも基本的なProjectであるKanbanを使ってみよう。
+
+GitHubのリポジトリの「Projects」タブから、「Create a project」をクリックし、現れた画面で以下を設定する。
+
+* 「Project board name」は「カンバン」
+* 「Description 」も「カンバン」
+* 「Project template」は「Automated Kanban」
+
+![kanban](fig/kanban_new.png)
+
+設定が済んだら「Create project」ボタンでProjectを作成しよう。こんな画面になるはずだ。
+
+![kanban created](fig/kanban_created.png)
+
+デフォルトで「To do (未完了)」「In progress (作業中)」「Done (完了)」の三つのカラムがある。「To do」にいくつか項目があるが、これは「カード」と呼ばれる。カンバン方式では、タスクを「カード」で管理し、看板に貼り付けたり、別の看板に移動させたりすることで管理する。最初からTo doにあるカードは不要なので、それぞれのカードの右上にある「・・・」マークから「Archive」を選んでアーカイブしてしまおう。
+
+さて、このProjectは、issueと連動している。新しくissueを作ってみよう。
+
+「Issues」タブでまたissueを作成しよう。
+
+また、関連するissueなど、別のissueに言及したい場合、GitHubで「#1」などと書けばリンクが張られる。
+
 
 ```md
 - [ ] 修正1 (#1に追加)
