@@ -296,7 +296,6 @@ git push -u origin main
 
 この状態で、もう一度GitHubの当該リポジトリを見てみよう。ブラウザをリロードせよ。リポジトリに`README.md`が作成された状態になるはずだ。
 
-
 以上の操作をまとめると、以下のようになる。
 
 ![Flow 2](fig/github_flow2.png)
@@ -315,7 +314,7 @@ git push -u origin main
 
 1. `git@github.com:アカウント名/test2.git`というリポジトリに`origin`という名前をつけて保存する。
 2. ローカルのブランチ名を`main`に変更する
-2. 先ほど名前をつけた`origin`というリポジトリに`main`ブランチを`push`する。その際、この`main`ブランチと`origin`を紐づける(`-u`オプション)
+3. 先ほど名前をつけた`origin`というリポジトリに`main`ブランチを`push`する。その際、この`main`ブランチと`origin`を紐づける(`-u`オプション)
 
 ということをやっている。
 
@@ -413,3 +412,5 @@ Deleted branch feat/1/README (was bfefb58).
 * labelsはenhancement
 * Projectsはカンバン
 * 作ったら In progressへ移動
+
+書きかけだが、とりあえずここまで。
