@@ -322,3 +322,94 @@ git push -u origin main
 以上で、ローカルで作成したリポジトリをGitHubに登録することができた。
 
 今後、ローカルとGitHubのどちらでリポジトリを作っても良いが、慣れるまではとりあえずローカルでリポジトリを作成・作業し、必要になったらGitHubに登録するのが良いだろう。
+
+## Issueの管理
+
+### ITS
+
+Gitでは、原則としてメインブランチで作業をしない。これから作業をする内容によってブランチを切って、そのブランチ上で作業し、完成したらメインブランチにマージする、という作業を繰り返すことで開発をすすめる。それぞれの作業に対応するブランチを作業ブランチ(トピックブランチ)と呼ぶ。
+
+一般に、必要な作業は複数同時に発生する。このとき、どのタスクを実行中で、どのタスクが手つかずか、タスク管理をしたくなる。原則としてタスクと作業ブランチは一対一に対応するのであるから、それらをツールで一度に管理したくなるのは自然であろう。それがGitHubのissueである。
+
+GitHubを使った開発では、
+
+* これから行う作業をissueに登録する。
+* 登録されたissueのうち、これから手をつけるissueに対応した作業ブランチを作成する
+* 作業ブランチで作業し、修正をコミットする
+* メインブランチにマージする
+
+という流れで開発をすすめる。issueとは「課題」という意味であり、一般に課題を管理するシステムをIssue Tracking System (ITS)と呼ぶ。一種のTodo リストだと思えば良い。GitHubはITSの機能を持っている。
+
+### Issueの切り方
+
+* Issuesをクリックし、「New Issue」ボタンを押す。
+* Titleに「READMEの修正」
+* コメントに「内容を追加」と書く。
+* Labelsとして「enhancement」を選ぶ。
+* 以上で「Submit new issue」を押す
+
+「READMEの修正 #1」というタイトルがついたはず。この「#1」がissue番号であり、後で使う。この画面は後で見るので、ブラウザを閉じないこと。
+
+次にローカルのリポジトリで`feat/1/README`というブランチを作る。
+
+```sh
+$ git co -b feat/1/README
+Switched to a new branch 'feat/1/README'
+```
+
+`README.md`に一行追加する。
+
+```md
+# test
+test repository
+
+Hello GitHub
+modifies README
+```
+
+コミットする時に、`closes #1`というメッセージにする。
+
+```sh
+git commit -a -m "closes #1" 
+```
+
+修正を`main`に取り込む。
+
+```sh
+$ git checkout main
+$ git merge feat/1/README 
+Updating a6b44f4..bfefb58
+Fast-forward
+ README.md | 1 +
+ 1 file changed, 1 insertion(+)
+```
+
+修正をpushする。
+
+```sh
+git push
+```
+
+先程のissueの画面を見てみよう。自動的にissueが閉じられたはずだ。このように、`fixes`、`closes`といった動詞と`#1`のような形でissue番号が含まれたコミットメッセージを含むコミットがpushされると、GitHubがそれを検知して自動的に対応するissueを閉じてくれる。
+
+また、関連するissueなど、別のissueに言及したい場合、GitHubで「#1」などと書けばリンクが張られる。
+
+不要になったブランチは消しておこう。
+
+```sh
+$ git branch -d feat/1/README
+Deleted branch feat/1/README (was bfefb58).
+```
+
+## Projectの利用
+
+* Automated Kanbanの利用
+
+```md
+- [ ] 修正1 (#1に追加)
+- [ ] 修正2
+```
+
+* labelsはenhancement
+* Projectsはカンバン
+* 作ったら In progressへ移動
