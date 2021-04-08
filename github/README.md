@@ -428,22 +428,89 @@ GitHubのリポジトリの「Projects」タブから、「Create a project」�
 
 ![kanban created](fig/kanban_created.png)
 
-デフォルトで「To do (未完了)」「In progress (作業中)」「Done (完了)」の三つのカラムがある。「To do」にいくつか項目があるが、これは「カード」と呼ばれる。カンバン方式では、タスクを「カード」で管理し、看板に貼り付けたり、別の看板に移動させたりすることで管理する。最初からTo doにあるカードは不要なので、それぞれのカードの右上にある「・・・」マークから「Archive」を選んでアーカイブしてしまおう。
+デフォルトで「To do (未完了)」「In progress (作業中)」「Done (完了)」の三つのカラムがある。「To do」にいくつか項目があるが、これは「カード」と呼ばれる。「カンバン」とは、「看板」のことで、トヨタの生産管理法「カンバン方式」に由来する。
 
-さて、このProjectは、issueと連動している。新しくissueを作ってみよう。
+カンバン方式では、タスクを「カード」で管理し、看板に貼り付けたり、別の看板に移動させたりすることで管理する。最初からTo doにあるカードは不要なので、それぞれのカードの右上にある「・・・」マークから「Archive」を選んでアーカイブしてしまおう。
 
-「Issues」タブでまたissueを作成しよう。
+さて、このProjectは、issueと連動している。新しくissueを作ってみよう。上のタブから「Issues」をクリックし、「New Issue」ボタンを押し、Titleに「READMEの修正」と書く。ラベルは先ほどと異なるもので試したいので、「documentation」を選ぼう。
 
-また、関連するissueなど、別のissueに言及したい場合、GitHubで「#1」などと書けばリンクが張られる。
-
+次にコメントを書くのだが、Issuesのコメントは、他のissueを参照したり、チェックボックスをつけたりする機能があるので試してみよう。コメントに以下のような内容を記述せよ。
 
 ```md
-- [ ] 修正1 (#1に追加)
+- [ ] 修正1 (#1 に追加)
 - [ ] 修正2
 ```
 
-* labelsはenhancement
-* Projectsはカンバン
-* 作ったら In progressへ移動
+ここで「#」と数字の間には空白をいれず、「#1」の後には半角空白を入れるのをわすれないこと。
 
-書きかけだが、とりあえずここまで。
+この状態で「Preview」タブをクリックすると、以下のようにチェックボックスになるはず。
+
+![issue preview](fig/issue_preview.png)
+
+このチェックボックスをクリックするとチェックがつき、このissueのサブタスクを管理することができるが、ここでは扱わない。そういうことができる、ということだけ知っておくと良い。
+
+また、`#1`がリンクになっている。このように、関連するissueなど、別のissueを参照したい場合、GitHubで`#1`などのように`#`に続けてissue番号を書けばリンクが作成される。
+
+次に「Projects」をクリックし、先ほど作った「カンバン」を選択しよう。
+
+以上の作業が終わったら、「Submit new issue」をクリックし、issueを作成せよ。なお、Projectやラベルはissueを作成した後でも設定、変更が可能だ。
+
+issueが作られたら「Projects」タブから「カンバン」を選んで見てみよう。いま作ったissueがカードになり、「To do」に追加されているはずだ。
+
+![kanban added](fig/kanban_added.png)
+
+一般には、To doには多数のやるべきことが積んである。大量のカードに気が滅入りつつ、気合を入れて一つ選んで作業をはじめよう。ここではTo doにカードが一つしかないので、それをマウスでドラッグして「In progress」に移動しよう。
+
+「In progress」とは「作業中」の意味だ。タスクをここに移動したら、対応するブランチを作ろう。ラベルがドキュメント、issue番号が2番、内容がREADMEの修正なので、`doc/2/README`としよう。ターミナルで以下を実行せよ。
+
+```sh
+$ git co -b doc/2/README
+Switched to a new branch 'doc/2/README'
+```
+
+また`README.md`を修正しよう。以下の一行を追加せよ。
+
+```md
+# test
+test repository
+
+Hello GitHub
+modifies README
+Hello Kanban
+```
+
+ファイルを保存したら、今度は`fixes #2`というメッセージでコミットする。
+
+```sh
+git add README.md
+git commit -m "fixes #2"
+```
+
+また`main`ブランチに戻って、修正を取り込もう。まだpushしないこと。
+
+```sh
+git checkout main
+git merge doc/2/README
+```
+
+ここで、`git merge d`まで入力したら、タブ補完が効くはずである。
+
+マージが終了したら、先ほどの「カンバン」の画面を見よう。まだカードは「In progress」にある。
+
+![kanban in progress](fig/kanban_inprogress.png)
+
+ブラウザでこの画面を表示したまま、ターミナルで`git push`しよう。
+
+```sh
+git push
+```
+
+issueがとじると同時に、カードが自動的に「In progress」から「Done」に移ったはずだ。
+
+![kanban done](fig/kanban_done.png)
+
+このように、カンバンとissueを連動して管理することができる。
+
+Automated Kanbanを利用すると、作成したissueは自動的に「To do」に登録される。そして、あるissueに関連する作業を開始する時に、issueをTo doからIn progressに移動すると同時に対応するブランチを作成し、閉じたissueに対応するブランチを消すようにしていると、「In progress」にあるカードの数とトピックブランチの数が一致するので、いろいろ確認がしやすくなって便利である。
+
+カンバンの使い方やブランチの命名規則、issueの管理方法などは人によって異なるので、いろいろ試して自分にとって便利な方法を見つけて欲しい(ただし、開発チームに所属した場合は、そのチームのルールに従うこと)。
