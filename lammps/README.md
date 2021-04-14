@@ -180,6 +180,8 @@ lmp_serial < in.melt
 
 次に「Version 1.9.4 LATEST ALPHA (2020-12-21) Platforms:」の、「Windows 64-bit, CUDA, OptiX, OSPRay (64-bit Intel x86_64) (Windows 10)」を選ぶ。
 
+もし実行時にエラーが起きて開けなかった場合、アンインストールして32-bit版をダウンロードした方が良いかも。
+
 すると、「Registration/Login」画面が現れるので、メールアドレスと、適当なパスワードを入力する。初回登録時には「New User Registration」画面となるので、必要事項を入力の上で「Register」を押す。
 
 ライセンスに同意することを示すと、ダウンロードが始まる。ダウンロードが完了したら、インストールする。特に設定項目はない。

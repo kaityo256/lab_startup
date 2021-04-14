@@ -520,11 +520,13 @@ LAMMPSをインストールしていれば`ffmpeg`もインストールされて
 
 ![vmd_animation2](fig/vmd_animation2.png)
 
-まずはWorking directoryを指定する。特に理由がなければ、`lammps_collision`をクローンしたディレクトリを指定すると良いだろう。このディレクトリにイメージが大量に生成されるので、デスクトップなどを指定しないように。
+Movie Settingsで、「Trajectory」を選び、さらに「Delete image files」のチェックを外すこと。
+
+次に、Working directoryを指定する。Macの場合は`lammps_collision`をクローンしたディレクトリを、Windowsの場合は、デスクトップに適当なフォルダ(例えばtest)を作って、そこに指定すると良いだろう。
 
 `Name of movie`は、連番ファイル名の基本の名前となる。なんでも良いが、ここでは`test`としておく。「Format」はなんでも良いが、例えばMPEG-1(VideoMach)としておく。
 
-以上の設定をした上で「Make Movie」をクリックすると、Working Directoryに指定したディレクトリに`test.00012.bmp`といったファイルが大量に作成される。最後に「videomach.exeが見つからない」というエラーが表示されるが「いいえ」を押して、次に出るダイアログもOKを押して終了してかまわない。
+以上の設定をした上で「Make Movie」をクリックすると、Working Directoryに指定したディレクトリに`test.00012.bmp`といったファイルが大量に作成される(Macの場合はppmファイル)。Macの場合はそのままmpgファイルができるが、Windowsの場合は最後に「videomach.exeが見つからない」というエラーが表示されるが「いいえ」を押して、次に出るダイアログもOKを押して終了してかまわない。
 
 ![vmd_animation3](fig/vmd_animation3.png)
 
@@ -540,7 +542,21 @@ ffmpeg -i test.%05d.bmp collision.gif
 
 これは「test.(五桁の整数の連番).bmpというファイルから、collision.gifを作れ」という意味だ。
 
-MPEGファイルを作りたければ、
+Macの場合は、
+
+```sh
+ffmpeg -i test.%05d.ppm collision.gif
+```
+
+とせよ。できたファイルは、Windowsならダブルクリック、Macならターミナルから
+
+```sh
+qlmanage -p collision.gif 
+```
+
+とすると見ることができる。
+
+また、WindowsでMPEGファイルを作りたければ、
 
 ```sh
 ffmpeg -i test.%05d.bmp collision.mpg
