@@ -100,13 +100,7 @@ vmd.state
 
 いま、リポジトリには`collision.input`と`collision.atoms`があるはずだ。前者がLAMMPSでシミュレーションをするためのインプットファイルで、後者がシステムサイズや原子の位置、初速を記述するファイルである。これらをLAMMPSにい入力して実行してみよう。
 
-Windows PowerShellの場合は
-
-```sh
-cat collision.input | lmp_serial.exe
-```
-
-Macの場合は
+ターミナルから
 
 ```sh
 lmp_serial < collision.input

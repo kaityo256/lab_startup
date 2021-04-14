@@ -178,7 +178,7 @@ lmp_serial < in.melt
 
 [ここ](https://www.ks.uiuc.edu/Research/vmd/)に行って、「Download (all versions)」をクリックする。
 
-次に「Version 1.9.3 (2016-11-30) Platforms:」の、「Windows OpenGL (Microsoft Windows XP/Vista/7/8/10 (32-bit) using OpenGL)」を選ぶ。
+次に「Version 1.9.4 LATEST ALPHA (2020-12-21) Platforms:」の、「Windows 64-bit, CUDA, OptiX, OSPRay (64-bit Intel x86_64) (Windows 10)」を選ぶ。
 
 すると、「Registration/Login」画面が現れるので、メールアドレスと、適当なパスワードを入力する。初回登録時には「New User Registration」画面となるので、必要事項を入力の上で「Register」を押す。
 
@@ -186,112 +186,17 @@ lmp_serial < in.melt
 
 ### Mac
 
-最新版のMacではVMDが実行できないため、やや手間だがDocker経由で実行する。
+[ここ](https://www.ks.uiuc.edu/Research/vmd/)に行って、「Download (all versions)」をクリックする。
 
-#### XQuartzのインストール
+M1 Macの場合は「MacOS 11.x, ARM64 (64-bit "M1" Macs) (Apple MacOS-X 11 or later)」を選ぶ。
 
-まず、XQuartzをインストールしよう。[ここ](https://www.xquartz.org/)から、`XQuartz-2.7.11.dmg`をダウンロード、インストールする。
+すると、「Registration/Login」画面が現れるので、メールアドレスと、適当なパスワードを入力する。初回登録時には「New User Registration」画面となるので、必要事項を入力の上で「Register」を押す。
 
-XQuartzは「アプリケーション」→「ユーティリティ」にインストールされるので起動する。「xterm」というウィンドウが開けばインストールできてる。
+ライセンスに同意することを示すと、ダウンロードが始まる。ダウンロードが完了したら、インストールする。特に設定項目はない。
 
-その後、XQuartzの「環境設定」の「セキュリティ」タブで、「接続を認証」と「ネットワーク・クライアントからの接続を許可」の両方にチェックを入れる(デフォルトで「接続を認証」にはチェックが入っているはず)。
+なお、ダウンロードしたイメージを実行しようとすると「"startup.command"は、開発元が未確認のため開けません。」というエラーがでる場合がある。この場合はシステム環境設定の「セキュリティとプライバシー」の「一般」タブを表示しながら再度実行せよ。すると「"startup.command"は開発元が確認できないため、使用がブロックされました。」というメッセージの隣に「このまま開く」というボタンが現れるため、それを押して現れるダイアログの「開く」をクリックすれば実行できる。
 
-![XQuartz](fig/xquartz.png)
-
-さらに、ターミナルから
-
-```sh
-defaults write org.macosforge.xquartz.X11 enable_iglx -bool true
-```
-
-を実行しておく。以上の変更を適用するためにXQuartzを再起動すること。
-
-#### Dockerのインストール
-
-次に、Dockerをインストールする。[ここ](https://www.docker.com/products/docker-desktop)から「Download for Mac」→「Get Docker」でダウンロードできるのでインストールする。
-
-インストール後、Dockerを起動する。最初にDocker IDの入力を求められるウィンドウが出るが、無視して消して良い。右上にクジラのような小さいアイコンが表示されたらDockerが起動している。
-
-Dockerの動作を確認しよう。ターミナルで、
-
-```sh
-docker ps
-```
-
-を実行し、
-
-```txt
-CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
-```
-
-と表示されたらDockerが起動している。
-
-```txt
-Error response from daemon: dial unix docker.raw.sock: connect: connection refused
-```
-
-と表示されたらDockerが起動していないので起動すること。
-
-#### Dockerイメージの作成
-
-まず、Dockerイメージ作成用のディレクトリを作成し、そこにDockerfileをダウンロードしよう。
-
-```sh
-cd
-mkdir docker-vmd
-cd docker-vmd
-wget https://kaityo256.github.io/lab_startup/lammps/Dockerfile
-```
-
-次に、Linux版のVMDをダウンロードする。[ここ](https://www.ks.uiuc.edu/Research/vmd/)に行って、「Download (all versions)」をクリックする。
-
-次に「Version 1.9.4 LATEST ALPHA (2019-10-17) Platforms:」の「LINUX_64 OpenGL, CUDA, OptiX, OSPRay」を選ぶ。すると、「Registration/Login」画面が現れるので、メールアドレスと、適当なパスワードを入力する。初回登録時には「New User Registration」画面となるので、必要事項を入力の上で「Register」を押す。
-
-ライセンスに同意することを示すと、ダウンロードが始まる。ダイアログが出たら「Save File」を選ぶこと。ダウンロードが完了したら、ダウンロードしたファイルを、先程作成したディレクトリ`docker-vmd`にコピーする。例えば、「ダウンロード」フォルダにダウンロードされたなら、
-
-```sh
-cp ~/Downloads/vmd*.tar.gz .
-```
-
-で現在のディレクトリにコピーされるはずである。
-
-現在、`~/docker-vmd`ディレクトリには、以下のDockerファイルとtar.gzファイルの2つのファイルがあるはず。
-
-```sh
-$ ls
-Dockerfile  vmd-1.9.4a38.bin.LINUXAMD64-CUDA10-OptiX600-RTX-OSPRay170.opengl.tar.gz
-```
-
-この状態でDockerイメージをビルドする。
-
-```sh
-docker build -t vmd .
-```
-
-最後に
-
-```txt
-Successfully tagged vmd:latest
-```
-
-と表示されたら正しくビルドされている。
-
-次に、先程の`melt`ディレクトリに移動して、以下のコマンドを実行する。
-
-```sh
-cd
-cd lammps
-cd melt
-docker run -e DISPLAY=$(hostname):0 -v ~/.Xauthority:/root/.Xauthority -v $(pwd):/lammps -it vmd
-```
-
-ここまで正しく実行されていればVMDが起動したはずである。
-
-```txt
-Can't open display: watanabe-mbp.local:0
-```
-
-などと言われたらXQuartzが起動していないので起動せよ。
+![open vmd](fig/open_vmd.png)
 
 ## VMDによる可視化
 
