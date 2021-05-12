@@ -72,114 +72,91 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <body>
 <article class="markdown-body">
 <h1 id="pytyhonのインストール">Pytyhonのインストール</h1>
-<p>PCにPythonをインストールし、VSCodeから実行できるようにする。MacはデフォルトでPythonがインストールされているが、バージョンが古く、必要なライブラリが入っていないので、新たにインストールする。以下では全く環境をいじっていないpCにPythonのディストリビューションとしてAnacondaを、エディタとしてVSCodeをインストールして使うことを想定しているが、自分でインストールして使っているPythonがあったり、他に好きなエディタがあればそれを使ってかまわない。</p>
+<p>PCにPythonをインストールし、VSCodeから実行できるようにする。自分でインストールして使っているPythonがあったり、他に好きなエディタがあれば、以下の記述に関係なくそれを使ってかまわない。</p>
 <p>なお、Windows/Macともにログイン名を英語にしておくことを推奨する。もし最初に日本語名でアカウントを作成してしまった場合、新たに英語名のログイン名のアカウントを作成し、そのアカウントに管理者権限を付与して、以降はそのアカウントをメインに使うのが良い。現在は日本語アカウント名のままでもなんとかなるかもしれないが、少なくとも昔はいろいろ不具合が起きたのでおすすめしない。</p>
 <h2 id="windows編">Windows編</h2>
-<h3 id="anacondaのインストールとテスト">Anacondaのインストールとテスト</h3>
-<h4 id="anacondaのインストール">Anacondaのインストール</h4>
-<p>最初に、Anacondaをインストールする。ブラウザでAnacondaと検索するか、<a href="https://www.anaconda.com/" class="uri">https://www.anaconda.com/</a>にアクセスし、右上にある「Download」ボタンを押す。</p>
-<figure>
-<img src="fig/anaconda_download.png" alt="Anacondaのダウンロード" /><figcaption>Anacondaのダウンロード</figcaption>
-</figure>
-<p>ページの下の方に「Windows | macOS | Linux」のタブが現れるので、「Windows」を選択してから「Python 3.7 version」の「Download」ボタンを押す。</p>
-<figure>
-<img src="fig/windows_download.png" alt="Windows版 Python3.7のダウンロード" /><figcaption>Windows版 Python3.7のダウンロード</figcaption>
-</figure>
-<p>ダウンロードが完了したら、管理者権限で実行してインストールを実行する。何度か設定について聞かれるが、全てデフォルトのままで良い。</p>
-<p>途中で、インストール先を聞かれる。</p>
-<figure>
-<img src="fig/install_path.png" alt="インストール先" /><figcaption>インストール先</figcaption>
-</figure>
-<p>これもデフォルトで良いが、アカウントを英語名にしておかないと、インストール先に日本語が含まれて、後で面倒なことになるかもしれない。インストールが完了したら、Finishを押す。</p>
-<h4 id="jupyter-notebookのテスト">Jupyter Notebookのテスト</h4>
-<p>Windowsのスタートメニューから、Anaconda Navigatorを実行する。Windows 10だとメニューが折り畳まれている場合もあるので注意。</p>
-<figure>
-<img src="fig/navigator.png" alt="navigator.png" /><figcaption>navigator.png</figcaption>
-</figure>
-<p>起動すると必要なパッケージを自動でインストールするため、環境によっては初回起動時に時間がかかるかもしれない。</p>
-<p>Navigatorが起動したら、Jupyter Notebookを実行する。以下の画面の「Jupyter Notebook」の下の「Launch」をクリックする。</p>
-<figure>
-<img src="fig/jupyter.png" alt="jupyter.png" /><figcaption>jupyter.png</figcaption>
-</figure>
-<p>デフォルトのブラウザで、Jupyter Notebookが開かれるので、右上の「New」ボタンから「Python 3」を選ぶ。</p>
+<h3 id="pythonのインストール">Pythonのインストール</h3>
+<p>aptを使ってPython3をインストールする。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">sudo</span> apt-get update</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="fu">sudo</span> apt intall python3</a></code></pre></div>
+<p>また、後で必要なパッケージも入れておこう。</p>
+<p><code>shsudo - python3 -m pip install numpy matplotlib</code></p>
+<h3 id="jupyter-notebookのインストール">Jupyter Notebookのインストール</h3>
+<p>Pythonの開発ではJupyter Notebookを使うと便利だ。以下でインストールしよう。</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">sudo</span> apt install -y jupyter-notebook</a></code></pre></div>
+<p>Jupyter Notebookはブラウザ上でPythonを実行する環境であり、普通に実行すると字度うでブラウザが開かれるが、WSL2上で使うには少々工夫がいる。まず、Jupyter Notebookを、ブラウザなしモードで起動する。</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="ex">jupyter</span> notebook --no-browser</a></code></pre></div>
+<p>すると、以下のような表示がされるはずだ。</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb4-1" title="1">    To access the notebook, open this file in a browser:</a>
+<a class="sourceLine" id="cb4-2" title="2">        file:///home/watanabe/.local/share/jupyter/runtime/nbserver-985-open.html</a>
+<a class="sourceLine" id="cb4-3" title="3">    Or copy and paste one of these URLs:</a>
+<a class="sourceLine" id="cb4-4" title="4">        http://localhost:8888/?token=e4a7e2efbf7cf61ceb4d11652e8f538f67bc11b9aacdde54</a>
+<a class="sourceLine" id="cb4-5" title="5">     or http://127.0.0.1:8888/?token=e4a7e2efbf7cf61ceb4d11652e8f538f67bc11b9aacdde54</a></code></pre></div>
+<p>このうち、<code>http://localhost:8888</code>ではじまる行をブラウザのURLにコピペするとJupyter Notebookが開かれるので、右上の「New」ボタンから「Python 3」を選ぶ。</p>
 <figure>
 <img src="fig/newbook2.png" alt="newbook2.png" /><figcaption>newbook2.png</figcaption>
 </figure>
 <p>新しいタブが開き、入力待ちになるので、そこで何かプログラムを入力する。例えば</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="bu">print</span>(<span class="st">&quot;Hello Python&quot;</span>)</a></code></pre></div>
-<p>と入力し「Shift+Return」もしくは上の「Run」ボタンをクリックする。</p>
-<figure>
-<img src="fig/run2.png" alt="run2.png" /><figcaption>run2.png</figcaption>
-</figure>
-<p>セルの真下に「Hello Python」と表示されて、次のセルが入力待ちになれば成功である。これでPythonを実行する環境は整った。</p>
-<p>右上の「Quit」を押してサーバを終了する。「Logout」を押して終了しようとすると、Anaconda Navigatorを終了しようとする時に 「Jupyter Notebookが終了していない」と言われるの注意。その場合はそのまま終了して問題ない。</p>
-<p>また、次回からはAnaconda Navigatorを経由せず、いきなりJupyter Notebookを実行して良い。「Jupyter Notebook」というタイトルの コマンドライン画面経由でブラウザが起動されるが、「Quit」を押せば、コマンドライン画面は消える。この時も「Logout」を押すと コマンドライン画面が残ってしまうが、その場合はCtrl+Cを何度か押せば消える。</p>
-<h4 id="anacondaのトラブル">Anacondaのトラブル</h4>
-<p>たまにAnaconda Navigatorを終了しようとすると「Anaconda Navigator is still busy. Do you want to quit?」と言われることがある。しばらくまって、再度終了しようとしてもまた出る場合はそのまま終了して良い。</p>
-<h2 id="mac編">Mac編</h2>
-<h3 id="home-brewのインストール">Home brewのインストール</h3>
-<p>もしインストールされていないのなら、まずHome Brewをインストールする。</p>
-<p>まず「ターミナル」を開く。Command+Spaceでスポットライトを開き、Terminal.appを選べば起動する。実行したら、今後良く使うのでDockに追加しておこう。ターミナルが開いたら、以下を実行せよ。</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="ex">brew</span></a></code></pre></div>
-<p>「Command not found」と言われたらインストールされていない。インストールするには<a href="https://brew.sh/index_ja" class="uri">https://brew.sh/index_ja</a>の指示に従い、ターミナルで以下のコマンドを実行する。</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="ex">/bin/bash</span> -c <span class="st">&quot;</span><span class="va">$(</span><span class="ex">curl</span> -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh<span class="va">)</span><span class="st">&quot;</span></a></code></pre></div>
-<p>ターミナルにコピペして実行せよ。途中、パスワードが要求されるので入力すること。Home brewのインストールが終わったら、再度以下を実行せよ。</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="ex">brew</span></a></code></pre></div>
-<pre class="txt"><code>Example usage:
-  brew search [TEXT|/REGEX/]
-  brew info [FORMULA...]
-(snip)
-Further help:
-  brew commands
-  brew help [COMMAND]
-  man brew
-  https://docs.brew.sh</code></pre>
-<p>などと表示されればインストールできている。もし</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="ex">Error</span>: You have not agreed to the Xcode license. Please resolve this by running:</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">  <span class="fu">sudo</span> xcodebuild -license accept</a></code></pre></div>
-<p>というエラーが起きて実行できなかった場合、</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="fu">sudo</span> xcodebuild -license accept</a></code></pre></div>
-<p>を実行せよ(パスワードが必要)。</p>
-<p>最後にHome Brewを最新版にする。以下を実行せよ(かなり時間がかかる)。</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="ex">brew</span> update --force <span class="kw">&amp;&amp;</span> <span class="ex">brew</span> upgrade</a></code></pre></div>
-<h3 id="anacondaのインストール-1">Anacondaのインストール</h3>
-<p>まず、pyenvをインストールする。ターミナルで以下を実行せよ。</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="ex">brew</span> install pyenv</a></code></pre></div>
-<p>次に、自分が使っているシェルを確認せよ。</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="bu">echo</span> <span class="va">$SHELL</span></a></code></pre></div>
-<p>おそらくデフォルトではbashだと思われる。bashの場合、以下を実行せよ。</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="bu">echo</span> <span class="st">&#39;eval &quot;$(pyenv init -)&quot;&#39;</span> <span class="op">&gt;&gt;</span> ~/.bash_profile</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="bu">exec</span> <span class="va">$SHELL</span> -l</a></code></pre></div>
-<p>もしzshを使っている場合は、以下を実行せよ。</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="bu">echo</span> <span class="st">&#39;eval &quot;$(pyenv init -)&quot;&#39;</span> <span class="op">&gt;&gt;</span> ~/.zshrc</a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="bu">exec</span> <span class="va">$SHELL</span> -l</a></code></pre></div>
-<p>その後、pyenvを使ってanacondaをインストールする。まず、インストール可能なanacondaのバージョンを確認しよう。</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="ex">pyenv</span> install -l</a></code></pre></div>
-<p>pyenvでインストール可能なパッケージ一覧が表示されたはずだ。ここで<code>anaconda</code>の最新版を探す。2020年4月時点では、<code>anaconda3-2019.10</code>が最新である。インストールし、アクティベートしよう。</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="ex">pyenv</span> install anaconda3-2019.10</a>
-<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="ex">pyenv</span> global anaconda3-2019.10</a></code></pre></div>
-<p>インストールできたか確認しよう。ターミナルで<code>python</code>を実行せよ。</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb15-1" data-line-number="1">$ <span class="ex">python</span></a>
-<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="ex">Python</span> 3.7.4 (default, Aug 13 2019, 15:17:50) </a>
-<a class="sourceLine" id="cb15-3" data-line-number="3">[<span class="ex">Clang</span> 4.0.1 (tags/RELEASE_401/final)] :: <span class="ex">Anaconda</span>, Inc. on darwin</a>
-<a class="sourceLine" id="cb15-4" data-line-number="4"><span class="ex">Type</span> <span class="st">&quot;help&quot;</span>, <span class="st">&quot;copyright&quot;</span>, <span class="st">&quot;credits&quot;</span> or <span class="st">&quot;license&quot;</span> for more information.</a>
-<a class="sourceLine" id="cb15-5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> </a></code></pre></div>
-<p>上のように「Anaconda, Inc.」などと表示されれば正しくインストールされている。Ctrl+Dで終了しよう。</p>
-<h4 id="jupyter-notebookのテスト-1">Jupyter Notebookのテスト</h4>
-<p>ターミナルから以下を実行せよ。</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="ex">jupyter</span> notebook</a></code></pre></div>
-<p>デフォルトのブラウザで、Jupyter Notebookが開かれるので、右上の「New」ボタンから「Python 3」を選ぶ。</p>
-<figure>
-<img src="fig/newbook2.png" alt="newbook2.png" /><figcaption>newbook2.png</figcaption>
-</figure>
-<p>新しいタブが開き、入力待ちになるので、そこで何かプログラムを入力する。例えば</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="bu">print</span>(<span class="st">&quot;Hello Python&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb5-1" title="1"><span class="bu">print</span>(<span class="st">&quot;Hello Python&quot;</span>)</a></code></pre></div>
 <p>と入力し「Shift+Return」もしくは上の「Run」ボタンをクリックする。</p>
 <figure>
 <img src="fig/run2.png" alt="run2.png" /><figcaption>run2.png</figcaption>
 </figure>
 <p>セルの真下に「Hello Python」と表示されて、次のセルが入力待ちになれば成功である。これでPythonを実行する環境は整った。</p>
 <p>最初に起動した画面の「Quit」を選ぶとJupyter Notebookは終了する。</p>
+<h2 id="mac編">Mac編</h2>
+<h3 id="home-brewのインストール">Home brewのインストール</h3>
+<p>もしインストールされていないのなら、まずHome Brewをインストールする。</p>
+<p>まず「ターミナル」を開く。Command+Spaceでスポットライトを開き、Terminal.appを選べば起動する。実行したら、今後良く使うのでDockに追加しておこう。ターミナルが開いたら、以下を実行せよ。</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" title="1"><span class="ex">brew</span></a></code></pre></div>
+<p>「Command not found」と言われたらインストールされていない。インストールするには<a href="https://brew.sh/index_ja">https://brew.sh/index_ja</a>の指示に従い、ターミナルで以下のコマンドを実行する。</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" title="1"><span class="ex">/bin/bash</span> -c <span class="st">&quot;</span><span class="va">$(</span><span class="ex">curl</span> -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh<span class="va">)</span><span class="st">&quot;</span></a></code></pre></div>
+<p>ターミナルにコピペして実行せよ。途中、パスワードが要求されるので入力すること。Home brewのインストールが終わったら、再度以下を実行せよ。</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" title="1"><span class="ex">brew</span></a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb9-1" title="1">Example usage:</a>
+<a class="sourceLine" id="cb9-2" title="2">  brew search [TEXT|/REGEX/]</a>
+<a class="sourceLine" id="cb9-3" title="3">  brew info [FORMULA...]</a>
+<a class="sourceLine" id="cb9-4" title="4">(snip)</a>
+<a class="sourceLine" id="cb9-5" title="5">Further help:</a>
+<a class="sourceLine" id="cb9-6" title="6">  brew commands</a>
+<a class="sourceLine" id="cb9-7" title="7">  brew help [COMMAND]</a>
+<a class="sourceLine" id="cb9-8" title="8">  man brew</a>
+<a class="sourceLine" id="cb9-9" title="9">  https://docs.brew.sh</a></code></pre></div>
+<p>などと表示されればインストールできている。もし</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" title="1"><span class="ex">Error</span>: You have not agreed to the Xcode license. Please resolve this by running:</a>
+<a class="sourceLine" id="cb10-2" title="2">  <span class="fu">sudo</span> xcodebuild -license accept</a></code></pre></div>
+<p>というエラーが起きて実行できなかった場合、</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" title="1"><span class="fu">sudo</span> xcodebuild -license accept</a></code></pre></div>
+<p>を実行せよ(パスワードが必要)。</p>
+<p>最後にHome Brewを最新版にする。以下を実行せよ(かなり時間がかかる)。</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" title="1"><span class="ex">brew</span> update --force <span class="kw">&amp;&amp;</span> <span class="ex">brew</span> upgrade</a></code></pre></div>
+<h3 id="python3のインストール">Python3のインストール</h3>
+<p>まずはPython3をインストールしよう。</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb13-1" title="1"><span class="ex">brew</span> install python3</a></code></pre></div>
+<p>Python3がインストールされたら、必要なパッケージをいれておこう。</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" title="1"><span class="ex">python3</span> -m pip install numpy matplotlib</a></code></pre></div>
+<h4 id="jupyter-notebookのテスト">Jupyter Notebookのテスト</h4>
+<p>ターミナルから以下を実行せよ。</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb15-1" title="1"><span class="ex">jupyter</span> notebook</a></code></pre></div>
+<p>デフォルトのブラウザで、Jupyter Notebookが開かれるので、右上の「New」ボタンから「Python 3」を選ぶ。</p>
+<figure>
+<img src="fig/newbook2.png" alt="newbook2.png" /><figcaption>newbook2.png</figcaption>
+</figure>
+<p>新しいタブが開き、入力待ちになるので、そこで何かプログラムを入力する。例えば</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb16-1" title="1"><span class="bu">print</span>(<span class="st">&quot;Hello Python&quot;</span>)</a></code></pre></div>
+<p>と入力し「Shift+Return」もしくは上の「Run」ボタンをクリックする。</p>
+<figure>
+<img src="fig/run2.png" alt="run2.png" /><figcaption>run2.png</figcaption>
+</figure>
+<p>セルの真下に「Hello Python」と表示されて、次のセルが入力待ちになれば成功である。これでPythonを実行する環境は整った。</p>
+<p>最初に起動した画面の「Quit」を選ぶとJupyter Notebookは終了する。</p>
+<h2 id="vscodeの設定-windowsmac共通">VSCodeの設定 (Windows/Mac共通)</h2>
+<p>VSCodeを開き、左の歯車マークをクリック、もしくは「表示」メニューをクリックし、出てきたメニューから「拡張機能」を選ぶ。</p>
+<p>検索窓に「Python」と入力すると、MicrosoftのPythonプラグインが表示されるのでインストールする。</p>
+<p>その後、<code>test.py</code>というファイルを新規作成する。保存時に「Pythonインタプリタが見つからない」と言われたら、適宜選ぶこと。正しくプラグインがインストールされていれば、右上に緑色の三角形をした実行ボタンが表示されているはず。</p>
+<p>例えば</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb17-1" title="1"><span class="bu">print</span>(<span class="st">&quot;Hello Python&quot;</span>)</a></code></pre></div>
+<p>と入力し、実行ボタンをクリックすれば、下に画面が開き、<code>Hello Python</code>と表示されるはずだ。これでVS CodeからPythonを実行する環境が整った。</p>
 </article>
 </body>
 </html>
