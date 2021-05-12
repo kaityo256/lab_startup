@@ -604,7 +604,7 @@ spiral15.dat
 このデータを処理して、画像ファイルとして出力するスクリプト`convert.py`が用意してある。実行してみよう。
 
 ```sh
-$ python3 spiral00.dat
+$ python3 convert.py spiral00.dat
 spiral00.png
 ```
 

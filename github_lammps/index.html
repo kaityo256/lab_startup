@@ -139,9 +139,7 @@ vmd.state</code></pre>
 <p>ここで<code>*.atoms</code>などと<code>*</code>マークがあるのは「ワイルドカード」と呼ばれる指定方法だ。この場合は「拡張子が<code>atoms</code>のファイル全て」を意味しており、<code>collision.atoms</code>はそれにマッチするために無視される。同様に今後作成される<code>collision.dump</code>や<code>log.lammps</code>などもGitから無視される。</p>
 <h2 id="lammpsの実行">LAMMPSの実行</h2>
 <p>いま、リポジトリには<code>collision.input</code>と<code>collision.atoms</code>があるはずだ。前者がLAMMPSでシミュレーションをするためのインプットファイルで、後者がシステムサイズや原子の位置、初速を記述するファイルである。これらをLAMMPSにい入力して実行してみよう。</p>
-<p>Windows PowerShellの場合は</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">cat</span> collision.input <span class="kw">|</span> <span class="ex">lmp_serial.exe</span></code></pre></div>
-<p>Macの場合は</p>
+<p>ターミナルから</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">lmp_serial</span> <span class="op">&lt;</span> collision.input</code></pre></div>
 <p>として実行しよう。一分程度で実行が終わるはずである。同じディレクトリに<code>collision.dump</code>が生成されていれば正しく実行されている。</p>
 <h2 id="vmdによる可視化">VMDによる可視化</h2>
@@ -426,9 +424,10 @@ atoms.append(a)</code></pre></div>
 <img src="fig/vmd_animation2.png" alt="vmd_animation2" />
 <p class="caption">vmd_animation2</p>
 </div>
-<p>まずはWorking directoryを指定する。特に理由がなければ、<code>lammps_collision</code>をクローンしたディレクトリを指定すると良いだろう。このディレクトリにイメージが大量に生成されるので、デスクトップなどを指定しないように。</p>
+<p>Movie Settingsで、「Trajectory」を選び、さらに「Delete image files」のチェックを外すこと。</p>
+<p>次に、Working directoryを指定する。Macの場合は<code>lammps_collision</code>をクローンしたディレクトリを、Windowsの場合は、デスクトップに適当なフォルダ(例えばtest)を作って、そこに指定すると良いだろう。</p>
 <p><code>Name of movie</code>は、連番ファイル名の基本の名前となる。なんでも良いが、ここでは<code>test</code>としておく。「Format」はなんでも良いが、例えばMPEG-1(VideoMach)としておく。</p>
-<p>以上の設定をした上で「Make Movie」をクリックすると、Working Directoryに指定したディレクトリに<code>test.00012.bmp</code>といったファイルが大量に作成される。最後に「videomach.exeが見つからない」というエラーが表示されるが「いいえ」を押して、次に出るダイアログもOKを押して終了してかまわない。</p>
+<p>以上の設定をした上で「Make Movie」をクリックすると、Working Directoryに指定したディレクトリに<code>test.00012.bmp</code>といったファイルが大量に作成される(Macの場合はppmファイル)。Macの場合はそのままmpgファイルができるが、Windowsの場合は最後に「videomach.exeが見つからない」というエラーが表示されるが「いいえ」を押して、次に出るダイアログもOKを押して終了してかまわない。</p>
 <div class="figure">
 <img src="fig/vmd_animation3.png" alt="vmd_animation3" />
 <p class="caption">vmd_animation3</p>
@@ -441,7 +440,12 @@ atoms.append(a)</code></pre></div>
 <p>このBMPファイルからアニメーションGIFを作るには、ターミナルからBMPファイルがあるディレクトリで以下を実行する。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">ffmpeg</span> -i test.%05d.bmp collision.gif</code></pre></div>
 <p>これは「test.(五桁の整数の連番).bmpというファイルから、collision.gifを作れ」という意味だ。</p>
-<p>MPEGファイルを作りたければ、</p>
+<p>Macの場合は、</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">ffmpeg</span> -i test.%05d.ppm collision.gif</code></pre></div>
+<p>とせよ。できたファイルは、Windowsならダブルクリック、Macならターミナルから</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">qlmanage</span> -p collision.gif </code></pre></div>
+<p>とすると見ることができる。</p>
+<p>また、WindowsでMPEGファイルを作りたければ、</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">ffmpeg</span> -i test.%05d.bmp collision.mpg</code></pre></div>
 <p>とすればよい。同様に、連番のイメージファイルさえ作れば、FFMPEGを用いてアニメーションGIFでもMPEGでも作れるので使い方を覚えておきたい。</p>
 </article>

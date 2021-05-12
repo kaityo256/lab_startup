@@ -165,6 +165,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p class="caption">鍵の追加完了</p>
 </div>
 <p>公開鍵の登録は、GitHubにアクセスするパソコンごとに行う。今後、別のマシンでGitHubにアクセスしたくなったら、そのマシンで秘密鍵、公開鍵のペアを作成し、同様な手続きでGitHubに公開鍵を登録すること。</p>
+<p>また、SSHエージェントを用いて鍵を覚えさせておこう。ホームディレクトリで</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">ssh-add</span></code></pre></div>
+<p>と入力して、パスフレーズを入力しておけば、以後、Macなら再ログインまで、WSLならターミナルを閉じるまで、SSHのパスフレーズを聞かれなくなる(必要になったら自動で入力される)。</p>
 <h2 id="githubの操作">GitHubの操作</h2>
 <h3 id="リポジトリの作成とクローン">リポジトリの作成とクローン</h3>
 <p>では、実際にGitHubと通信して、データのやり取りをしてみよう。</p>
@@ -184,8 +187,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>Repository name: リポジトリの名前。Gitでアクセスするので、英数字だけにしよう。ここでは<code>test</code>としておく。</li>
 <li>Descrption: リポジトリの説明(任意)。ここは日本語でも良いが、とりあえず「test repository」にしておこう。</li>
 <li>Public/Private: ここで「Public」を選ぶと、全世界の人から見ることができるリポジトリとなる。とりあえずは「Private (自分だけがアクセスできる)」を選んでおこう。</li>
-<li>Initialize this repository with a README: リポジトリには監修としてREADMEというドキュメントをつける。ここをチェックすると自動で作ってくれる。</li>
-<li>Add a license: このリポジトリのファイルをどのようなライセンスで公開するか。ライセンスについては後で説明するが、とりあえず「MIT License」を選んでおこう。</li>
+<li>Initialize this repository with: リポジトリを作成する際に一緒に作るもの。ここをチェックすると自動で作ってくれる。ここでは、「Add a README file」と「Choose a license」をチェックしよう。「Choose a license」をクリックすると選択性が現れるが、ここでは「MIT License」を選んでおこう。</li>
 </ul>
 <p>以上の設定をして「Create repository」をクリックすると、リポジトリが作成され、以下のような画面が表示される。</p>
 <div class="figure">
@@ -194,7 +196,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <p>このリポジトリは<code>README.md</code>と<code>LICENSE</code>という二つのファイルが最初に登録され、<code>initial commit</code>というコミットメッセージでコミットされた状態になっている。</p>
 <p>このリポジトリを、ローカルマシンにクローンしてみよう。</p>
-<p>右にある「Clone or download」をクリックし、「Use ssh」をクリックする。</p>
+<p>右にある「↓ Code」をクリックし、「SSH」をクリックする。</p>
 <div class="figure">
 <img src="fig/use_ssh.png" alt="Use SSH" />
 <p class="caption">Use SSH</p>
@@ -234,7 +236,7 @@ Hello GitHub</code></pre></div>
 <img src="fig/modified_readme.png" alt="修正されたリポジトリ" />
 <p class="caption">修正されたリポジトリ</p>
 </div>
-<p>下に表示されている<code>README.md</code>の内容が変更されている。さらに、コミット数が「2 commits」になっており、<code>README.md</code>のコミットメッセージが「modified README.md」になっていることもわかる。</p>
+<p>下に表示されている<code>README.md</code>の内容が変更されている。<code>README.md</code>のコミットメッセージが「modified README.md」になっていることもわかる。</p>
 <p>以上で、「GitHubでリポジトリを作成し、ローカルにクローンする」作業が完了した。以上の作業をまとめると以下のようになる。</p>
 <div class="figure">
 <img src="fig/github_flow1.png" alt="Flow1" />
@@ -273,16 +275,12 @@ Hello GitHub</code></pre></div>
 <img src="fig/test2_empty.png" alt="Empty Repository" />
 <p class="caption">Empty Repository</p>
 </div>
-<p>そこには「次にすべきこと」がいくつか書いてあるが、ここでは「既に存在するリポジトリをpushする」を選びたいので、そこに書かれているコマンド、</p>
+<p>そこには「次にすべきこと」がいくつか書いてあるが、ここでは「既に存在するリポジトリをpushする(push an existing repository from the command line)」を選びたいので、そこに書かれているコマンド、</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> remote add origin git@github.com:アカウント名/test2.git
-<span class="fu">git</span> push -u origin master</code></pre></div>
-<p>を、先ほどのリポジトリ(<code>test2</code>ディレクトリの中)で実行する。右にある「コピー」ボタンをクリックすると、コマンド内容がコピーされるので、ターミナルに貼り付けて実行しても良い。</p>
-<p>またパスワードを聞かれるので入力すると、ローカルで作成されたリポジトリが、GitHubに作られた空のリポジトリにコピーされる。</p>
-<p>この状態で、もう一度GitHubの当該リポジトリを見てみよう。ブラウザをリロードせよ。以下のような画面になるはずだ。</p>
-<div class="figure">
-<img src="fig/test2_created.png" alt="Created" />
-<p class="caption">Created</p>
-</div>
+<span class="fu">git</span> branch -M main
+<span class="fu">git</span> push -u origin main</code></pre></div>
+<p>を、先ほどのリポジトリ(<code>test2</code>ディレクトリの中)で実行する。右にある「コピー」ボタンをクリックすると、コマンド内容がコピーされるので、ターミナルに貼り付けて実行しても良い。実行すると、ローカルで作成されたリポジトリが、GitHubに作られた空のリポジトリにコピーされる。</p>
+<p>この状態で、もう一度GitHubの当該リポジトリを見てみよう。ブラウザをリロードせよ。リポジトリに<code>README.md</code>が作成された状態になるはずだ。</p>
 <p>以上の操作をまとめると、以下のようになる。</p>
 <div class="figure">
 <img src="fig/github_flow2.png" alt="Flow 2" />
@@ -291,15 +289,149 @@ Hello GitHub</code></pre></div>
 <p>GitHubでリポジトリを作ってからローカルにcloneした場合は、ローカルは「リモートリポジトリはどこにあるか」、すなわち「どこにpushすれば良いか」の情報を知っている。しかし、ローカルでリポジトリを作った場合、ローカルリポジトリは「どこにpushすれば良いか」がわからない。従って、まずその場所を教えてやらなければならない。</p>
 <p>先ほどの</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> remote add origin git@github.com:アカウント名/test2.git
-<span class="fu">git</span> push -u origin master</code></pre></div>
+<span class="fu">git</span> branch -M main
+<span class="fu">git</span> push -u origin main</code></pre></div>
 <p>という操作は、</p>
 <ol style="list-style-type: decimal">
 <li><code>git@github.com:アカウント名/test2.git</code>というリポジトリに<code>origin</code>という名前をつけて保存する。</li>
-<li>先ほど名前をつけた<code>origin</code>というリポジトリに<code>master</code>ブランチを<code>push</code>する。その際、この<code>master</code>ブランチと<code>origin</code>を紐づける(<code>-u</code>オプション)</li>
+<li>ローカルのブランチ名を<code>main</code>に変更する</li>
+<li>先ほど名前をつけた<code>origin</code>というリポジトリに<code>main</code>ブランチを<code>push</code>する。その際、この<code>main</code>ブランチと<code>origin</code>を紐づける(<code>-u</code>オプション)</li>
 </ol>
 <p>ということをやっている。</p>
 <p>以上で、ローカルで作成したリポジトリをGitHubに登録することができた。</p>
 <p>今後、ローカルとGitHubのどちらでリポジトリを作っても良いが、慣れるまではとりあえずローカルでリポジトリを作成・作業し、必要になったらGitHubに登録するのが良いだろう。</p>
+<h2 id="issueの管理">Issueの管理</h2>
+<h3 id="its">ITS</h3>
+<p>Gitでは、原則としてメインブランチで作業をしない。これから作業をする内容によってブランチを作成し、そのブランチ上で作業し、完成したらメインブランチにマージする、という作業を繰り返すことで開発をすすめる。それぞれの作業に対応するブランチを作業ブランチ(トピックブランチ)と呼ぶ。</p>
+<p>一般に、必要な作業は複数同時に発生する。このとき、どのタスクを実行中で、どのタスクが手つかずか、タスク管理をしたくなる。原則としてタスクと作業ブランチは一対一に対応するのであるから、それらをツールで一度に管理したくなるのは自然であろう。それがGitHubのissueである。</p>
+<p>GitHubを使う場合、</p>
+<ul>
+<li>これから行う作業をissueに登録する。</li>
+<li>登録されたissueのうち、これから手をつけるissueに対応した作業ブランチを作成する</li>
+<li>作業ブランチで作業し、修正をコミットする</li>
+<li>メインブランチにマージする</li>
+</ul>
+<p>という流れで開発をすすめる。issueとは「課題」という意味であり、一般に課題を管理するシステムをIssue Tracking System (ITS)と呼ぶ。一種のTodo リストだと思えば良い。GitHubはITSの機能を持っている。</p>
+<h3 id="issueの作り方">Issueの作り方</h3>
+<p>では、既存のリポジトリでissueを作ってみよう。GitHubのページで、先ほど作った<code>test</code>リポジトリに移動し、以下の作業をせよ。</p>
+<ul>
+<li>上のタブから「Issues」をクリックし、「New Issue」ボタンを押す。</li>
+<li>Titleに「READMEの修正」と書く</li>
+<li>コメントに「内容を追加」と書く。</li>
+<li>Labelsとして「enhancement」を選ぶ。</li>
+</ul>
+<p>こんな画面になったはず。</p>
+<div class="figure">
+<img src="fig/new_issue.png" alt="new_issue" />
+<p class="caption">new_issue</p>
+</div>
+<p>以上で「Submit new issue」を押すとissueが作成され、「READMEの修正 #1」というタイトルがついたはずだ。この「#1」がissue番号であり、後で使う。</p>
+<div class="figure">
+<img src="fig/issue_open.png" alt="issue open" />
+<p class="caption">issue open</p>
+</div>
+<p>この画面は後で使うので、そのままブラウザを閉じないこと。</p>
+<p>次にローカルのリポジトリで、このissueに対応するブランチを作成する。ブランチの命名規則には様々な流儀があるが、先ほどつけたラベル、issue番号、そして修正内容を含めるのが一般的だ。ここではディレクトリ型の命名規則を採用しよう。ディレクトリ型の命名規則では「ラベル/issue番号/内容」という名前のブランチを作成する。今回、「enhancement」というラベルをつけたが、これは「新しい機能(feature)を追加する」という意味なので、「feat」とする。あとはissue番号1番、READMEの修正なので、全てまとめて<code>feat/1/README</code>というブランチを作ることにする。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">git</span> co -b feat/1/README
+<span class="ex">Switched</span> to a new branch <span class="st">&#39;feat/1/README&#39;</span></code></pre></div>
+<p>このブランチ上で、<code>README.md</code>に一行追加しよう。</p>
+<div class="sourceCode"><pre class="sourceCode md"><code class="sourceCode markdown"><span class="fu"># test</span>
+test repository
+
+Hello GitHub
+modifies README</code></pre></div>
+<p>コミットする時に、<code>closes #1</code>というメッセージにする。シャープ<code>#</code>を忘れたり、全角にしたり、数字との間に空白を挟んだりしないこと。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> add README.md
+<span class="fu">git</span> commit -m <span class="st">&quot;closes #1&quot;</span> </code></pre></div>
+<p>修正を<code>main</code>に取り込もう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">git</span> checkout main
+$ <span class="fu">git</span> merge feat/1/README 
+<span class="ex">Updating</span> a6b44f4..bfefb58
+<span class="ex">Fast-forward</span>
+ <span class="ex">README.md</span> <span class="kw">|</span> <span class="ex">1</span> +
+ <span class="ex">1</span> file changed, 1 insertion(+)</code></pre></div>
+<p>以上の修正をpushする。pushする前に、先ほどのissueの画面をブラウザで表示しておくこと。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> push</code></pre></div>
+<p>先程のissueの画面を見てみよう。push後に自動的にissueが閉じられたはずだ。</p>
+<div class="figure">
+<img src="fig/issue_closed.png" alt="issue closed" />
+<p class="caption">issue closed</p>
+</div>
+<p>このように、<code>fixes</code>、<code>closes</code>といった動詞と<code>#1</code>のような形でissue番号が含まれたコミットメッセージを含むコミットがpushされると、GitHubがそれを検知して自動的に対応するissueを閉じてくれる。</p>
+<p>不要になったブランチは消しておこう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">git</span> branch -d feat/1/README
+<span class="ex">Deleted</span> branch feat/1/README (was bfefb58)<span class="ex">.</span></code></pre></div>
+<h2 id="projectの利用">Projectの利用</h2>
+<p>issueには「open (未完了)」と「closed (完了)」の二状態しかないが、issueが増えてくると、いまどのissueがどういう状態なのかをより細かく管理したくなる。例えば未完了と完了の間に、「作業中」という状態が欲しくなる。このような状態を管理するのがProjectだ。以下では、もっとも基本的なProjectであるKanbanを使ってみよう。</p>
+<p>GitHubのリポジトリの「Projects」タブから、「Create a project」をクリックし、現れた画面で以下を設定する。</p>
+<ul>
+<li>「Project board name」は「カンバン」</li>
+<li>「Description 」も「カンバン」</li>
+<li>「Project template」は「Automated Kanban」</li>
+</ul>
+<div class="figure">
+<img src="fig/kanban_new.png" alt="kanban" />
+<p class="caption">kanban</p>
+</div>
+<p>設定が済んだら「Create project」ボタンでProjectを作成しよう。こんな画面になるはずだ。</p>
+<div class="figure">
+<img src="fig/kanban_created.png" alt="kanban created" />
+<p class="caption">kanban created</p>
+</div>
+<p>デフォルトで「To do (未完了)」「In progress (作業中)」「Done (完了)」の三つのカラムがある。「To do」にいくつか項目があるが、これは「カード」と呼ばれる。「カンバン」とは、「看板」のことで、トヨタの生産管理法「カンバン方式」に由来する。</p>
+<p>カンバン方式では、タスクを「カード」で管理し、看板に貼り付けたり、別の看板に移動させたりすることで管理する。最初からTo doにあるカードは不要なので、それぞれのカードの右上にある「・・・」マークから「Archive」を選んでアーカイブしてしまおう。</p>
+<p>さて、このProjectは、issueと連動している。新しくissueを作ってみよう。上のタブから「Issues」をクリックし、「New Issue」ボタンを押し、Titleに「READMEの修正」と書く。ラベルは先ほどと異なるもので試したいので、「documentation」を選ぼう。</p>
+<p>次にコメントを書くのだが、Issuesのコメントは、他のissueを参照したり、チェックボックスをつけたりする機能があるので試してみよう。コメントに以下のような内容を記述せよ。</p>
+<div class="sourceCode"><pre class="sourceCode md"><code class="sourceCode markdown">- <span class="fl">[ ] 修正1 (#1 に追加)</span>
+<span class="fl">- [ ] 修正2</span></code></pre></div>
+<p>ここで「#」と数字の間には空白をいれず、「#1」の後には半角空白を入れるのをわすれないこと。</p>
+<p>この状態で「Preview」タブをクリックすると、以下のようにチェックボックスになるはず。</p>
+<div class="figure">
+<img src="fig/issue_preview.png" alt="issue preview" />
+<p class="caption">issue preview</p>
+</div>
+<p>このチェックボックスをクリックするとチェックがつき、このissueのサブタスクを管理することができるが、ここでは扱わない。そういうことができる、ということだけ知っておくと良い。</p>
+<p>また、<code>#1</code>がリンクになっている。このように、関連するissueなど、別のissueを参照したい場合、GitHubで<code>#1</code>などのように<code>#</code>に続けてissue番号を書けばリンクが作成される。</p>
+<p>次に「Projects」をクリックし、先ほど作った「カンバン」を選択しよう。</p>
+<p>以上の作業が終わったら、「Submit new issue」をクリックし、issueを作成せよ。なお、Projectやラベルはissueを作成した後でも設定、変更が可能だ。</p>
+<p>issueが作られたら「Projects」タブから「カンバン」を選んで見てみよう。いま作ったissueがカードになり、「To do」に追加されているはずだ。</p>
+<div class="figure">
+<img src="fig/kanban_added.png" alt="kanban added" />
+<p class="caption">kanban added</p>
+</div>
+<p>一般には、To doには多数のやるべきことが積んである。大量のカードに気が滅入りつつ、気合を入れて一つ選んで作業をはじめよう。ここではTo doにカードが一つしかないので、それをマウスでドラッグして「In progress」に移動しよう。</p>
+<p>「In progress」とは「作業中」の意味だ。タスクをここに移動したら、対応するブランチを作ろう。ラベルがドキュメント、issue番号が2番、内容がREADMEの修正なので、<code>doc/2/README</code>としよう。ターミナルで以下を実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">git</span> co -b doc/2/README
+<span class="ex">Switched</span> to a new branch <span class="st">&#39;doc/2/README&#39;</span></code></pre></div>
+<p>また<code>README.md</code>を修正しよう。以下の一行を追加せよ。</p>
+<div class="sourceCode"><pre class="sourceCode md"><code class="sourceCode markdown"><span class="fu"># test</span>
+test repository
+
+Hello GitHub
+modifies README
+Hello Kanban</code></pre></div>
+<p>ファイルを保存したら、今度は<code>fixes #2</code>というメッセージでコミットする。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> add README.md
+<span class="fu">git</span> commit -m <span class="st">&quot;fixes #2&quot;</span></code></pre></div>
+<p>また<code>main</code>ブランチに戻って、修正を取り込もう。まだpushしないこと。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> checkout main
+<span class="fu">git</span> merge doc/2/README</code></pre></div>
+<p>ここで、<code>git merge d</code>まで入力したら、タブ補完が効くはずである。</p>
+<p>マージが終了したら、先ほどの「カンバン」の画面を見よう。まだカードは「In progress」にある。</p>
+<div class="figure">
+<img src="fig/kanban_inprogress.png" alt="kanban in progress" />
+<p class="caption">kanban in progress</p>
+</div>
+<p>ブラウザでこの画面を表示したまま、ターミナルで<code>git push</code>しよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> push</code></pre></div>
+<p>issueがとじると同時に、カードが自動的に「In progress」から「Done」に移ったはずだ。</p>
+<div class="figure">
+<img src="fig/kanban_done.png" alt="kanban done" />
+<p class="caption">kanban done</p>
+</div>
+<p>このように、カンバンとissueを連動して管理することができる。</p>
+<p>Automated Kanbanを利用すると、作成したissueは自動的に「To do」に登録される。そして、あるissueに関連する作業を開始する時に、issueをTo doからIn progressに移動すると同時に対応するブランチを作成し、閉じたissueに対応するブランチを消すようにしていると、「In progress」にあるカードの数とトピックブランチの数が一致するので、いろいろ確認がしやすくなって便利である。</p>
+<p>カンバンの使い方やブランチの命名規則、issueの管理方法などは人によって異なるので、いろいろ試して自分にとって便利な方法を見つけて欲しい(ただし、開発チームに所属した場合は、そのチームのルールに従うこと)。</p>
 </article>
 </body>
 </html>
