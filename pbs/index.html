@@ -246,6 +246,34 @@ $ <span class="fu">ls</span> cps
 <span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed17.dat <span class="op">&gt;</span> result17.dat : 2.088 [s]
 <span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed18.dat <span class="op">&gt;</span> result18.dat : 2.099 [s]</code></pre></div>
 <p>全部で何個のタスクがあり、トータル何秒だったか、実際には何秒で実行できたか等が表示されている。</p>
+<p>また、同じディレクトリに<code>result00.dat</code>から<code>result18.dat</code>までファイルができているはずだ。一つ見てみよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">cat</span> result01.dat
+<span class="ex">3.1420144</span></code></pre></div>
+<p><code>result01.dat</code>は、乱数の種として「1」を入力した結果だ。先程Pythonで直接実行した時と同じ値が出ていることを確認せよ。乱数を使う計算では、「同じ乱数の種からは同じ結果が出る」という事実は覚えておきたい。Pythonの<code>random</code>モジュールは、デフォルトで乱数の種が固定されないため、実行される度に異なる結果を返す。これは「ランダムネス」という意味では良いが、数値計算においてはデバッグの障害となる。乱数を使うプログラムでは、乱数の種を指定しておく癖をつけておくこと。</p>
+<p>さて、あとはこれらのファイルを集計するだけだ。Pythonを使うならこんなスクリプトになるだろう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> glob
+<span class="im">import</span> numpy <span class="im">as</span> np
+
+data <span class="op">=</span> []
+<span class="cf">for</span> filename <span class="kw">in</span> glob.glob(<span class="st">&#39;result*.dat&#39;</span>):
+  <span class="cf">with</span> <span class="bu">open</span>(filename) <span class="im">as</span> f:
+    a <span class="op">=</span> f.readlines()[<span class="dv">0</span>]
+    data.append(<span class="bu">float</span>(a))
+
+average <span class="op">=</span> np.average(data)
+error <span class="op">=</span> np.std(data)
+
+<span class="bu">print</span>(<span class="ss">f&quot;</span><span class="sc">{</span>average<span class="sc">}</span><span class="ss"> +- </span><span class="sc">{</span>error<span class="sc">}</span><span class="ss">&quot;</span>)</code></pre></div>
+<p>実行してみよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">python3</span> average.py
+<span class="ex">3.1416488</span> +- 0.0006905991052778619</code></pre></div>
+<p>上記の手続き、すなわち</p>
+<ul>
+<li>入力を受け取ってなにかを出力するシリアルプログラムを用意する</li>
+<li>入力をたくさん用意する</li>
+<li>馬鹿パラで実行する</li>
+</ul>
+<p>というのは、非常に単純ながら効果的な手法なので覚えておくと良い。</p>
 </article>
 </body>
 </html>
