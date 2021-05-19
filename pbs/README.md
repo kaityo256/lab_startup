@@ -216,7 +216,7 @@ LICENSE  README.md  cps.cpp  makefile  task.sh
 さて、ディレクトリ`pi`には、モンテカルロ法で円周率を計算する`pi.py`がある。このスクリプトを実行すると入力待ちになるので、適当な数字を入力してみよう。その数字を乱数の種(シード)として円周率を計算する。
 
 ```sh
-$ python pi.py
+$ python3 pi.py
 1
 3.1420144
 ```
@@ -224,11 +224,11 @@ $ python pi.py
 これを様々な種を与えて並列に計算し、あとで統計処理をすることを考えよう。例えば`seed00.dat`には`0`を、`seed01.dat`には`1`などと、異なるシードをファイルに保存しておき、
 
 ```sh
-python pi.py < seed00.dat > result00.dat
-python pi.py < seed01.dat > result01.dat
-python pi.py < seed02.dat > result02.dat
-python pi.py < seed03.dat > result03.dat
-python pi.py < seed04.dat > result04.dat
+python3 pi.py < seed00.dat > result00.dat
+python3 pi.py < seed01.dat > result01.dat
+python3 pi.py < seed02.dat > result02.dat
+python3 pi.py < seed03.dat > result03.dat
+python3 pi.py < seed04.dat > result04.dat
 ...
 ```
 
@@ -237,7 +237,7 @@ python pi.py < seed04.dat > result04.dat
 同じディレクトリに`makeseed.py`があるので実行せよ。
 
 ```sh
-python makeseed.py
+python3 makeseed.py
 ```
 
 すると、`seed00.dat`から`seed18.dat`、そして`task.sh`が作成されたはずだ。`task.sh`には、並列実行したいタスクがずらずら記載されている。
@@ -288,25 +288,25 @@ Parallel Efficiency : 0.995313
 
 Task list:
 Command : Elapsed time
-python pi.py < seed00.dat > result00.dat : 2.098 [s]
-python pi.py < seed01.dat > result01.dat : 2.087 [s]
-python pi.py < seed02.dat > result02.dat : 2.098 [s]
-python pi.py < seed03.dat > result03.dat : 2.086 [s]
-python pi.py < seed04.dat > result04.dat : 2.089 [s]
-python pi.py < seed05.dat > result05.dat : 2.087 [s]
-python pi.py < seed06.dat > result06.dat : 2.098 [s]
-python pi.py < seed07.dat > result07.dat : 2.077 [s]
-python pi.py < seed08.dat > result08.dat : 2.098 [s]
-python pi.py < seed09.dat > result09.dat : 2.086 [s]
-python pi.py < seed10.dat > result10.dat : 2.1 [s]
-python pi.py < seed11.dat > result11.dat : 2.086 [s]
-python pi.py < seed12.dat > result12.dat : 2.097 [s]
-python pi.py < seed13.dat > result13.dat : 2.065 [s]
-python pi.py < seed14.dat > result14.dat : 2.092 [s]
-python pi.py < seed15.dat > result15.dat : 2.086 [s]
-python pi.py < seed16.dat > result16.dat : 2.096 [s]
-python pi.py < seed17.dat > result17.dat : 2.088 [s]
-python pi.py < seed18.dat > result18.dat : 2.099 [s]
+python3 pi.py < seed00.dat > result00.dat : 2.098 [s]
+python3 pi.py < seed01.dat > result01.dat : 2.087 [s]
+python3 pi.py < seed02.dat > result02.dat : 2.098 [s]
+python3 pi.py < seed03.dat > result03.dat : 2.086 [s]
+python3 pi.py < seed04.dat > result04.dat : 2.089 [s]
+python3 pi.py < seed05.dat > result05.dat : 2.087 [s]
+python3 pi.py < seed06.dat > result06.dat : 2.098 [s]
+python3 pi.py < seed07.dat > result07.dat : 2.077 [s]
+python3 pi.py < seed08.dat > result08.dat : 2.098 [s]
+python3 pi.py < seed09.dat > result09.dat : 2.086 [s]
+python3 pi.py < seed10.dat > result10.dat : 2.1 [s]
+python3 pi.py < seed11.dat > result11.dat : 2.086 [s]
+python3 pi.py < seed12.dat > result12.dat : 2.097 [s]
+python3 pi.py < seed13.dat > result13.dat : 2.065 [s]
+python3 pi.py < seed14.dat > result14.dat : 2.092 [s]
+python3 pi.py < seed15.dat > result15.dat : 2.086 [s]
+python3 pi.py < seed16.dat > result16.dat : 2.096 [s]
+python3 pi.py < seed17.dat > result17.dat : 2.088 [s]
+python3 pi.py < seed18.dat > result18.dat : 2.099 [s]
 ```
 
 全部で何個のタスクがあり、トータル何秒だったか、実際には何秒で実行できたか等が表示されている。
