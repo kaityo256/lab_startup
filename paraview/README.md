@@ -14,7 +14,7 @@ Windowsの場合は、拡張子がexeで終わっており、かつMPI版では�
 
 ![Windows](fig/windows_download.png)
 
-Macの場合は、パッケージ版(拡張子がpkg)を選ぶと良いであろう。
+Macの場合は、パッケージ版(拡張子がpkg)を選ぶと良いであろう
 
 ![Mac](fig/mac_download.png)
 
@@ -194,7 +194,7 @@ cd paraview-sample
 
 ```sh
 cd simple
-python simple.py
+python3 simple.py
 ```
 
 同じディレクトリに`simple.vtk`ができたはずだ。これをParaViewで開こう。
@@ -241,7 +241,7 @@ python simple.py
 
 ```sh
 cd wavefunction
-python wavefunction.py
+python3wavefunction.py
 ```
 
 すると、以下の三つのファイルが作成される。
@@ -284,7 +284,7 @@ python wavefunction.py
 
 ```sh
 cd glyph
-python tgv.py
+python3tgv.py
 ```
 
 すると、同じディレクトリに`tgv.vtk`が作成されるので、それをParaViewで開いてApplyする。
@@ -317,7 +317,7 @@ python tgv.py
 
 ```sh
 cd unstructured
-python sphere.py
+python3 sphere.py
 ```
 
 同じディレクトリに`sphere.vtk`ができるので、ParaViewで開いてApplyせよ。
@@ -336,14 +336,13 @@ python sphere.py
 
 ```sh
 cd gray-scott
-python gs.py
+python3 gs.py
 ```
 
 なお、`matplotlib`モジュールが無い、`numba`モジュールが無いなどと文句を言われたら`pip`で入れること。
 
 ```sh
-pip install matplotlib
-pip install numba
+python3 -m pip install matplotlib numba
 ```
 
 実行すると、`conf000.vtk`から`conf119.vtk`までの120個のファイルが作成される。これをParaViewで開こう。
@@ -364,7 +363,7 @@ Applyしたら、まずは「最後のフレーム」ボタンを押そう。
 
 さて、このままでも可視化はできているのだが、もう少し加工して見やすくしよう。
 
-まずは「Delaunay 2D」フィルタを適用する。Filterメニューから探しても良いが、ParaViewには大量のフィルタがあって探すのが大変なので、検索することにしよう。「Filter」メニューから「Search」を選ぼう。検索ウィンドウが表示されるので「de」まで入力する。
+まずは「Delaunay 2D」フィルタを適用する。Filtersメニューから探しても良いが、ParaViewには大量のフィルタがあって探すのが大変なので、検索することにしよう。「Filters」メニューから「Search」を選ぼう。検索ウィンドウが表示されるので「de」まで入力する。
 
 ![filter search](fig/filter_search.png)
 
@@ -409,3 +408,11 @@ FFmpegでmp4ファイルを作る場合。
 ```sh
 ffmpeg -i gs.%04d.png  -pix_fmt yuv420p gs.mp4
 ```
+
+なお、「幅が2の倍数ではない」などと怒られたら、`mogrify`を使ってリサイズすると良い。
+
+```sh
+mogrify -resize 860x616! *.png
+```
+
+最後の`!`は上書き保存という意味だ。
