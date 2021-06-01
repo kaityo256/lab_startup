@@ -85,7 +85,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <img src="fig/windows_download.png" alt="Windows" />
 <p class="caption">Windows</p>
 </div>
-<p>Macの場合は、パッケージ版(拡張子がpkg)を選ぶと良いであろう。</p>
+<p>Macの場合は、パッケージ版(拡張子がpkg)を選ぶと良いであろう</p>
 <div class="figure">
 <img src="fig/mac_download.png" alt="Mac" />
 <p class="caption">Mac</p>
@@ -207,7 +207,7 @@ s3
 <p>最初は最も簡単な構造格子(Structured Grid)のボリュームレンダリングをしてみよう。</p>
 <p>ディレクトリ<code>simple</code>に<code>simple.py</code>があるので実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span> simple
-<span class="ex">python</span> simple.py</code></pre></div>
+<span class="ex">python3</span> simple.py</code></pre></div>
 <p>同じディレクトリに<code>simple.vtk</code>ができたはずだ。これをParaViewで開こう。</p>
 <p>まずParaViewを起動し、Ctrl+O(もしくはFile→Open)で<code>simple.vtk</code>を開く。すると、Pipeline Browserに「simple.vtk」が追加され、目が閉じたアイコンが表示されたはず。この状態で「Properties」の「Apply」をクリックせよ。Pipeline Browserの「simple.vtk」の左にあるアイコンの目が開いたはずだ。</p>
 <div class="figure">
@@ -251,7 +251,7 @@ s3
 <p>なお、カラーマップをいじっていてわけがわからなくなった場合(よくある)は、ParaViewを再起動すると良い。</p>
 <p>ディレクトリ<code>wavefunction</code>に、<code>wavefunction.py</code>があるので実行せよ。カレントディレクトリが<code>simple</code>の場合は、一度<code>cd ..</code>を実行して上のディレクトリに移動しておくこと。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span> wavefunction
-<span class="ex">python</span> wavefunction.py</code></pre></div>
+<span class="ex">python3wavefunction.py</span></code></pre></div>
 <p>すると、以下の三つのファイルが作成される。</p>
 <ul>
 <li><code>2pz.vtk</code></li>
@@ -287,7 +287,7 @@ s3
 <p>これまではスカラー場を可視化してきた。しかし、速度場など、ベクトル場を可視化したいことがある。そのために「Glyph」という矢印を使った可視化が用意されている。</p>
 <p>ディレクトリ<code>glyph</code>に、<code>tgv.py</code>があるので実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span> glyph
-<span class="ex">python</span> tgv.py</code></pre></div>
+<span class="ex">python3tgv.py</span></code></pre></div>
 <p>すると、同じディレクトリに<code>tgv.vtk</code>が作成されるので、それをParaViewで開いてApplyする。</p>
 <p>次に、「Glyph」というフィルタを適用する。デフォルトでアイコンがあるので、それをクリックしてApplyする。</p>
 <div class="figure">
@@ -312,7 +312,7 @@ s3
 <p>これまでは、系に規則的な格子が存在し、そこに物理量が定義されていた。次は非構造格子(Unstructured Grid)の可視化を試してみよう。</p>
 <p>ディレクトリ<code>unstructured</code>に<code>sphere.py</code>があるので実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span> unstructured
-<span class="ex">python</span> sphere.py</code></pre></div>
+<span class="ex">python3</span> sphere.py</code></pre></div>
 <p>同じディレクトリに<code>sphere.vtk</code>ができるので、ParaViewで開いてApplyせよ。</p>
 <p>その後、また「Glyph」フィルターを適用せよ。以下のような表示が得られるはずだ。</p>
 <div class="figure">
@@ -324,10 +324,9 @@ s3
 <p>最後にシミュレーション結果をアニメーションとして可視化してみよう。シミュレーションするのはGray-Scott模型と呼ばれる、反応拡散方程式の一種である。Gray-Scottモデルは、活性化因子と抑制因子の二種類が、お互いに反応しながら拡散する様子をモデル化したものだ。</p>
 <p>ディレクトリ<code>gray-scott</code>に<code>gs.py</code>があるので実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span> gray-scott
-<span class="ex">python</span> gs.py</code></pre></div>
+<span class="ex">python3</span> gs.py</code></pre></div>
 <p>なお、<code>matplotlib</code>モジュールが無い、<code>numba</code>モジュールが無いなどと文句を言われたら<code>pip</code>で入れること。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">pip</span> install matplotlib
-<span class="ex">pip</span> install numba</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">python3</span> -m pip install matplotlib numba</code></pre></div>
 <p>実行すると、<code>conf000.vtk</code>から<code>conf119.vtk</code>までの120個のファイルが作成される。これをParaViewで開こう。</p>
 <p>ParaViewでは、連番のファイルは<code>conf..vtk</code>のように<code>..</code>で表示され、まとめて読み込むことができる。</p>
 <div class="figure">
@@ -346,7 +345,7 @@ s3
 </div>
 <p>これにより、白っぽかった画像が赤っぽくなったはずだ。これは、データの範囲を、一番最後のフレームに合わせる、という意味だ。最初のフレームの振幅が大きいため、それに合わせると以降のフレームで変化がわかりにくい。</p>
 <p>さて、このままでも可視化はできているのだが、もう少し加工して見やすくしよう。</p>
-<p>まずは「Delaunay 2D」フィルタを適用する。Filterメニューから探しても良いが、ParaViewには大量のフィルタがあって探すのが大変なので、検索することにしよう。「Filter」メニューから「Search」を選ぼう。検索ウィンドウが表示されるので「de」まで入力する。</p>
+<p>まずは「Delaunay 2D」フィルタを適用する。Filtersメニューから探しても良いが、ParaViewには大量のフィルタがあって探すのが大変なので、検索することにしよう。「Filters」メニューから「Search」を選ぼう。検索ウィンドウが表示されるので「de」まで入力する。</p>
 <div class="figure">
 <img src="fig/filter_search.png" alt="filter search" />
 <p class="caption">filter search</p>
@@ -391,6 +390,9 @@ s3
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">convert</span> -delay 5 -loop 0 -resize 50% gs.*.png gs.gif</code></pre></div>
 <p>FFmpegでmp4ファイルを作る場合。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">ffmpeg</span> -i gs.%04d.png  -pix_fmt yuv420p gs.mp4</code></pre></div>
+<p>なお、「幅が2の倍数ではない」などと怒られたら、<code>mogrify</code>を使ってリサイズすると良い。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">mogrify</span> -resize 860x616! *.png</code></pre></div>
+<p>最後の<code>!</code>は上書き保存という意味だ。</p>
 </article>
 </body>
 </html>

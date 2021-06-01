@@ -4,32 +4,13 @@ Fashion-MNISTというデータセットがある。MNISTは手書き数字だ�
 
 ## 環境設定
 
-### ローカルマシンで実行する場合
-
-#### パッケージのインストール
-
-ターミナル(以下、WindowsならAnaconda Promptで、Macならターミナルを指すものとする)で、以下を実行せよ。
+以下ではPython3の仮想環境を使う。WSLでは事前に以下を実行しておく必要がある。
 
 ```sh
-conda install pip
-pip install -U pip
-pip install tensorflow
-pip install tensorflowjs
+sudo apt-get install python3-venv
 ```
 
-#### リポジトリのフォークとクローン
-
-以下のリポジトリをフォークせよ。
-
-[https://github.com/kaityo256/fashion_mnist_check](https://github.com/kaityo256/fashion_mnist_check)
-
-![フォーク](fig/fork.png)
-
-フォークが完了したら、clone用のアドレスをコピーする。「Clone or download」ボタンをクリックし、「Clone with SSH」になっていることを確認して「クリップボードにコピーボタン」を押す。
-
-![clone](fig/clone.png)
-
-この状態で、ターミナルで`github`ディレクトリに移動してからcloneする。
+まず、[kaityo256/fashion_mnist_check](https://github.com/kaityo256/fashion_mnist_check)をフォークしてからcloneせよ。ローカルでも研究室サーバでもかまわない。この際、sshでcloneすること。
 
 ```sh
 cd github
@@ -42,77 +23,22 @@ cloneできたら、そこに移動しよう。
 cd fashion_mnist_check
 ```
 
-### 研究室サーバで実行する場合
-
-[SSHエージェント転送の設定](../ssh)を参考に、まずはssh-agentを起動の上、`ssh-add`によりパスフレーズを覚えさせた状態で、研究室のサーバに`-A`オプションつきでログインせよ。以下の作業は`git push`まではサーバ上で行う。
-
-#### リポジトリのフォークとクローン
-
-まず、以下のリポジトリをフォークせよ。
-
-[https://github.com/kaityo256/fashion_mnist_check](https://github.com/kaityo256/fashion_mnist_check)
-
-![フォーク](fig/fork.png)
-
-フォークが完了したら、clone用のアドレスをコピーする。「Clone or download」ボタンをクリックし、「Clone with SSH」になっていることを確認して「クリップボードにコピーボタン」を押す。
-
-![clone](fig/clone.png)
-
-この状態で、ターミナルで`github`ディレクトリに移動してからcloneする。
+仮想環境を構築し、activateし、tensorflowとtensorflowjsをインストールする。
 
 ```sh
-cd github
-git clone git clone git@github.com:youraccount/fashion_mnist_check.git
+python3 -m venv tf  
+source tf/bin/activate
+python3 -m pip install --upgrade pip
+python3 -m pip install tensorflow tensorflowjs
 ```
 
-cloneできたら、そこに移動しよう。
-
-```sh
-cd fashion_mnist_check
-```
-
-#### 仮想環境の構築
-
-Pythonでは、複数のパッケージをインストールして利用するが、多くの場合、パッケージは別のパッケージに依存しており、さらにバージョンが異なるとうまく動作しないことがある。すると、あるプロジェクトではあるパッケージのVer 1.0じゃないと動作しないが、別のプロジェクトではVer 2.0以降でないと動作しない、ということが起きる。このため、Pythonでは「仮想環境」を構築して、環境を切り替えることで、異なるバージョンのパッケージを共存させられるようになっている。
-
-Pythonの仮想環境構築自体もかなりの魔境なのだが、今回はPython標準のvenvを使うことにする。これは「プロジェクト毎」に異なる仮想環境を構築する。
-
-先ほど、クローンした`fashion_mnist_check`のディレクトリにいるはずである。この状態で、「tf」という名前の仮想環境を構築する。
-
-```sh
-python3 -m venv tf
-```
-
-すると、カレントディレクトリに`tf`というディレクトリが作られる。この状態で仮想環境を有効にする(この仮想環境`tf`に入る)ためには、以下を実行する。
+仮想環境は`deactivate`で出ることができる。次回からは同じディレクトリで
 
 ```sh
 source tf/bin/activate
 ```
 
-プロンプトの左側に`(tf)`という文字が現れたら仮想環境に入った印である。
-
-この環境に必要なものを入れていこう。以下を実行せよ。
-
-```sh
-pip install --upgrade pip
-pip install tensorflow tensorflowjs
-```
-
-途中でエラーが出るが、(多分)気にしなくて良い。
-
-サーバからログアウトすれば仮想環境からも出るが、明示的に出たい場合は
-
-```sh
-deactivate
-```
-
-を実行する。プロンプトの左から`(tf)`が消えたはずだ。次回から、このディレクトリに入って、また
-
-```sh
-source tf/bin/activate
-```
-
-を実行すれば、TensorFlow, TensorFlowJSがインストールされた仮想環境に入ることができる。
+を実行すれば、既にtensorflowとtensorflowjsがインストールされた環境に入ることができる。
 
 ## 学習とエクスポート
 
@@ -125,7 +51,7 @@ source tf/bin/activate
 このデータはウェブに公開されているため、ダウンロードから学習まで一発でできる。まずはニューラルネットを学習させ、その結果を保存しよう。以下を実行せよ。
 
 ```sh
-python train.py
+python3 train.py
 ```
 
 正しくTensorFlowがインストールされていれば学習が進み、最終的に以下のような出力がされるはずである。
@@ -150,7 +76,7 @@ Model was saved.
 次に、このデータを読み込んで、TensorFlow.js用のデータをエクスポートする。以下を実行せよ。
 
 ```sh
-python export.py
+python3 export.py
 ```
 
 TensorFlow.jsが正しくインストールされていれば、以下のような出力になるはずだ。
@@ -188,14 +114,13 @@ git commit -m "adds model"
 git push
 ```
 
-
 ## GitHub Pagesの公開
 
 GitHubの、自分のリポジトリを見てみよう。ブラウザをリロードすると、`model`が追加されているはずである。この状態でSettingsをクリックする。
 
-![settings](fig/settings.png)
+左のメニューに「Pages」という項目があるのでそこを選ぶ。
 
-下の方に「GitHub Pages」という項目があるので、そこの「master branch」をクリックする。
+GitHub Pagesの「Source」のところが「None」になっているので、クリックして「main」を選んで「Save」を選ぶ。
 
 ![settings](fig/github_pages.png)
 
