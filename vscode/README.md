@@ -24,7 +24,7 @@ VSCodeの左のメニューからExtentionsのアイコン(ブロックのマー
 
 Pythonのプラグインがインストールされたら、「ファイル」から「新規作成」を選ぶ(もしくはCtrl+Nを押す)。「Untitled-1」のようなファイル名でウィンドウが開かれるため、「保存(Ctrl+S)」を選んで、適当な場所に`test.py`という名前で保存する。
 
-この時、先にPython環境が正しくインストールされていれば、エディタの左下に「Python 3.7.6. 64-bit ('base':conda)」といった表示が現れるはずだ。
+この時、先にPython環境が正しくインストールされていれば、エディタの左下に「Python 3.8.5. 64-bit」といった表示が現れるはずだ。
 
 Pythonの実行環境が選ばれた状態で
 
@@ -37,14 +37,6 @@ print("Hello Python")
 ![実行ボタン](fig/vscode_python_execute.png)
 
 下にウィンドウが開いて実行結果(`Hello Python`)が表示されるはずだ。
-
-ただ、ここで
-
-```txt
-conda : 用語 'conda' は、コマンドレット、関数、スクリプト ファイル、または操作可能なプログラムの名前として認識されません
-```
-
-というエラーが表示される。これを防ぐには「ファイル」→「基本設定」→「設定」を開き、検索窓に「Activate」と入力すると「Python > Terminal: Activate Environment」が見つかるはず。そこの「Activate Python Environment in Terminal created using the Extension.」のチェックを外せば良い。これでVSCodeからPythonを実行する環境が整った。
 
 ### WSLとの連携
 
