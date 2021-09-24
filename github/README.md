@@ -148,7 +148,7 @@ ssh-add
 * Repository name: リポジトリの名前。Gitでアクセスするので、英数字だけにしよう。ここでは`test`としておく。
 * Descrption: リポジトリの説明(任意)。ここは日本語でも良いが、とりあえず「test repository」にしておこう。
 * Public/Private: ここで「Public」を選ぶと、全世界の人から見ることができるリポジトリとなる。とりあえずは「Private (自分だけがアクセスできる)」を選んでおこう。
-* Initialize this repository with: リポジトリを作成する際に一緒に作るもの。ここをチェックすると自動で作ってくれる。ここでは、「Add a README file」と「Choose a license」をチェックしよう。「Choose a license」をクリックすると選択性が現れるが、ここでは「MIT License」を選んでおこう。
+* Initialize this repository with: リポジトリを作成する際に一緒に作るもの。ここをチェックすると自動で作ってくれる。ここでは、「Add a README file」と「Choose a license」をチェックしよう。「Choose a license」をクリックすると選択肢が現れるが、ここでは「MIT License」を選んでおこう。
 
 以上の設定をして「Create repository」をクリックすると、リポジトリが作成され、以下のような画面が表示される。
 
@@ -385,7 +385,7 @@ git commit -m "closes #1"
 修正を`main`に取り込もう。
 
 ```sh
-$ git checkout main
+$ git switch main
 $ git merge feat/1/README 
 Updating a6b44f4..bfefb58
 Fast-forward
@@ -489,7 +489,7 @@ git commit -m "fixes #2"
 また`main`ブランチに戻って、修正を取り込もう。まだpushしないこと。
 
 ```sh
-git checkout main
+git switch main
 git merge doc/2/README
 ```
 
