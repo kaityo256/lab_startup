@@ -1,0 +1,205 @@
+--- a/describe.c
+--- a/file
+--- a/file
+--- a/file
+--- a/file
+--[no-]mailmap
+--[no-]rename-empty
+--[no-]standard-notes
+--[no-]use-mailmap
+--abbrev-commit
+--abbrev[=<n>]
+--after=<date>
+--all
+--all-match
+--alternate-refs
+--ancestry-path
+--ancestry-path
+--anchored=<text>
+--author-date-order
+--author=<pattern>
+--basic-regexp
+--before=<date>
+--binary
+--bisect
+--boundary
+--branches[=<pattern>]
+--break-rewrites[=[<n>][/<m>]]
+--cc
+--check
+--cherry
+--cherry-mark
+--cherry-pick
+--children
+--color-moved-ws=<modes>
+--color-moved[=<mode>]
+--color-words[=<regex>]
+--color[=<when>]
+--combined-all-paths
+--committer=<pattern>
+--compact-summary
+--cumulative
+--date-order
+--date=<format>
+--date=default is the default format, and is similar to --date=rfc2822, with a few exceptions:
+--date=format:... feeds the format ... to your system strftime, except for %z and %Z, which are handled internally. Use --date=format:%c to show the date in your system locale’s preferred format. See the strftime manual for a complete list of format placeholders. When using -local, the correct syntax is --date=format-local:....
+--date=human shows the timezone if the timezone does not match the current time-zone, and doesn’t print the whole date if that matches (ie skip printing year for dates that are "this year", but also skip the whole date itself if it’s in the last few days and we can just say what weekday it was). For older dates the hour and minute is also omitted.
+--date=iso (or --date=iso8601) shows timestamps in a ISO 8601-like format. The differences to the strict ISO 8601 format are:
+--date=iso-strict (or --date=iso8601-strict) shows timestamps in strict ISO 8601 format.
+--date=local is an alias for --date=default-local.
+--date=raw shows the date as seconds since the epoch (1970-01-01 00:00:00 UTC), followed by a space, and then the timezone as an offset from UTC (a + or - with four digits; the first two are hours, and the second two are minutes). I.e., as if the timestamp were formatted with strftime("%s %z")). Note that the -local option does not affect the seconds-since-epoch value (which is always measured in UTC), but does switch the accompanying timezone value.
+--date=relative shows dates relative to the current time, e.g. “2 hours ago”. The -local option has no effect for --date=relative.
+--date=rfc (or --date=rfc2822) shows timestamps in RFC 2822 format, often found in email messages.
+--date=short shows only the date, but not the time, in YYYY-MM-DD format.
+--date=unix shows the date as a Unix epoch timestamp (seconds since 1970). As with --raw, this is always in UTC and therefore -local has no effect.
+--decorate-refs-exclude=<pattern>
+--decorate-refs=<pattern>
+--decorate[=short|full|auto|no]
+--dense
+--dense
+--diff-algorithm={patience|minimal|histogram|myers}
+--diff-filter=[(A|C|D|M|R|T|U|X|B)…​[*]]
+--diff-merges=(off|none)
+--diff-merges=(off|none|on|first-parent|1|separate|m|combined|c|dense-combined|cc)
+--diff-merges=1
+--diff-merges=c
+--diff-merges=cc
+--diff-merges=combined
+--diff-merges=dense-combined
+--diff-merges=first-parent
+--diff-merges=m
+--diff-merges=on
+--diff-merges=separate
+--dirstat-by-file[=<param1,param2>…​]
+--dirstat[=<param1,param2,…​>]
+--do-walk
+--dst-prefix=<prefix>
+--encoding=<encoding>
+--exclude=<glob-pattern>
+--expand-tabs
+--expand-tabs=<n>
+--ext-diff
+--extended-regexp
+--find-copies-harder
+--find-copies[=<n>]
+--find-object=<object-id>
+--find-renames[=<n>]
+--first-parent
+--fixed-strings
+--follow
+--format=<format>
+--full-diff
+--full-history
+--full-history with parent rewriting
+--full-history without parent rewriting
+--full-index
+--function-context
+--glob=<glob-pattern>
+--graph
+--grep-reflog=<pattern>
+--grep=<pattern>
+--histogram
+--ignore-all-space
+--ignore-blank-lines
+--ignore-cr-at-eol
+--ignore-matching-lines=<regex>
+--ignore-missing
+--ignore-space-at-eol
+--ignore-space-change
+--ignore-submodules[=<when>]
+--indent-heuristic
+--inter-hunk-context=<lines>
+--invert-grep
+--irreversible-delete
+--ita-invisible-in-index
+--left-only
+--left-right
+--line-prefix=<prefix>
+--log-size
+--max-count=<number>
+--max-parents=<number>
+--merge
+--merges
+--min-parents=<number>
+--minimal
+--name-only
+--name-status
+--no-abbrev-commit
+--no-color
+--no-color-moved
+--no-color-moved-ws
+--no-decorate
+--no-diff-merges
+--no-diff-merges
+--no-expand-tabs
+--no-ext-diff
+--no-indent-heuristic
+--no-max-parents
+--no-merges
+--no-min-parents
+--no-min-parents and --no-max-parents reset these limits (to no limit) again. Equivalent forms are --min-parents=0 (any commit has 0 or more parents) and --max-parents=-1 (negative numbers denote no upper limit).
+--no-notes
+--no-patch
+--no-prefix
+--no-relative
+--no-renames
+--no-textconv
+--no-walk[=(sorted|unsorted)]
+--not
+--notes[=<ref>]
+--numstat
+--oneline
+--output-indicator-context=<char>
+--output-indicator-new=<char>
+--output-indicator-old=<char>
+--output=<file>
+--parents
+--patch
+--patch-with-raw
+--patch-with-stat
+--patience
+--perl-regexp
+--pickaxe-all
+--pickaxe-regex
+--pretty[=<format>]
+--raw
+--reflog
+--regexp-ignore-case
+--relative-date
+--relative[=<path>]
+--remotes[=<pattern>]
+--remove-empty
+--reverse
+--right-only
+--rotate-to=<file>
+--shortstat
+--show-linear-break[=<barrier>]
+--show-notes[=<ref>]
+--show-pulls
+--show-pulls
+--show-signature
+--simplify-by-decoration
+--simplify-merges
+--simplify-merges
+--since=<date>
+--single-worktree
+--skip-to=<file>
+--skip=<number>
+--source
+--sparse
+--sparse
+--src-prefix=<prefix>
+--stat[=<width>[,<name-width>[,<count>]]]
+--stdin
+--submodule[=<format>]
+--summary
+--tags[=<pattern>]
+--text
+--textconv
+--topo-order
+--unified=<n>
+--until=<date>
+--walk-reflogs
+--word-diff-regex=<regex>
+--word-diff[=<mode>]
+--ws-error-highlight=<kind>
