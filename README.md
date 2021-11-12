@@ -31,6 +31,7 @@
 ## 執筆編
 
 * [卒業論文の準備](graduate_thesis/README.md)
+* [Adobe Illustratorの使い方](illustrator/README.md)
 
 ## 古い情報
 
