@@ -53,7 +53,7 @@ sudo ./install-tl -repository http://ftp.jaist.ac.jp/pub/CTAN/systems/texlive/tl
 
 フルインストールに **30分ほど** かかるので、時間に余裕がある時に行うこと。
 
-以下の画面が出てきたら「閉じる」をクリックして終了して良い(PATHに追加せよなどと書いてあるが、今回はシンボリックリンクを指定しているため設定不要)。
+以下の画面が出てきたら「閉じる」をクリックして終了して良い。
 
 ![install3.png](fig/install3.png)
 
@@ -61,11 +61,11 @@ sudo ./install-tl -repository http://ftp.jaist.ac.jp/pub/CTAN/systems/texlive/tl
 
 ```sh
 $ latex -v
-pdfTeX 3.14159265-2.6-1.40.21 (TeX Live 2020)
+pdfTeX 3.141592653-2.6-1.40.23 (TeX Live 2022/dev)
 (snip)
 
 $ platex -v
-e-pTeX 3.14159265-p3.8.3-191112-2.6 (utf8.euc) (TeX Live 2020)
+e-pTeX 3.141592653-p3.9.0-210218-2.6 (utf8.euc) (TeX Live 2021)
 (snip)
 ```
 
