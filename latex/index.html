@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="generator" content="pandoc">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title></title>
+  <title>README</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
 div.sourceCode { overflow-x: auto; }
@@ -75,73 +75,72 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>PCにLaTeX(ラテック・レイテック)の処理系をインストールし、実行できるようにする。</p>
 <h2 id="インストールとvs-codeの設定">インストールとVS Codeの設定</h2>
 <h3 id="windowsの場合">Windowsの場合</h3>
-<p><a href="https://www.tug.org/texlive/acquire-netinstall.html">Installing TeX Live over the Internet</a>から、 install-tl-windows.exeをダウンロードし、実行する。セキュリティの問題から、単にクリックしただけでは保存が実行されない場合がある。その場合は右クリックから「名前をつけて保存」を選び、ブラウザが文句を言った場合は「継続」を押すなどしてダウンロードすることができる(Chromeの場合）。また、実行時にWindowsが「WindowsによってPCが保護されました」などと言って実行させてくれない場合がある。この時には「詳細情報」をクリックして「実行」を押せば実行できる。</p>
-<p>最初に「Install」「Unpack」のどちらかが選べるが、デフォルトの「Install」のままNextを押す。そして「Install」をクリックする。しばらくすると「TeX Live 2020インストーラ」というダイアログが出てくるので、何も変更しないまま「インストール」をクリック。フルインストールに <strong>1〜2時間ほど</strong> かかるので、時間に余裕がある時に行うこと。</p>
-<p>以下のような画面になったら「閉じる」を押して終了して良い。</p>
-<div class="figure">
-<img src="fig/install_win.png" alt="install_win.png" />
-<p class="caption">install_win.png</p>
-</div>
+<p>WSL2のUbuntu上で実行することを前提とする。ターミナルで以下を実行する。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">sudo</span> hwclock -s</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="fu">sudo</span> apt update</a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="fu">sudo</span> apt upgrade</a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="fu">sudo</span> apt install -y texlive-full latexmk</a></code></pre></div>
+<p>最初に実行する<code>sudo hwclock -s</code>は、WSL2の時計を直す処理だ。WSL2はよく時計がずれるのでたまに実行すると良い。その後のインストールにはかなり時間がかかる(30分〜1時間?)ので、時間に余裕があるときに実行すること。インストール完了後、<code>latex -v</code>と<code>platex -v</code>を実行し、それぞれ以下のような表示がされれば正しくインストールされている。</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1">$ <span class="ex">latex</span> -v</a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="ex">pdfTex</span> 3.14159265-2.6-1.40.20 (Tex Live 2019/Debian)</a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="kw">(</span><span class="ex">snip</span><span class="kw">)</span></a>
+<a class="sourceLine" id="cb2-4" title="4"></a>
+<a class="sourceLine" id="cb2-5" title="5">$ <span class="ex">platex</span> -v</a>
+<a class="sourceLine" id="cb2-6" title="6"><span class="ex">e-pTeX</span> 3.14159265-p3.8.2-190908-2.6 (utf8.euc) <span class="kw">(</span><span class="ex">TeX</span> Live 2019/Debian<span class="kw">)</span></a>
+<a class="sourceLine" id="cb2-7" title="7"><span class="kw">(</span><span class="ex">snip</span><span class="kw">)</span></a></code></pre></div>
 <h3 id="macの場合">Macの場合</h3>
 <p><a href="https://texwiki.texjp.org/?TeX%20Live#tlnet">ミラーサイト</a>から<code>install-tl-unx.tar.gz</code>をダウンロードする。どこでも良いが、例えばJ<a href="http://ftp.jaist.ac.jp/pub/CTAN/systems/texlive/tlnet/">JAISTのサイト</a>からダウンロードすると良いだろう。</p>
-<p>ターミナルを開き、以下を実行せよ(コピペで良い)。以下では「ダウンロード」にダウンロードしたと仮定しているが、もしデスクトップに落としたなら<code>mv ~/Desktop/install-tl-unx.tar.gz .</code>に変更せよ。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">mkdir</span> temp
-<span class="bu">cd</span> temp
-<span class="fu">mv</span> ~/Downloads/install-tl-unx.tar.gz .
-<span class="fu">tar</span> xvf install-tl-unx.tar.gz
-<span class="bu">cd</span> install-tl-20201108
-<span class="fu">sudo</span> ./install-tl -repository http://ftp.jaist.ac.jp/pub/CTAN/systems/texlive/tlnet/</code></pre></div>
+<p>ターミナルを開き、以下を実行せよ。以下では「ダウンロード」にダウンロードしたと仮定しているが、もしデスクトップに落としたなら<code>mv ~/Desktop/install-tl-unx.tar.gz .</code>に変更せよ。また、実行ディレクトリを趣味で<code>~/build</code>としているが、どこでも良い。</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="bu">cd</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="fu">mkdir</span> build</a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="bu">cd</span> build</a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="fu">mv</span> ~/Downloads/install-tl-unx.tar.gz .</a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="fu">tar</span> xvf install-tl-unx.tar.gz</a>
+<a class="sourceLine" id="cb3-6" title="6"><span class="bu">cd</span> install-tl-20211202</a>
+<a class="sourceLine" id="cb3-7" title="7"><span class="fu">sudo</span> ./install-tl -repository http://ftp.jaist.ac.jp/pub/CTAN/systems/texlive/tlnet/</a></code></pre></div>
 <p>すると、以下のような画面が表示されるので、「高度な設定」を選ぶ。</p>
-<div class="figure">
-<img src="fig/install1.png" alt="install1.png" />
-<p class="caption">install1.png</p>
-</div>
+<figure>
+<img src="fig/install1.png" alt="install1.png" /><figcaption>install1.png</figcaption>
+</figure>
 <p>以下の画面で「シンボリックリンクを標準ディレクトリに作成」にチェックを入れてから「インストール」をクリックする。</p>
-<div class="figure">
-<img src="fig/install2.png" alt="install2.png" />
-<p class="caption">install2.png</p>
-</div>
+<figure>
+<img src="fig/install2.png" alt="install2.png" /><figcaption>install2.png</figcaption>
+</figure>
 <p>フルインストールに <strong>30分ほど</strong> かかるので、時間に余裕がある時に行うこと。</p>
-<p>以下の画面が出てきたら「閉じる」をクリックして終了して良い(PATHに追加せよなどと書いてあるが、今回はシンボリックリンクを指定しているため設定不要)。</p>
-<div class="figure">
-<img src="fig/install3.png" alt="install3.png" />
-<p class="caption">install3.png</p>
-</div>
-<h3 id="インストールの確認">インストールの確認</h3>
-<p>無事にLaTeXがインストールされたか確認するためにターミナルで以下を実行してみよ。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">latex</span> -v
-<span class="ex">platex</span> -v</code></pre></div>
-<pre class="txt"><code>pdfTeX 3.14159265-2.6-1.40.21 (TeX Live 2020)
-...</code></pre>
-<p>とか</p>
-<pre class="txt"><code>e-pTeX 3.14159265-p3.8.3-191112-2.6 (utf8.euc) (TeX Live 2020)
-...</code></pre>
-<p>などと表示されれば成功している。なお、Windowsの場合は「TeX Live 2020」が「Tex Live 2020/W32TeX」になっている。</p>
+<p>以下の画面が出てきたら「閉じる」をクリックして終了して良い。</p>
+<figure>
+<img src="fig/install3.png" alt="install3.png" /><figcaption>install3.png</figcaption>
+</figure>
+<p>インストール完了後、<code>latex -v</code>と<code>platex -v</code>を実行し、それぞれ以下のような表示がされれば正しくインストールされている。</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1">$ <span class="ex">latex</span> -v</a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="ex">pdfTeX</span> 3.141592653-2.6-1.40.23 (TeX Live 2022/dev)</a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="kw">(</span><span class="ex">snip</span><span class="kw">)</span></a>
+<a class="sourceLine" id="cb4-4" title="4"></a>
+<a class="sourceLine" id="cb4-5" title="5">$ <span class="ex">platex</span> -v</a>
+<a class="sourceLine" id="cb4-6" title="6"><span class="ex">e-pTeX</span> 3.141592653-p3.9.0-210218-2.6 (utf8.euc) <span class="kw">(</span><span class="ex">TeX</span> Live 2021<span class="kw">)</span></a>
+<a class="sourceLine" id="cb4-7" title="7"><span class="kw">(</span><span class="ex">snip</span><span class="kw">)</span></a></code></pre></div>
 <h3 id="コンパイルの確認">コンパイルの確認</h3>
 <p>適当なディレクトリ(例えば<code>~/temp</code>)を作り、そこに移動せよ。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span>
-<span class="fu">mkdir</span> temp
-<span class="bu">cd</span> temp</code></pre></div>
-<p>そこで、以下の内容の<code>test.tex</code>を作成せよ。PowerShellもしくはターミナルで<code>code test.tex</code>と入力すればVS Codeが開くので、そこで以下をコピペ、保存する。</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="bu">\documentclass</span>{<span class="ex">article</span>}
-<span class="kw">\begin</span>{<span class="ex">document</span>}
-
-Hello <span class="fu">\LaTeX</span>.
-
-<span class="ss">\[</span>
-<span class="ss">E = mc^2</span>
-<span class="ss">\]</span>
-
-<span class="kw">\end</span>{<span class="ex">document</span>}</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1"><span class="bu">cd</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="fu">mkdir</span> temp</a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="bu">cd</span> temp</a></code></pre></div>
+<p>そこで、以下の内容の<code>test.tex</code>を作成せよ。ターミナルで<code>code test.tex</code>と入力すればVS Codeが開くので、そこで以下をコピペ、保存する。</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb6-1" title="1"><span class="bu">\documentclass</span>{<span class="ex">article</span>}</a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="kw">\begin</span>{<span class="ex">document</span>}</a>
+<a class="sourceLine" id="cb6-3" title="3"></a>
+<a class="sourceLine" id="cb6-4" title="4">Hello <span class="fu">\LaTeX</span>.</a>
+<a class="sourceLine" id="cb6-5" title="5"></a>
+<a class="sourceLine" id="cb6-6" title="6"><span class="ss">\[</span></a>
+<a class="sourceLine" id="cb6-7" title="7"><span class="ss">E = mc^2</span></a>
+<a class="sourceLine" id="cb6-8" title="8"><span class="ss">\]</span></a>
+<a class="sourceLine" id="cb6-9" title="9"></a>
+<a class="sourceLine" id="cb6-10" title="10"><span class="kw">\end</span>{<span class="ex">document</span>}</a></code></pre></div>
 <p>この状態で、コンパイルする。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">latex</span> test.tex</code></pre></div>
-<p>すると、同じディレクトリに<code>test.dvi</code>というファイルができたはずである。このDVIファイルをPDFに変換する。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">dvipdfmx</span> test.dvi</code></pre></div>
-<p><code>dvipdfm</code>というコマンドもあるので注意。最後がxで終わる方を使うこと。これにより同じディレクトリに<code>test.pdf</code>が作成されたはずなので開く。以下のような内容になっていれば成功である。</p>
-<div class="figure">
-<img src="fig/test_pdf.png" alt="test_pdf.png" />
-<p class="caption">test_pdf.png</p>
-</div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" title="1"><span class="ex">pdflatex</span> test.tex</a></code></pre></div>
+<p>すると、同じディレクトリに<code>test.pdf</code>というファイルができたはずなので開く。以下のような内容になっていれば成功である。</p>
+<figure>
+<img src="fig/test_pdf.png" alt="test_pdf.png" /><figcaption>test_pdf.png</figcaption>
+</figure>
 <p>次に、日本語のLaTeXファイルのコンパイルを確認する。</p>
 <p>以下の内容の<code>testj.tex</code>を作成せよ。</p>
 <pre class="tex4"><code>\documentclass{jarticle}
@@ -154,258 +153,260 @@ E = mc^2
 \]
 
 \end{document}</code></pre>
-<p><code>documentclass</code>の中身が<code>article</code>から<code>jarticle</code>になっていることに注意。これをコンパイルし、PDFに変換する。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">platex</span> testj.tex
-<span class="ex">dvipdfmx</span> testj.dvi</code></pre></div>
-<p>コンパイルコマンドが<code>latex</code>ではなく<code>platex</code>になっていることに注意。正しく処理されていれば以下のようなPDFファイルが作成されたはずである。</p>
-<div class="figure">
-<img src="fig/testj_pdf.png" alt="testj_pdf.png" />
-<p class="caption">testj_pdf.png</p>
-</div>
+<p><code>documentclass</code>の中身が<code>article</code>から<code>jarticle</code>になっていることに注意。これをコンパイルし、PDFに変換する。英語だけの文書の場合は<code>pdflatex</code>一発でできたが、日本語は諸事情によりいろいろ面倒くさい。まず、<code>platex</code>によりDVIファイルを作る。</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" title="1"><span class="ex">platex</span> testj.tex</a></code></pre></div>
+<p>これにより<code>testj.dvi</code>が作成されたはずなので、これをPDFに変換する。</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" title="1"><span class="ex">dvipdfmx</span> testj.dvi</a></code></pre></div>
+<p>正しく処理されていれば以下のようなPDFファイルが作成されたはずである。</p>
+<figure>
+<img src="fig/testj_pdf.png" alt="testj_pdf.png" /><figcaption>testj_pdf.png</figcaption>
+</figure>
 <h3 id="latexmkのセットアップ">latexmkのセットアップ</h3>
 <p>さて、LaTeXは、リファレンスの解決、目次の作成などで何度かコンパイルする必要がある。また、PDFにするのにいちいち<code>dvipdfmx</code>を呼び出すのも面倒だ。そこで<code>latexmk</code>というツールを使ってコンパイルとPDF作成を自動化する。そのための設定ファイルを作ろう。</p>
 <p>ホームディレクトリに、以下の内容の<code>.latexmkrc</code>ファイルを作成する。端末を開き、ホームディレクトリで</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">code</span> .latexmkrc</code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" title="1"><span class="ex">code</span> .latexmkrc</a></code></pre></div>
 <p>を実行してVS Codeを開いて、以下をコピペして保存せよ。</p>
-<div class="sourceCode"><pre class="sourceCode perl"><code class="sourceCode perl"><span class="kw">#!/usr/bin/env perl</span>
-
-<span class="dt">$latex</span> = <span class="kw">&#39;</span><span class="st">platex -synctex=1 %O %S</span><span class="kw">&#39;</span>;
-<span class="dt">$bibtex</span> = <span class="kw">&#39;</span><span class="st">pbibtex %O %B</span><span class="kw">&#39;</span>;
-<span class="dt">$makeindex</span> = <span class="kw">&#39;</span><span class="st">memindex %O -o %D %S</span><span class="kw">&#39;</span>;
-<span class="dt">$pdf_mode</span> = <span class="dv">3</span>;
-<span class="dt">$dvipdf</span> = <span class="kw">&#39;</span><span class="st">dvipdfmx %O -o %D %S</span><span class="kw">&#39;</span>;</code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode perl"><code class="sourceCode perl"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">#!/usr/bin/env perl</span></a>
+<a class="sourceLine" id="cb12-2" title="2"></a>
+<a class="sourceLine" id="cb12-3" title="3"><span class="dt">$latex</span> = <span class="kw">&#39;</span><span class="st">platex -synctex=1 %O %S</span><span class="kw">&#39;</span>;</a>
+<a class="sourceLine" id="cb12-4" title="4"><span class="dt">$bibtex</span> = <span class="kw">&#39;</span><span class="st">pbibtex %O %B</span><span class="kw">&#39;</span>;</a>
+<a class="sourceLine" id="cb12-5" title="5"><span class="dt">$makeindex</span> = <span class="kw">&#39;</span><span class="st">memindex %O -o %D %S</span><span class="kw">&#39;</span>;</a>
+<a class="sourceLine" id="cb12-6" title="6"><span class="dt">$pdf_mode</span> = <span class="dv">3</span>;</a>
+<a class="sourceLine" id="cb12-7" title="7"><span class="dt">$dvipdf</span> = <span class="kw">&#39;</span><span class="st">dvipdfmx %O -o %D %S</span><span class="kw">&#39;</span>;</a></code></pre></div>
 <p>この状態で、先程作った　<code>testj.tex</code>のあるディレクトリに移動し、<code>testj.dvi</code>と<code>testj.pdf</code>を削除してから<code>latexmk</code>を実行してみよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">rm</span> -f testj.dvi testj.pdf
-<span class="ex">latexmk</span> testj</code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb13-1" title="1"><span class="fu">rm</span> -f testj.dvi testj.pdf</a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="ex">latexmk</span> testj</a></code></pre></div>
 <p>一気にPDFまで作成されるはずだ。</p>
 <h3 id="vs-codeの設定">VS Codeの設定</h3>
 <p>次にVS CodeからTeXをコンパイル、プレビューできるようにしよう。まず、拡張機能「LaTeX Workshop」をインストールせよ。拡張機能のメニューを開き、「latex」で検索するとLaTeX Workshopが表示されるはずなので、「インストール」をクリックする。</p>
 <p>「Code」メニューの「基本設定」→「設定」から設定メニューを開く。そこで「latex.tools」と検索すると「Latex-workshop › Latex: Tools」が見つかるので、その下にある「setting.jsonで編集」をクリック。</p>
-<div class="figure">
-<img src="fig/latex_tools.png" alt="latex-tools" />
-<p class="caption">latex-tools</p>
-</div>
+<figure>
+<img src="fig/latex_tools.png" alt="latex-tools" /><figcaption>latex-tools</figcaption>
+</figure>
 <p>すると、以下のような設定が見つかる。</p>
-<div class="sourceCode"><pre class="sourceCode json"><code class="sourceCode json">    <span class="er">&quot;latex-workshop.latex.tools&quot;:</span> <span class="ot">[</span>
-        <span class="fu">{</span>
-            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;latexmk&quot;</span><span class="fu">,</span>
-            <span class="dt">&quot;command&quot;</span><span class="fu">:</span> <span class="st">&quot;latexmk&quot;</span><span class="fu">,</span>
-            <span class="dt">&quot;args&quot;</span><span class="fu">:</span> <span class="ot">[</span>
-                <span class="st">&quot;-synctex=1&quot;</span><span class="ot">,</span>
-                <span class="st">&quot;-interaction=nonstopmode&quot;</span><span class="ot">,</span>
-                <span class="st">&quot;-file-line-error&quot;</span><span class="ot">,</span>
-                <span class="st">&quot;-pdf&quot;</span><span class="ot">,</span>
-                <span class="st">&quot;-outdir=%OUTDIR%&quot;</span><span class="ot">,</span>
-                <span class="st">&quot;%DOC%&quot;</span>
-            <span class="ot">]</span><span class="fu">,</span>
-            <span class="dt">&quot;env&quot;</span><span class="fu">:</span> <span class="fu">{}</span>
-        <span class="fu">}</span><span class="ot">,</span></code></pre></div>
-<p>このうち、&quot;args&quot;の項目を全て削除して保存する。</p>
-<div class="sourceCode"><pre class="sourceCode json"><code class="sourceCode json">    <span class="er">&quot;latex-workshop.latex.tools&quot;:</span> <span class="ot">[</span>
-        <span class="fu">{</span>
-            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;latexmk&quot;</span><span class="fu">,</span>
-            <span class="dt">&quot;command&quot;</span><span class="fu">:</span> <span class="st">&quot;latexmk&quot;</span><span class="fu">,</span>
-            <span class="dt">&quot;env&quot;</span><span class="fu">:</span> <span class="fu">{}</span>
-        <span class="fu">}</span><span class="ot">,</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb14-1" title="1">    <span class="er">&quot;latex-workshop.latex.tools&quot;:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb14-2" title="2">        <span class="fu">{</span></a>
+<a class="sourceLine" id="cb14-3" title="3">            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;latexmk&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb14-4" title="4">            <span class="dt">&quot;command&quot;</span><span class="fu">:</span> <span class="st">&quot;latexmk&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb14-5" title="5">            <span class="dt">&quot;args&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb14-6" title="6">                <span class="st">&quot;-synctex=1&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb14-7" title="7">                <span class="st">&quot;-interaction=nonstopmode&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb14-8" title="8">                <span class="st">&quot;-file-line-error&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb14-9" title="9">                <span class="st">&quot;-pdf&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb14-10" title="10">                <span class="st">&quot;-outdir=%OUTDIR%&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb14-11" title="11">                <span class="st">&quot;%DOC%&quot;</span></a>
+<a class="sourceLine" id="cb14-12" title="12">            <span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb14-13" title="13">            <span class="dt">&quot;env&quot;</span><span class="fu">:</span> <span class="fu">{}</span></a>
+<a class="sourceLine" id="cb14-14" title="14">        <span class="fu">}</span><span class="ot">,</span></a></code></pre></div>
+<p>このうち、“args”の項目を全て削除して保存する。</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb15-1" title="1">    <span class="er">&quot;latex-workshop.latex.tools&quot;:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb15-2" title="2">        <span class="fu">{</span></a>
+<a class="sourceLine" id="cb15-3" title="3">            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;latexmk&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb15-4" title="4">            <span class="dt">&quot;command&quot;</span><span class="fu">:</span> <span class="st">&quot;latexmk&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb15-5" title="5">            <span class="dt">&quot;env&quot;</span><span class="fu">:</span> <span class="fu">{}</span></a>
+<a class="sourceLine" id="cb15-6" title="6">        <span class="fu">}</span><span class="ot">,</span></a></code></pre></div>
 <p>この状態で、この状態で、先程作った<code>testj.tex</code>をVS Codeで開こう。TeXファイルを開いた状態で「保存」をするとビルドが走る。なお、Macでは保存時に「Formatting failed. Please refer to LaTeX Workshop Output for details.」というエラーが出ることがある。その場合はターミナルで</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">cpan</span> install Log::Log4perl YAML/Tiny.pm File/HomeDir.pm</code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb16-1" title="1"><span class="ex">cpan</span> install Log::Log4perl YAML/Tiny.pm File/HomeDir.pm</a></code></pre></div>
 <p>を実行すると直る場合がある。</p>
 <p>無事にビルドが走ったら、PDFをプレビューをしよう。コマンドパレットから「LaTeX Workshop: View LaTeX PDF file」を選ぶか、WindowsならCtrl+Alt+V，MacならCmd+alt+Vで、右側にPDFが表示される。</p>
 <p>以後、TeXソースファイルを修正し、保存するたびにプレビューが更新される。</p>
 <p>もし保存時にビルドが走らなければ、「設定」で「autobuild.run」で検索して出てくる「Latex-workshop › Latex › Auto Build: Run」のドロップダウンリストを「never」から「onFileChange」に変更せよ。</p>
 <h2 id="latexの基本">LaTeXの基本</h2>
-<p>適当なディレクトリ(例えば<code>~/textest</code>)を作り、そこに移動して、ディレクトリをVS Codeで開く。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">mkdir</span> textest
-<span class="bu">cd</span> textest
-<span class="ex">code</span> .</code></pre></div>
+<p>適当なディレクトリ(例えば<code>~/temp/textest</code>)を作り、そこに移動して、ディレクトリをVS Codeで開く。</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb17-1" title="1"><span class="bu">cd</span></a>
+<a class="sourceLine" id="cb17-2" title="2"><span class="fu">mkdir</span> -p temp</a>
+<a class="sourceLine" id="cb17-3" title="3"><span class="bu">cd</span> temp</a>
+<a class="sourceLine" id="cb17-4" title="4"><span class="fu">mkdir</span> textest</a>
+<a class="sourceLine" id="cb17-5" title="5"><span class="bu">cd</span> textest</a>
+<a class="sourceLine" id="cb17-6" title="6"><span class="ex">code</span> .</a></code></pre></div>
 <p>その状態でファイルを新規作成し、以下の内容を記述、<code>test.tex</code>という名前で保存して、コンパイルとプレビューができることを確認せよ。</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="bu">\documentclass</span>{<span class="ex">jarticle</span>}
-<span class="kw">\begin</span>{<span class="ex">document</span>}
-こんにちは。
-<span class="kw">\end</span>{<span class="ex">document</span>}</code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb18-1" title="1"><span class="bu">\documentclass</span>{<span class="ex">jarticle</span>}</a>
+<a class="sourceLine" id="cb18-2" title="2"><span class="kw">\begin</span>{<span class="ex">document</span>}</a>
+<a class="sourceLine" id="cb18-3" title="3">こんにちは。</a>
+<a class="sourceLine" id="cb18-4" title="4"><span class="kw">\end</span>{<span class="ex">document</span>}</a></code></pre></div>
 <p>以下、プレビュー画面を右に表示したままこの文章を修正していく。</p>
 <p>LaTeXのコマンドは、大きく分けて二つにわかれる。一つは「」の形をとるものだ。Pythonで言えば関数のようなものであり、{}の中に引数を取る。</p>
 <p>もう一つは<code>\begin{hoge}</code>と<code>\end{hoge}</code>で囲まれる領域を作るもので、「環境」と呼ばれる。例えば<code>\begin{document}</code>から<code>\end{document}</code>はdocument環境を作り、その中に本文を記述する。</p>
 <p>なお、<code>\documentclass{jarticle}</code>と<code>\begin{document}</code>の間を「プリアンブル」と呼び、必要なパッケージの宣言をする(Pythonのimportにあたる)。</p>
 <h3 id="文章と修飾">文章と修飾</h3>
 <p>LaTeXの文章はそのままかけば良い。ただし、一度の改行は同じパラグラフとみなされる。</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">こんにちは。
-さようなら。</code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb19-1" title="1">こんにちは。</a>
+<a class="sourceLine" id="cb19-2" title="2">さようなら。</a></code></pre></div>
 <p>これをコンパイルすると、「こんにちは。さようなら。」と続けて表示される。別のパラグラフにしたい場合は、</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">こんにちは。
-
-さようなら。</code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb20-1" title="1">こんにちは。</a>
+<a class="sourceLine" id="cb20-2" title="2"></a>
+<a class="sourceLine" id="cb20-3" title="3">さようなら。</a></code></pre></div>
 <p>と二回の改行をいれる。なお、二回以上改行をいれても無視される。</p>
 <p>強調のために太字にしたい場合は、その部分を<code>\textbf{}</code>で囲む。</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">こんにちは。
-
-さようなら。次の部分を<span class="fu">\textbf</span>{強調}します。</code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb21-1" title="1">こんにちは。</a>
+<a class="sourceLine" id="cb21-2" title="2"></a>
+<a class="sourceLine" id="cb21-3" title="3">さようなら。次の部分を<span class="fu">\textbf</span>{強調}します。</a></code></pre></div>
 <h3 id="数式と参照">数式と参照</h3>
 <p>LaTeXでは数式は<code>$</code>で囲まれたインライン数式と、<code>\[</code>と<code>\]</code>で囲まれた別行立ての数式がある。</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">文中の数式は<span class="ss">$E=mc^2$</span>のように書く。
-
-別行立ての数式は
-<span class="ss">\[</span>
-<span class="ss"> E = mc^2   </span>
-<span class="ss">\]</span>
-と書く。</code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb22-1" title="1">文中の数式は<span class="ss">$E=mc^2$</span>のように書く。</a>
+<a class="sourceLine" id="cb22-2" title="2"></a>
+<a class="sourceLine" id="cb22-3" title="3">別行立ての数式は</a>
+<a class="sourceLine" id="cb22-4" title="4"><span class="ss">\[</span></a>
+<a class="sourceLine" id="cb22-5" title="5"><span class="ss"> E = mc^2   </span></a>
+<a class="sourceLine" id="cb22-6" title="6"><span class="ss">\]</span></a>
+<a class="sourceLine" id="cb22-7" title="7">と書く。</a></code></pre></div>
 <p>別行立ての数式は<code>equation</code>環境を使うと式番号がつく。</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="kw">\begin</span>{<span class="ex">equation</span>}
-<span class="ss">E=mc^2</span>
-<span class="kw">\end</span>{<span class="ex">equation</span>}</code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb23-1" title="1"><span class="kw">\begin</span>{<span class="ex">equation</span>}</a>
+<a class="sourceLine" id="cb23-2" title="2"><span class="ss">E=mc^2</span></a>
+<a class="sourceLine" id="cb23-3" title="3"><span class="kw">\end</span>{<span class="ex">equation</span>}</a></code></pre></div>
 <p>式番号を文中で参照するためには、式に<code>\label{ラベル名}</code>でラベルをつけ、文中で<code>\ref{ラベル名}</code>で参照する。ラベル名は自由に付けて良いが、慣習的に式の場合は<code>eq:ラベル</code>、図の場合は<code>fig:ラベル名</code>、テーブルの場合は<code>tbl:ラベル名</code>などと、名前空間を使うことが多い。今回は<code>eq:test</code>という名前のラベルをつけてみよう。</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="kw">\begin</span>{<span class="ex">equation</span>}
-<span class="ss">E=mc^2 </span><span class="sc">\label</span><span class="ss">{eq:test}</span>
-<span class="kw">\end</span>{<span class="ex">equation</span>}</code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb24-1" title="1"><span class="kw">\begin</span>{<span class="ex">equation</span>}</a>
+<a class="sourceLine" id="cb24-2" title="2"><span class="ss">E=mc^2 </span><span class="sc">\label</span><span class="ss">{eq:test}</span></a>
+<a class="sourceLine" id="cb24-3" title="3"><span class="kw">\end</span>{<span class="ex">equation</span>}</a></code></pre></div>
 <p>この状態で、この式の後に以下の文章を挿入し、コンパイルせよ。</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">数式(<span class="kw">\ref</span>{<span class="ex">eq:test</span>})を参照のこと。</code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb25-1" title="1">数式(<span class="kw">\ref</span>{<span class="ex">eq:test</span>})を参照のこと。</a></code></pre></div>
 <p><code>\ref{ラベル名}</code>は、対応する数式の数字に変換されるため、括弧にいれたければ上記のように<code>(\ref{ラベル名})</code>とする必要があることに注意。</p>
 <p>このように、LaTeXにはどの式をどこで参照するかを解決する仕組みが備わっている。ラベルを書くのが面倒だからといって「式(1)のように」などと式番号を直接書かないこと。絶対に後でごちゃごちゃになって後悔することになる。<code>\[ \]</code>によるラベル無し数式と、<code>equation</code>環境によるラベルあり数式の使い分けだが、とりあえずラベル無しで書いておいて、後で参照が必要になったら<code>equation</code>環境に書き直すのが良いだろう。</p>
 <h3 id="図の挿入">図の挿入</h3>
 <p>LaTeXでは図を挿入することができる。LaTeXでは様々なフォーマットの図を扱えるが、原則としてPDFで貼り付けるのが良いだろう。</p>
 <p>適当なPythonコードを書いてPDFを作成しよう。TeXファイルと同じディレクトリに<code>test.py</code>を作成し、以下を入力せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> numpy <span class="im">as</span> np
-<span class="im">import</span> matplotlib
-matplotlib.use(<span class="st">&#39;Agg&#39;</span>)
-<span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
-
-
-x <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="dv">2</span><span class="op">*</span>np.pi, <span class="dv">2</span><span class="op">*</span>np.pi<span class="op">*</span><span class="fl">0.01</span>)
-y <span class="op">=</span> np.sin(x)
-
-plt.plot(x,y)
-plt.savefig(<span class="st">&quot;sin.pdf&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb26-1" title="1"><span class="im">import</span> numpy <span class="im">as</span> np</a>
+<a class="sourceLine" id="cb26-2" title="2"><span class="im">import</span> matplotlib</a>
+<a class="sourceLine" id="cb26-3" title="3">matplotlib.use(<span class="st">&#39;Agg&#39;</span>)</a>
+<a class="sourceLine" id="cb26-4" title="4"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</a>
+<a class="sourceLine" id="cb26-5" title="5"></a>
+<a class="sourceLine" id="cb26-6" title="6"></a>
+<a class="sourceLine" id="cb26-7" title="7">x <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="dv">2</span><span class="op">*</span>np.pi, <span class="dv">2</span><span class="op">*</span>np.pi<span class="op">*</span><span class="fl">0.01</span>)</a>
+<a class="sourceLine" id="cb26-8" title="8">y <span class="op">=</span> np.sin(x)</a>
+<a class="sourceLine" id="cb26-9" title="9"></a>
+<a class="sourceLine" id="cb26-10" title="10">plt.plot(x,y)</a>
+<a class="sourceLine" id="cb26-11" title="11">plt.savefig(<span class="st">&quot;sin.pdf&quot;</span>)</a></code></pre></div>
 <p>これを</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">python</span> test.py</code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb27-1" title="1"><span class="ex">python</span> test.py</a></code></pre></div>
 <p>として実行すると<code>sin.pdf</code>ができる。これをLaTeXに取り込むには、まずプリアンブルで<code>graphicx</code>パッケージを取り込む。</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="bu">\documentclass</span>{<span class="ex">jarticle</span>}
-<span class="bu">\usepackage</span>[dvipdfmx]{<span class="ex">graphicx</span>}
-<span class="kw">\begin</span>{<span class="ex">document</span>}</code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb28-1" title="1"><span class="bu">\documentclass</span>{<span class="ex">jarticle</span>}</a>
+<a class="sourceLine" id="cb28-2" title="2"><span class="bu">\usepackage</span>[dvipdfmx]{<span class="ex">graphicx</span>}</a>
+<a class="sourceLine" id="cb28-3" title="3"><span class="kw">\begin</span>{<span class="ex">document</span>}</a></code></pre></div>
 <p><code>graphics</code>ではなく<code>graphicx</code>(最後がx)であることに注意。この状態で、</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="bu">\includegraphics</span>{<span class="ex">sin.pdf</span>}</code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb29-1" title="1"><span class="bu">\includegraphics</span>{<span class="ex">sin.pdf</span>}</a></code></pre></div>
 <p>と入力し、ビルドしてみよ。おそらく警告が一つ出たはずだ。左下にある(i)マークをクリックすると</p>
-<pre class="txt"><code>Overfull \hbox (145.3509pt too wide)</code></pre>
+<div class="sourceCode" id="cb30"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb30-1" title="1">Overfull \hbox (145.3509pt too wide)</a></code></pre></div>
 <p>という表示が出ている。これは「表示領域から何かがはみ出ているよ」という警告で、LaTeXを使っていると良く見かけるものだ。今回のケースでは図が大きすぎるために表示領域からはみ出してしまっているので、小さくしよう。サイズを指定するためには、<code>\includegraphics</code>にオプションとして<code>width</code>を指定する。</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="bu">\includegraphics</span>[width=10cm]{<span class="ex">sin.pdf</span>}</code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb31-1" title="1"><span class="bu">\includegraphics</span>[width=10cm]{<span class="ex">sin.pdf</span>}</a></code></pre></div>
 <p>これで警告は消えるはずだ。</p>
 <p>さて、科学技術論文において、図を生で入れることはほとんどない。多くの場合「図番号」と「図の説明」を入れることだろう。そのためには<code>figure</code>環境を使う。先ほどの<code>includegraphics</code>命令を<code>figure</code>環境の中にいれよう。</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="kw">\begin</span>{<span class="ex">figure</span>}
-<span class="bu">\includegraphics</span>[width=10cm]{<span class="ex">sin.pdf</span>}
-<span class="kw">\end</span>{<span class="ex">figure</span>}</code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb32-1" title="1"><span class="kw">\begin</span>{<span class="ex">figure</span>}</a>
+<a class="sourceLine" id="cb32-2" title="2"><span class="bu">\includegraphics</span>[width=10cm]{<span class="ex">sin.pdf</span>}</a>
+<a class="sourceLine" id="cb32-3" title="3"><span class="kw">\end</span>{<span class="ex">figure</span>}</a></code></pre></div>
 <p>この状態でビルドすると、図が文中から別の場所(おそらく上部)に移動したはずだ。さて、この図に説明をつけよう。そのためには<code>figure</code>環境に<code>caption</code>命令を入れる。</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="kw">\begin</span>{<span class="ex">figure</span>}
-<span class="bu">\includegraphics</span>[width=10cm]{<span class="ex">sin.pdf</span>}
-<span class="fu">\caption</span>{正弦波のグラフ。}
-<span class="kw">\end</span>{<span class="ex">figure</span>}</code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb33-1" title="1"><span class="kw">\begin</span>{<span class="ex">figure</span>}</a>
+<a class="sourceLine" id="cb33-2" title="2"><span class="bu">\includegraphics</span>[width=10cm]{<span class="ex">sin.pdf</span>}</a>
+<a class="sourceLine" id="cb33-3" title="3"><span class="fu">\caption</span>{正弦波のグラフ。}</a>
+<a class="sourceLine" id="cb33-4" title="4"><span class="kw">\end</span>{<span class="ex">figure</span>}</a></code></pre></div>
 <p>ビルドすると、図の説明(キャプション)とともに、図番号が自動で入ったはずだ。この図もラベルをつけて参照することができる。</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="kw">\begin</span>{<span class="ex">figure</span>}
-<span class="bu">\includegraphics</span>[width=10cm]{<span class="ex">sin.pdf</span>}
-<span class="fu">\caption</span>{正弦波のグラフ。}
-<span class="kw">\label</span>{<span class="ex">fig:sin</span>}
-<span class="kw">\end</span>{<span class="ex">figure</span>}
-
-正弦波のグラフを図<span class="kw">\ref</span>{<span class="ex">fig:sin</span>}に示す。</code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb34-1" title="1"><span class="kw">\begin</span>{<span class="ex">figure</span>}</a>
+<a class="sourceLine" id="cb34-2" title="2"><span class="bu">\includegraphics</span>[width=10cm]{<span class="ex">sin.pdf</span>}</a>
+<a class="sourceLine" id="cb34-3" title="3"><span class="fu">\caption</span>{正弦波のグラフ。}</a>
+<a class="sourceLine" id="cb34-4" title="4"><span class="kw">\label</span>{<span class="ex">fig:sin</span>}</a>
+<a class="sourceLine" id="cb34-5" title="5"><span class="kw">\end</span>{<span class="ex">figure</span>}</a>
+<a class="sourceLine" id="cb34-6" title="6"></a>
+<a class="sourceLine" id="cb34-7" title="7">正弦波のグラフを図<span class="kw">\ref</span>{<span class="ex">fig:sin</span>}に示す。</a></code></pre></div>
 <p>上記をビルドして、「正弦波のグラフを図1に示す。」となれば成功だ。</p>
 <p>繰り返しになるが、式番号や図番号については <strong>必ず</strong> ラベルによる参照を行うこと。数が少ないからといって直接書いていると後で泣きを見る。どうせVS Codeその他のLaTeXに対応したエディタには補完機能があるため、さほど手間ではない。</p>
 <p>なお、<code>\includegraphics</code>だけの場合は、その位置に図が挿入されるが、<code>figure</code>環境を使うと図の挿入場所は自動で決められる。基本的にはLaTeXに任せておけば良いが、どうしても「ページの上が良い」「下が良い」「絶対ここが良い」といった希望がある場合は、オプションで希望をLaTeXに伝えることができる。例えば</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="kw">\begin</span>{<span class="ex">figure</span>}[htbp]</code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb35-1" title="1"><span class="kw">\begin</span>{<span class="ex">figure</span>}[htbp]</a></code></pre></div>
 <p>とすると、順番に「この場所(here, h)」「上(top, t)」「下(bottom, b)」「独立したページ (page, p)」を意味しており、記述した順番で挿入を試みる。試しに上記のオプション<code>[htbp]</code>をつけてビルドしなおしてみよ。おそらく<code>h</code>が優先され、<code>\includegraphics</code>の場所に図が移動すると思われる。</p>
 <p>また、デフォルトでは、図はページの左側に寄せられてしまうため、図が小さいと見栄えが悪い。その場合は<code>\includegraphics</code>の直前に<code>\centering</code>を入れると良い。</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="kw">\begin</span>{<span class="ex">figure</span>}[htbp]
-    <span class="fu">\centering</span>
-    <span class="bu">\includegraphics</span>[width=10cm]{<span class="ex">sin.pdf</span>}
-    <span class="fu">\caption</span>{正弦波のグラフ。}
-    <span class="kw">\label</span>{<span class="ex">fig:sin</span>}
-<span class="kw">\end</span>{<span class="ex">figure</span>}</code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb36-1" title="1"><span class="kw">\begin</span>{<span class="ex">figure</span>}[htbp]</a>
+<a class="sourceLine" id="cb36-2" title="2">    <span class="fu">\centering</span></a>
+<a class="sourceLine" id="cb36-3" title="3">    <span class="bu">\includegraphics</span>[width=10cm]{<span class="ex">sin.pdf</span>}</a>
+<a class="sourceLine" id="cb36-4" title="4">    <span class="fu">\caption</span>{正弦波のグラフ。}</a>
+<a class="sourceLine" id="cb36-5" title="5">    <span class="kw">\label</span>{<span class="ex">fig:sin</span>}</a>
+<a class="sourceLine" id="cb36-6" title="6"><span class="kw">\end</span>{<span class="ex">figure</span>}</a></code></pre></div>
 <p>図が中央寄せになったはずである。</p>
 <h3 id="参考文献の入れ方">参考文献の入れ方</h3>
 <p>科学技術論文では、何より「引用」が重要である。その研究分野においてどこまで何がわかっていて、これから使う手法は誰が開発、提案したもので、得られた結果は先行研究と比較してどうだったのかを、全て文献を引用しながら明らかにしなければならない。そのために論文の最後には「参考文献」として論文や書籍を並べ、本文中では番号を使って引用する。この際、本文中に出てこない論文を「参考文献」に入れてはならず、さらに「出現順」「年号順」「アルファベット順」など、適切な順序で並べる必要がある。これを手でやっていては必ず破綻するが、当然のことながらLaTeXに任せれば自動でやってくれる。</p>
 <p>LaTeXで参考文献を入れるには、手で入れる方法とbibtexにより半自動で入れる方法がある。原則として論文はbibtexを使うことを推奨するが、まずは手で入れる方法を紹介する。</p>
 <h4 id="手で入れる方法">手で入れる方法</h4>
 <p>まず、以下のような文献リストを文中の最後(<code>\end{document}</code>)に入れる。</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="kw">\begin</span>{<span class="ex">thebibliography</span>}{99}
-<span class="fu">\bibitem</span>{okumura2020} 奥村 晴彦、黒木 裕介、LaTeX2ε美文書作成入門、技術評論社、2020.
-<span class="kw">\end</span>{<span class="ex">thebibliography</span>}</code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb37-1" title="1"><span class="kw">\begin</span>{<span class="ex">thebibliography</span>}{99}</a>
+<a class="sourceLine" id="cb37-2" title="2"><span class="fu">\bibitem</span>{okumura2020} 奥村 晴彦、黒木 裕介、LaTeX2ε美文書作成入門、技術評論社、2020.</a>
+<a class="sourceLine" id="cb37-3" title="3"><span class="kw">\end</span>{<span class="ex">thebibliography</span>}</a></code></pre></div>
 <p>ここで<code>{99}</code>とあるのは、文献番号が何桁になるかをLaTeXに教えるためのもので、この場合は「二桁ですよ」と教えている。十件以内の場合は<code>{9}</code>、百件以上引用する場合は<code>{999}</code>などと指定するが、通常は<code>{99}</code>で良いだろう。</p>
 <p>この状態でビルドすると、「参考文献」という欄が作成されたはずだ。</p>
 <p>文献を文中で引用するには、<code>\cite{ラベル}</code>コマンドを使う。文献のラベルは<code>\bibitem{ラベル} 内容</code>という形式で指定できる。<code>\ref{ラベル}</code>と異なり、慣習的にこちらは名前空間を使わないようだ(もちろん使っても良い)。個人的には「筆頭著者名+出版年」を使っているが、個人で分かりやすければどのような名前をつけても自由だ。この場合は<code>okumura2020</code>が文献ラベルである。早速、引用してみよう。<code>thebibliography</code>環境の直前あたりに以下を記述せよ。</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">本稿の執筆にはLaTeX<span class="kw">\cite</span>{<span class="ex">okumura2020</span>}を用いる。</code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb38-1" title="1">本稿の執筆にはLaTeX<span class="kw">\cite</span>{<span class="ex">okumura2020</span>}を用いる。</a></code></pre></div>
 <p>これでコンパイルすると</p>
-<pre class="txt"><code>本稿の執筆にはLaTeX[1]を用いる。</code></pre>
+<div class="sourceCode" id="cb39"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb39-1" title="1">本稿の執筆にはLaTeX[1]を用いる。</a></code></pre></div>
 <p>となるはずだ。</p>
 <h4 id="bibtexを使う方法">bibtexを使う方法</h4>
 <p>先ほど、本文中に言及がないにも関わらず、文献リストに「LaTeX2ε美文書作成入門」が表示されていた。原則として文中で言及していない文献は文献リストに掲載してはならない。しかし、引用文献を追加したり削除したりしているうちに、どれに言及してどれに言及していないかの管理が面倒になるだろう。そこで、bibtexというファイルを使って文献リストを管理する。</p>
 <p>まずは文献ファイルを作ろう。TeXファイルと同じディレクトリに<code>reference.bib</code>というファイルを作成し、以下の内容を記述せよ。</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">@book{okumura2020,
-  author    = {奥村 晴彦 and 黒木 裕介},
-  title     = {LaTeX2ε美文書作成入門},
-  publisher = {技術評論社},
-  year      = {2020}
-}</code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb40-1" title="1">@book{okumura2020,</a>
+<a class="sourceLine" id="cb40-2" title="2">  author    = {奥村 晴彦 and 黒木 裕介},</a>
+<a class="sourceLine" id="cb40-3" title="3">  title     = {LaTeX2ε美文書作成入門},</a>
+<a class="sourceLine" id="cb40-4" title="4">  publisher = {技術評論社},</a>
+<a class="sourceLine" id="cb40-5" title="5">  year      = {2020}</a>
+<a class="sourceLine" id="cb40-6" title="6">}</a></code></pre></div>
 <p>ここで<code>@book</code>とあるのはbibtexエントリと呼ばれ、種類ごとに必須となる項目が異なる。<code>book</code>の場合は著者(author)、タイトル(title)、出版社(publisher)、出版年(year)が必須項目だ。<code>@book</code>の直後に文献ラベルをつける。著者名は<code>and</code>で区切ること。</p>
 <p>このBibTeXファイルを利用するには、先ほどの<code>thebibliography</code>の代わりに以下を指定する。手で書いた文献リストはコメントアウトしておこう。LaTeXは<code>%</code>から行末まではコメントと解釈されて無視される。</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="co">%\begin{thebibliography}{99}</span>
-<span class="co">%    \bibitem{okumura2020} 奥村 晴彦、黒木 裕介、LaTeX2ε美文書作成入門、技術評論社、2020.</span>
-<span class="co">%\end{thebibliography}</span>
-
-<span class="bu">\bibliographystyle</span>{<span class="ex">junsrt</span>}
-<span class="bu">\bibliography</span>{<span class="ex">reference</span>}</code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb41-1" title="1"><span class="co">%\begin{thebibliography}{99}</span></a>
+<a class="sourceLine" id="cb41-2" title="2"><span class="co">%    \bibitem{okumura2020} 奥村 晴彦、黒木 裕介、LaTeX2ε美文書作成入門、技術評論社、2020.</span></a>
+<a class="sourceLine" id="cb41-3" title="3"><span class="co">%\end{thebibliography}</span></a>
+<a class="sourceLine" id="cb41-4" title="4"></a>
+<a class="sourceLine" id="cb41-5" title="5"><span class="bu">\bibliographystyle</span>{<span class="ex">junsrt</span>}</a>
+<a class="sourceLine" id="cb41-6" title="6"><span class="bu">\bibliography</span>{<span class="ex">reference</span>}</a></code></pre></div>
 <p><code>\bibliographystyle{junsrt}</code>は文献リストのスタイルをあらわす。<code>junsrt</code>は出現順にソートせよ、という意味だ。<code>\bibliography{reference}</code>はBibTeXファイルを指定する。拡張子を省くことに注意せよ。</p>
 <p>この状態でビルドすると、参考文献が更新されるはずだ。</p>
 <p>さて、BibTeXファイルを手で書くのは手間だ。多くの場合、出版社はbibtexエントリをエクスポートする機能を持っている。試してみよう。</p>
 <p>適当な論文、例えば<a href="https://aip.scitation.org/doi/10.1063/1.4903811">J. Chem. Phys. 141, 234703 (2014)</a>のページに行ってみよう。これはアメリカ物理学協会(AIP)のJ. Chem. Phys.というジャーナルに掲載された論文だ。このページの上部に「TOOLS」というタブがあるのでクリックすると「Download Citation」という項目があるので選ぶ。「Include」では「Citation for this article (この記事だけ)」、「Format」では「BibTex」を選んで「DOWNLOAD ARTICLE CITATION DATA」をクリックすると、以下のようなbibtexエントリがダウンロードできる。</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">@article{doi:10.1063/1.4903811,
-author = {Watanabe,Hiroshi  and Suzuki,Masaru  and Inaoka,Hajime  and Ito,Nobuyasu },
-title = {Ostwald ripening in multiple-bubble nuclei},
-journal = {The Journal of Chemical Physics},
-volume = {141},
-number = {23},
-pages = {234703},
-year = {2014},
-doi = {10.1063/1.4903811},
-
-URL = { 
-        https://doi.org/10.1063/1.4903811
-    
-},
-eprint = { 
-        https://doi.org/10.1063/1.4903811
-    
-}
-
-}</code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb42-1" title="1">@article{doi:10.1063/1.4903811,</a>
+<a class="sourceLine" id="cb42-2" title="2">author = {Watanabe,Hiroshi  and Suzuki,Masaru  and Inaoka,Hajime  and Ito,Nobuyasu },</a>
+<a class="sourceLine" id="cb42-3" title="3">title = {Ostwald ripening in multiple-bubble nuclei},</a>
+<a class="sourceLine" id="cb42-4" title="4">journal = {The Journal of Chemical Physics},</a>
+<a class="sourceLine" id="cb42-5" title="5">volume = {141},</a>
+<a class="sourceLine" id="cb42-6" title="6">number = {23},</a>
+<a class="sourceLine" id="cb42-7" title="7">pages = {234703},</a>
+<a class="sourceLine" id="cb42-8" title="8">year = {2014},</a>
+<a class="sourceLine" id="cb42-9" title="9">doi = {10.1063/1.4903811},</a>
+<a class="sourceLine" id="cb42-10" title="10"></a>
+<a class="sourceLine" id="cb42-11" title="11">URL = { </a>
+<a class="sourceLine" id="cb42-12" title="12">        https://doi.org/10.1063/1.4903811</a>
+<a class="sourceLine" id="cb42-13" title="13">    </a>
+<a class="sourceLine" id="cb42-14" title="14">},</a>
+<a class="sourceLine" id="cb42-15" title="15">eprint = { </a>
+<a class="sourceLine" id="cb42-16" title="16">        https://doi.org/10.1063/1.4903811</a>
+<a class="sourceLine" id="cb42-17" title="17">    </a>
+<a class="sourceLine" id="cb42-18" title="18">}</a>
+<a class="sourceLine" id="cb42-19" title="19"></a>
+<a class="sourceLine" id="cb42-20" title="20">}</a></code></pre></div>
 <p>これを先ほどの<code>reference.bib</code>ファイルに追加し、<code>test.tex</code>に以下のような文章を追加しよう。</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">渡辺らは気泡生成のシミュレーションを行った<span class="kw">\cite</span>{<span class="ex">doi:10.1063/1.4903811</span>}。</code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb43-1" title="1">渡辺らは気泡生成のシミュレーションを行った<span class="kw">\cite</span>{<span class="ex">doi:10.1063/1.4903811</span>}。</a></code></pre></div>
 <p>再度ビルドすると、</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">渡辺らは気泡生成のシミュレーションを行った[2].</code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb44-1" title="1">渡辺らは気泡生成のシミュレーションを行った[2].</a></code></pre></div>
 <p>などと表示されたはずだ。</p>
 <p>せっかくなので別の出版社も試してみよう。今度は日本物理学会の論文、<a href="https://journals.jps.jp/doi/10.7566/JPSJ.88.024004">J. Phys. Soc. Jpn. 88, 024004 (2019)</a>のサイトに行ってみる。右の欄に「Download Citation」とあるのでそこをクリックすると、Citation Managerのページに飛ぶので、Formatとして「BibTex」を選んで「Download citation data」をクリックする。すると以下のようなデータがダウンロードできる。</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">@article{doi:10.7566/JPSJ.88.024004,
-author = {Watanabe ,Hiroshi and Morita ,Satoshi and Todo ,Synge and Kawashima ,Naoki},
-title = {Fast Algorithm for Generating Random Bit Strings and Multispin Coding for Directed Percolation},
-journal = {Journal of the Physical Society of Japan},
-volume = {88},
-number = {2},
-pages = {024004},
-year = {2019},
-doi = {10.7566/JPSJ.88.024004},
-
-URL = { 
-        https://doi.org/10.7566/JPSJ.88.024004
-    
-},
-eprint = { 
-        https://doi.org/10.7566/JPSJ.88.024004
-    
-}
-
-}</code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb45-1" title="1">@article{doi:10.7566/JPSJ.88.024004,</a>
+<a class="sourceLine" id="cb45-2" title="2">author = {Watanabe ,Hiroshi and Morita ,Satoshi and Todo ,Synge and Kawashima ,Naoki},</a>
+<a class="sourceLine" id="cb45-3" title="3">title = {Fast Algorithm for Generating Random Bit Strings and Multispin Coding for Directed Percolation},</a>
+<a class="sourceLine" id="cb45-4" title="4">journal = {Journal of the Physical Society of Japan},</a>
+<a class="sourceLine" id="cb45-5" title="5">volume = {88},</a>
+<a class="sourceLine" id="cb45-6" title="6">number = {2},</a>
+<a class="sourceLine" id="cb45-7" title="7">pages = {024004},</a>
+<a class="sourceLine" id="cb45-8" title="8">year = {2019},</a>
+<a class="sourceLine" id="cb45-9" title="9">doi = {10.7566/JPSJ.88.024004},</a>
+<a class="sourceLine" id="cb45-10" title="10"></a>
+<a class="sourceLine" id="cb45-11" title="11">URL = { </a>
+<a class="sourceLine" id="cb45-12" title="12">        https://doi.org/10.7566/JPSJ.88.024004</a>
+<a class="sourceLine" id="cb45-13" title="13">    </a>
+<a class="sourceLine" id="cb45-14" title="14">},</a>
+<a class="sourceLine" id="cb45-15" title="15">eprint = { </a>
+<a class="sourceLine" id="cb45-16" title="16">        https://doi.org/10.7566/JPSJ.88.024004</a>
+<a class="sourceLine" id="cb45-17" title="17">    </a>
+<a class="sourceLine" id="cb45-18" title="18">}</a>
+<a class="sourceLine" id="cb45-19" title="19"></a>
+<a class="sourceLine" id="cb45-20" title="20">}</a></code></pre></div>
 <p>いま、文献ラベルとしてDOIである<code>doi:10.7566/JPSJ.88.024004</code>が指定されているが、これでは分かりづらいので、<code>watanabe2019</code>に変更しよう。</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">@article{watanabe2019,</code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb46-1" title="1">@article{watanabe2019,</a></code></pre></div>
 <p>この状態で<code>reference.bib</code>に追加し、texファイルに</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">渡辺らはランダムビット生成を行った<span class="kw">\cite</span>{<span class="ex">watanabe2019</span>}。</code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb47-1" title="1">渡辺らはランダムビット生成を行った<span class="kw">\cite</span>{<span class="ex">watanabe2019</span>}。</a></code></pre></div>
 <p>という文章を追加してコンパイルする。</p>
-<pre class="txt"><code>渡辺らはランダムビット生成を行った[2]。</code></pre>
+<div class="sourceCode" id="cb48"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb48-1" title="1">渡辺らはランダムビット生成を行った[2]。</a></code></pre></div>
 <p>と、文献番号が解決されたはずだ。番号は出現順に振られるため、先ほどの文章と順序を入れ替えると番号も変わる。</p>
 <p>まとめると、参考文献を管理する際は、</p>
 <ul>
@@ -418,109 +419,115 @@ eprint = {
 <p>いずれにせよ、文献ファイルはTeXファイルと一緒に必ずGitその他のVCSで管理すること。</p>
 <h3 id="セクション">セクション</h3>
 <h4 id="セクションの入れ方">セクションの入れ方</h4>
-<p>論文には「イントロダクション」「背景」「手法」「結果」といった構造がある。その構造を表すのにセクション(節)を使う。いま、<code>test.tex</code>は以下のようになっているはず(多少違っていてもかまわない)。</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="bu">\documentclass</span>{<span class="ex">jarticle</span>}
-<span class="bu">\usepackage</span>[dvipdfmx]{<span class="ex">graphicx</span>}
-<span class="kw">\begin</span>{<span class="ex">document</span>}
-こんにちは。
-
-さようなら。次の部分を<span class="fu">\textbf</span>{強調}します。
-
-文中の数式は<span class="ss">$E=mc^2$</span>のように書く。
-
-別行立ての数式は
-<span class="ss">\[</span>
-<span class="ss">    E = mc^2</span>
-<span class="ss">\]</span>
-と書く。
-
-<span class="kw">\begin</span>{<span class="ex">equation</span>}
-<span class="ss">    E=mc^2 </span><span class="sc">\label</span><span class="ss">{eq:test}</span>
-<span class="kw">\end</span>{<span class="ex">equation</span>}
-
-数式(<span class="kw">\ref</span>{<span class="ex">eq:test</span>})を参照のこと。
-
-<span class="kw">\begin</span>{<span class="ex">figure</span>}[htbp]
-    <span class="fu">\centering</span>
-    <span class="bu">\includegraphics</span>[width=10cm]{<span class="ex">sin.pdf</span>}
-    <span class="fu">\caption</span>{正弦波のグラフ。}
-    <span class="kw">\label</span>{<span class="ex">fig:sin</span>}
-<span class="kw">\end</span>{<span class="ex">figure</span>}
-
-正弦波のグラフを図<span class="kw">\ref</span>{<span class="ex">fig:sin</span>}に示す。
-
-本稿の執筆にはLaTeX<span class="kw">\cite</span>{<span class="ex">okumura2020</span>}を用いる。渡辺らは気泡生成のシミュレーションを行った<span class="kw">\cite</span>{<span class="ex">watanabe2019</span>}。
-
-<span class="co">%\begin{thebibliography}{99}</span>
-<span class="co">%    \bibitem{okumura2020} 奥村 晴彦、黒木 裕介、LaTeX2ε美文書作成入門、技術評論社、2020.</span>
-<span class="co">%\end{thebibliography}</span>
-
-<span class="bu">\bibliographystyle</span>{<span class="ex">junsrt</span>}
-<span class="bu">\bibliography</span>{<span class="ex">reference</span>}
-
-<span class="kw">\end</span>{<span class="ex">document</span>}</code></pre></div>
+<p>論文には「イントロダクション」「背景」「手法」「結果」といった構造がある。その構造を表すのにセクション(節)を使う。いま、<code>test.tex</code>は以下のようになっているはず(多少違っていてもかまわないし、面倒なら以下をコピペしなおして良い)。</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb49-1" title="1"><span class="bu">\documentclass</span>{<span class="ex">jarticle</span>}</a>
+<a class="sourceLine" id="cb49-2" title="2"><span class="bu">\usepackage</span>[dvipdfmx]{<span class="ex">graphicx</span>}</a>
+<a class="sourceLine" id="cb49-3" title="3"><span class="kw">\begin</span>{<span class="ex">document</span>}</a>
+<a class="sourceLine" id="cb49-4" title="4">こんにちは。</a>
+<a class="sourceLine" id="cb49-5" title="5"></a>
+<a class="sourceLine" id="cb49-6" title="6">さようなら。次の部分を<span class="fu">\textbf</span>{強調}します。</a>
+<a class="sourceLine" id="cb49-7" title="7"></a>
+<a class="sourceLine" id="cb49-8" title="8">文中の数式は<span class="ss">$E=mc^2$</span>のように書く。</a>
+<a class="sourceLine" id="cb49-9" title="9"></a>
+<a class="sourceLine" id="cb49-10" title="10">別行立ての数式は</a>
+<a class="sourceLine" id="cb49-11" title="11"><span class="ss">\[</span></a>
+<a class="sourceLine" id="cb49-12" title="12"><span class="ss">    E = mc^2</span></a>
+<a class="sourceLine" id="cb49-13" title="13"><span class="ss">\]</span></a>
+<a class="sourceLine" id="cb49-14" title="14">と書く。</a>
+<a class="sourceLine" id="cb49-15" title="15"></a>
+<a class="sourceLine" id="cb49-16" title="16"><span class="kw">\begin</span>{<span class="ex">equation</span>}</a>
+<a class="sourceLine" id="cb49-17" title="17"><span class="ss">    E=mc^2 </span><span class="sc">\label</span><span class="ss">{eq:test}</span></a>
+<a class="sourceLine" id="cb49-18" title="18"><span class="kw">\end</span>{<span class="ex">equation</span>}</a>
+<a class="sourceLine" id="cb49-19" title="19"></a>
+<a class="sourceLine" id="cb49-20" title="20">数式(<span class="kw">\ref</span>{<span class="ex">eq:test</span>})を参照のこと。</a>
+<a class="sourceLine" id="cb49-21" title="21"></a>
+<a class="sourceLine" id="cb49-22" title="22"><span class="kw">\begin</span>{<span class="ex">figure</span>}[htbp]</a>
+<a class="sourceLine" id="cb49-23" title="23">    <span class="fu">\centering</span></a>
+<a class="sourceLine" id="cb49-24" title="24">    <span class="bu">\includegraphics</span>[width=10cm]{<span class="ex">sin.pdf</span>}</a>
+<a class="sourceLine" id="cb49-25" title="25">    <span class="fu">\caption</span>{正弦波のグラフ。}</a>
+<a class="sourceLine" id="cb49-26" title="26">    <span class="kw">\label</span>{<span class="ex">fig:sin</span>}</a>
+<a class="sourceLine" id="cb49-27" title="27"><span class="kw">\end</span>{<span class="ex">figure</span>}</a>
+<a class="sourceLine" id="cb49-28" title="28"></a>
+<a class="sourceLine" id="cb49-29" title="29">正弦波のグラフを図<span class="kw">\ref</span>{<span class="ex">fig:sin</span>}に示す。</a>
+<a class="sourceLine" id="cb49-30" title="30"></a>
+<a class="sourceLine" id="cb49-31" title="31">本稿の執筆にはLaTeX<span class="kw">\cite</span>{<span class="ex">okumura2020</span>}を用いる。渡辺らは気泡生成のシミュレーションを行った<span class="kw">\cite</span>{<span class="ex">watanabe2019</span>}。</a>
+<a class="sourceLine" id="cb49-32" title="32"></a>
+<a class="sourceLine" id="cb49-33" title="33"><span class="co">%\begin{thebibliography}{99}</span></a>
+<a class="sourceLine" id="cb49-34" title="34"><span class="co">%    \bibitem{okumura2020} 奥村 晴彦、黒木 裕介、LaTeX2ε美文書作成入門、技術評論社、2020.</span></a>
+<a class="sourceLine" id="cb49-35" title="35"><span class="co">%\end{thebibliography}</span></a>
+<a class="sourceLine" id="cb49-36" title="36"></a>
+<a class="sourceLine" id="cb49-37" title="37"><span class="bu">\bibliographystyle</span>{<span class="ex">junsrt</span>}</a>
+<a class="sourceLine" id="cb49-38" title="38"><span class="bu">\bibliography</span>{<span class="ex">reference</span>}</a>
+<a class="sourceLine" id="cb49-39" title="39"></a>
+<a class="sourceLine" id="cb49-40" title="40"><span class="kw">\end</span>{<span class="ex">document</span>}</a></code></pre></div>
 <p>ここに<code>\section</code>命令をいれよう。とりあえず「はじめに」「数式の入れ方」「図の入れ方」「参考文献の入れ方」の五つのセクションを以下のように入れてみよう。</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="bu">\documentclass</span>{<span class="ex">jarticle</span>}
-<span class="bu">\usepackage</span>[dvipdfmx]{<span class="ex">graphicx</span>}
-<span class="kw">\begin</span>{<span class="ex">document</span>}
-
-<span class="kw">\section</span>{はじめに}
-こんにちは。
-
-さようなら。次の部分を<span class="fu">\textbf</span>{強調}します。
-
-<span class="kw">\section</span>{数式の入れ方}
-
-文中の数式は<span class="ss">$E=mc^2$</span>のように書く。
-...
-
-<span class="kw">\section</span>{図の入れ方}
-
-<span class="kw">\begin</span>{<span class="ex">figure</span>}[htbp]
-...
-
-<span class="kw">\section</span>{参考文献の入れ方}
-
-本稿の執筆にはLaTeX<span class="kw">\cite</span>{<span class="ex">okumura2020</span>}を用いた。
-...
-<span class="kw">\end</span>{<span class="ex">document</span>}</code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb50-1" title="1"><span class="bu">\documentclass</span>{<span class="ex">jarticle</span>}</a>
+<a class="sourceLine" id="cb50-2" title="2"><span class="bu">\usepackage</span>[dvipdfmx]{<span class="ex">graphicx</span>}</a>
+<a class="sourceLine" id="cb50-3" title="3"><span class="kw">\begin</span>{<span class="ex">document</span>}</a>
+<a class="sourceLine" id="cb50-4" title="4"></a>
+<a class="sourceLine" id="cb50-5" title="5"><span class="kw">\section</span>{はじめに}</a>
+<a class="sourceLine" id="cb50-6" title="6">こんにちは。</a>
+<a class="sourceLine" id="cb50-7" title="7"></a>
+<a class="sourceLine" id="cb50-8" title="8">さようなら。次の部分を<span class="fu">\textbf</span>{強調}します。</a>
+<a class="sourceLine" id="cb50-9" title="9"></a>
+<a class="sourceLine" id="cb50-10" title="10"><span class="kw">\section</span>{数式の入れ方}</a>
+<a class="sourceLine" id="cb50-11" title="11"></a>
+<a class="sourceLine" id="cb50-12" title="12">文中の数式は<span class="ss">$E=mc^2$</span>のように書く。</a>
+<a class="sourceLine" id="cb50-13" title="13">...</a>
+<a class="sourceLine" id="cb50-14" title="14"></a>
+<a class="sourceLine" id="cb50-15" title="15"><span class="kw">\section</span>{図の入れ方}</a>
+<a class="sourceLine" id="cb50-16" title="16"></a>
+<a class="sourceLine" id="cb50-17" title="17"><span class="kw">\begin</span>{<span class="ex">figure</span>}[htbp]</a>
+<a class="sourceLine" id="cb50-18" title="18">...</a>
+<a class="sourceLine" id="cb50-19" title="19"></a>
+<a class="sourceLine" id="cb50-20" title="20"><span class="kw">\section</span>{参考文献の入れ方}</a>
+<a class="sourceLine" id="cb50-21" title="21"></a>
+<a class="sourceLine" id="cb50-22" title="22">本稿の執筆にはLaTeX<span class="kw">\cite</span>{<span class="ex">okumura2020</span>}を用いた。</a>
+<a class="sourceLine" id="cb50-23" title="23">...</a>
+<a class="sourceLine" id="cb50-24" title="24"><span class="kw">\end</span>{<span class="ex">document</span>}</a></code></pre></div>
 <p>この状態でビルドし、正しく節が設定されることを確認せよ。</p>
 <h4 id="セクションの参照">セクションの参照</h4>
 <p>セクションにもラベルをつけて参照できる。まずは先ほどのセクションに以下のようにラベルをつけよう。</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="kw">\section</span>{はじめに} <span class="kw">\label</span>{<span class="ex">sec:introduction</span>}
-...
-<span class="kw">\section</span>{数式の入れ方} <span class="kw">\label</span>{<span class="ex">sec:equation</span>}
-...
-<span class="kw">\section</span>{図の入れ方} <span class="kw">\label</span>{<span class="ex">sec:figure</span>}
-...
-<span class="kw">\section</span>{参考文献の入れ方} <span class="kw">\label</span>{<span class="ex">sec:reference</span>}</code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb51-1" title="1"><span class="kw">\section</span>{はじめに} <span class="kw">\label</span>{<span class="ex">sec:introduction</span>}</a>
+<a class="sourceLine" id="cb51-2" title="2">...</a>
+<a class="sourceLine" id="cb51-3" title="3"><span class="kw">\section</span>{数式の入れ方} <span class="kw">\label</span>{<span class="ex">sec:equation</span>}</a>
+<a class="sourceLine" id="cb51-4" title="4">...</a>
+<a class="sourceLine" id="cb51-5" title="5"><span class="kw">\section</span>{図の入れ方} <span class="kw">\label</span>{<span class="ex">sec:figure</span>}</a>
+<a class="sourceLine" id="cb51-6" title="6">...</a>
+<a class="sourceLine" id="cb51-7" title="7"><span class="kw">\section</span>{参考文献の入れ方} <span class="kw">\label</span>{<span class="ex">sec:reference</span>}</a></code></pre></div>
 <p>一般に、イントロダクションの一番最後に論文の構成を記述することが多い。「はじめに」の最後、「数式の入れ方」の直前に以下の文章を記述し、コンパイルせよ。コピペしても良いが、VS Codeから記述してラベルの補完を確認するとなお良い。</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">本論文の構成は以下の通り。まず第<span class="kw">\ref</span>{<span class="ex">sec:equation</span>}節にて数式の入れ方を述べる。次に第<span class="kw">\ref</span>{<span class="ex">sec:figure</span>}節にて図の入れ方を述べる。最後に第<span class="kw">\ref</span>{<span class="ex">sec:reference</span>}にて参考文献の入れ方を紹介した後、将来への展望について述べる。</code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb52-1" title="1">本論文の構成は以下の通り。まず第<span class="kw">\ref</span>{<span class="ex">sec:equation</span>}節にて数式の入れ方を述べる。次に第<span class="kw">\ref</span>{<span class="ex">sec:figure</span>}節にて図の入れ方を述べる。最後に第<span class="kw">\ref</span>{<span class="ex">sec:reference</span>}にて参考文献の入れ方を紹介した後、将来への展望について述べる。</a></code></pre></div>
 <h4 id="目次">目次</h4>
 <p>セクションがあると、目次も自動で作ることができる。<code>\begin{document}</code>の直後に</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="fu">\tableofcontents</span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb53-1" title="1"><span class="fu">\tableofcontents</span></a></code></pre></div>
 <p>と入力してビルドしてみよ。目次が表示されるはずである。</p>
 <h4 id="タイトルと著者">タイトルと著者</h4>
 <p>タイトルや著者を設定することもできる。どこでも良いが、プリアンブル(<code>\begin{document}</code>の直前あたり)に以下を入力せよ。</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="fu">\title</span>{LaTeXのテスト}
-<span class="fu">\author</span>{自分の名前}</code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb54-1" title="1"><span class="fu">\title</span>{LaTeXのテスト}</a>
+<a class="sourceLine" id="cb54-2" title="2"><span class="fu">\author</span>{自分の名前}</a></code></pre></div>
 <p>そして、<code>\begin{document}</code>の直後、<code>\tableofcontents</code>の直前に以下を入力せよ。</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="fu">\maketitle</span></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb55-1" title="1"><span class="fu">\maketitle</span></a></code></pre></div>
 <p>タイトル、著者、日付が表示されたはずである。</p>
 <h2 id="トラブル対応">トラブル対応</h2>
 <p>LaTeXは参照の解決のため、何度もコンパイルが必要な場合がある。原則として<code>latexmk</code>が依存関係を自動認識し、必要な回数だけコンパイルしてくれるはずだが、何かの原因でビルドが止まらなくなったり、正しくビルドされなくなったりすることがある。</p>
 <h3 id="ビルドが止まらなくなった場合">ビルドが止まらなくなった場合</h3>
-<div class="figure">
-<img src="fig/terminate.png" alt="terminate.png" />
-<p class="caption">terminate.png</p>
-</div>
+<figure>
+<img src="fig/terminate.png" alt="terminate.png" /><figcaption>terminate.png</figcaption>
+</figure>
 <p>VS Codeの左にある「TeX」をクリックする。するとLATEXのメニューが開くので、「Build LaTeX Project」のメニュー左の「&gt;」をクリックして開き、「Terminate current compilation」をクリックするとビルドが止まる。</p>
 <h3 id="プレビューが更新されなくなった場合">プレビューが更新されなくなった場合</h3>
-<div class="figure">
-<img src="fig/cleanup.png" alt="cleanup.png" />
-<p class="caption">cleanup.png</p>
-</div>
+<figure>
+<img src="fig/cleanup.png" alt="cleanup.png" /><figcaption>cleanup.png</figcaption>
+</figure>
 <p>保存してビルドが走ってもプレビューが更新されない場合、中間ファイル(auxiliary)がおかしくなっている場合がある。その場合は「Clean up auxiliary files」をクリックして、中間ファイルを削除してから「Build LaTeX project」をクリックして再ビルドするとうまくいくことが多い。</p>
+<h2 id="windowsネイティブにインストール古い情報">Windowsネイティブにインストール(古い情報)</h2>
+<p>Windowsでは原則としてWSL2上で作業することにしたので、以下は古い情報である。</p>
+<p><a href="https://www.tug.org/texlive/acquire-netinstall.html">Installing TeX Live over the Internet</a>から、 install-tl-windows.exeをダウンロードし、実行する。セキュリティの問題から、単にクリックしただけでは保存が実行されない場合がある。その場合は右クリックから「名前をつけて保存」を選び、ブラウザが文句を言った場合は「継続」を押すなどしてダウンロードすることができる(Chromeの場合）。また、実行時にWindowsが「WindowsによってPCが保護されました」などと言って実行させてくれない場合がある。この時には「詳細情報」をクリックして「実行」を押せば実行できる。</p>
+<p>最初に「Install」「Unpack」のどちらかが選べるが、デフォルトの「Install」のままNextを押す。そして「Install」をクリックする。しばらくすると「TeX Live 2020インストーラ」というダイアログが出てくるので、何も変更しないまま「インストール」をクリック。フルインストールに <strong>1〜2時間ほど</strong> かかるので、時間に余裕がある時に行うこと。</p>
+<p>以下のような画面になったら「閉じる」を押して終了して良い。</p>
+<figure>
+<img src="fig/install_win.png" alt="install_win.png" /><figcaption>install_win.png</figcaption>
+</figure>
 </article>
 </body>
 </html>

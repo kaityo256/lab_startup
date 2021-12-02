@@ -26,11 +26,20 @@ unzip graduate_thesis-main.zip
 
 で展開できる。
 
-Windowsなら、例えばデスクトップに保存し、右クリックの「全て展開」すると、`graduate-thesis-main`というディレクトリの中にさらに`graduate-thesis-main`というディレクトリが作られるので、内側の方をgithubディレクトリにコピーする。
+Windowsでも、もしWSL2にDesktopというシンボリックリンクを作っていれば、デスクトップにダウンロードしてから、
+
+```sh
+cp ~/Desktop/graduate_thesis-main.zip .
+unzip graduate_thesis-main.zip
+```
 
 ディレクトリの名前を`graduate-thesis-main`から好きな名前に変える。`sotsuron`でも`bachelor-thesis`でもなんでも良いが、特に希望がなければ``graduate-thesis`などにする。
 
-ターミナル(WindowsならGit Bash)で上のディレクトリに移動し、VS Codeでフォルダを開く。
+```sh
+mv graduate_thesis-main graduate_thesis
+```
+
+ターミナルで上のディレクトリに移動し、VS Codeでフォルダを開く。
 
 ```sh
 code .
