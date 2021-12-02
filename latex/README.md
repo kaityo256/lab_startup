@@ -6,26 +6,40 @@ PCにLaTeX(ラテック・レイテック)の処理系をインストールし�
 
 ### Windowsの場合
 
-[Installing TeX Live over the Internet](https://www.tug.org/texlive/acquire-netinstall.html)から、 install-tl-windows.exeをダウンロードし、実行する。セキュリティの問題から、単にクリックしただけでは保存が実行されない場合がある。その場合は右クリックから「名前をつけて保存」を選び、ブラウザが文句を言った場合は「継続」を押すなどしてダウンロードすることができる(Chromeの場合）。また、実行時にWindowsが「WindowsによってPCが保護されました」などと言って実行させてくれない場合がある。この時には「詳細情報」をクリックして「実行」を押せば実行できる。
+WSL2のUbuntu上で実行することを前提とする。ターミナルで以下を実行する。
 
-最初に「Install」「Unpack」のどちらかが選べるが、デフォルトの「Install」のままNextを押す。そして「Install」をクリックする。しばらくすると「TeX Live 2020インストーラ」というダイアログが出てくるので、何も変更しないまま「インストール」をクリック。フルインストールに **1〜2時間ほど** かかるので、時間に余裕がある時に行うこと。
+```sh
+sudo hwclock -s
+sudo apt update
+sudo apt upgrade
+sudo apt install -y texlive-full latexmk
+```
 
-以下のような画面になったら「閉じる」を押して終了して良い。
+最初に実行する`sudo hwclock -s`は、WSL2の時計を直す処理だ。WSL2はよく時計がずれるのでたまに実行すると良い。その後のインストールにはかなり時間がかかる(30分〜1時間?)ので、時間に余裕があるときに実行すること。インストール完了後、`latex -v`と`platex -v`を実行し、それぞれ以下のような表示がされれば正しくインストールされている。
 
-![install_win.png](fig/install_win.png)
+```sh
+$ latex -v
+pdfTex 3.14159265-2.6-1.40.20 (Tex Live 2019/Debian)
+(snip)
+
+$ platex -v
+e-pTeX 3.14159265-p3.8.2-190908-2.6 (utf8.euc) (TeX Live 2019/Debian)
+(snip)
+```
 
 ### Macの場合
 
 [ミラーサイト](https://texwiki.texjp.org/?TeX%20Live#tlnet)から`install-tl-unx.tar.gz`をダウンロードする。どこでも良いが、例えばJ[JAISTのサイト](http://ftp.jaist.ac.jp/pub/CTAN/systems/texlive/tlnet/)からダウンロードすると良いだろう。
 
-ターミナルを開き、以下を実行せよ(コピペで良い)。以下では「ダウンロード」にダウンロードしたと仮定しているが、もしデスクトップに落としたなら`mv ~/Desktop/install-tl-unx.tar.gz .`に変更せよ。
+ターミナルを開き、以下を実行せよ。以下では「ダウンロード」にダウンロードしたと仮定しているが、もしデスクトップに落としたなら`mv ~/Desktop/install-tl-unx.tar.gz .`に変更せよ。また、実行ディレクトリを趣味で`~/build`としているが、どこでも良い。
 
 ```sh
-mkdir temp
-cd temp
+cd
+mkdir build
+cd build
 mv ~/Downloads/install-tl-unx.tar.gz .
 tar xvf install-tl-unx.tar.gz
-cd install-tl-20201108
+cd install-tl-20211202
 sudo ./install-tl -repository http://ftp.jaist.ac.jp/pub/CTAN/systems/texlive/tlnet/
 ```
 
@@ -43,28 +57,17 @@ sudo ./install-tl -repository http://ftp.jaist.ac.jp/pub/CTAN/systems/texlive/tl
 
 ![install3.png](fig/install3.png)
 
-### インストールの確認
-
-無事にLaTeXがインストールされたか確認するためにターミナルで以下を実行してみよ。
+インストール完了後、`latex -v`と`platex -v`を実行し、それぞれ以下のような表示がされれば正しくインストールされている。
 
 ```sh
-latex -v
-platex -v
-```
-
-```txt
+$ latex -v
 pdfTeX 3.14159265-2.6-1.40.21 (TeX Live 2020)
-...
-```
+(snip)
 
-とか
-
-```txt
+$ platex -v
 e-pTeX 3.14159265-p3.8.3-191112-2.6 (utf8.euc) (TeX Live 2020)
-...
+(snip)
 ```
-
-などと表示されれば成功している。なお、Windowsの場合は「TeX Live 2020」が「Tex Live 2020/W32TeX」になっている。
 
 ### コンパイルの確認
 
@@ -76,7 +79,7 @@ mkdir temp
 cd temp
 ```
 
-そこで、以下の内容の`test.tex`を作成せよ。PowerShellもしくはターミナルで`code test.tex`と入力すればVS Codeが開くので、そこで以下をコピペ、保存する。
+そこで、以下の内容の`test.tex`を作成せよ。ターミナルで`code test.tex`と入力すればVS Codeが開くので、そこで以下をコピペ、保存する。
 
 ```tex
 \documentclass{article}
@@ -94,16 +97,10 @@ E = mc^2
 この状態で、コンパイルする。
 
 ```sh
-latex test.tex
+pdflatex test.tex
 ```
 
-すると、同じディレクトリに`test.dvi`というファイルができたはずである。このDVIファイルをPDFに変換する。
-
-```sh
-dvipdfmx test.dvi
-```
-
-`dvipdfm`というコマンドもあるので注意。最後がxで終わる方を使うこと。これにより同じディレクトリに`test.pdf`が作成されたはずなので開く。以下のような内容になっていれば成功である。
+すると、同じディレクトリに`test.pdf`というファイルができたはずなので開く。以下のような内容になっていれば成功である。
 
 ![test_pdf.png](fig/test_pdf.png)
 
@@ -124,14 +121,19 @@ E = mc^2
 \end{document}
 ```
 
-`documentclass`の中身が`article`から`jarticle`になっていることに注意。これをコンパイルし、PDFに変換する。
+`documentclass`の中身が`article`から`jarticle`になっていることに注意。これをコンパイルし、PDFに変換する。英語だけの文書の場合は`pdflatex`一発でできたが、日本語は諸事情によりいろいろ面倒くさい。まず、`platex`によりDVIファイルを作る。
 
 ```sh
 platex testj.tex
+```
+
+これにより`testj.dvi`が作成されたはずなので、これをPDFに変換する。
+
+```sh
 dvipdfmx testj.dvi
 ```
 
-コンパイルコマンドが`latex`ではなく`platex`になっていることに注意。正しく処理されていれば以下のようなPDFファイルが作成されたはずである。
+正しく処理されていれば以下のようなPDFファイルが作成されたはずである。
 
 ![testj_pdf.png](fig/testj_pdf.png)
 
@@ -220,10 +222,12 @@ cpan install Log::Log4perl YAML/Tiny.pm File/HomeDir.pm
 
 ## LaTeXの基本
 
-適当なディレクトリ(例えば`~/textest`)を作り、そこに移動して、ディレクトリをVS Codeで開く。
-
+適当なディレクトリ(例えば`~/temp/textest`)を作り、そこに移動して、ディレクトリをVS Codeで開く。
 
 ```sh
+cd
+mkdir -p temp
+cd temp
 mkdir textest
 cd textest
 code .
@@ -386,7 +390,6 @@ Overfull \hbox (145.3509pt too wide)
 
 ビルドすると、図の説明(キャプション)とともに、図番号が自動で入ったはずだ。この図もラベルをつけて参照することができる。
 
-
 ```tex
 \begin{figure}
 \includegraphics[width=10cm]{sin.pdf}
@@ -461,7 +464,6 @@ LaTeXで参考文献を入れるには、手で入れる方法とbibtexにより
 先ほど、本文中に言及がないにも関わらず、文献リストに「LaTeX2ε美文書作成入門」が表示されていた。原則として文中で言及していない文献は文献リストに掲載してはならない。しかし、引用文献を追加したり削除したりしているうちに、どれに言及してどれに言及していないかの管理が面倒になるだろう。そこで、bibtexというファイルを使って文献リストを管理する。
 
 まずは文献ファイルを作ろう。TeXファイルと同じディレクトリに`reference.bib`というファイルを作成し、以下の内容を記述せよ。
-
 
 ```tex
 @book{okumura2020,
@@ -590,7 +592,7 @@ eprint = {
 
 #### セクションの入れ方
 
-論文には「イントロダクション」「背景」「手法」「結果」といった構造がある。その構造を表すのにセクション(節)を使う。いま、`test.tex`は以下のようになっているはず(多少違っていてもかまわない)。
+論文には「イントロダクション」「背景」「手法」「結果」といった構造がある。その構造を表すのにセクション(節)を使う。いま、`test.tex`は以下のようになっているはず(多少違っていてもかまわないし、面倒なら以下をコピペしなおして良い)。
 
 ```tex
 \documentclass{jarticle}
@@ -728,3 +730,15 @@ VS Codeの左にある「TeX」をクリックする。するとLATEXのメニ�
 ![cleanup.png](fig/cleanup.png)
 
 保存してビルドが走ってもプレビューが更新されない場合、中間ファイル(auxiliary)がおかしくなっている場合がある。その場合は「Clean up auxiliary files」をクリックして、中間ファイルを削除してから「Build LaTeX project」をクリックして再ビルドするとうまくいくことが多い。
+
+## Windowsネイティブにインストール(古い情報)
+
+Windowsでは原則としてWSL2上で作業することにしたので、以下は古い情報である。
+
+[Installing TeX Live over the Internet](https://www.tug.org/texlive/acquire-netinstall.html)から、 install-tl-windows.exeをダウンロードし、実行する。セキュリティの問題から、単にクリックしただけでは保存が実行されない場合がある。その場合は右クリックから「名前をつけて保存」を選び、ブラウザが文句を言った場合は「継続」を押すなどしてダウンロードすることができる(Chromeの場合）。また、実行時にWindowsが「WindowsによってPCが保護されました」などと言って実行させてくれない場合がある。この時には「詳細情報」をクリックして「実行」を押せば実行できる。
+
+最初に「Install」「Unpack」のどちらかが選べるが、デフォルトの「Install」のままNextを押す。そして「Install」をクリックする。しばらくすると「TeX Live 2020インストーラ」というダイアログが出てくるので、何も変更しないまま「インストール」をクリック。フルインストールに **1〜2時間ほど** かかるので、時間に余裕がある時に行うこと。
+
+以下のような画面になったら「閉じる」を押して終了して良い。
+
+![install_win.png](fig/install_win.png)
