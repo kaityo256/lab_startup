@@ -30,6 +30,7 @@
 
 ## 執筆編
 
+* [LaTeXのインストール](latex/README.md)
 * [卒業論文の準備](graduate_thesis/README.md)
 * [Adobe Illustratorの使い方](illustrator/README.md)
 
@@ -38,8 +39,6 @@
 以下はWindowsでWSL2を使わなかった時の情報。
 
 * [Git Bashでg++を使えるようにする](gccwin/README.md)
-* [LaTeXのインストール](latex/README.md)
-
 
 ## ライセンス
 

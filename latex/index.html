@@ -75,21 +75,28 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>PCにLaTeX(ラテック・レイテック)の処理系をインストールし、実行できるようにする。</p>
 <h2 id="インストールとvs-codeの設定">インストールとVS Codeの設定</h2>
 <h3 id="windowsの場合">Windowsの場合</h3>
-<p><a href="https://www.tug.org/texlive/acquire-netinstall.html">Installing TeX Live over the Internet</a>から、 install-tl-windows.exeをダウンロードし、実行する。セキュリティの問題から、単にクリックしただけでは保存が実行されない場合がある。その場合は右クリックから「名前をつけて保存」を選び、ブラウザが文句を言った場合は「継続」を押すなどしてダウンロードすることができる(Chromeの場合）。また、実行時にWindowsが「WindowsによってPCが保護されました」などと言って実行させてくれない場合がある。この時には「詳細情報」をクリックして「実行」を押せば実行できる。</p>
-<p>最初に「Install」「Unpack」のどちらかが選べるが、デフォルトの「Install」のままNextを押す。そして「Install」をクリックする。しばらくすると「TeX Live 2020インストーラ」というダイアログが出てくるので、何も変更しないまま「インストール」をクリック。フルインストールに <strong>1〜2時間ほど</strong> かかるので、時間に余裕がある時に行うこと。</p>
-<p>以下のような画面になったら「閉じる」を押して終了して良い。</p>
-<div class="figure">
-<img src="fig/install_win.png" alt="install_win.png" />
-<p class="caption">install_win.png</p>
-</div>
+<p>WSL2のUbuntu上で実行することを前提とする。ターミナルで以下を実行する。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">sudo</span> hwclock -s
+<span class="fu">sudo</span> apt update
+<span class="fu">sudo</span> apt upgrade
+<span class="fu">sudo</span> apt install -y texlive-full latexmk</code></pre></div>
+<p>最初に実行する<code>sudo hwclock -s</code>は、WSL2の時計を直す処理だ。WSL2はよく時計がずれるのでたまに実行すると良い。その後のインストールにはかなり時間がかかる(30分〜1時間?)ので、時間に余裕があるときに実行すること。インストール完了後、<code>latex -v</code>と<code>platex -v</code>を実行し、それぞれ以下のような表示がされれば正しくインストールされている。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">latex</span> -v
+<span class="ex">pdfTex</span> 3.14159265-2.6-1.40.20 (Tex Live 2019/Debian)
+<span class="kw">(</span><span class="ex">snip</span><span class="kw">)</span>
+
+$ <span class="ex">platex</span> -v
+<span class="ex">e-pTeX</span> 3.14159265-p3.8.2-190908-2.6 (utf8.euc) <span class="kw">(</span><span class="ex">TeX</span> Live 2019/Debian<span class="kw">)</span>
+<span class="kw">(</span><span class="ex">snip</span><span class="kw">)</span></code></pre></div>
 <h3 id="macの場合">Macの場合</h3>
 <p><a href="https://texwiki.texjp.org/?TeX%20Live#tlnet">ミラーサイト</a>から<code>install-tl-unx.tar.gz</code>をダウンロードする。どこでも良いが、例えばJ<a href="http://ftp.jaist.ac.jp/pub/CTAN/systems/texlive/tlnet/">JAISTのサイト</a>からダウンロードすると良いだろう。</p>
-<p>ターミナルを開き、以下を実行せよ(コピペで良い)。以下では「ダウンロード」にダウンロードしたと仮定しているが、もしデスクトップに落としたなら<code>mv ~/Desktop/install-tl-unx.tar.gz .</code>に変更せよ。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">mkdir</span> temp
-<span class="bu">cd</span> temp
+<p>ターミナルを開き、以下を実行せよ。以下では「ダウンロード」にダウンロードしたと仮定しているが、もしデスクトップに落としたなら<code>mv ~/Desktop/install-tl-unx.tar.gz .</code>に変更せよ。また、実行ディレクトリを趣味で<code>~/build</code>としているが、どこでも良い。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span>
+<span class="fu">mkdir</span> build
+<span class="bu">cd</span> build
 <span class="fu">mv</span> ~/Downloads/install-tl-unx.tar.gz .
 <span class="fu">tar</span> xvf install-tl-unx.tar.gz
-<span class="bu">cd</span> install-tl-20201108
+<span class="bu">cd</span> install-tl-20211202
 <span class="fu">sudo</span> ./install-tl -repository http://ftp.jaist.ac.jp/pub/CTAN/systems/texlive/tlnet/</code></pre></div>
 <p>すると、以下のような画面が表示されるので、「高度な設定」を選ぶ。</p>
 <div class="figure">
@@ -102,27 +109,25 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p class="caption">install2.png</p>
 </div>
 <p>フルインストールに <strong>30分ほど</strong> かかるので、時間に余裕がある時に行うこと。</p>
-<p>以下の画面が出てきたら「閉じる」をクリックして終了して良い(PATHに追加せよなどと書いてあるが、今回はシンボリックリンクを指定しているため設定不要)。</p>
+<p>以下の画面が出てきたら「閉じる」をクリックして終了して良い。</p>
 <div class="figure">
 <img src="fig/install3.png" alt="install3.png" />
 <p class="caption">install3.png</p>
 </div>
-<h3 id="インストールの確認">インストールの確認</h3>
-<p>無事にLaTeXがインストールされたか確認するためにターミナルで以下を実行してみよ。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">latex</span> -v
-<span class="ex">platex</span> -v</code></pre></div>
-<pre class="txt"><code>pdfTeX 3.14159265-2.6-1.40.21 (TeX Live 2020)
-...</code></pre>
-<p>とか</p>
-<pre class="txt"><code>e-pTeX 3.14159265-p3.8.3-191112-2.6 (utf8.euc) (TeX Live 2020)
-...</code></pre>
-<p>などと表示されれば成功している。なお、Windowsの場合は「TeX Live 2020」が「Tex Live 2020/W32TeX」になっている。</p>
+<p>インストール完了後、<code>latex -v</code>と<code>platex -v</code>を実行し、それぞれ以下のような表示がされれば正しくインストールされている。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">latex</span> -v
+<span class="ex">pdfTeX</span> 3.141592653-2.6-1.40.23 (TeX Live 2022/dev)
+<span class="kw">(</span><span class="ex">snip</span><span class="kw">)</span>
+
+$ <span class="ex">platex</span> -v
+<span class="ex">e-pTeX</span> 3.141592653-p3.9.0-210218-2.6 (utf8.euc) <span class="kw">(</span><span class="ex">TeX</span> Live 2021<span class="kw">)</span>
+<span class="kw">(</span><span class="ex">snip</span><span class="kw">)</span></code></pre></div>
 <h3 id="コンパイルの確認">コンパイルの確認</h3>
 <p>適当なディレクトリ(例えば<code>~/temp</code>)を作り、そこに移動せよ。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span>
 <span class="fu">mkdir</span> temp
 <span class="bu">cd</span> temp</code></pre></div>
-<p>そこで、以下の内容の<code>test.tex</code>を作成せよ。PowerShellもしくはターミナルで<code>code test.tex</code>と入力すればVS Codeが開くので、そこで以下をコピペ、保存する。</p>
+<p>そこで、以下の内容の<code>test.tex</code>を作成せよ。ターミナルで<code>code test.tex</code>と入力すればVS Codeが開くので、そこで以下をコピペ、保存する。</p>
 <div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="bu">\documentclass</span>{<span class="ex">article</span>}
 <span class="kw">\begin</span>{<span class="ex">document</span>}
 
@@ -134,10 +139,8 @@ Hello <span class="fu">\LaTeX</span>.
 
 <span class="kw">\end</span>{<span class="ex">document</span>}</code></pre></div>
 <p>この状態で、コンパイルする。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">latex</span> test.tex</code></pre></div>
-<p>すると、同じディレクトリに<code>test.dvi</code>というファイルができたはずである。このDVIファイルをPDFに変換する。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">dvipdfmx</span> test.dvi</code></pre></div>
-<p><code>dvipdfm</code>というコマンドもあるので注意。最後がxで終わる方を使うこと。これにより同じディレクトリに<code>test.pdf</code>が作成されたはずなので開く。以下のような内容になっていれば成功である。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">pdflatex</span> test.tex</code></pre></div>
+<p>すると、同じディレクトリに<code>test.pdf</code>というファイルができたはずなので開く。以下のような内容になっていれば成功である。</p>
 <div class="figure">
 <img src="fig/test_pdf.png" alt="test_pdf.png" />
 <p class="caption">test_pdf.png</p>
@@ -154,10 +157,11 @@ E = mc^2
 \]
 
 \end{document}</code></pre>
-<p><code>documentclass</code>の中身が<code>article</code>から<code>jarticle</code>になっていることに注意。これをコンパイルし、PDFに変換する。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">platex</span> testj.tex
-<span class="ex">dvipdfmx</span> testj.dvi</code></pre></div>
-<p>コンパイルコマンドが<code>latex</code>ではなく<code>platex</code>になっていることに注意。正しく処理されていれば以下のようなPDFファイルが作成されたはずである。</p>
+<p><code>documentclass</code>の中身が<code>article</code>から<code>jarticle</code>になっていることに注意。これをコンパイルし、PDFに変換する。英語だけの文書の場合は<code>pdflatex</code>一発でできたが、日本語は諸事情によりいろいろ面倒くさい。まず、<code>platex</code>によりDVIファイルを作る。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">platex</span> testj.tex</code></pre></div>
+<p>これにより<code>testj.dvi</code>が作成されたはずなので、これをPDFに変換する。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">dvipdfmx</span> testj.dvi</code></pre></div>
+<p>正しく処理されていれば以下のようなPDFファイルが作成されたはずである。</p>
 <div class="figure">
 <img src="fig/testj_pdf.png" alt="testj_pdf.png" />
 <p class="caption">testj_pdf.png</p>
@@ -214,8 +218,11 @@ E = mc^2
 <p>以後、TeXソースファイルを修正し、保存するたびにプレビューが更新される。</p>
 <p>もし保存時にビルドが走らなければ、「設定」で「autobuild.run」で検索して出てくる「Latex-workshop › Latex › Auto Build: Run」のドロップダウンリストを「never」から「onFileChange」に変更せよ。</p>
 <h2 id="latexの基本">LaTeXの基本</h2>
-<p>適当なディレクトリ(例えば<code>~/textest</code>)を作り、そこに移動して、ディレクトリをVS Codeで開く。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">mkdir</span> textest
+<p>適当なディレクトリ(例えば<code>~/temp/textest</code>)を作り、そこに移動して、ディレクトリをVS Codeで開く。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span>
+<span class="fu">mkdir</span> -p temp
+<span class="bu">cd</span> temp
+<span class="fu">mkdir</span> textest
 <span class="bu">cd</span> textest
 <span class="ex">code</span> .</code></pre></div>
 <p>その状態でファイルを新規作成し、以下の内容を記述、<code>test.tex</code>という名前で保存して、コンパイルとプレビューができることを確認せよ。</p>
@@ -418,7 +425,7 @@ eprint = {
 <p>いずれにせよ、文献ファイルはTeXファイルと一緒に必ずGitその他のVCSで管理すること。</p>
 <h3 id="セクション">セクション</h3>
 <h4 id="セクションの入れ方">セクションの入れ方</h4>
-<p>論文には「イントロダクション」「背景」「手法」「結果」といった構造がある。その構造を表すのにセクション(節)を使う。いま、<code>test.tex</code>は以下のようになっているはず(多少違っていてもかまわない)。</p>
+<p>論文には「イントロダクション」「背景」「手法」「結果」といった構造がある。その構造を表すのにセクション(節)を使う。いま、<code>test.tex</code>は以下のようになっているはず(多少違っていてもかまわないし、面倒なら以下をコピペしなおして良い)。</p>
 <div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex"><span class="bu">\documentclass</span>{<span class="ex">jarticle</span>}
 <span class="bu">\usepackage</span>[dvipdfmx]{<span class="ex">graphicx</span>}
 <span class="kw">\begin</span>{<span class="ex">document</span>}
@@ -521,6 +528,15 @@ eprint = {
 <p class="caption">cleanup.png</p>
 </div>
 <p>保存してビルドが走ってもプレビューが更新されない場合、中間ファイル(auxiliary)がおかしくなっている場合がある。その場合は「Clean up auxiliary files」をクリックして、中間ファイルを削除してから「Build LaTeX project」をクリックして再ビルドするとうまくいくことが多い。</p>
+<h2 id="windowsネイティブにインストール古い情報">Windowsネイティブにインストール(古い情報)</h2>
+<p>Windowsでは原則としてWSL2上で作業することにしたので、以下は古い情報である。</p>
+<p><a href="https://www.tug.org/texlive/acquire-netinstall.html">Installing TeX Live over the Internet</a>から、 install-tl-windows.exeをダウンロードし、実行する。セキュリティの問題から、単にクリックしただけでは保存が実行されない場合がある。その場合は右クリックから「名前をつけて保存」を選び、ブラウザが文句を言った場合は「継続」を押すなどしてダウンロードすることができる(Chromeの場合）。また、実行時にWindowsが「WindowsによってPCが保護されました」などと言って実行させてくれない場合がある。この時には「詳細情報」をクリックして「実行」を押せば実行できる。</p>
+<p>最初に「Install」「Unpack」のどちらかが選べるが、デフォルトの「Install」のままNextを押す。そして「Install」をクリックする。しばらくすると「TeX Live 2020インストーラ」というダイアログが出てくるので、何も変更しないまま「インストール」をクリック。フルインストールに <strong>1〜2時間ほど</strong> かかるので、時間に余裕がある時に行うこと。</p>
+<p>以下のような画面になったら「閉じる」を押して終了して良い。</p>
+<div class="figure">
+<img src="fig/install_win.png" alt="install_win.png" />
+<p class="caption">install_win.png</p>
+</div>
 </article>
 </body>
 </html>
