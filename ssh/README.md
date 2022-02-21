@@ -49,58 +49,42 @@ ssh-add
 
 ### Windowsの場合
 
-まず、SSHエージェントを起動する必要がある。起動方法は
+まず、SSHエージェントを起動する必要がある。いくつか方法があるが、`keychain`を導入するのが簡単だ。
 
-```ssh
-eval `ssh-agent`
-```
-
-を実行することだが、毎回これを実行するのは面倒なので、自動的に起動するようにする。まずGit Bashを起動し、Vimで`~/.bashrc`を開く。
+まず、不要なプロセスをすべて停止させる。WSLを停止した状態でWindowsのPowerShellを起動せよ。たとえば「Windowsキー+r」で「ファイル名を指定して実行」画面に「powershell」を入力するとPowerShellを起動できる。起動したら、以下を実行する。
 
 ```sh
-vim ~/.bashrc
+wsl --shutdown
 ```
 
-そして、.bashrcのファイルの最後に以下の行を追加せよ。
-
-```txt
-eval `ssh-agent`
-```
-
-なお 「`` ` ``」は「バッククォート」と呼ばれ、通常であればシフトをおしながら@を押せば入力できるはず。
-
-Vimを終了し、`.bashrc`を再読み込みしよう。
+次に、WSL2のUbuntuを起動し、`keychain`をインストールする。
 
 ```sh
-source .bashrc
+sudo apt-get install keychain
 ```
 
-`Agent pid 850`などと表示されれば成功である(pidの数字は毎回異なる)。
-
-その後、
+次に、`keychain`を起動する。
 
 ```sh
-ssh-add
+/usr/bin/keychain -q --nogui $HOME/.ssh/id_rsa
 ```
 
-を実行して、パスフレーズ聞かれたら成功している。もし
+初回起動時にはパスフレーズを聞かれるので入力する。すると、`$HOME/.keychain`にいくつかシェルスクリプトが出来るので、それを実行する。
 
-```txt
-Could not open a connection to your authentication agent.
+```sh
+source $HOME/.keychain/$HOST-sh
 ```
 
-というエラーが出たら、SSHエージェントの起動に失敗しているので、上記の手順を再度確認すること。
+これにより、`keychain`が`ssh-agent`を探し、既存のプロセスがあれば接続、なければ起動してくれる。
 
-パスフレーズを入力後、研究室サーバにsshで接続してみよ。パスフレーズを聞かれずに接続できたら成功である。
+`keychain`の起動を毎回行うのは面倒なので、`.bashrc`の最後に
 
-なお、上記の設定でGit Bashを起動する度にssh-agentは自動起動するが、必要に応じてssh-addによりパスフレーズを覚えさせる必要がある。これをGit Bashの起動時に必ずやるようにしたければ、`.bashrc`の`ssh-agent`の起動の後に`ssh-add`を記入しておく。
-
-```txt
-eval `ssh-agent`
-ssh-add
+```sh
+/usr/bin/keychain -q --nogui $HOME/.ssh/id_rsa
+source $HOME/.keychain/$HOST-sh
 ```
 
-これにより、Git Bashを起動すると必ずパスフレーズの入力を求められるようになる。Git Bashの起動時に`ssh-agent`の起動だけにとどめるか、`ssh-add`まで実行してパスフレーズを入力するかはお好みで。
+と書いておくと良い。Zshなども同様だが、cshやfishは、`$HOST-sh`の`-sh`を`-csh`や`-fish`にすること。
 
 ## 多段SSH
 
