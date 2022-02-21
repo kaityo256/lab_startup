@@ -111,24 +111,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <pre class="txt"><code>[user]
         name = 先ほど設定したユーザー名
         email = 先ほど設定したメールアドレス</code></pre>
-<p>また、よく使うコマンドの省略形(エイリアス)も登録しておこう。とりあえず以下を設定しておく。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> config --global alias.co <span class="st">&quot;checkout&quot;</span>
-<span class="fu">git</span> config --global alias.st <span class="st">&quot;status -s&quot;</span>
-<span class="fu">git</span> config --global alias.ci <span class="st">&quot;commit -a&quot;</span></code></pre></div>
-<p>それぞれの説明は以下の通り。</p>
-<ul>
-<li>co: <code>checkout</code>は良く使うコマンドで、いちいち打つのが面倒なので<code>co</code>で代替する</li>
-<li>st: デフォルトの<code>status</code>は情報過多のため、短い形式<code>-s</code>で状態を表示させる<code>st</code>コマンドを登録</li>
-<li>ci: 通常、<code>git add</code>してインデックスに登録してから<code>git commit</code>する必要があるが、<code>-a</code>オプションをつけることで修正があるファイル全てをコミットする(<code>git add</code>を省くことができる)</li>
-</ul>
-<p>このあたりは完全に趣味なので、慣れてきたら自分好みに追加・削除・修正していくと良い。ここまでの設定で、<code>.gitconfig</code>は以下のようになったはずだ。</p>
+<p>また、よく使うコマンドの省略形(エイリアス)も登録しておこう。とりあえず一つだけ設定してみよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> config --global alias.st <span class="st">&quot;status -s&quot;</span></code></pre></div>
+<p>これは、デフォルトの<code>git status</code>は情報過多のため、短い形式で表示させる<code>git status -s</code>を多用するので、それを<code>git st</code>として実行できるように登録したものだ。このあたりは完全に趣味なので、慣れてきたら自分好みに追加・削除・修正していくと良い。ここまでの設定で、<code>.gitconfig</code>は以下のようになったはずだ。</p>
 <pre class="txt"><code>[user]
         name = 先ほど設定したユーザー名
         email = 先ほど設定したメールアドレス
 [alias]
-        co = checkout
-        st = status -s
-        ci = commit -a</code></pre>
+        st = status -s</code></pre>
 <p>また、UbuntuのデフォルトエディタはGNU Nanoになっており、正直使いづらいのでVimにしておこう。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> config --global core.editor vim</code></pre></div>
 <p><code>.gitconfig</code>は以下のようになったはずだ。</p>
