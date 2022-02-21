@@ -79,21 +79,42 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>等で学ぶと良いだろう。</p>
 <h2 id="モードについて">モードについて</h2>
 <p>Vimの最大の特徴はモードがあることだ。起動直後はノーマルモードとなっており、そのままでは入力ができない。<code>i</code>などを押すと入力モードとなり、文字が入力できるようになる。<code>ESC</code>を押すとノーマルモードに戻る。</p>
-<p>また、<code>:</code>を押すことでコマンドラインモードになる。ここでは置換など様々なことができる。<code>v</code>などを押すことでビジュアルモードになり、テキストの一部分を選択したり、選択した範囲について操作ができる。</p>
+<p>また、<code>:</code>を押すことでコマンドラインモードになる。ここでは置換など様々なことができる。<code>v</code>などを押すことでビジュアルモードになり、テキストの一部分を選択したり、選択した範囲について操作ができる。以下にモード間の遷移図を示すが、とりあえず「エスケープキーを押せばノーマルモードに戻る」と覚えておけばよい。</p>
+<div class="figure">
+<img src="fig/mode.png" alt="modes" />
+<p class="caption">modes</p>
+</div>
 <h2 id="カーソル移動と基本の編集">カーソル移動と基本の編集</h2>
 <p>まず、適当なディレクトリで、新しいファイル<code>test.txt</code>をvimで開いてみよう。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">vim</span> test.txt</code></pre></div>
 <p>viの最大の特徴は「モード」を持つことだ。viには「ノーマルモード」と「編集モード」の二つのモードがあり、それを入れ替えながらファイルを編集する(他にもモードがあるが、深くは立ち入らない)。起動時には「ノーマルモード」になっており、そのままでは文字入力ができない。ここで「i」を押して編集モードに切り替えよう。</p>
 <p>画面の下が<code>-- 挿入 --</code>という表示になったはずだ。この状態では、通常のエディタのように文字列を入力することができる。</p>
 <p>この状態で、<code>Hello vim!</code>と入力し、改行してからESCを押そう。</p>
-<p>ESCを押したらノーマルモードになる。この状態では、キー入力によりコマンドやカーソル移動ができる。</p>
+<p>ESCを押したらノーマルモードになる。この状態で<code>h</code>や<code>l</code>キーでカーソルが移動することを確認してみよう。Vimには、以下のように多様な移動手段がある。</p>
 <h3 id="カーソル移動hjkl">カーソル移動：h,j,k,l</h3>
 <p>まずはhjklでカーソル移動ができる。それぞれ以下の通りだ。</p>
 <ul>
-<li>h 一文字左</li>
-<li>l 一文字右</li>
-<li>j 一行上</li>
-<li>k 一行下</li>
+<li><code>h</code> 一文字左</li>
+<li><code>l</code> 一文字右</li>
+<li><code>j</code> 一行上</li>
+<li><code>k</code> 一行下</li>
+</ul>
+<h3 id="画面移動ctrludfbey">画面移動:Ctrl+u,d,f,b,e,y</h3>
+<p>Ctrlキーとudfbeyの組み合わせて、画面移動ができる。</p>
+<ul>
+<li><code>Ctrl+u</code> 画面半分上へ</li>
+<li><code>Ctrl+d</code> 画面半分下へ</li>
+<li><code>Ctrl+b</code> 一画面分上へ</li>
+<li><code>Ctrl+f</code> 一画面分下へ</li>
+<li><code>Ctrl+e</code> 一行上に移動(カーソルそのまま)</li>
+<li><code>Ctrl+y</code> 一行下に移動(カーソルそのまま)</li>
+</ul>
+<h3 id="表示画面中の移動">表示画面中の移動</h3>
+<p>表示している画面はそのままで、カーソルだけ移動するコマンドもある。</p>
+<ul>
+<li><code>H</code> 画面の一番上</li>
+<li><code>M</code> 画面中央</li>
+<li><code>L</code> 画面の一番下</li>
 </ul>
 <h3 id="行頭行末移動">行頭、行末移動：^, $</h3>
 <p>Vimには他にも多くの移動方法がある。よく使うのが「<code>^</code>」と「<code>$</code>」だ。それぞれ</p>
@@ -130,21 +151,24 @@ Hello Vim!</code></pre>
 <h3 id="アンドゥu">アンドゥ：u</h3>
 <p><code>u</code>で直前の操作のアンドゥが出来る。<code>dd</code>で一行消して、<code>u</code>を押してみよう。操作が取り消されたはずだ。</p>
 <h3 id="表示画面中の移動h-m-l">表示画面中の移動：H, M, L</h3>
-<p>また「Hello Vim!」を増やそう。<code>yy</code>、<code>100p</code>で100行くらい追加した後、H, M, Lによる移動をためそう。それぞれ</p>
+<p>また「Hello Vim!」を増やそう。<code>yy</code>、<code>100p</code>で100行くらい追加した後、以下のカーソル、画面移動コマンドを試そう。</p>
 <ul>
-<li><code>H</code> 画面の一番上</li>
-<li><code>M</code> 画面中央</li>
-<li><code>L</code> 画面の一番下</li>
+<li><code>hjkl</code>によるカーソル移動</li>
+<li><code>^</code>や<code>$</code>による行頭、行末への移動</li>
+<li><code>w</code>,<code>b</code>,<code>e</code>による単語単位の移動</li>
+<li><code>Ctrl+b</code>や<code>Ctrl+f</code>による画面移動</li>
+<li><code>gg</code>や<code>G</code>によるファイルの先頭、末尾への移動</li>
+<li><code>H</code>,<code>M</code>,<code>L</code>による画面内移動</li>
 </ul>
 <h3 id="ビジュアル選択モードv">ビジュアル選択モード：v</h3>
-<p><code>v</code>を押すことでビジュアル選択モードになる。</p>
+<p><code>v</code>を押すことでビジュアル選択モードになる。適当なところで<code>v</code>を押して、<code>j</code>や<code>k</code>で選択範囲を指定できることを確認しよう。その後、<code>ESC</code>でノーマルモードに戻ってから、以下の操作でファイル全てを選択する。</p>
 <ul>
 <li><code>gg</code>でファイルの先頭に移動</li>
 <li><code>v</code> でビジュアル選択開始</li>
 <li><code>G</code>でファイルの一番最後に移動</li>
 <li><code>$</code>で行の最後に移動</li>
 </ul>
-<p>により、全てを選択しよう。その後<code>d</code>により全て消して良い。</p>
+<p>その後<code>d</code>により全て消して良い。</p>
 <h3 id="対応する括弧へ飛ぶ">対応する括弧へ飛ぶ：<code>%</code></h3>
 <p><code>%</code>を押すと、対応する括弧に飛んでくれる。</p>
 <pre class="txt"><code>((()))</code></pre>
@@ -174,16 +198,11 @@ Hello Vim!</code></pre>
 <p>と連番になったはずだ。</p>
 <h3 id="行ジャンプ数字">行ジャンプ:数字</h3>
 <p><code>:</code>を押すとコマンドモードになるが、そこで数字を入力すると行ジャンプができる。<code>:50</code>と入力してリターンを押してみよ。50行目に飛ぶはずだ。</p>
-<h3 id="画面移動ctrlfbey">画面移動：Ctrl+f/b/e/y</h3>
-<p><code>Ctrl</code>と<code>f, b, e, y</code>で画面移動ができる。</p>
-<ul>
-<li><code>Ctrl+f</code> 一画面下に移動 (forward)</li>
-<li><code>Ctrl+b</code> 一画面上に移動 (back)</li>
-<li><code>Ctrl+e</code> 一行上に移動(カーソルそのまま)</li>
-<li><code>Ctrl+y</code> 一行下に移動(カーソルそのまま)</li>
-</ul>
 <h3 id="行をまとめるj-gj">行をまとめる：J, gJ</h3>
-<p><code>J</code>で次の行をまとめることができる。ただし、空白が入る。空白を入れたくなければ<code>gJ</code>とする。<code>v</code>によるビジュアル選択を組み合わせるとたまに便利。</p>
+<p><code>J</code>で次の行をまとめることができる。</p>
+<pre class="txt"><code>Hello
+Vim!</code></pre>
+<p>と入力し、「Hello」の最後にカーソルを合わせて<code>J</code>を入力せよ。「Hello Vim!」になったはずだ。<code>J</code>では、改行が空白になる。空白を入れたくなければ<code>gJ</code>とする。<code>v</code>によるビジュアル選択を組み合わせるとたまに便利。</p>
 <h2 id="検索置換">検索・置換</h2>
 <h3 id="検索">検索</h3>
 <p><code>/</code>で検索ができる。<code>/</code>を入力するとカーソルが下に移動し、<code>/</code>の右で入力待ちになる。そこで何か入力する。</p>
