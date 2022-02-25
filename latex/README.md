@@ -29,33 +29,95 @@ e-pTeX 3.14159265-p3.8.2-190908-2.6 (utf8.euc) (TeX Live 2019/Debian)
 
 ### Macの場合
 
-[ミラーサイト](https://texwiki.texjp.org/?TeX%20Live#tlnet)から`install-tl-unx.tar.gz`をダウンロードする。どこでも良いが、例えばJ[JAISTのサイト](http://ftp.jaist.ac.jp/pub/CTAN/systems/texlive/tlnet/)からダウンロードすると良いだろう。
-
-ターミナルを開き、以下を実行せよ。以下では「ダウンロード」にダウンロードしたと仮定しているが、もしデスクトップに落としたなら`mv ~/Desktop/install-tl-unx.tar.gz .`に変更せよ。また、実行ディレクトリを趣味で`~/build`としているが、どこでも良い。
+ターミナルを開き、以下を実行せよ。実行ディレクトリを趣味で`~/build`としているが、どこでも良い。
 
 ```sh
 cd
 mkdir build
 cd build
-mv ~/Downloads/install-tl-unx.tar.gz .
-tar xvf install-tl-unx.tar.gz
-cd install-tl-20211202
-sudo ./install-tl -repository http://ftp.jaist.ac.jp/pub/CTAN/systems/texlive/tlnet/
+curl -O http://ftp.jaist.ac.jp/pub/CTAN/systems/texlive/tlnet/install-tl-unx.tar.gz
+tar xvzf install-tl-unx.tar.gz
+cd install-tl-20*  
+sudo ./install-tl -no-gui  -repository https://ftp.jaist.ac.jp/pub/CTAN/systems/texlive/tlnet/
+
 ```
 
-すると、以下のような画面が表示されるので、「高度な設定」を選ぶ。
+すると、以下のような画面で入力待ちとなる。
 
-![install1.png](fig/install1.png)
+```txt
+ <O> options:
+   [ ] use letter size instead of A4 by default
+   [X] allow execution of restricted list of programs via \write18
+   [X] create all format files
+   [X] install macro/font doc tree
+   [X] install macro/font source tree
+   [ ] create symlinks to standard directories
 
-以下の画面で「シンボリックリンクを標準ディレクトリに作成」にチェックを入れてから「インストール」をクリックする。
+ <V> set up for portable installation
 
-![install2.png](fig/install2.png)
+Actions:
+ <I> start installation to hard disk
+ <P> save installation profile to 'texlive.profile' and exit
+ <Q> quit
+
+Enter command: 
+```
+
+ここでは`O`(大文字のオー)を入力してエンターを押す。するとオプションのカスタマイズ画面になる。
+
+```txt
+===============================================================================
+Options customization:
+
+ <P> use letter size instead of A4 by default: [ ]
+ <E> execution of restricted list of programs: [X]
+ <F> create all format files:                  [X]
+ <D> install font/macro doc tree:              [X]
+ <S> install font/macro source tree:           [X]
+ <L> create symlinks in standard directories:  [ ]
+            binaries to: 
+            manpages to: 
+                info to: 
+
+Actions: (disk space required: 7416 MB)
+ <R> return to main menu
+ <Q> quit
+
+Enter command: 
+```
+
+ここで、`L`を入力すると、シンボリックリンクを作成する場所を聞かれるので、全てデフォルトのままエンターを押す。
+
+```txt
+New value for binary directory [/usr/local/bin]:  #エンターを入力
+New value for man directory    [/usr/local/man]:  #エンターを入力
+New value for info directory   [/usr/local/info]: #エンターを入力
+```
+
+すると、オプションのカスタマイズ画面に戻るので、ここで`R`を入力してメイン画面に戻る。
+
+```txt
+ <O> options:
+   [ ] use letter size instead of A4 by default
+   [X] allow execution of restricted list of programs via \write18
+   [X] create all format files
+   [X] install macro/font doc tree
+   [X] install macro/font source tree
+   [X] create symlinks to standard directories
+
+ <V> set up for portable installation
+
+Actions:
+ <I> start installation to hard disk
+ <P> save installation profile to 'texlive.profile' and exit
+ <Q> quit
+
+Enter command: 
+```
+
+こんな画面になり、「create symlinks to standard directories」にチェックが入っていることを確認して、`I`を入力してインストールを開始する。
 
 フルインストールに **30分ほど** かかるので、時間に余裕がある時に行うこと。
-
-以下の画面が出てきたら「閉じる」をクリックして終了して良い。
-
-![install3.png](fig/install3.png)
 
 インストール完了後、`latex -v`と`platex -v`を実行し、それぞれ以下のような表示がされれば正しくインストールされている。
 
