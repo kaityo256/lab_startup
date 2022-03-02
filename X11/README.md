@@ -1,16 +1,20 @@
-# X Window Systemのインストール
+# X Window Systemのセットアップ
 
 X Window System、通称「X11」は、Unix系のOS等でGUIを提供するためのシステムだ。MacやWindowsは独自のWindowシステムを持っているが、例えば研究室
 
-ローカルにインストールして利用するのが良いが、とりあえずは研究室サーバに接続して利用することにしよう。そのためにはX Window Systemのインストールが必要だ。
+ローカルにインストールして利用するのが良いが、とりあえずは研究室サーバに接続して利用することにしよう。そのためにはX Window Systemのインストールが必要だ。ローカルへのインストールが終わったら、[研究室サーバへの接続](#server)まで確認すること。
 
-## Macの場合
+## X Window Systemのインストール
 
-まず、XQuartzをインストールする。[https://www.xquartz.org/](https://www.xquartz.org/)から、`XQuartz-2.8.0_rc4.dmg`をダウンロードし、インストールする。
+### Macの場合
 
-XQuartzは「アプリケーション」→「ユーティリティ」にインストールされるので起動する。「xterm」というウィンドウが開けばインストールできてる。
+まず、XQuartzをインストールする。[https://www.xquartz.org/](https://www.xquartz.org/)から、最新版のXQuartz(2021年4月25日時点では`XQuartz-2.8.1.dmg`)をダウンロードし、dmgファイルを開いてXQuartz.pkgを実行してインストールする。実行後にログアウトが要求された場合は、一度ログアウトすること。
 
-この状態で一度ログアウトし、ログインしなおして、XQuartzを実行してからターミナルで
+XQuartzを起動する。Finderから「アプリケーション」→「ユーティリティ」で開くか、Cmd+SpaceのSpotlight検索から「XQuartz」を探して実行する。
+
+にインストールされるので起動する。「xterm」というウィンドウが開けばインストールできてる。実行できなければ、一度ログアウトしてログインしなおし、再度XQuartzを実行すること。
+
+XQuartzの実行中にターミナル(xtermでなくても良い)で
 
 ```sh
 xeyes
@@ -19,7 +23,6 @@ xeyes
 を実行せよ。以下のような、マウスを追いかける目玉が表示されたら成功だ。
 
 ![xeyes](fig/xeyes.png)
-
 
 もしうまく行かなかった場合、以下を試せ。
 
@@ -33,7 +36,7 @@ defaults write org.macosforge.xquartz.X11 enable_iglx -bool true
 
 を実行しておく。以上の変更を適用するためにXQuartzを再起動すること。
 
-## Windowsの準備
+### Windowsの準備
 
 [https://sourceforge.net/projects/vcxsrv/](https://sourceforge.net/projects/vcxsrv/)から、VcXsrvをインストールする。
 
@@ -108,6 +111,7 @@ xeyes
 
 ![xeyes](fig/xeyes.png)
 
+<a id="server"></a>
 ## 研究室サーバへの接続
 
 X Window Systemは、リモートのGUIをローカルで実行することができる(リモートデスクトップのようなもの)。X Window Systemが起動した状態で、研究室サーバにsshで接続せよ。

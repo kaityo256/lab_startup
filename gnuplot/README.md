@@ -4,11 +4,37 @@
 
 gnuplotは長い歴史を持つツールであり、非常に多機能なので、その全ての機能を覚えるのは難しい。以下では必要最低限の使い方だけを覚え、後は必要に応じて機能を調べていくと良い。
 
+## インストール
+
+ハンズオンでは研究室サーバを用いるが、ローカルでも使えるようにしておくと良い。
+
+### Mac
+
+brewでインストールする。
+
+```sh
+brew install gnuplot
+```
+
+### Windows
+
+WSL2のUbuntuにgnuplotを入れる。
+
+```sh
+sudo apt-get install -y gnuplot
+```
+
 ## 基本的な使い方
 
 ### 関数のプロット
 
-まずはgnuplotを起動しよう。研究室サーバにログインし、`gnuplot`を実行せよ。
+まずはgnuplotを起動しよう。研究室サーバにログインする。ローカルPCでX Window System (MacならXQuartz、WindowsならVcXsrv)が起動した状態で、
+
+```sh
+ssh username@servername.hogehoge.ac.jp -AY
+```
+
+と`-AY`オプション付きでssh接続せよ。接続できたら`gnuplot`を実行せよ。
 
 以下のような表示がされ、入力待ちとなる。
 

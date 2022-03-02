@@ -9,13 +9,13 @@
 「上から順」にセットアップしていくことを想定しており、下の物は上のセットアップが終わっていることが前提となっているものがある。
 
 * [WSL2のセットアップ(Windowsのみ)](wsl2/README.md)
+* [X Window Systemのセットアップ](X11/README.md)
+* [SSHエージェント転送の設定](ssh/README.md)
 * [Pythonのインストール](python/README.md)
 * [VSCodeのインストール](vscode/README.md)
 * [LAMMPSとVMDのインストール](lammps/README.md)
 * [LastPassと多要素認証](lastpass/README.md)
 * [Gitのインストールと動作の確認](git/README.md)
-* [SSHエージェント転送の設定](ssh/README.md)
-* [X Window Systemのインストール](X11/README.md)
 * [GitHubのアカウント作成と基本的な操作](github/README.md)
 
 ## 開発編
