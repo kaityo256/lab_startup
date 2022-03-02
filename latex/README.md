@@ -170,7 +170,7 @@ pdflatex test.tex
 
 以下の内容の`testj.tex`を作成せよ。
 
-```tex4
+```tex
 \documentclass{jarticle}
 \begin{document}
 
@@ -234,7 +234,10 @@ latexmk testj
 
 次にVS CodeからTeXをコンパイル、プレビューできるようにしよう。まず、拡張機能「LaTeX Workshop」をインストールせよ。拡張機能のメニューを開き、「latex」で検索するとLaTeX Workshopが表示されるはずなので、「インストール」をクリックする。
 
-「Code」メニューの「基本設定」→「設定」から設定メニューを開く。そこで「latex.tools」と検索すると「Latex-workshop › Latex: Tools」が見つかるので、その下にある「setting.jsonで編集」をクリック。
+![latex-tools](fig/latex_workshop.png)
+
+
+「Code」メニューの「基本設定」→「設定」から設定メニューを開く。そこで「latex.tools」と検索すると「Latex-workshop › Latex: Tools」が見つかる(見つからない場合はVSCodeを再起動せよ)ので、その下にある「setting.jsonで編集」をクリック。
 
 ![latex-tools](fig/latex_tools.png)
 
@@ -268,6 +271,34 @@ latexmk testj
         },
 ```
 
+もし、`latex-workshop.latex.tools`の設定が見つからなかった場合は、以下を追加する。
+
+```json
+    "latex-workshop.latex.tools": [
+        {
+            "name": "latexmk",
+            "command": "latexmk",
+            "env": {}
+        }
+    ]
+```
+
+JSONはカンマ区切りなので、他に項目がある場合はカンマを入れるのを忘れないこと。例えば、フォントサイズなどを指定していたら、`settings.json`は以下のようになる。
+
+```json
+{
+    "security.workspace.trust.enabled": false,
+    "editor.fontSize": 16,
+    "latex-workshop.latex.tools": [
+        {
+            "name": "latexmk",
+            "command": "latexmk",
+            "env": {}
+        }
+    ]
+}
+```
+
 この状態で、この状態で、先程作った`testj.tex`をVS Codeで開こう。TeXファイルを開いた状態で「保存」をするとビルドが走る。なお、Macでは保存時に「Formatting failed. Please refer to LaTeX Workshop Output for details.」というエラーが出ることがある。その場合はターミナルで
 
 ```sh
@@ -278,9 +309,13 @@ cpan install Log::Log4perl YAML/Tiny.pm File/HomeDir.pm
 
 無事にビルドが走ったら、PDFをプレビューをしよう。コマンドパレットから「LaTeX Workshop: View LaTeX PDF file」を選ぶか、WindowsならCtrl+Alt+V，MacならCmd+alt+Vで、右側にPDFが表示される。
 
-以後、TeXソースファイルを修正し、保存するたびにプレビューが更新される。
+以後、TeXソースファイルを修正し、保存するたびにプレビューが更新される。ただし、保存のたびにビルドが走る設定では、エラーが出た時に面倒なので、自動ビルドは外すことを推奨する。自動ビルドを外すには、「設定」で`autobuild.run`で検索して出てくる「Latex-workshop › Latex › Auto Build: Run」のドロップダウンリストを`onFileChange`から`never`に変更せよ。
 
-もし保存時にビルドが走らなければ、「設定」で「autobuild.run」で検索して出てくる「Latex-workshop › Latex › Auto Build: Run」のドロップダウンリストを「never」から「onFileChange」に変更せよ。
+![autobuild](fig/autobuild.png)
+
+以後、ビルドしたいタイミングで、ターミナルから`latexmk`を実行するか、VSCodeのLaTeX Workshop拡張機能の「Build LaTeX project」を実行すると良い。
+
+![build project](fig/build_project.png)
 
 ## LaTeXの基本
 
