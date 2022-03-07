@@ -61,17 +61,48 @@ defaults write org.macosforge.xquartz.X11 enable_iglx -bool true
 ![fig/xlaunch4.png](fig/xlaunch4.png)
 
 
-その後、Ubuntuのターミナルを開いて、`.bashrc`ファイルを開く。
+その後、Ubuntuのターミナルを開いて、DISPLAY環境変数を設定する。まずは`xeyes`をインストールしておこう。
 
 ```sh
-vim .bashrc
+sudo apt install x11-apps
 ```
 
-そして、最後に以下の行を記入する。入力は面倒であろうから、以下をコピペして良い。
+次に、IPアドレスを確認する。
+
+```sh
+hostname | xargs dig +short
+```
+
+環境によって異なるが、例えば
+
+```txt
+172.29.80.1
+192.167.11.4
+```
+
+などと数字が現れたはずだ。このうち、192の方を使うなら、
+
+```sh
+export DISPLAY=192.167.11.4:0.0
+```
+
+を実行せよ。この状態で、
+
+```sh
+xeyes
+```
+
+を実行し、以下のような、マウスを追いかける目玉が表示されたら成功だ。
+
+![xeyes](fig/xeyes.png)
+
+このIPアドレスは再起動ごとに異なるため、再設定は面倒だ。そこで、`.bashrc`に以下のような行を追加せよ。
 
 ```sh
 export DISPLAY=`hostname | xargs dig +short | grep 192.168.11`:0.0
 ```
+
+これは`hostname`を実行した結果を`dig +short`に食わせてIPアドレスを調べ、でてきたIPアドレスを使って`DISPLAY`環境変数を設定する、という意味だ。なお、IPアドレスが`192.168.0.?`だったり、`192.168.12.?`だったりした場合は、grepの項目を適切に設定しないといけない。
 
 編集が終わったら以下で再読み込みをしよう。これは今回のみで、次回の起動からは不要だ。
 
@@ -92,24 +123,6 @@ source .bashrc
 ![defender2.png](fig/defender2.png)
 
 これでWSLからVcXsrvへの接続が許可されるはずだ。
-
-## 接続とX Window Systemの確認
-
-研究室のサーバにsshで接続せよ。ただし、その際に `-AY`オプションをつけること。
-
-```sh
-ssh username@servername.hogehoge.ac.jp -AY
-```
-
-接続出来たら、X Window Systemが使えることを確認しよう(俗に「Xを飛ばす」と言う)。以下を実行せよ。
-
-```sh
-xeyes
-```
-
-以下のような、マウスを追いかける目玉が表示されたら成功だ。
-
-![xeyes](fig/xeyes.png)
 
 <a id="server"></a>
 ## 研究室サーバへの接続
