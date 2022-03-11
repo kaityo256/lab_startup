@@ -16,28 +16,6 @@ Visual Studio Code、通称VSCodeは、Microsoftが中心となって開発を�
 
 インストール後、VSCodeを起動する。
 
-### Python環境のセットアップ
-
-VSCodeを起動する。例えばWindows 10なら左下の検索窓から「Visual Studio Code」として検索すれば見つかるはず。
-
-VSCodeの左のメニューからExtentionsのアイコン(ブロックのマーク)をクリックし、現れた検索窓に「python」と入力、現れた「Python extension for Visual Studio Code」の「install」ボタンを押して、インストールする。「再読み込みが必要です」というボタンに変わったら、クリックして再読み込みをする。
-
-Pythonのプラグインがインストールされたら、「ファイル」から「新規作成」を選ぶ(もしくはCtrl+Nを押す)。「Untitled-1」のようなファイル名でウィンドウが開かれるため、「保存(Ctrl+S)」を選んで、適当な場所に`test.py`という名前で保存する。
-
-この時、先にPython環境が正しくインストールされていれば、エディタの左下に「Python 3.8.5. 64-bit」といった表示が現れるはずだ。
-
-Pythonの実行環境が選ばれた状態で
-
-```py
-print("Hello Python")
-```
-
-と入力し、右上にある三角のマーク(ターミナルでPythonを実行)をクリックせよ。
-
-![実行ボタン](fig/vscode_python_execute.png)
-
-下にウィンドウが開いて実行結果(`Hello Python`)が表示されるはずだ。
-
 ### WSLとの連携
 
 Windowsマシンでは、原則としてWindows Subsystem for Linux (WSL)上で作業を行う。VSCodeは、WindowsでもWSL上でもシームレスに利用できるが、そのためにプラグインを入れておく必要がある。
@@ -70,9 +48,23 @@ code .
 
 VSCodeを起動する。「アプリケーション」から「Visual Studio Code」を起動する。今後よく使うので、Dockに追加しておこう。
 
-VSCodeの左のメニューからExtentionsのアイコン(ブロックのマーク)をクリックし、現れた検索窓に「python」と入力、現れた「Python extension for Visual Studio Code」の「install」ボタンを押して、インストールする。「再読み込みが必要です」というボタンに変わったら、クリックして再読み込みをする。
+ファイルを開く時、メニューから探しても良いが、ターミナルから
 
-Pythonのプラグインがインストールされたら、「ファイル」から「新規作成」を選ぶ(もしくはCtrl+Nを押す)。「Untitled-1」のようなファイル名でウィンドウが開かれるため、「保存(Ctrl+S)」を選んで、適当な場所に`test.py`という名前で保存する。
+```sh
+code filename
+```
+
+として開けるようにしておくと便利だ。この機能を使うにはコマンドパレット(Shift+Command+P)を開いて「shell」と入力すると出てくる「Shell Command: Install 'code' command in PATH」を実行すれば良い。
+
+## Python環境のセットアップ(Windows/Mac共通)
+
+適当なディレクトリで
+
+```sh
+code test.py
+```
+
+を実行せよ。新規ファイルとして`test.py`が開かれるはずだ。その状態で、VSCodeの左のメニューからExtentionsのアイコン(ブロックのマーク)をクリックし、現れた検索窓に「python」と入力、現れた「Python extension for Visual Studio Code」の「install」ボタンを押して、インストールする。「再読み込みが必要です」というボタンに変わったら、クリックして再読み込みをする。
 
 この時、先にPython環境が正しくインストールされていれば、エディタの左下に「Python 3.7.6. 64-bit ('base':conda)」といった表示が現れるはずだ。
 

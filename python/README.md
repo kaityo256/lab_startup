@@ -17,7 +17,7 @@ sudo apt intall python3
 
 また、後で必要なパッケージも入れておこう。
 
-```shsudo -
+```sh
 python3 -m pip install numpy matplotlib
 ```
 
@@ -29,7 +29,7 @@ Pythonの開発ではJupyter Notebookを使うと便利だ。以下でインス�
 sudo apt install -y jupyter-notebook
 ```
 
-Jupyter Notebookはブラウザ上でPythonを実行する環境であり、普通に実行すると字度うでブラウザが開かれるが、WSL2上で使うには少々工夫がいる。まず、Jupyter Notebookを、ブラウザなしモードで起動する。
+Jupyter Notebookはブラウザ上でPythonを実行する環境であり、普通に実行すると自動でブラウザが開かれるが、WSL上で使うには少々工夫がいる。まず、Jupyter Notebookを、ブラウザなしモードで起動する。
 
 ```sh
 jupyter notebook --no-browser
@@ -45,7 +45,7 @@ jupyter notebook --no-browser
      or http://127.0.0.1:8888/?token=e4a7e2efbf7cf61ceb4d11652e8f538f67bc11b9aacdde54
 ```
 
-このうち、`http://localhost:8888`ではじまる行をブラウザのURLにコピペするとJupyter Notebookが開かれるので、右上の「New」ボタンから「Python 3」を選ぶ。
+このうち、`http://localhost:8888`ではじまる行(`token=...`を含む)をブラウザのURLにコピペするとJupyter Notebookが開かれるので、右上の「New」ボタンから「Python 3」を選ぶ。
 
 ![newbook2.png](fig/newbook2.png)
 
@@ -158,19 +158,3 @@ print("Hello Python")
 セルの真下に「Hello Python」と表示されて、次のセルが入力待ちになれば成功である。これでPythonを実行する環境は整った。
 
 最初に起動した画面の「Quit」を選ぶとJupyter Notebookは終了する。
-
-## VSCodeの設定 (Windows/Mac共通)
-
-VSCodeを開き、左の歯車マークをクリック、もしくは「表示」メニューをクリックし、出てきたメニューから「拡張機能」を選ぶ。
-
-検索窓に「Python」と入力すると、MicrosoftのPythonプラグインが表示されるのでインストールする。
-
-その後、`test.py`というファイルを新規作成する。保存時に「Pythonインタプリタが見つからない」と言われたら、適宜選ぶこと。正しくプラグインがインストールされていれば、右上に緑色の三角形をした実行ボタンが表示されているはず。
-
-例えば
-
-```py
-print("Hello Python")
-```
-
-と入力し、実行ボタンをクリックすれば、下に画面が開き、`Hello Python`と表示されるはずだ。これでVS CodeからPythonを実行する環境が整った。
