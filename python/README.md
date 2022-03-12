@@ -26,7 +26,8 @@ python3 -m pip install numpy matplotlib
 Pythonの開発ではJupyter Notebookを使うと便利だ。以下でインストールしよう。
 
 ```sh
-sudo apt install -y jupyter-notebook
+python3 -m pip install --upgrade pip
+python3 -m pip install jupyter
 ```
 
 Jupyter Notebookはブラウザ上でPythonを実行する環境であり、普通に実行すると自動でブラウザが開かれるが、WSL上で使うには少々工夫がいる。まず、Jupyter Notebookを、ブラウザなしモードで起動する。
@@ -119,6 +120,7 @@ sudo xcodebuild -license accept
 ```sh
 brew update --force && brew upgrade
 ```
+
 ### Python3のインストール
 
 まずはPython3をインストールしよう。
@@ -133,7 +135,14 @@ Python3がインストールされたら、必要なパッケージをいれて�
 python3 -m pip install numpy matplotlib
 ```
 
-#### Jupyter Notebookのテスト
+### Jupyter Notebookのテスト
+
+次に、Jupyter Notebookをインストールしよう。
+
+```sh
+python3 -m pip install --upgrade pip
+python3 -m pip install jupyter
+```
 
 ターミナルから以下を実行せよ。
 
