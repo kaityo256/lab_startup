@@ -3,6 +3,10 @@
 ## ガイダンス
 
 * [研究室ガイダンス](https://speakerdeck.com/kaityo256/welcome-to-lab)
+* [論文の読み方](https://speakerdeck.com/kaityo256/how-to-survey)
+* [論文紹介のやり方](https://speakerdeck.com/kaityo256/how-to-review)
+* [輪講の準備の仕方](https://speakerdeck.com/kaityo256/book-reading)
+* [研究発表の仕方](https://speakerdeck.com/kaityo256/happy-presentation)
 
 ## セットアップ編
 
