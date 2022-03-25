@@ -603,7 +603,7 @@ $$
 \end{aligned}
 $$
 
-行列は`patrix`環境を使う。
+行列は`pmatrix`環境を使う。
 
 ```tex
 \begin{pmatrix}
@@ -618,6 +618,15 @@ a & b\\
 c & d
 \end{pmatrix}
 $$
+
+`bmatrix`を使うと角括弧になる。
+
+```tex
+\begin{bmatrix}
+a & b\\
+c & d
+\end{bmatrix}
+```
 
 $$
 \begin{bmatrix}
