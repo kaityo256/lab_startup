@@ -10,6 +10,8 @@
     * 事前にX Window SystemのインストールとサーバからXが飛ぶ動作確認
 * 3/14 MarkdownとLaTeX記法ハンズオン
     * 事前にVSCodeのインストールとPython環境のセットアップ
+* 3/21 Gitハンズオン
+    * 事前にbrewとaptでgitのみインストールしておいてもらう
 
 ## 2021年度
 
