@@ -361,7 +361,7 @@ GitHubを使う場合、
 次にローカルのリポジトリで、このissueに対応するブランチを作成する。ブランチの命名規則には様々な流儀があるが、先ほどつけたラベル、issue番号、そして修正内容を含めるのが一般的だ。ここではディレクトリ型の命名規則を採用しよう。ディレクトリ型の命名規則では「ラベル/issue番号/内容」という名前のブランチを作成する。今回、「enhancement」というラベルをつけたが、これは「新しい機能(feature)を追加する」という意味なので、「feat」とする。あとはissue番号1番、READMEの修正なので、全てまとめて`feat/1/README`というブランチを作ることにする。
 
 ```sh
-$ git co -b feat/1/README
+$ git switch -c feat/1/README
 Switched to a new branch 'feat/1/README'
 ```
 
@@ -464,7 +464,7 @@ issueが作られたら「Projects」タブから「カンバン」を選んで�
 「In progress」とは「作業中」の意味だ。タスクをここに移動したら、対応するブランチを作ろう。ラベルがドキュメント、issue番号が2番、内容がREADMEの修正なので、`doc/2/README`としよう。ターミナルで以下を実行せよ。
 
 ```sh
-$ git co -b doc/2/README
+$ git switch -c doc/2/README
 Switched to a new branch 'doc/2/README'
 ```
 

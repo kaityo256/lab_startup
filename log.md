@@ -18,6 +18,8 @@
     * LastPassのインストールと二段階認証
 * 4/18
     * GitHubの説明と、リポジトリの作成とclone/push
+* 4/25
+    * GitHubのissueとKanban
 
 ## 2021年度
 
