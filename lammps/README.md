@@ -6,38 +6,32 @@ Lammps (Large-scale Atomic/Molecular Massively Parallel Simulator)は、サン�
 
 ### Windows
 
-WSLで以下を実行する([参考](https://qiita.com/tkmtSo/items/34a0098cb967f2a9fdfe))。
+WSLのターミナルで以下を実行する。
 
-まずは必要なパッケージをインストールしよう。MPI版はとりあえず作らないが、後のために念の為にMPIライブラリも入れておく。
+まずはリポジトリを追加する。
 
 ```sh
-sudo apt install -y build-essential libopenmpi-dev
+$ sudo add-apt-repository ppa:gladky-anton/lammps
+$ sudo add-apt-repository ppa:openkim/latest
 ```
 
-次に、Lammpsをダウンロード、インストールする。どのディレクトリでも良いが、例えばbuildというディレクトリを作って、そこにクローンする。
+それぞれ「リポジトリを追加して良いか？」と聞いてくるので、エンターキーを押そう。
+
+リポジトリが追加されたら、パッケージをアップデートしてからLAMMPSをインストールする。
 
 ```sh
-mkdir build
-cd build
-git clone git://github.com/lammps/lammps.git
+$ sudo apt-get update
+$ sudo apt-get install lammps-stable
 ```
 
-クローンしたら、その中に入ってビルドしよう。とりあえずはシリアル版(非並列版)を作る。
+これにより、`lmp_stable`という実行バイナリがインストールされる。バージョンを確認しよう。
 
 ```sh
-cd lammps
-cd src
-make serial
-```
-
-ビルドが成功したら、`lmp_serial`というプログラムができているはずだ。実行してみよう。
-
-```sh
-$ echo info | ./lmp_serial  
-LAMMPS (30 Oct 2021)
+$ echo info | lmp_stable
+LAMMPS (3 Mar 2020)
 
 Info-Info-Info-Info-Info-Info-Info-Info-Info-Info-Info
-Printed on Tue Mar 30 16:27:23 2021
+Printed on Mon May  2 15:12:31 2022
 
 
 Info-Info-Info-Info-Info-Info-Info-Info-Info-Info-Info
@@ -45,13 +39,7 @@ Info-Info-Info-Info-Info-Info-Info-Info-Info-Info-Info
 Total wall time: 0:00:00
 ```
 
-上記のようなバージョン情報が表示されれば問題なくインストールされている。正しくビルドできていたら、`lmp_serial`をパスの通った場所にコピーしておこう。
-
-```sh
-sudo cp lmp_serial /usr/local/bin
-```
-
-上記を実行するとパスワードが求められるので入力すること。
+以下、`lmp_serial`を`lmp_stable`と読み替えて実行すること。
 
 ### Mac
 
@@ -80,19 +68,18 @@ Total wall time: 0:00:00
 
 ## サンプルコードの実行
 
-インストールが完了したら、サンプルコードを実行してみよう。
+インストールが完了したら、サンプルコードを実行してみよう。サンプルファイルをgitでcloneする。
 
-### Windows
-
-Windowsの場合は、先程ビルドのためにcloneしたファイルの中にサンプルコードがある。上記の指示に従っていれば
 
 ```sh
-cd ~/build/lammps/example/melt
+cd github
+git clone --depth 1 https://github.com/lammps/lammps.git
+cd lammps/example/melt
 ```
 
 で目的の場所にいけるはず。異なるディレクトリにクローンした場合は適宜読み替えること。
 
-この状態で、以下を実行しよう。
+この状態で、以下を実行しよう(Windowsの場合は`lmp_stable`)。
 
 ```sh
 lmp_serial < in.melt
@@ -109,36 +96,6 @@ Total wall time: 0:00:00
 ```
 
 といった表示が出れば実行は成功だ。
-
-### Mac
-
-ターミナルで以下を実行せよ。
-
-```sh
-cd
-mkdir lammps
-cd lammps
-cp -r /usr/local/Cellar/lammps/2020-10-29/share/lammps/examples/melt .
-cd melt
-```
-
-この状態で、以下を実行しよう。
-
-```sh
-lmp_serial < in.melt 
-```
-
-最後に
-
-```txt
-Total # of neighbors = 151513
-Ave neighs/atom = 37.8783
-Neighbor list builds = 12
-Dangerous builds not checked
-Total wall time: 0:00:00
-```
-
-と表示されれば成功である。
 
 ## in.meltの修正
 
@@ -169,6 +126,16 @@ lmp_serial < in.melt
 ```
 
 すると、今度は同じフォルダに`dump.melt`が作成されたはずだ。`ls`で確認せよ。これは原子の起動を保存したファイルで、これを後からVMDで読み込んで可視化する。
+
+### 研究室サーバで実行する場合
+
+以下を実行せよ。
+
+```sh
+export PATH=$PATH:/home/apps/lammps
+```
+
+これにより、`lmp_serial`が使えるようになる。
 
 ## VMDのインストール
 
