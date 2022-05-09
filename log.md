@@ -17,6 +17,7 @@
 * 4/18 GitHubの説明と、リポジトリの作成とclone/push
 * 4/25 GitHubのissueとKanban
 * 5/2 LAMMPSとVMDのインストール
+* 5/9 GitHubのフォークとLAMMPS
 
 ## 2021年度
 
