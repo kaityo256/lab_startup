@@ -94,11 +94,17 @@ log.lammps
 vmd.state
 ```
 
-ここで`*.atoms`などと`*`マークがあるのは「ワイルドカード」と呼ばれる指定方法だ。この場合は「拡張子が`atoms`のファイル全て」を意味しており、`collision.atoms`はそれにマッチするために無視される。同様に今後作成される`collision.dump`や`log.lammps`などもGitから無視される。
+ここで`*.atoms`などと`*`マークがあるのは「ワイルドカード」と呼ばれる指定方法だ。この場合は「拡張子が`atoms`のファイル全て」を意味しており、`collision.atoms`はそれにマッチするために無視される。同様に今後作成される`collision.lammpstrj`や`log.lammps`などもGitから無視される。
 
 ## LAMMPSの実行
 
-いま、リポジトリには`collision.input`と`collision.atoms`があるはずだ。前者がLAMMPSでシミュレーションをするためのインプットファイルで、後者がシステムサイズや原子の位置、初速を記述するファイルである。これらをLAMMPSにい入力して実行してみよう。
+いま、リポジトリには`collision.input`と`collision.atoms`があるはずだ。前者がLAMMPSでシミュレーションをするためのインプットファイルで、後者がシステムサイズや原子の位置、初速を記述するファイルである。これらをLAMMPSに入力して実行してみよう。
+
+研究室サーバで実行する場合は、以下を実行してパスを通しておくこと。
+
+```sh
+export PATH=$PATH:/home/apps/lammps
+```
 
 ターミナルから
 
@@ -106,13 +112,15 @@ vmd.state
 lmp_serial < collision.input
 ```
 
-として実行しよう。一分程度で実行が終わるはずである。同じディレクトリに`collision.dump`が生成されていれば正しく実行されている。
+として実行しよう。一分程度で実行が終わるはずである。同じディレクトリに`collision.lammpstrj`が生成されていれば正しく実行されている。
 
 ## VMDによる可視化
 
-先ほど生成された`collision.dump`をVMDで読み込んでみよう。
+先ほど生成された`collision.lammpstrj`をVMDで読み込んでみよう。
 
-VMDを実行し、「VMD Main」の「File」から「New Molecule」を選び、「Browse」を押して先ほどの`collision.dump`を選ぶ。次にVMD Mainの「Graphics」の「Representation」を選び、「Drawing Method」を「VDW」にすると、画面が玉に変わる。その状態で「Sphere Scale」を適切に設定しよう。おそらく0.5程度が適切と思われる。
+VMDを実行し、「VMD Main」の「File」から「New Molecule」を選び、「Browse」を押して先ほどの`collision.lammpstrj`を選ぶ。VMDは複数のファイルタイプに対応しているが、拡張子を`lammpstrj`にしておくと、自動的にLAMMPS Trajectoryを選んでくれる。
+
+次にVMD Mainの「Graphics」の「Representation」を選び、「Drawing Method」を「VDW」にすると、画面が玉に変わる。その状態で「Sphere Scale」を適切に設定しよう。おそらく0.5程度が適切と思われる。
 
 設定終了したら、VMD Mainの右下にあるアニメーションボタンを押してみよう。二つの液滴が衝突し、合体する様子が見られるはずである。
 
@@ -144,7 +152,7 @@ neigh_modify every 20 delay 0 check no
 
 fix 1 all nve
 
-dump id all atom 100 collision.dump
+dump id all atom 100 collision.lammpstrj
 
 run 20000
 ```
@@ -189,10 +197,10 @@ fix 1 all nve # タイプ1の原子全てをNVEアンサンブルとする
 次が、ダンプファイル(スナップショット)を出力する設定だ。
 
 ```sh
-dump id all atom 100 collision.dump
+dump id all atom 100 collision.lammpstrj
 ```
 
-ここでは全ての原子について、`collision.dump`というファイルに、100ステップごとにスナップショットを出力している。
+ここでは全ての原子について、`collision.lammpstrj`というファイルに、100ステップごとにスナップショットを出力している。
 
 最後がシミュレーションの実行だ。
 
@@ -524,31 +532,31 @@ Movie Settingsで、「Trajectory」を選び、さらに「Delete image files�
 
 次に、Working directoryを指定する。Macの場合は`lammps_collision`をクローンしたディレクトリを、Windowsの場合は、デスクトップに適当なフォルダ(例えばtest)を作って、そこに指定すると良いだろう。
 
-`Name of movie`は、連番ファイル名の基本の名前となる。なんでも良いが、ここでは`test`としておく。「Format」はなんでも良いが、例えばMPEG-1(VideoMach)としておく。
+`Name of movie`は、連番ファイル名の基本の名前となる。なんでも良いが、ここでは`test`としておく。「Format」はMPEG-1(ppmtpmpeg)としておく。
 
-以上の設定をした上で「Make Movie」をクリックすると、Working Directoryに指定したディレクトリに`test.00012.bmp`といったファイルが大量に作成される(Macの場合はppmファイル)。Macの場合はそのままmpgファイルができるが、Windowsの場合は最後に「videomach.exeが見つからない」というエラーが表示されるが「いいえ」を押して、次に出るダイアログもOKを押して終了してかまわない。
+以上の設定をした上で「Make Movie」をクリックすると、Working Directoryに指定したディレクトリに`test.00012.ppm`といったファイルが大量に作成される。
 
 ![vmd_animation3](fig/vmd_animation3.png)
 
-この状態で、Working Directoryに指定したディレクトリに大量のBMPファイルがあるはずである。
+この状態で、Working Directoryに指定したディレクトリに大量のppmファイルがあるはずである。
 
 ![vmd_animation4](fig/vmd_animation4.png)
 
-このBMPファイルからアニメーションGIFを作るには、ターミナルからBMPファイルがあるディレクトリで以下を実行する。
-
-```sh
-ffmpeg -i test.%05d.bmp collision.gif
-```
-
-これは「test.(五桁の整数の連番).bmpというファイルから、collision.gifを作れ」という意味だ。
-
-Macの場合は、
+このppmファイルからアニメーションGIFを作るには、ターミナルからppmファイルがあるディレクトリで以下を実行する。
 
 ```sh
 ffmpeg -i test.%05d.ppm collision.gif
 ```
 
-とせよ。できたファイルは、Windowsならダブルクリック、Macならターミナルから
+これは「test.(五桁の整数の連番).ppmというファイルから、collision.gifを作れ」という意味だ。
+
+とせよ。できたファイルは、Windowsならダブルクリック、Linuxなら
+
+```sh
+eog collision.gif
+```
+
+Macなら
 
 ```sh
 qlmanage -p collision.gif 
@@ -559,7 +567,7 @@ qlmanage -p collision.gif
 また、WindowsでMPEGファイルを作りたければ、
 
 ```sh
-ffmpeg -i test.%05d.bmp collision.mpg
+ffmpeg -i test.%05d.ppm collision.mpg
 ```
 
 とすればよい。同様に、連番のイメージファイルさえ作れば、FFMPEGを用いてアニメーションGIFでもMPEGでも作れるので使い方を覚えておきたい。
