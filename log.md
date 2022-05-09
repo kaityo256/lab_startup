@@ -12,14 +12,11 @@
     * 事前にVSCodeのインストールとPython環境のセットアップ
 * 3/21 Gitハンズオン
     * 事前にbrewとaptでgitのみインストールしておいてもらう
-* 4/7
-    * 物性研スパコンハンズオン
-* 4/11
-    * LastPassのインストールと二段階認証
-* 4/18
-    * GitHubの説明と、リポジトリの作成とclone/push
-* 4/25
-    * GitHubのissueとKanban
+* 4/7 物性研スパコンハンズオン
+* 4/11 LastPassのインストールと二段階認証
+* 4/18 GitHubの説明と、リポジトリの作成とclone/push
+* 4/25 GitHubのissueとKanban
+* 5/2 LAMMPSとVMDのインストール
 
 ## 2021年度
 
