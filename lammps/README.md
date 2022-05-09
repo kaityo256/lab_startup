@@ -74,7 +74,7 @@ Total wall time: 0:00:00
 ```sh
 cd github
 git clone --depth 1 https://github.com/lammps/lammps.git
-cd lammps/example/melt
+cd lammps/examples/melt
 ```
 
 で目的の場所にいけるはず。異なるディレクトリにクローンした場合は適宜読み替えること。
