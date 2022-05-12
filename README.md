@@ -35,6 +35,7 @@
 * [バッチシステムの使い方](pbs/README.md)
 * [簡単なSIMD化](simd_tutorial/README.md)
 * [Markdown記法とLaTeX記法](mdtex/README.md)
+* [cronの使い方](cron/README.md)
 
 ## 執筆編
 
