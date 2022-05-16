@@ -135,3 +135,126 @@ GitHub Pagesの「Source」のところが「None」になっているので、�
 ![result](fig/result.png)
 
 上記の例では、サンダルと判定された。
+
+## TensorFlowのインストールに失敗する場合
+
+手順で
+
+```sh
+python3 -m pip install tensorflow tensorflowjs
+```
+
+を実行したときに、
+
+```txt
+no matching distribution found for tensorflow
+```
+
+と出て実行できないことがある。これはPythonのバージョンが新し過ぎて、対応するパッケージを見つけられない時に起きる。この時、Pythonのバージョンを落とすと実行できる可能性がある。
+
+まず、現在仮想環境に入っている場合は外に出よう。
+
+```sh
+deactivate
+```
+
+現在のPythonのバージョンを確認しよう。
+
+```sh
+$ python3 -V 
+Python 3.9.12
+```
+
+今は3.9.12が入っている。
+
+複数のPythonのバージョンを管理するため、pyenvをインストールする。
+
+```sh
+brew install pyenv
+```
+
+インストールが済んだら、以下の行をホームディレクトリの`.bashrc`の最後に追記する。
+
+```sh
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+```
+
+その後、`.bashrc`を再読み込みする。
+
+```sh
+source .bashrc
+```
+
+次に、pyenv経由でPython 3.8.10をインストールする。
+
+```sh
+pyenv install 3.8.10
+```
+
+インストールできたことを確認しよう。
+
+```sh
+$ pyenv versions
+* system (set by /Users/username/.pyenv/version)
+  3.8.10
+```
+
+3.8.10が追加されていればインストールされている。
+
+さて、先程cloneしたディレクトリに入ろう。
+
+```sh
+cd github/fashion_mnist_check
+```
+
+先程作成した仮想環境をクリアする。
+
+```sh
+python3 -m venv --clear tf 
+```
+
+このディレクトリ(`github/fashion_mnist_check`)でのみ、Pythonのバージョンを落としたいので、pyenvにlocal指定でバージョンを指定する。
+
+```sh
+pyenv local 3.8.10
+```
+
+すると、このディレクトリでのみ、Pythonのバージョンが3.8.10に変わる。
+
+```sh
+$ python3 -V
+Python 3.8.10
+```
+
+これは、ローカルに`.python-version`というファイルが作成され、pyenvがそれを見ているからだ。
+
+```sh
+$ cat .python-version
+3.8.10
+```
+
+さて、Pythonのバージョンが3.8.10の状態で仮想環境をactivateする。
+
+```sh
+source tf/bin/activate
+```
+
+後は同様に以下を実行する。
+
+```sh
+python3 -m pip install --upgrade pip
+python3 -m pip install tensorflow tensorflowjs
+```
+
+`Requirement already satisfied: pip in ./tf/lib/python3.8/site-packages (21.1.1)`などと実行され、Python 3.8用のパッケージがインストールされることがわかる。
+
+後はローカルで
+
+```sh
+python3 train.py
+python3 export.py
+```
+
+が実行できるはずだ。
