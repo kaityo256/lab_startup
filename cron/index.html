@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="generator" content="pandoc">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>README</title>
+  <title>cron/README.md</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
 div.sourceCode { overflow-x: auto; }
@@ -77,92 +77,78 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>なお、cronは英語的には「クロン」もしくは「クローン」と発音するのだが、日本では慣習的に「クーロン」と発音されることが多い。</p>
 <h2 id="cronの仕組み">cronの仕組み</h2>
 <p>cronは、crontabファイルと呼ばれるファイルに書かれたスケジュールに従ってタスクを実行する。crontabファイルは以下のようなフォーマットになっている。</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">分</span> 時 日 月 曜日 コマンド</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1">分 時 日 月 曜日 コマンド</a></code></pre></div>
 <p>例えば、毎時0分ちょうどに<code>command</code>というコマンドを実行したければ、</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">0</span> <span class="pp">*</span> <span class="pp">*</span> <span class="pp">*</span> <span class="pp">*</span> <span class="pp">*</span> command</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="ex">0</span> * * * * * command</a></code></pre></div>
 <p>と書く。<code>*</code>が書かれたところは、全ての状態がマッチする。スケジュールの書き方には様々な指定方法があるが、とりあえず「毎分」「毎時」「毎日」の三種類を知っておけば十分であろう。</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 毎分実行する</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">*</span> <span class="pp">*</span> <span class="pp">*</span> <span class="pp">*</span> <span class="pp">*</span> <span class="pp">*</span> command</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 毎時15分に実行する(一時間に一度実行)</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">15</span> <span class="pp">*</span> <span class="pp">*</span> <span class="pp">*</span> <span class="pp">*</span> <span class="pp">*</span> command</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 毎日 午前4時00分に実行する(一日に一度実行)</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="ex">0</span> 4 <span class="pp">*</span> <span class="pp">*</span> <span class="pp">*</span> <span class="pp">*</span> command</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="co"># 毎分実行する</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="ex">*</span> * * * * * command</a>
+<a class="sourceLine" id="cb3-3" title="3"></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="co"># 毎時15分に実行する(一時間に一度実行)</span></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="ex">15</span> * * * * * command</a>
+<a class="sourceLine" id="cb3-6" title="6"></a>
+<a class="sourceLine" id="cb3-7" title="7"><span class="co"># 毎日 午前4時00分に実行する(一日に一度実行)</span></a>
+<a class="sourceLine" id="cb3-8" title="8"><span class="ex">0</span> 4 * * * * command</a></code></pre></div>
 <p>crontabファイルは、例えば<code>/var/spool/cron</code>以下にあるが、直接編集するのではなく、<code>crontab</code>というコマンドで編集する。<code>crontab</code>を実行すると、エディタ(研究室サーバではVim)が立ち上がり、crontabファイルを開いてくれるので、適当に編集して保存すると、次からスケジュールに従って実行してくれる。</p>
 <h2 id="cronの実行テスト">cronの実行テスト</h2>
 <h3 id="実行スクリプトの作成とテスト">実行スクリプトの作成とテスト</h3>
 <p>では実際にcronを実行してみよう。研究室サーバに接続し、<code>cron</code>というディレクトリを作ろう。</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> cron</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> cron</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1"><span class="fu">mkdir</span> cron</a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="bu">cd</span> cron</a></code></pre></div>
 <p>ここで、実行すべきスクリプトを作る。例えば<code>hello.sh</code>というシェルスクリプトを作ろう。</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">vim</span> hello.sh</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1"><span class="ex">vim</span> hello.sh</a></code></pre></div>
 <p><code>hello.sh</code>には、実行時の日付を<code>date.log</code>に保存する命令を書く。</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span> <span class="op">&gt;&gt;</span> date.log</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" title="1"><span class="fu">date</span> <span class="op">&gt;&gt;</span> date.log</a></code></pre></div>
 <p><code>&gt;&gt;</code>は出力結果をファイルに追記せよ、という意味だ。スクリプトを実行してみよう。</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> hello.sh</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" title="1"><span class="bu">source</span> hello.sh</a></code></pre></div>
 <p>同じディレクトリに<code>date.log</code>が出力されたはずだ。中身を見てみよう。</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cat date.log</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">2022年</span>  5月 12日 木曜日 15:21:59 JST</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" title="1">$ <span class="fu">cat</span> date.log</a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="ex">2022</span>年  5月 12日 木曜日 15:21:59 JST</a></code></pre></div>
 <p>確かに<code>date</code>コマンドの実行結果が保存されている。このように、cronで実行するスクリプトは、実行結果をどこかに保存するようにしておく。</p>
 <p>次に、スクリプトを直接実行できるようにする。そのために、スクリプトに実行権限をつける。</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> u+x hello.sh</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" title="1"><span class="fu">chmod</span> u+x hello.sh</a></code></pre></div>
 <p>このコマンドの意味は、ユーザ(u)に、実行権限(eXecutable)をつけろ、という意味だ。これにより<code>hello.sh</code>を直接実行できるようになる。試してみよう。</p>
-<div class="sourceCode" id="cb10"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./hello.sh</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" title="1"><span class="ex">./hello.sh</span></a></code></pre></div>
 <p>実行後、また<code>date.log</code>を見てみよう。</p>
-<div class="sourceCode" id="cb11"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cat date.log</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">2022年</span>  5月 12日 木曜日 15:21:59 JST</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ex">2022年</span>  5月 12日 木曜日 15:24:52 JST</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" title="1">$ <span class="fu">cat</span> date.log</a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="ex">2022</span>年  5月 12日 木曜日 15:21:59 JST</a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="ex">2022</span>年  5月 12日 木曜日 15:24:52 JST</a></code></pre></div>
 <p>二行に増えたはずだ。</p>
 <h3 id="絶対パスによる指定">絶対パスによる指定</h3>
 <p>さて、cronを使うにあたり最も重要なのは、cronからスクリプトを実行された時のカレントディレクトリがホームディレクトリになる(<code>cd</code>で戻る場所になる)ということだ。例えばホームディレクトリから<code>hello.sh</code>を実行してみよう。</p>
-<div class="sourceCode" id="cb12"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">./cron/hello.sh</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" title="1"><span class="bu">cd</span></a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="ex">./cron/hello.sh</span></a></code></pre></div>
 <p>すると、<code>cron</code>以下ではなく、実行した場所の直下に<code>date.log</code>が作られる。それは困るので、スクリプト内のファイルはすべて絶対パスで書いておかなければならない。</p>
 <p>先程のスクリプトは以下のような内容であった。</p>
-<div class="sourceCode" id="cb13"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span> <span class="op">&gt;&gt;</span> date.log</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb13-1" title="1"><span class="fu">date</span> <span class="op">&gt;&gt;</span> date.log</a></code></pre></div>
 <p>これは、<code>date</code>コマンドの実行結果を、「カレントディレクトリ」の<code>date.log</code>に保存せよ、という意味だ。今は<code>~/cron</code>で実行しているので<code>~/cron/date.log</code>に保存されるば、別の場所から実行されると、別の場所に保存されてしまう。それを防ぐために、<code>date.log</code>の場所を絶対パスで書きなおす。</p>
-<div class="sourceCode" id="cb14"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span> <span class="op">&gt;&gt;</span> ~/cron/date.log</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" title="1"><span class="fu">date</span> <span class="op">&gt;&gt;</span> ~/cron/date.log</a></code></pre></div>
 <p><code>~/</code>は、ユーザのホームディレクトリを意味する。これにより、どこから実行しても<code>~/cron/date.log</code>に結果が保存される。一つ上のディレクトリから実行してみよう。</p>
-<div class="sourceCode" id="cb15"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="ex">./cron/hello.sh</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb15-1" title="1"><span class="bu">cd</span></a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="ex">./cron/hello.sh</span></a></code></pre></div>
 <p><code>~/cron/date.log</code>に日付が追加されたはずだ。</p>
 <h3 id="crontabによる実行">crontabによる実行</h3>
 <p>ではいよいよcronに登録しよう。そのためには<code>crontab -e</code>という命令を実行する。これはcrontabファイルを修正するよ、という意味だ。</p>
-<div class="sourceCode" id="cb16"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">crontab</span> <span class="at">-e</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb16-1" title="1"><span class="ex">crontab</span> -e</a></code></pre></div>
 <p>研究室サーバで実行すると以下のようなエラーがでるが、とりあえず無視してエンターキーを押してかまわない。</p>
-<div class="sourceCode" id="cb17"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>E79: Cannot expand wildcards</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>Press ENTER or type command to continue</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb17-1" title="1">E79: Cannot expand wildcards</a>
+<a class="sourceLine" id="cb17-2" title="2">Press ENTER or type command to continue</a></code></pre></div>
 <p>Vimが立ち上がったら、以下を入力しよう。</p>
-<div class="sourceCode" id="cb18"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">*</span> <span class="pp">*</span> <span class="pp">*</span> <span class="pp">*</span> <span class="pp">*</span> ~/cron/hello.sh</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb18-1" title="1"><span class="ex">*</span> * * * * ~/cron/hello.sh</a></code></pre></div>
 <p>入力したらファイルを保存してVimを終了せよ(ESCを押してShiftを押しながらZを二回)。</p>
-<div class="sourceCode" id="cb19"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>crontab: installing new crontab</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb19-1" title="1">crontab: installing new crontab</a></code></pre></div>
 <p>と表示されたら成功だ。登録されたか確認しよう。現在のcrontabファイルを表示するのは<code>crontab -l</code>だ。</p>
-<div class="sourceCode" id="cb20"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> crontab <span class="at">-l</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="ex">*</span> <span class="pp">*</span> <span class="pp">*</span> <span class="pp">*</span> <span class="pp">*</span> ~/cron/hello.sh</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb20-1" title="1">$ <span class="ex">crontab</span> -l</a>
+<a class="sourceLine" id="cb20-2" title="2"><span class="ex">*</span> * * * * ~/cron/hello.sh</a></code></pre></div>
 <p>ここまで正しく設定されていれば、毎分<code>date.log</code>が追加されていくはずだ。ファイルを監視しよう。</p>
-<div class="sourceCode" id="cb21"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> tail <span class="at">-f</span> date.log</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb21-1" title="1">$ <span class="fu">tail</span> -f date.log</a></code></pre></div>
 <p>入力待ちになるのでしばらく待つ。1分まって行が勝手に追加されたら成功だ。</p>
 <p>このままでは毎分ログが追加されてしまうので、スケジュールを消しておこう。また<code>crontab -e</code>を実行し、crontabファイルを編集する。</p>
-<div class="sourceCode" id="cb22"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">crontab</span> <span class="at">-e</span></span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb22-1" title="1"><span class="ex">crontab</span> -e</a></code></pre></div>
 <p>Vimが立ち上がったら、先程入力した行を(例えば<code>dd</code>により)消去し、ファイルを保存せよ。</p>
 <p><code>crontab -l</code>を実行し、何も表示されなければ正しく修正されている。</p>
-<div class="sourceCode" id="cb23"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> crontab <span class="at">-l</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span></span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb23-1" title="1">$ <span class="ex">crontab</span> -l</a>
+<a class="sourceLine" id="cb23-2" title="2">$</a></code></pre></div>
 <h2 id="まとめ">まとめ</h2>
 <p>cronの使い方を紹介した。ウェブスクレイピング、ファイル容量の監視など、定期的になにかを実行したい時に便利なコマンドであるので覚えておきたい。ただし、実行する時にミスがあっても分かりづらいので、必ずcronを経由しない方法で動作確認をすること。また、cronから実行される場合はカレントディレクトリが変わってしまうので、ディレクトリなどの指定をすべて絶対パスにするのを忘れてはならない。</p>
 </article>

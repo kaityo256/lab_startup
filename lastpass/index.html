@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="generator" content="pandoc">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title></title>
+  <title>lastpass/README.md</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
 div.sourceCode { overflow-x: auto; }
@@ -87,11 +87,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>パスワードのクラウド対応については、「パスワードデータがネットワークの向こう側に保存される」ことを不安視する人もいるかもしれない。これについては、「クラウドからパスワードが流出する」リスクと、「パスワードマネージャを使わないことで、パスワードを忘れたり、つい使いまわしたりしてしまうリスク」を比較し、どちらを重視するか、各自で検討して欲しい。以下、パスワードマネージャとしてLastPassを使った場合、多要素認証導入までの方法を紹介する。</p>
 <h2 id="lastpassのインストール">LastPassのインストール</h2>
 <p>LastPassはブラウザの拡張として使うタイプのパスワードマネージャであるので、普段使うブラウザでアクセスしよう。だいたいのブラウザにはLastPass拡張が用意されていると思うが、特に希望がなければGoogle Chromeを推奨する。</p>
-<p>まず、<a href="https://www.lastpass.com/" class="uri">https://www.lastpass.com/</a>に行って、「Get LastPass Free」をクリックしよう。</p>
-<div class="figure">
-<img src="fig/create_account.png" alt="アカウント作成" />
-<p class="caption">アカウント作成</p>
-</div>
+<p>まず、<a href="https://www.lastpass.com/">https://www.lastpass.com/</a>に行って、「Get LastPass Free」をクリックしよう。</p>
+<figure>
+<img src="fig/create_account.png" alt="アカウント作成" /><figcaption>アカウント作成</figcaption>
+</figure>
 <p>メールアドレス(Email)がアカウント名となる。普段使うメールアドレス(例えばGmail)を設定すること。</p>
 <p>マスターパスワードは、最も重要なパスワードとなるので、強いパスワードにすること。LastPassは</p>
 <ul>
@@ -104,20 +103,17 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Reminderは、パスワードを忘れた時のヒントなので、入力しなくてかまわない。</p>
 <p>無事にアカウントが作成されたら「Install LastPass」をクリックして、ブラウザの拡張機能をインストールしよう。Google Chromeならchrome ウェブストアが表示されるはずなので、「拡張機能の追加」をクリックしてブラウザに追加する。他のブラウザでも同様。</p>
 <p>正しくインストールされたら、ブラウザの右上にLastPassの黒いアイコンが表示されるはずである。</p>
-<div class="figure">
-<img src="fig/lastpass_icon.png" alt="LastPassのアイコン" />
-<p class="caption">LastPassのアイコン</p>
-</div>
+<figure>
+<img src="fig/lastpass_icon.png" alt="LastPassのアイコン" /><figcaption>LastPassのアイコン</figcaption>
+</figure>
 <p>この黒いアイコンをクリックすると、ログイン画面となるので、先ほど設定したメールとマスターパスワードでログインしよう。</p>
-<div class="figure">
-<img src="fig/lastpass_login.png" alt="ログイン画面" />
-<p class="caption">ログイン画面</p>
-</div>
+<figure>
+<img src="fig/lastpass_login.png" alt="ログイン画面" /><figcaption>ログイン画面</figcaption>
+</figure>
 <p>ログインに成功すると、アイコンが赤くなる。</p>
-<div class="figure">
-<img src="fig/lastpass_after_login.png" alt="ログイン後のアイコン" />
-<p class="caption">ログイン後のアイコン</p>
-</div>
+<figure>
+<img src="fig/lastpass_after_login.png" alt="ログイン後のアイコン" /><figcaption>ログイン後のアイコン</figcaption>
+</figure>
 <p>今後、LastPassにログインした状態で何かのサイトにログインすると、LastPassに追加するか聞かれるので、その時に「Add」を選ぶとLastPassがアカウント名とパスワードを覚えていく。他にもいろいろ便利な機能があるが、それについてはおいおい覚えていくと良いだろう。</p>
 <h2 id="多要素認証">多要素認証</h2>
 <h3 id="二段階認証と多要素認証">二段階認証と多要素認証</h3>
@@ -136,10 +132,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>以下ではスマホを使った多要素認証を導入する。</p>
 <h3 id="google-authenticator">Google Authenticator</h3>
 <p>まず、スマホに「Google　Authenticator」を導入しよう。iPhoneならApple Store、AndroidならPlay Storeで「Google Authenticator」で検索することで見つかるだろう。</p>
-<div class="figure">
-<img src="fig/google_authenticator.png" alt="Google Authenticator" />
-<p class="caption">Google Authenticator</p>
-</div>
+<figure>
+<img src="fig/google_authenticator.png" alt="Google Authenticator" /><figcaption>Google Authenticator</figcaption>
+</figure>
 <p>まずこれをインストールしよう。</p>
 <p>次に、LastPassで多要素認証を有効にする。</p>
 <p>まず、LastPassにログインし、「Open My Vault」を選ぶ(Vaultとは金庫室という意味である)。</p>
@@ -147,10 +142,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>一覧から「Google Authenticator」の列の右の鉛筆マークをクリックする。その後、指示に従うと、二次元コードが出てくるはずである。</p>
 <p>この状態でスマホを取り出し、Google Authenticatorを起動する。右下に「+」マークをクリックして「バーコードをスキャン」を選ぶと撮影モードになるので、表示されている二次元コードを映すことで追加できる。名前は「LastPass」とかにしておこう。</p>
 <p>以後、LastPassにログインしようとすると、パスワード認証の他にGoogle Authenticatorによる認証が要求される。Google Authenticatorを起動すると、先ほど名前をつけて保存した「LastPass」のところに6桁の数字が表示されるので、これを入力しよう。</p>
-<div class="figure">
-<img src="fig/google_number.png" alt="Google Authenticator" />
-<p class="caption">Google Authenticator</p>
-</div>
+<figure>
+<img src="fig/google_number.png" alt="Google Authenticator" /><figcaption>Google Authenticator</figcaption>
+</figure>
 <p>この数字は一分毎に変わる、ワンタイムパスワードと呼ばれるものになっている。</p>
 <p>パスワードマネージャを使うかどうかは個人の自由だが、大事なアカウントを多要素認証で守るのは必須である。今後、GitHubアカウントを作成するが、これも多要素認証で守ること。</p>
 </article>

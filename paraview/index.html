@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="generator" content="pandoc">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title></title>
+  <title>paraview/README.md</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
 div.sourceCode { overflow-x: auto; }
@@ -74,49 +74,46 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h1 id="paraviewの使い方">ParaViewの使い方</h1>
 <p>VMDは原子や粒子、すなわち「つぶつぶ」を可視化するためのツールだ。しかし、粒子数が増えてくると、全ての粒子を可視化するのは現実的ではない。そこで、空間を小さなセルに区切って「場の量」にすることが多い。「場の量」とは、温度や密度、速度場といったスカラー量、ベクトル量を、位置の関数として表現することだ。以下では、そんな「場の量」を可視化するParaViewというソフトウェアを使ってみよう。</p>
 <h2 id="インストール">インストール</h2>
-<p><a href="https://www.paraview.org/" class="uri">https://www.paraview.org/</a>に行き、「Download」をクリックする。</p>
-<div class="figure">
-<img src="fig/download.png" alt="Download" />
-<p class="caption">Download</p>
-</div>
+<p><a href="https://www.paraview.org/">https://www.paraview.org/</a>に行き、「Download」をクリックする。</p>
+<figure>
+<img src="fig/download.png" alt="Download" /><figcaption>Download</figcaption>
+</figure>
 <p>Nightlyではなく、その時点での最新版(本記事執筆時はv5.8)を選ぶと良いだろう。</p>
 <p>Windowsの場合は、拡張子がexeで終わっており、かつMPI版ではないもの(本記事執筆時では<code>ParaView-5.8.0-Windows-Python3.7-msvc2015-64bit.exe</code>)を選ぶ。</p>
-<div class="figure">
-<img src="fig/windows_download.png" alt="Windows" />
-<p class="caption">Windows</p>
-</div>
+<figure>
+<img src="fig/windows_download.png" alt="Windows" /><figcaption>Windows</figcaption>
+</figure>
 <p>Macの場合は、パッケージ版(拡張子がpkg)を選ぶと良いであろう</p>
-<div class="figure">
-<img src="fig/mac_download.png" alt="Mac" />
-<p class="caption">Mac</p>
-</div>
+<figure>
+<img src="fig/mac_download.png" alt="Mac" /><figcaption>Mac</figcaption>
+</figure>
 <p>直接インストーラで起動すると怒られる場合があるが、パッケージファイルを右クリックして出てきたメニューで「開く」を選べばインストールできるはずである。</p>
-<p>インストール後、実行すると、 「Startup Screen」が現れる。不要なら「Don't show tihs window again」にチェックして「Close」すると、次回から現れなくなる。</p>
+<p>インストール後、実行すると、 「Startup Screen」が現れる。不要なら「Don’t show tihs window again」にチェックして「Close」すると、次回から現れなくなる。</p>
 <p>以上でインストール完了だ。</p>
 <h2 id="vtkファイルの構造">VTKファイルの構造</h2>
 <p>ParaViewは非常に多くの可視化ができる。このParaViewにデータを食わせる方法はいくつかあるが、最も簡単なのはVTKレガシーフォーマット(Visualization Toolkit Simple Legacy Format)を使うことだ。VTKレガシーフォーマットとは、「レガシー」の名前があることからわかるように現在ではXML形式のデータを使うことが推奨されているのだが、構造が非常に単純なのでプログラムから出力しやすい。</p>
 <p>以下では、VTKレガシーフォーマットの構造を簡単に解説しよう。フォーマットの仕様は以下から参照できる。</p>
-<p><a href="http://www.vtk.org/VTK/img/file-formats.pdf" class="uri">http://www.vtk.org/VTK/img/file-formats.pdf</a></p>
+<p><a href="http://www.vtk.org/VTK/img/file-formats.pdf">http://www.vtk.org/VTK/img/file-formats.pdf</a></p>
 <h3 id="ファイルの構造">ファイルの構造</h3>
 <p>VTKファイルは、例えばこんな構造をしている。</p>
-<pre class="txt"><code># vtk DataFile Version 1.0
-test
-ASCII
-DATASET STRUCTURED_POINTS
-DIMENSIONS 21 21 21
-ORIGIN 0.0 0.0 0.0
-SPACING 1.0 1.0 1.0
-
-POINT_DATA 9261
-
-SCALARS intensity float
-LOOKUP_TABLE default
-0
-0
-0
-0
-(以下データが続く)</code></pre>
-<ol style="list-style-type: decimal">
+<div class="sourceCode" id="cb1"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb1-1" title="1"># vtk DataFile Version 1.0</a>
+<a class="sourceLine" id="cb1-2" title="2">test</a>
+<a class="sourceLine" id="cb1-3" title="3">ASCII</a>
+<a class="sourceLine" id="cb1-4" title="4">DATASET STRUCTURED_POINTS</a>
+<a class="sourceLine" id="cb1-5" title="5">DIMENSIONS 21 21 21</a>
+<a class="sourceLine" id="cb1-6" title="6">ORIGIN 0.0 0.0 0.0</a>
+<a class="sourceLine" id="cb1-7" title="7">SPACING 1.0 1.0 1.0</a>
+<a class="sourceLine" id="cb1-8" title="8"></a>
+<a class="sourceLine" id="cb1-9" title="9">POINT_DATA 9261</a>
+<a class="sourceLine" id="cb1-10" title="10"></a>
+<a class="sourceLine" id="cb1-11" title="11">SCALARS intensity float</a>
+<a class="sourceLine" id="cb1-12" title="12">LOOKUP_TABLE default</a>
+<a class="sourceLine" id="cb1-13" title="13">0</a>
+<a class="sourceLine" id="cb1-14" title="14">0</a>
+<a class="sourceLine" id="cb1-15" title="15">0</a>
+<a class="sourceLine" id="cb1-16" title="16">0</a>
+<a class="sourceLine" id="cb1-17" title="17">(以下データが続く)</a></code></pre></div>
+<ol type="1">
 <li>最初の行はファイルのバージョン情報。大文字小文字は区別し、バージョンをあらわす数字x.x以外の場所はこの通りに記述する必要がある。</li>
 <li>次がファイルの名前。最大256文字。適当に書けばよいと思うが、個人的にはファイル名をここに記述している。</li>
 <li>次がファイルフォーマット。ASCIIかBINARYを記述する。ここではASCIIフォーマットのみ説明する。</li>
@@ -125,11 +122,11 @@ LOOKUP_TABLE default
 </ol>
 <h3 id="構造格子">構造格子</h3>
 <p>ファイルの最初の三行がヘッダーで、四行目からデータ構造の記述になる。もっとも簡単なデータ構造は「構造格子(Structured Grid)」だ。構造格子の定義は以下のようなフォーマットになる。</p>
-<pre class="txt"><code>DATASET STRUCTURED_POINTS
-DIMENSIONS 21 21 21
-ORIGIN 0.0 0.0 0.0
-SPACING 1.0 1.0 1.0</code></pre>
-<ol style="list-style-type: decimal">
+<div class="sourceCode" id="cb2"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb2-1" title="1">DATASET STRUCTURED_POINTS</a>
+<a class="sourceLine" id="cb2-2" title="2">DIMENSIONS 21 21 21</a>
+<a class="sourceLine" id="cb2-3" title="3">ORIGIN 0.0 0.0 0.0</a>
+<a class="sourceLine" id="cb2-4" title="4">SPACING 1.0 1.0 1.0</a></code></pre></div>
+<ol type="1">
 <li>最初の行がデータセット(DATASET)の構造を指定する。ここでは構造格子(STRUCTURED_POINTS)を指定している。</li>
 <li>次の行は、三次元直方体の三辺の点の数を与える。ここでは21×21×21の立方体構造を与えている。</li>
 <li>ORIGINは、原点の座標を指定する。</li>
@@ -139,25 +136,25 @@ SPACING 1.0 1.0 1.0</code></pre>
 <h3 id="非構造格子">非構造格子</h3>
 <p>構造格子の場合は「直方体の三辺の要素数」及び「単位直方体のサイズ(SPACING)」を指定すればそれで格子点が定義できた。しかし、分子動力学法の結果の可視化や、物体表面の可視化など、非構造格子を使いたい場合もあるだろう。その場合は非構造格子(Unstructured grid)を用いる。</p>
 <p>非構造格子の定義は以下のようにする。</p>
-<pre class="txt"><code>DATASET UNSTRUCTURED_GRID
-POINTS NumberOfPoints
-x1 y1 z1
-x2 y2 z2
-x3 y3 z3
-...</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb3-1" title="1">DATASET UNSTRUCTURED_GRID</a>
+<a class="sourceLine" id="cb3-2" title="2">POINTS NumberOfPoints</a>
+<a class="sourceLine" id="cb3-3" title="3">x1 y1 z1</a>
+<a class="sourceLine" id="cb3-4" title="4">x2 y2 z2</a>
+<a class="sourceLine" id="cb3-5" title="5">x3 y3 z3</a>
+<a class="sourceLine" id="cb3-6" title="6">...</a></code></pre></div>
 <p>データセットは非構造格子(UNSTRUCTURED_GRID)であり、何点あるかを指定した後は、ベクトル場と同様に(x,y,z)座標をずらずら並べるだけで良い。</p>
 <h3 id="データセット">データセット</h3>
 <p>格子が定義されたら、それぞれの格子上に定義される物理量を指定する。フォーマットはこんな感じになる。</p>
-<pre class="txt"><code>POINT_DATA 9261
-
-SCALARS intensity float
-LOOKUP_TABLE default
-0
-0
-0
-0
-....</code></pre>
-<ol style="list-style-type: decimal">
+<div class="sourceCode" id="cb4"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb4-1" title="1">POINT_DATA 9261</a>
+<a class="sourceLine" id="cb4-2" title="2"></a>
+<a class="sourceLine" id="cb4-3" title="3">SCALARS intensity float</a>
+<a class="sourceLine" id="cb4-4" title="4">LOOKUP_TABLE default</a>
+<a class="sourceLine" id="cb4-5" title="5">0</a>
+<a class="sourceLine" id="cb4-6" title="6">0</a>
+<a class="sourceLine" id="cb4-7" title="7">0</a>
+<a class="sourceLine" id="cb4-8" title="8">0</a>
+<a class="sourceLine" id="cb4-9" title="9">....</a></code></pre></div>
+<ol type="1">
 <li>最初に、これは点上に定義されたデータだと宣言する(POINT_DATA)。データ数もここで教える。</li>
 <li>次からデータセット。いくつか種類があるが、本稿では主にスカラー量(SCALARS)とベクトル量(VECTORS)を扱う。</li>
 <li>データセットは、「種類 名前 型」を指定する。この例ではスカラー場を定義している。最初の大文字の「SCALARS」は種類。次の「intensity」はデータの名前。自分でわかりやすいような名前をつければよい。最後が型。ここでは浮動小数点数「float」を指定している。</li>
@@ -166,21 +163,21 @@ LOOKUP_TABLE default
 <p>なお、データセットは複数定義できる。その場合はParaView側でどのデータをどのような可視化に用いるか選ぶことができる。その際、ここで定義した名前が参照されるので、後で自分がわかりやすいように名前を付けておくこと。</p>
 <h3 id="スカラー場">スカラー場</h3>
 <p>スカラーの場合は、データを一つずつ並べるだけだ。</p>
-<pre class="txt"><code>SCALARS intensity float
-LOOKUP_TABLE default
-0
-0
-0
-0
-....</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb5-1" title="1">SCALARS intensity float</a>
+<a class="sourceLine" id="cb5-2" title="2">LOOKUP_TABLE default</a>
+<a class="sourceLine" id="cb5-3" title="3">0</a>
+<a class="sourceLine" id="cb5-4" title="4">0</a>
+<a class="sourceLine" id="cb5-5" title="5">0</a>
+<a class="sourceLine" id="cb5-6" title="6">0</a>
+<a class="sourceLine" id="cb5-7" title="7">....</a></code></pre></div>
 <p>スカラー場の場合はルックアップテーブルを指定する必要があるが、ここで詳細には触れない。「おまじない」として記述しておくこと。</p>
 <h3 id="ベクトル場">ベクトル場</h3>
 <p>ベクトル場の場合、単純にデータを3つずつ並べれば良い。ベクトル場ではルックアップテーブルは不要だ。データフォーマットはこんな感じになる。</p>
-<pre class="txt"><code>VECTORS velocity float
-x1 y1 z1
-x2 y2 z2
-x3 y3 z3
-...</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb6-1" title="1">VECTORS velocity float</a>
+<a class="sourceLine" id="cb6-2" title="2">x1 y1 z1</a>
+<a class="sourceLine" id="cb6-3" title="3">x2 y2 z2</a>
+<a class="sourceLine" id="cb6-4" title="4">x3 y3 z3</a>
+<a class="sourceLine" id="cb6-5" title="5">...</a></code></pre></div>
 <h3 id="複数のデータセット">複数のデータセット</h3>
 <p>ベクトル場を可視化する場合、単純に矢印だけ表示しても見づらいことが多い。そこで、各格子点に可視化補助用のスカラー量も定義しておくと良い。スカラー場とベクトル場は単純に並べてかける。</p>
 <pre><code>VECTORS nameofvector float
@@ -199,59 +196,52 @@ s3
 <p>以下のサンプルでは、ベクトルの角度や、z座標をスカラー場として定義しておき、矢印のカラーリングに使っている。</p>
 <h2 id="可視化のサンプル">可視化のサンプル</h2>
 <p>では、さっそく可視化をしてみよう。まずはサンプル用のリポジトリ<code>kaityo256/paraview-sample</code>をクローンする。後でpushするわけではないので、httpsでクローンして良い。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span> github
-<span class="fu">git</span> clone https://github.com/kaityo256/paraview-sample.git</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" title="1"><span class="bu">cd</span> github</a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="fu">git</span> clone https://github.com/kaityo256/paraview-sample.git</a></code></pre></div>
 <p>クローンしたらそのディレクトリに移動しておこう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span> paraview-sample</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" title="1"><span class="bu">cd</span> paraview-sample</a></code></pre></div>
 <h3 id="構造格子におけるボリュームレンダリング">構造格子におけるボリュームレンダリング</h3>
 <p>最初は最も簡単な構造格子(Structured Grid)のボリュームレンダリングをしてみよう。</p>
 <p>ディレクトリ<code>simple</code>に<code>simple.py</code>があるので実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span> simple
-<span class="ex">python3</span> simple.py</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" title="1"><span class="bu">cd</span> simple</a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="ex">python3</span> simple.py</a></code></pre></div>
 <p>同じディレクトリに<code>simple.vtk</code>ができたはずだ。これをParaViewで開こう。</p>
 <p>まずParaViewを起動し、Ctrl+O(もしくはFile→Open)で<code>simple.vtk</code>を開く。すると、Pipeline Browserに「simple.vtk」が追加され、目が閉じたアイコンが表示されたはず。この状態で「Properties」の「Apply」をクリックせよ。Pipeline Browserの「simple.vtk」の左にあるアイコンの目が開いたはずだ。</p>
-<div class="figure">
-<img src="fig/simple_open.png" alt="simple-open" />
-<p class="caption">simple-open</p>
-</div>
+<figure>
+<img src="fig/simple_open.png" alt="simple-open" /><figcaption>simple-open</figcaption>
+</figure>
 <p>次に、「Outline」となっている表示を「Volume」に変える。最初の実行で「Volumeレンダリングには時間がかかるが良いか？」と聞かれることがあるが、「わかったからもう聞かないで」を選ぶこと。</p>
-<div class="figure">
-<img src="fig/simple_volume.png" alt="simple-volume" />
-<p class="caption">simple-volume</p>
-</div>
+<figure>
+<img src="fig/simple_volume.png" alt="simple-volume" /><figcaption>simple-volume</figcaption>
+</figure>
 <p>まわりが青く、中心が赤く光る球体が表示されれば成功だ。</p>
-<div class="figure">
-<img src="fig/simple_default.png" alt="simple-default" />
-<p class="caption">simple-default</p>
-</div>
+<figure>
+<img src="fig/simple_default.png" alt="simple-default" /><figcaption>simple-default</figcaption>
+</figure>
 <p>次に、カラーマップエディタをいじってみよう。Propertiesの「Coloring」のところにある「Edit」ボタンを押してみよ。</p>
-<div class="figure">
-<img src="fig/color_edit.png" alt="color edit" />
-<p class="caption">color edit</p>
-</div>
+<figure>
+<img src="fig/color_edit.png" alt="color edit" /><figcaption>color edit</figcaption>
+</figure>
 <p>こんな、カラーマップエディタが表示されたはずだ。</p>
-<div class="figure">
-<img src="fig/colormap_editor.png" alt="color map editor" />
-<p class="caption">color map editor</p>
-</div>
+<figure>
+<img src="fig/colormap_editor.png" alt="color map editor" /><figcaption>color map editor</figcaption>
+</figure>
 <p>この「Mapping Data」において、値の小さい方が左、値の大きい方が右である。つまり、この状態では「系の一番小さな値」が青く、「系の一番大きな値」が赤く表示されている。また、高さ方向は「濃さ(不透明度)」である。一番上が100%、つまり全く透過せず、一番下が0%、つまり完全透過である。</p>
 <p>下のカラーバーの、赤い部分をダブルクリックすると、カラーピッカーが表示される。</p>
-<div class="figure">
-<img src="fig/color_picker.png" alt="color picker" />
-<p class="caption">color picker</p>
-</div>
+<figure>
+<img src="fig/color_picker.png" alt="color picker" /><figcaption>color picker</figcaption>
+</figure>
 <p>例えばこれで白を選ぶと、一番右が白、すなわち「一番値が大きいところを白く、値が小さいところは青く」表示されることになる。</p>
-<div class="figure">
-<img src="fig/color_changed.png" alt="color changed" />
-<p class="caption">color changed</p>
-</div>
+<figure>
+<img src="fig/color_changed.png" alt="color changed" /><figcaption>color changed</figcaption>
+</figure>
 <p>他にも、「ある値の範囲だけ不透明に」などとすることで「膜」を表現できたりと応用ができるので、いろいろ試してみよ。</p>
 <h3 id="波動関数">波動関数</h3>
 <p>先程は、すべて正の値の密度場のボリュームレンダリング、つまり「濃いところ」の可視化のみを行った。次は、正負の値を持つ密度場の可視化の例として、波動関数を可視化してみよう。水素原子の波動関数は、最低エネルギー(1s軌道)以外は「節」を持つ。すなわち、正負の値を取る。この波動関数を密度場として保存する。</p>
 <p>なお、カラーマップをいじっていてわけがわからなくなった場合(よくある)は、ParaViewを再起動すると良い。</p>
 <p>ディレクトリ<code>wavefunction</code>に、<code>wavefunction.py</code>があるので実行せよ。カレントディレクトリが<code>simple</code>の場合は、一度<code>cd ..</code>を実行して上のディレクトリに移動しておくこと。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span> wavefunction
-<span class="ex">python3wavefunction.py</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" title="1"><span class="bu">cd</span> wavefunction</a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="ex">python3wavefunction.py</span></a></code></pre></div>
 <p>すると、以下の三つのファイルが作成される。</p>
 <ul>
 <li><code>2pz.vtk</code></li>
@@ -260,50 +250,43 @@ s3
 </ul>
 <p>それぞれ「2pz軌道」「3dz^2軌道」「3dzx軌道」に対応している。これをParaViewで開いて可視化してみよう。まずは<code>2pz.vtk</code>を開いてみよう。</p>
 <p>先ほどと同様に「2pz.vtk」を「Apply」してから「Volume」を適用すると、以下のような見た目になるはずだ。</p>
-<div class="figure">
-<img src="fig/2pz_default.png" alt="2pz default" />
-<p class="caption">2pz default</p>
-</div>
+<figure>
+<img src="fig/2pz_default.png" alt="2pz default" /><figcaption>2pz default</figcaption>
+</figure>
 <p>電子の波動関数は、絶対値が電子の存在確率を表し、符号は位相を表すのであった。したがって、絶対値がゼロのところは不透明度0%(完全に透明)にしたい。しかし、デフォルトでは絶対値がゼロのところが不透明度50%になってしまっているため、このような見た目になる。</p>
 <p>またColor Map Editorを開いて、以下のような形にしてみよう。</p>
-<div class="figure">
-<img src="fig/2pz_edited.png" alt="2pz edited" />
-<p class="caption">2pz edited</p>
-</div>
+<figure>
+<img src="fig/2pz_edited.png" alt="2pz edited" /><figcaption>2pz edited</figcaption>
+</figure>
 <p>絶対値がゼロ付近の領域を全て透明にして、負符号を持つ領域の不透明度を上げたために、電子の状態が見やすくなったことがわかるだろう。</p>
 <p>なお、カラーマップエディターの点をマウスで移動させることもできるが、下の「Data」で数値を直接指定することもできる。ここでは、値「-0.05」から「0.05」までをゼロにしている。</p>
 <p>同様に、3d軌道の可視化を試みよ。うまくやれば以下のように可視化できる。</p>
 <p>3dz^2軌道</p>
-<div class="figure">
-<img src="fig/3dz2.png" alt="3dz2" />
-<p class="caption">3dz2</p>
-</div>
+<figure>
+<img src="fig/3dz2.png" alt="3dz2" /><figcaption>3dz2</figcaption>
+</figure>
 <p>3dzx軌道</p>
-<div class="figure">
-<img src="fig/3dzx.png" alt="3dzx" />
-<p class="caption">3dzx</p>
-</div>
+<figure>
+<img src="fig/3dzx.png" alt="3dzx" /><figcaption>3dzx</figcaption>
+</figure>
 <h3 id="ベクトル場-1">ベクトル場</h3>
 <p>これまではスカラー場を可視化してきた。しかし、速度場など、ベクトル場を可視化したいことがある。そのために「Glyph」という矢印を使った可視化が用意されている。</p>
 <p>ディレクトリ<code>glyph</code>に、<code>tgv.py</code>があるので実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span> glyph
-<span class="ex">python3tgv.py</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" title="1"><span class="bu">cd</span> glyph</a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="ex">python3tgv.py</span></a></code></pre></div>
 <p>すると、同じディレクトリに<code>tgv.vtk</code>が作成されるので、それをParaViewで開いてApplyする。</p>
 <p>次に、「Glyph」というフィルタを適用する。デフォルトでアイコンがあるので、それをクリックしてApplyする。</p>
-<div class="figure">
-<img src="fig/glyph.png" alt="Glyph" />
-<p class="caption">Glyph</p>
-</div>
+<figure>
+<img src="fig/glyph.png" alt="Glyph" /><figcaption>Glyph</figcaption>
+</figure>
 <p>すると、よくわからない表示になったはずだ。そこで、PropertiesのScale Arrayが「angle」になっているのを「velocity」に修正して、もう一度Applyを押す。</p>
-<div class="figure">
-<img src="fig/scale_array.png" alt="scale_array" />
-<p class="caption">scale_array</p>
-</div>
+<figure>
+<img src="fig/scale_array.png" alt="scale_array" /><figcaption>scale_array</figcaption>
+</figure>
 <p>すると、以下のような表示になったはずだ。</p>
-<div class="figure">
-<img src="fig/tgv.png" alt="TGV" />
-<p class="caption">TGV</p>
-</div>
+<figure>
+<img src="fig/tgv.png" alt="TGV" /><figcaption>TGV</figcaption>
+</figure>
 <p>これは「Taylor-Green Vortex」と呼ばれる渦を可視化したものだ。<code>tgv.vtk</code>には、各格子点に「速度ベクトル(velocity)」と「角度(angle)」の二つの量が定義されている。前者がベクトル量、後者がスカラー量である。</p>
 <p>最初、ParaViewはベクトル場として<code>velocity</code>を、その大きさ(scale)としてスカラー量である<code>angle</code>を使ったため、矢印の大きさが角度に依存して表示された。しかし、これは速度場なので、ベクトルの大きさは速度の絶対値に比例して欲しい。そこでスケールを角度から速度場に変更することでこのような表示を得た。</p>
 <p>また、矢印の「色」は角度でつけている。これはColoringのところに「angle」とあることかわかるだろう。波動関数の場合と同様、カラーマップを修正できるので、いろいろ遊んでみると良い。</p>
@@ -311,87 +294,75 @@ s3
 <h3 id="非構造格子-1">非構造格子</h3>
 <p>これまでは、系に規則的な格子が存在し、そこに物理量が定義されていた。次は非構造格子(Unstructured Grid)の可視化を試してみよう。</p>
 <p>ディレクトリ<code>unstructured</code>に<code>sphere.py</code>があるので実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span> unstructured
-<span class="ex">python3</span> sphere.py</code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb13-1" title="1"><span class="bu">cd</span> unstructured</a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="ex">python3</span> sphere.py</a></code></pre></div>
 <p>同じディレクトリに<code>sphere.vtk</code>ができるので、ParaViewで開いてApplyせよ。</p>
 <p>その後、また「Glyph」フィルターを適用せよ。以下のような表示が得られるはずだ。</p>
-<div class="figure">
-<img src="fig/sphere.png" alt="sphere.png" />
-<p class="caption">sphere.png</p>
-</div>
+<figure>
+<img src="fig/sphere.png" alt="sphere.png" /><figcaption>sphere.png</figcaption>
+</figure>
 <p>このデータは、まず球面上にランダムに点を生成し、それを「非構造格子点」としている。そして、それぞれの点に、ベクトル場とスカラー場を定義している。ベクトル場は球の自転方向の向きで、大きさと色はz座標を利用している。このVTKファイルを出力するコード(<code>sphere.py</code>)は46行と短いので、興味があれば内容を見てみよ。</p>
 <h3 id="gray-scott模型">Gray-Scott模型</h3>
 <p>最後にシミュレーション結果をアニメーションとして可視化してみよう。シミュレーションするのはGray-Scott模型と呼ばれる、反応拡散方程式の一種である。Gray-Scottモデルは、活性化因子と抑制因子の二種類が、お互いに反応しながら拡散する様子をモデル化したものだ。</p>
 <p>ディレクトリ<code>gray-scott</code>に<code>gs.py</code>があるので実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span> gray-scott
-<span class="ex">python3</span> gs.py</code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" title="1"><span class="bu">cd</span> gray-scott</a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="ex">python3</span> gs.py</a></code></pre></div>
 <p>なお、<code>matplotlib</code>モジュールが無い、<code>numba</code>モジュールが無いなどと文句を言われたら<code>pip</code>で入れること。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">python3</span> -m pip install matplotlib numba</code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb15-1" title="1"><span class="ex">python3</span> -m pip install matplotlib numba</a></code></pre></div>
 <p>実行すると、<code>conf000.vtk</code>から<code>conf119.vtk</code>までの120個のファイルが作成される。これをParaViewで開こう。</p>
 <p>ParaViewでは、連番のファイルは<code>conf..vtk</code>のように<code>..</code>で表示され、まとめて読み込むことができる。</p>
-<div class="figure">
-<img src="fig/gs_open.png" alt="gs open" />
-<p class="caption">gs open</p>
-</div>
+<figure>
+<img src="fig/gs_open.png" alt="gs open" /><figcaption>gs open</figcaption>
+</figure>
 <p>Applyしたら、まずは「最後のフレーム」ボタンを押そう。</p>
-<div class="figure">
-<img src="fig/last_frame.png" alt="last frame" />
-<p class="caption">last frame</p>
-</div>
+<figure>
+<img src="fig/last_frame.png" alt="last frame" /><figcaption>last frame</figcaption>
+</figure>
 <p>不思議な白っぽい模様が現れたはずだ。その状態で、PropertiesのColoringにある「Rescale to Data Range」ボタンを押す。</p>
-<div class="figure">
-<img src="fig/rescale.png" alt="rescale" />
-<p class="caption">rescale</p>
-</div>
+<figure>
+<img src="fig/rescale.png" alt="rescale" /><figcaption>rescale</figcaption>
+</figure>
 <p>これにより、白っぽかった画像が赤っぽくなったはずだ。これは、データの範囲を、一番最後のフレームに合わせる、という意味だ。最初のフレームの振幅が大きいため、それに合わせると以降のフレームで変化がわかりにくい。</p>
 <p>さて、このままでも可視化はできているのだが、もう少し加工して見やすくしよう。</p>
 <p>まずは「Delaunay 2D」フィルタを適用する。Filtersメニューから探しても良いが、ParaViewには大量のフィルタがあって探すのが大変なので、検索することにしよう。「Filters」メニューから「Search」を選ぼう。検索ウィンドウが表示されるので「de」まで入力する。</p>
-<div class="figure">
-<img src="fig/filter_search.png" alt="filter search" />
-<p class="caption">filter search</p>
-</div>
+<figure>
+<img src="fig/filter_search.png" alt="filter search" /><figcaption>filter search</figcaption>
+</figure>
 <p>すると、上のボタンに「Delaunay 2D」が候補として現れるので、そのボタンを押してApplyする。すると、以下のように画像が鮮やかになったはずだ。</p>
-<div class="figure">
-<img src="fig/delaunay2d.png" alt="delaunay2d.png" />
-<p class="caption">delaunay2d.png</p>
-</div>
+<figure>
+<img src="fig/delaunay2d.png" alt="delaunay2d.png" /><figcaption>delaunay2d.png</figcaption>
+</figure>
 <p>さらに、この画像を三次元的に盛り上げよう。「Filter」→「Search」から、今度は「Warp by Scalar」を選ぶ。「wa」と入力すれば候補として現れるはずだ。</p>
-<div class="figure">
-<img src="fig/filter_warp.png" alt="warp" />
-<p class="caption">warp</p>
-</div>
+<figure>
+<img src="fig/filter_warp.png" alt="warp" /><figcaption>warp</figcaption>
+</figure>
 <p>これを選んだ後、PropertiesのScale Factorを10に修正してからApplyを押す。これは、デフォルトの1では値が小さすぎて盛り上がりがよく見えないためだ。</p>
-<div class="figure">
-<img src="fig/scale_factor.png" alt="scale factor" />
-<p class="caption">scale factor</p>
-</div>
+<figure>
+<img src="fig/scale_factor.png" alt="scale factor" /><figcaption>scale factor</figcaption>
+</figure>
 <p>以下のように盛り上がった画像が得られたら、2Dと書かれたボタンを押して3D表示に変える。</p>
-<div class="figure">
-<img src="fig/2d.png" alt="2d" />
-<p class="caption">2d</p>
-</div>
+<figure>
+<img src="fig/2d.png" alt="2d" /><figcaption>2d</figcaption>
+</figure>
 <p>3D表示にした瞬間、画像が小さくなりすぎてしまうことがある。その場合は「-Z」ボタンを押すと復帰できる。</p>
-<div class="figure">
-<img src="fig/minusz.png" alt="minus z" />
-<p class="caption">minus z</p>
-</div>
+<figure>
+<img src="fig/minusz.png" alt="minus z" /><figcaption>minus z</figcaption>
+</figure>
 <p>あとは適当にマウスでぐりぐりして、よさそうなアングルを見つけたら、「再生」ボタンを押そう。</p>
-<div class="figure">
-<img src="fig/play.png" alt="play" />
-<p class="caption">play</p>
-</div>
+<figure>
+<img src="fig/play.png" alt="play" /><figcaption>play</figcaption>
+</figure>
 <p>アニメーションが表示されるはずだ。</p>
-<div class="figure">
-<img src="fig/gs.png" alt="gs.png" />
-<p class="caption">gs.png</p>
-</div>
+<figure>
+<img src="fig/gs.png" alt="gs.png" /><figcaption>gs.png</figcaption>
+</figure>
 <p>アニメーションとして保存したい場合は、「File」→「Save Animation」から連番PNGを出力し、ImageMagickでアニメーションGIFにするなり、FFmpegでmp4にするなりできる。参考のためにコマンドだけ書いておく。インストール方法などは各自調べること。以下は<code>gs.0000.png</code>などという形で連番で出力した場合だ。</p>
 <p>ImageMagickを使ってアニメーションGiFを作る場合。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">convert</span> -delay 5 -loop 0 -resize 50% gs.*.png gs.gif</code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb16-1" title="1"><span class="ex">convert</span> -delay 5 -loop 0 -resize 50% gs.*.png gs.gif</a></code></pre></div>
 <p>FFmpegでmp4ファイルを作る場合。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">ffmpeg</span> -i gs.%04d.png  -pix_fmt yuv420p gs.mp4</code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb17-1" title="1"><span class="ex">ffmpeg</span> -i gs.%04d.png  -pix_fmt yuv420p gs.mp4</a></code></pre></div>
 <p>なお、「幅が2の倍数ではない」などと怒られたら、<code>mogrify</code>を使ってリサイズすると良い。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">mogrify</span> -resize 860x616! *.png</code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb18-1" title="1"><span class="ex">mogrify</span> -resize 860x616! *.png</a></code></pre></div>
 <p>最後の<code>!</code>は上書き保存という意味だ。</p>
 </article>
 </body>

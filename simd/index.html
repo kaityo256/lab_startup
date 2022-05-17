@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="generator" content="pandoc">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title></title>
+  <title>simd/README.md</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
 div.sourceCode { overflow-x: auto; }
@@ -78,70 +78,70 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>以下では、実際にx86系の石でSIMDレジスタがどのように使われているかを確認してみる。その過程で、C++言語のコンパイルと実行、そしてアセンブリの確認をしよう。</p>
 <h2 id="プログラム作成とコンパイル">プログラム作成とコンパイル</h2>
 <p>まずはsshで研究室サーバにログインせよ。Powershellでは問題が起きることが多いので、Windowsを使っている人はGit Bash等を利用すること。Macを使っている人はターミナルから接続せよ。ログインに成功したら、<code>simd</code>というフォルダを作成し、そこへ移動しよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">mkdir</span> simd
-<span class="bu">cd</span> simd</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">mkdir</span> simd</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="bu">cd</span> simd</a></code></pre></div>
 <p>次に、viで<code>test.cpp</code>というファイルを新規作成する。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">vi</span> test.cpp</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="ex">vi</span> test.cpp</a></code></pre></div>
 <p>すると、画面の下に</p>
-<pre class="txt"><code>&quot;test.cpp&quot; [新ファイル]</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb3-1" title="1">&quot;test.cpp&quot; [新ファイル]</a></code></pre></div>
 <p>という表示がされ、全画面になったはずだ。</p>
 <p>さて、viの最大の特徴は「モード」を持つことだ。viには「ノーマルモード」と「編集モード」の二つのモードがあり、それを入れ替えながらファイルを編集する(他にもモードがあるが、深くは立ち入らない)。起動時には「ノーマルモード」になっており、そのままでは文字入力ができない。ここで「i」を押して編集モードに切り替えよう。</p>
 <p>画面の下が<code>-- 挿入 --</code>という表示になったはずだ。この状態では、通常のエディタのように文字列を入力することができる。以下のプログラムを入力してみよう。</p>
-<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&lt;cstdio&gt;</span>
-
-<span class="dt">int</span> main(){
-    printf(<span class="st">&quot;Hello World</span><span class="sc">\n</span><span class="st">&quot;</span>);
-}</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode cpp"><code class="sourceCode cpp"><a class="sourceLine" id="cb4-1" title="1"><span class="pp">#include </span><span class="im">&lt;cstdio&gt;</span></a>
+<a class="sourceLine" id="cb4-2" title="2"></a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="dt">int</span> main(){</a>
+<a class="sourceLine" id="cb4-4" title="4">    printf(<span class="st">&quot;Hello World</span><span class="sc">\n</span><span class="st">&quot;</span>);</a>
+<a class="sourceLine" id="cb4-5" title="5">}</a></code></pre></div>
 <p><code>print</code>ではなく<code>printf</code>と、最後のfが付くことに注意。これは<code>print format string</code>の略だ。</p>
 <p>入力が終わったら、「ESC」キーを押すことで「ノーマルモード」に戻る。この状態でカーソルを動かしてみよう。ノーマルモードでは「hjkl」キーで移動する。「上下左右」が「kjlh」に対応する。カーソルキーでも移動させることは可能なのだが、ホームポジションから手を動かさなくて済むので慣れるとこちらの方が楽である。</p>
 <p>さて、ノーマルモードで「:(コロン)」を入力すると、カーソルが画面一番下に移り、入力待ちになる(コマンドラインモード)。そこで「wq」と入力して、エンターキーを打つ。</p>
 <p>「w」は「これまでの修正内容を保存せよ」という意味で、一般的なエディタのCtrl+Sにあたる。「q」は「エディタを終了せよ」という意味で、Windowsの一般的なエディタなら「Alt+F4」に対応する。</p>
 <p>さて、これで<code>test.cpp</code>というファイルが作成されたはずだ。まずは<code>ls</code>で確認してみよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">ls</span>
-<span class="ex">test.cpp</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1">$ <span class="fu">ls</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="ex">test.cpp</span></a></code></pre></div>
 <p>次に、ファイルの中身を<code>cat</code>で確認しよう。これは<code>concatenate</code>(連結する)の略だ。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">cat</span> test.cpp
-<span class="co">#include &lt;cstdio&gt;</span>
-
-<span class="ex">int</span> main()<span class="kw">{</span>
-  <span class="bu">printf</span>(<span class="st">&quot;Hello World\n&quot;</span>);
-<span class="kw">}</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" title="1">$ <span class="fu">cat</span> test.cpp</a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="co">#include &lt;cstdio&gt;</span></a>
+<a class="sourceLine" id="cb6-3" title="3"></a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="ex">int</span> main()<span class="kw">{</span></a>
+<a class="sourceLine" id="cb6-5" title="5">  <span class="bu">printf</span>(<span class="st">&quot;Hello World\n&quot;</span>);</a>
+<a class="sourceLine" id="cb6-6" title="6"><span class="kw">}</span></a></code></pre></div>
 <p>このようにファイルの中身が表示されるはずだ。</p>
 <p>ファイルが作成できたらコンパイルしよう。コンパイラは<code>g++</code>を使う。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">g++</span> test.cpp</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" title="1"><span class="ex">g++</span> test.cpp</a></code></pre></div>
 <p>入力ミスをしていなければ、<code>a.out</code>というファイルが作成されたはずだ。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">ls</span>
-<span class="ex">a.out</span> test.cpp</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" title="1">$ <span class="fu">ls</span></a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="ex">a.out</span> test.cpp</a></code></pre></div>
 <p>では、このプログラムを実行しよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">a.out</span>
-<span class="ex">bash</span>: a.out: コマンドが見つかりませんでした...</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" title="1">$ <span class="ex">a.out</span></a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="ex">bash</span>: a.out: コマンドが見つかりませんでした...</a></code></pre></div>
 <p>エラーが出てしまった。コマンドには「パス」が通っていないとそのままでは実行することができない。パスの通っていないプログラムは、相対パス、もしくは絶対パスで実行する必要がある。ここでは相対パスを指定してみよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">./a.out</span>
-<span class="ex">Hello</span> World</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" title="1">$ <span class="ex">./a.out</span></a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="ex">Hello</span> World</a></code></pre></div>
 <p>無事に「Hello World」が表示されたことと思う。絶対パスも指定してみよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="va">$HOME</span><span class="ex">/simd/a.out</span>
-<span class="ex">Hello</span> World</code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" title="1">$ <span class="va">$HOME</span><span class="ex">/simd/a.out</span></a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="ex">Hello</span> World</a></code></pre></div>
 <p>こちらも実行できたと思う。相対パス、絶対パスが指定されていない場合、あらかじめ指定された「パス」を調べにいく。この「パス」を見てみよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="bu">echo</span> <span class="va">$PATH</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" title="1">$ <span class="bu">echo</span> <span class="va">$PATH</span></a></code></pre></div>
 <p>多数の文字列が表示されたことと思う。コマンドをパス無しで実行した場合、この「パス」のリストを順番に調べることになる。先ほど<code>g++</code>と、パス無しでプログラムが実行できたのは、パスのリストの中でこのファイルを見つけることができたからだ。見つけられた場所は<code>which</code>で調べることができる。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">which</span> g++
-<span class="ex">/usr/bin/g++</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb13-1" title="1">$ <span class="fu">which</span> g++</a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="ex">/usr/bin/g++</span></a></code></pre></div>
 <p><code>g++</code>は<code>/usr/bin</code>の下にあることがわかった。同じファイルが複数のパスに存在する場合、最初に見つかったものが実行されるので覚えておこう。</p>
 <p>ついでに、インテルコンパイラでのコンパイルも試しておこう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">rm</span> a.out
-$ <span class="ex">icpc</span> test.cpp
-$ <span class="ex">./a.out</span>
-<span class="ex">Hello</span> World</code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" title="1">$ <span class="fu">rm</span> a.out</a>
+<a class="sourceLine" id="cb14-2" title="2">$ <span class="ex">icpc</span> test.cpp</a>
+<a class="sourceLine" id="cb14-3" title="3">$ <span class="ex">./a.out</span></a>
+<a class="sourceLine" id="cb14-4" title="4"><span class="ex">Hello</span> World</a></code></pre></div>
 <p>やはり同じ結果が表示されるはずだ。</p>
 <p>viのノーマルモードでの操作に慣れるため、もう少しだけVimを使ってみよう。またviでファイルを開いてみる。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">vi</span> test.cpp</code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb15-1" title="1"><span class="ex">vi</span> test.cpp</a></code></pre></div>
 <p>ノーマルモードのまま、カーソルを<code>printf</code>の行に移動させて、「yyp」と入力せよ。最後にエンターを入力するは必要ない。以下のように、カーソルのある行が複製されたのがわかるだろう。</p>
-<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&lt;cstdio&gt;</span>
-
-<span class="dt">int</span> main(){
-  printf(<span class="st">&quot;Hello World</span><span class="sc">\n</span><span class="st">&quot;</span>);
-  printf(<span class="st">&quot;Hello World</span><span class="sc">\n</span><span class="st">&quot;</span>);                                                    }
-}</code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode cpp"><code class="sourceCode cpp"><a class="sourceLine" id="cb16-1" title="1"><span class="pp">#include </span><span class="im">&lt;cstdio&gt;</span></a>
+<a class="sourceLine" id="cb16-2" title="2"></a>
+<a class="sourceLine" id="cb16-3" title="3"><span class="dt">int</span> main(){</a>
+<a class="sourceLine" id="cb16-4" title="4">  printf(<span class="st">&quot;Hello World</span><span class="sc">\n</span><span class="st">&quot;</span>);</a>
+<a class="sourceLine" id="cb16-5" title="5">  printf(<span class="st">&quot;Hello World</span><span class="sc">\n</span><span class="st">&quot;</span>);                                                    }</a>
+<a class="sourceLine" id="cb16-6" title="6">}</a></code></pre></div>
 <p>次に、そのままの状態で「dd」と入力せよ。これは「カーソルのある行を削除」する。これにより元に戻ったはずだ。</p>
 <p>検索も体験してみよう。「/(スラッシュ)」を入力せよ。カーソルが一番下に移り、入力待ちになったはずだ。ここで「include」と入力してエンターキーを押してみよ。「include」がハイライトされたはずだ。ハイライトを消すには「:」を押してコマンドモードに入り、「noh」と入力すること。</p>
 <p>また、viの終了は「:wq」でも可能だが、ただ「保存して終了」したい場合は「ZZ(大文字のZを二回)」でも可能だ。シフトキーを押しながらzを二回押せばよい。</p>
@@ -149,111 +149,111 @@ $ <span class="ex">./a.out</span>
 <p>先ほど、<code>g++ test.cpp</code>により、コンパイラにソースファイルを食わせてコンパイルし、実行可能ファイルを作成した。我々から見るとソースファイルが実行可能ファイルに変換されたように見えるが、実は裏でコンパイラは様々なことをしている。コンパイラは、プログラムをまずアセンブリと呼ばれる言語に変換し、その後必要なルーチンをリンカが「リンク」することで実行可能ファイルが作成される(他にもいろいろなことをしているのだが、ここでは触れない)。以下では、アセンブリを見てみることにしよう。</p>
 <p>アセンブリとは、「機械語」に、ほぼ一対一対応するプログラム言語だ。機械語は数字の羅列であり、人間には読みづらいので、それを読みやすくしたのが「アセンブリ」だと思っておけばとりあえず問題ない。</p>
 <p>コンパイラに<code>-S</code>オプションをつけてコンパイルしてみよう。大文字のSであることに注意。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">g++</span> -S test.cpp</code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb17-1" title="1"><span class="ex">g++</span> -S test.cpp</a></code></pre></div>
 <p>すると、同じディレクトリに<code>test.s</code>というファイルが作成されるので、viで中身を見てみよう。中身はこんなファイルだ。</p>
-<pre class="txt"><code>    .file   &quot;test.cpp&quot;
-    .section    .rodata
-.LC0:
-    .string &quot;Hello World&quot;
-    .text
-    .globl  main
-    .type   main, @function
-main:
-.LFB0:
-    .cfi_startproc
-    pushq   %rbp
-    .cfi_def_cfa_offset 16
-    .cfi_offset 6, -16
-    movq    %rsp, %rbp
-    .cfi_def_cfa_register 6
-    movl    $.LC0, %edi
-    call    puts
-    movl    $0, %eax
-    popq    %rbp
-    .cfi_def_cfa 7, 8
-    ret
-    .cfi_endproc
-.LFE0:
-    .size   main, .-main
-    .ident  &quot;GCC: (GNU) 4.8.5 20150623 (Red Hat 4.8.5-36)&quot;
-    .section    .note.GNU-stack,&quot;&quot;,@progbits</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb18-1" title="1">    .file   &quot;test.cpp&quot;</a>
+<a class="sourceLine" id="cb18-2" title="2">    .section    .rodata</a>
+<a class="sourceLine" id="cb18-3" title="3">.LC0:</a>
+<a class="sourceLine" id="cb18-4" title="4">    .string &quot;Hello World&quot;</a>
+<a class="sourceLine" id="cb18-5" title="5">    .text</a>
+<a class="sourceLine" id="cb18-6" title="6">    .globl  main</a>
+<a class="sourceLine" id="cb18-7" title="7">    .type   main, @function</a>
+<a class="sourceLine" id="cb18-8" title="8">main:</a>
+<a class="sourceLine" id="cb18-9" title="9">.LFB0:</a>
+<a class="sourceLine" id="cb18-10" title="10">    .cfi_startproc</a>
+<a class="sourceLine" id="cb18-11" title="11">    pushq   %rbp</a>
+<a class="sourceLine" id="cb18-12" title="12">    .cfi_def_cfa_offset 16</a>
+<a class="sourceLine" id="cb18-13" title="13">    .cfi_offset 6, -16</a>
+<a class="sourceLine" id="cb18-14" title="14">    movq    %rsp, %rbp</a>
+<a class="sourceLine" id="cb18-15" title="15">    .cfi_def_cfa_register 6</a>
+<a class="sourceLine" id="cb18-16" title="16">    movl    $.LC0, %edi</a>
+<a class="sourceLine" id="cb18-17" title="17">    call    puts</a>
+<a class="sourceLine" id="cb18-18" title="18">    movl    $0, %eax</a>
+<a class="sourceLine" id="cb18-19" title="19">    popq    %rbp</a>
+<a class="sourceLine" id="cb18-20" title="20">    .cfi_def_cfa 7, 8</a>
+<a class="sourceLine" id="cb18-21" title="21">    ret</a>
+<a class="sourceLine" id="cb18-22" title="22">    .cfi_endproc</a>
+<a class="sourceLine" id="cb18-23" title="23">.LFE0:</a>
+<a class="sourceLine" id="cb18-24" title="24">    .size   main, .-main</a>
+<a class="sourceLine" id="cb18-25" title="25">    .ident  &quot;GCC: (GNU) 4.8.5 20150623 (Red Hat 4.8.5-36)&quot;</a>
+<a class="sourceLine" id="cb18-26" title="26">    .section    .note.GNU-stack,&quot;&quot;,@progbits</a></code></pre></div>
 <p>デフォルトではデバッグ情報等が入っていて読みづらいが、それらを除いた本質はこれだけだ。</p>
-<pre class="txt"><code>main:
-        pushq   %rbp
-        movq    %rsp, %rbp
-        movl    $.LC0, %edi
-        call    puts
-        movl    $0, %eax
-        popq    %rbp
-        ret</code></pre>
+<div class="sourceCode" id="cb19"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb19-1" title="1">main:</a>
+<a class="sourceLine" id="cb19-2" title="2">        pushq   %rbp</a>
+<a class="sourceLine" id="cb19-3" title="3">        movq    %rsp, %rbp</a>
+<a class="sourceLine" id="cb19-4" title="4">        movl    $.LC0, %edi</a>
+<a class="sourceLine" id="cb19-5" title="5">        call    puts</a>
+<a class="sourceLine" id="cb19-6" title="6">        movl    $0, %eax</a>
+<a class="sourceLine" id="cb19-7" title="7">        popq    %rbp</a>
+<a class="sourceLine" id="cb19-8" title="8">        ret</a></code></pre></div>
 <p>これが<code>main</code>関数に対応するアセンブリだ。<code>pushq</code>や<code>popq</code>は関数呼び出しのために必要な操作であり、それらも除くと、以下だけである。</p>
-<pre class="txt"><code>        movl    $.LC0, %edi
-        call    puts</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb20-1" title="1">        movl    $.LC0, %edi</a>
+<a class="sourceLine" id="cb20-2" title="2">        call    puts</a></code></pre></div>
 <p>最初は、「ラベル<code>$.LC0</code>のアドレスを<code>edi</code>というレジスタにコピーせよ」という意味で、次で<code>puts</code>という関数を呼び出している。<code>puts</code>は<code>edi</code>が指すアドレスの文字列を表示する関数である。このラベルを見てみよう。</p>
-<pre class="txt"><code>.LC0:
-    .string &quot;Hello World&quot;
-    .text
-    .globl  main
-    .type   main, @function</code></pre>
+<div class="sourceCode" id="cb21"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb21-1" title="1">.LC0:</a>
+<a class="sourceLine" id="cb21-2" title="2">    .string &quot;Hello World&quot;</a>
+<a class="sourceLine" id="cb21-3" title="3">    .text</a>
+<a class="sourceLine" id="cb21-4" title="4">    .globl  main</a>
+<a class="sourceLine" id="cb21-5" title="5">    .type   main, @function</a></code></pre></div>
 <p>文字列として「Hello World」が記載されている。ここを修正してみよう。「World」の先頭にカーソルを合わせて、「dw」と入力せよ。これは一単語削除する命令だ。「World」が消えるので「i」を押して挿入モードにしたら、「Assembly」と書いてエスケープキーを押し、「ZZ」で終了しよう。</p>
-<pre class="txt"><code>.LC0:
-    .string &quot;Hello Assembly&quot;
-    .text
-    .globl  main
-    .type   main, @function</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb22-1" title="1">.LC0:</a>
+<a class="sourceLine" id="cb22-2" title="2">    .string &quot;Hello Assembly&quot;</a>
+<a class="sourceLine" id="cb22-3" title="3">    .text</a>
+<a class="sourceLine" id="cb22-4" title="4">    .globl  main</a>
+<a class="sourceLine" id="cb22-5" title="5">    .type   main, @function</a></code></pre></div>
 <p>この状態でアセンブリを実行可能ファイルにしてみよう。<code>g++</code>に<code>test.s</code>を食わせて見る(<code>test.cpp</code>ではないことに注意)。実行可能ファイルができるので、実行して、メッセージが変わっていることを確認しよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">g++</span> test.s
-$ <span class="ex">./a.out</span>
-<span class="ex">Hello</span> Assembly</code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb23-1" title="1">$ <span class="ex">g++</span> test.s</a>
+<a class="sourceLine" id="cb23-2" title="2">$ <span class="ex">./a.out</span></a>
+<a class="sourceLine" id="cb23-3" title="3"><span class="ex">Hello</span> Assembly</a></code></pre></div>
 <p>アセンブリの修正が簡単だ、ということがわかったっだろうか。</p>
 <h2 id="部分コンパイル">部分コンパイル</h2>
 <p>C/C++言語は、部分コンパイルができる。部分コンパイルとは、大きなプログラムを複数の「部分」に分けてコンパイルすることで、大きなプログラムを一気にコンパイルするのに比べて、更新部分のみコンパイルできるためにコンパイル時間が短くなる。</p>
 <p>以下では、小さなプログラムを組んで、そのアセンブリを見てみることにしよう。viで<code>test2.cpp</code>を作成せよ。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">vi</span> test2.cpp</code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb24-1" title="1"><span class="ex">vi</span> test2.cpp</a></code></pre></div>
 <p>入力内容は以下の通り。</p>
-<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">double</span> func(<span class="dt">double</span> a, <span class="dt">double</span> b){
-  <span class="cf">return</span> a+b;
-}</code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode cpp"><code class="sourceCode cpp"><a class="sourceLine" id="cb25-1" title="1"><span class="dt">double</span> func(<span class="dt">double</span> a, <span class="dt">double</span> b){</a>
+<a class="sourceLine" id="cb25-2" title="2">  <span class="cf">return</span> a+b;</a>
+<a class="sourceLine" id="cb25-3" title="3">}</a></code></pre></div>
 <p>入力できたら、コンパイラに食わせてアセンブリを出力しよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">g++</span> -S -O2 test2.cpp</code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb26-1" title="1"><span class="ex">g++</span> -S -O2 test2.cpp</a></code></pre></div>
 <p>デフォルトの出力はごちゃごちゃして見づらいので、<code>-O2</code>オプションで最適化をかけている。オプションは大文字のO(オー)であることに注意。アセンブリを見てみよう。</p>
-<div class="sourceCode"><pre class="sourceCode asm"><code class="sourceCode fasm"><span class="fu">_Z4funcdd:</span>
-        <span class="bu">addsd</span>   %<span class="kw">xmm1</span>, %<span class="kw">xmm0</span>
-        <span class="bu">ret</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode asm"><code class="sourceCode fasm"><a class="sourceLine" id="cb27-1" title="1"><span class="fu">_Z4funcdd:</span></a>
+<a class="sourceLine" id="cb27-2" title="2">        <span class="bu">addsd</span>   %<span class="kw">xmm1</span>, %<span class="kw">xmm0</span></a>
+<a class="sourceLine" id="cb27-3" title="3">        <span class="bu">ret</span></a></code></pre></div>
 <p>不要部分を除くと、関数<code>func</code>の中身はこれだけだ。内容は「xmm1レジスタとxmm0レジスタを足して、結果をxmm0レジスタに格納せよ」だけである。</p>
 <p>関数<code>func</code>の引数は<code>a</code>と<code>b</code>であったが、それは「それぞれ<code>xmm0</code>レジスタと<code>xmm1</code>レジスタに入れて呼び出される」という決まりになっている。また、returnによる返り値は、「倍精度実数を返す場合は<code>xmm0</code>に値を入れる」と決まっている。このような決まりを<code>Application Binary Interface (ABI)</code>と呼ぶ。</p>
 <p>倍精度実数は64ビットなのだが、xmmレジスタは128ビットのSIMDレジスタになっている。通常、多くのCPUでは64ビット浮動小数点用のレジスタを備えているのだが、x86系のCPUでは、歴史的な事情から128ビットのレジスタを64ビットの演算にも用いることになっている(80ビットを用いるx87命令というものもあるが、ここでは触れない)。</p>
 <p>xmmレジスタは128ビットだが、さらに幅を広げたレジスタがymmレジスタであり、256ビットある。これを見てみよう。</p>
 <p>以下の内容を<code>test3.cpp</code>として作成せよ。</p>
-<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&lt;x86intrin.h&gt;</span>
-
-__m256d func(__m256d a, __m256d b){
-  <span class="cf">return</span> a+b;
-}</code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode cpp"><code class="sourceCode cpp"><a class="sourceLine" id="cb28-1" title="1"><span class="pp">#include </span><span class="im">&lt;x86intrin.h&gt;</span></a>
+<a class="sourceLine" id="cb28-2" title="2"></a>
+<a class="sourceLine" id="cb28-3" title="3">__m256d func(__m256d a, __m256d b){</a>
+<a class="sourceLine" id="cb28-4" title="4">  <span class="cf">return</span> a+b;</a>
+<a class="sourceLine" id="cb28-5" title="5">}</a></code></pre></div>
 <p>これを、通常のオプションでコンパイルすると「__m256dなんて知らないよ」とエラーになる。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">g++</span> -O2 -S test3.cpp
-<span class="ex">test3.cpp</span>:3:1: エラー: ‘__m256d’ does not name a type
- <span class="ex">__m256d</span> func(__m256d a, __m256d b)<span class="kw">{</span>
- ^</code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb29-1" title="1">$ <span class="ex">g++</span> -O2 -S test3.cpp</a>
+<a class="sourceLine" id="cb29-2" title="2"><span class="ex">test3.cpp</span>:3:1: エラー: ‘__m256d’ does not name a type</a>
+<a class="sourceLine" id="cb29-3" title="3"> <span class="ex">__m256d</span> func(__m256d a, __m256d b)<span class="kw">{</span></a>
+<a class="sourceLine" id="cb29-4" title="4"> ^</a></code></pre></div>
 <p>そこで、コンパイラに「我々は AVX2命令セットを使うよ」と教えてあげよう。そのためには<code>-mavx2</code>を指定する。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">g++</span> -O2 -S -mavx2 test3.cpp</code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb30-1" title="1">$ <span class="ex">g++</span> -O2 -S -mavx2 test3.cpp</a></code></pre></div>
 <p>アセンブリを見てみるとこうなっている。</p>
-<div class="sourceCode"><pre class="sourceCode asm"><code class="sourceCode fasm"><span class="fu">_Z4funcU8__vectordS_:</span>
-        vaddpd  %ymm1, %ymm0, %ymm0
-        <span class="bu">ret</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode asm"><code class="sourceCode fasm"><a class="sourceLine" id="cb31-1" title="1"><span class="fu">_Z4funcU8__vectordS_:</span></a>
+<a class="sourceLine" id="cb31-2" title="2">        vaddpd  %ymm1, %ymm0, %ymm0</a>
+<a class="sourceLine" id="cb31-3" title="3">        <span class="bu">ret</span></a></code></pre></div>
 <p>ymmレジスタが使われていることがわかる。ここでは256ビットの演算、すなわち4つの浮動小数点演算が行われている。</p>
 <p>先ほど、「普通の浮動小数点演算」でも128ビットのxmmレジスタが使われていた。では128ビットSIMD演算をしてみたらどうなるだろうか？</p>
 <p>以下の内容で<code>test4.cpp</code>を作成せよ。</p>
-<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&lt;x86intrin.h&gt;</span>
-__m128d func(__m128d a, __m128d b){
-  <span class="cf">return</span> a+b;
-}</code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode cpp"><code class="sourceCode cpp"><a class="sourceLine" id="cb32-1" title="1"><span class="pp">#include </span><span class="im">&lt;x86intrin.h&gt;</span></a>
+<a class="sourceLine" id="cb32-2" title="2">__m128d func(__m128d a, __m128d b){</a>
+<a class="sourceLine" id="cb32-3" title="3">  <span class="cf">return</span> a+b;</a>
+<a class="sourceLine" id="cb32-4" title="4">}</a></code></pre></div>
 <p>コンパイルしてアセンブリを見てみよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">g++</span> -O2 -S test4.cpp</code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb33-1" title="1"><span class="ex">g++</span> -O2 -S test4.cpp</a></code></pre></div>
 <p>関数<code>func</code>の中身はこうなっている。</p>
-<div class="sourceCode"><pre class="sourceCode asm"><code class="sourceCode fasm"><span class="fu">_Z4funcU8__vectordS_:</span>
-        <span class="bu">addpd</span>   %<span class="kw">xmm1</span>, %<span class="kw">xmm0</span>
-        <span class="bu">ret</span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode asm"><code class="sourceCode fasm"><a class="sourceLine" id="cb34-1" title="1"><span class="fu">_Z4funcU8__vectordS_:</span></a>
+<a class="sourceLine" id="cb34-2" title="2">        <span class="bu">addpd</span>   %<span class="kw">xmm1</span>, %<span class="kw">xmm0</span></a>
+<a class="sourceLine" id="cb34-3" title="3">        <span class="bu">ret</span></a></code></pre></div>
 <p>やはりxmmレジスタの足し算が行われているが、先ほどは<code>addsd</code>という命令だったが、こんどは<code>addpd</code>という命令に変わっている。<code>addsd</code>はxmmレジスタの「下位64ビットを足しなさい」という命令で、<code>addpd</code>は「下位と上位64ビットをそれぞれ足しなさい」というSIMD命令になっている。</p>
 </article>
 </body>

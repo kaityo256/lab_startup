@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="generator" content="pandoc">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title></title>
+  <title>docker/README.md</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
 div.sourceCode { overflow-x: auto; }
@@ -76,115 +76,115 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>既にPython等で、パッケージのバージョンに依存した問題や、環境によってコードが動いたり動かなかったりしているのを経験しているはずだ。また、サーバ管理者をしてみると、「いろいろやって」動くようになったサーバが死んで、別のサーバに同じような環境を構築しようとしたら、どうやって動くようになっていたか全く思い出せない、なんてことがザラにある。また、自分のサーバはCentOSなのに、Ubuntu用の説明しか見つからず、そのままでは動いてくれなかった、ということもある。こんな悩みを解決する技術がDockerだ。Dockerはコンテナ型の仮想化技術を用いて、仮想環境を構築、管理、配布するための技術だ。特に、環境構築の手順をコード化する「Infrastructure as Code（IaC）」と呼ばれる仕組みは非常に便利だ。今後、何かしらの開発をするにあたって、Dockerが必須とまでは言わないが、知っていると便利なのは確実だ。以下、Dockerの詳細には触れず、簡単な使い方だけ紹介する。また、「コンテナ」や「イメージ」といった単語の説明もしないので、必要に応じて調べて欲しい。</p>
 <h2 id="dockerを使ってみる">Dockerを使ってみる</h2>
 <p>まずは研究室サーバにログインし、Dockerコマンドを叩いてみよう。Dockerは<code>docker</code>コマンドにより制御できる。まずは以下のコマンドを実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">docker</span> ps</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="ex">docker</span> ps</a></code></pre></div>
 <p><code>permission denied</code>と言われ、実行が拒否されたはずだ。Dockerではセキュリティのため、デフォルトでは一般ユーザの利用が許可されていない。そこで、一時的にDockerグループに所属しよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">newgrp</span> docker</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="ex">newgrp</span> docker</a></code></pre></div>
 <p>パスワードを聞かれるので事前に伝えたパスワードを入力せよ。これでDockerが使えるようになる。再度以下のコマンドを実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">docker</span> ps</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="ex">docker</span> ps</a></code></pre></div>
 <p>これは、現在実行中のコンテナを表示するコマンドだ。こんな表示がされたはずである。</p>
-<pre class="txt"><code>CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb4-1" title="1">CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES</a></code></pre></div>
 <p>現在は実行中のコンテナがひとつもないため、何も表示されていない。</p>
 <p>次に、現在、ローカルに保存されているイメージを確認しよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">docker</span> images
-<span class="ex">REPOSITORY</span>          TAG                 IMAGE ID            CREATED             SIZE
-<span class="ex">ubuntu</span>              18.04               329ed837d508        13 days ago         63.3MB</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1">$ <span class="ex">docker</span> images</a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="ex">REPOSITORY</span>          TAG                 IMAGE ID            CREATED             SIZE</a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="ex">ubuntu</span>              18.04               329ed837d508        13 days ago         63.3MB</a></code></pre></div>
 <p>ubuntuの18.04があるはずだ(うちの研究室では)。イメージがない場合、リモートから取ってくることができる。それが<code>pull</code>コマンドだ。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">docker</span> pull ubuntu:18.04</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" title="1"><span class="ex">docker</span> pull ubuntu:18.04</a></code></pre></div>
 <p>これは、ubuntuの「18.04」というタグのついたイメージを持ってきなさい、という命令だ。タグは、多くの場合バージョンの指定に使われる。省略すると<code>latest</code>を指定したことになる。</p>
 <p>今回はローカルに既にイメージがあるために</p>
-<pre class="txt"><code>Status: Image is up to date for ubuntu:18.04</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb7-1" title="1">Status: Image is up to date for ubuntu:18.04</a></code></pre></div>
 <p>と言って何もしない。</p>
 <p>次に、このイメージからコンテナを作成し、ログインしてみよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">docker</span> run -it ubuntu:18.04</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" title="1">$ <span class="ex">docker</span> run -it ubuntu:18.04</a></code></pre></div>
 <p><code>root@06e9b4bcd4c6:/#</code>といった文字列が出てきたはずである。この<code>root@</code>の右側は毎回異なる。この文字列を3桁くらい覚えておくこと。</p>
 <p>さて、今まっさらなubuntuにログインした。まずはパッケージをアップデートしよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">apt-get</span> update</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" title="1"><span class="ex">apt-get</span> update</a></code></pre></div>
 <p>アップデートが終わったら、何かインストールしてみよう。今回は「Bastard Tetris(いやがらせテトリス), bastet」をインストールしてみよう。以下のコマンドを実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">apt-get</span> install -y bastet</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" title="1"><span class="ex">apt-get</span> install -y bastet</a></code></pre></div>
 <p>ここで<code>-y</code>を指定するのを忘れないこと。これは「確認無しにインストールせよ」というオプションだ。</p>
 <p>インストールが終わったら、実行して遊んでみよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">/usr/games/bastet</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" title="1"><span class="ex">/usr/games/bastet</span></a></code></pre></div>
 <p>見た目は普通のテトリスに見えるが、しばらくやってみると、なかなかラインが消せないのがわかるだろう。実はこのテトリスはブロックがランダムではなく「プレイヤーが一番要らなそうな奴」を選んで出してくる。「Bastard Tetris(いやがらせテトリス)」と呼ばれる所以である。</p>
 <p>さて、ゲームオーバーしてQuitを選ぶか、Ctrl+Cで終了し、さらにこの仮想環境を<code>exit</code>で抜けよう。</p>
 <p>その後、またコンテナを表示してみよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">docker</span> ps</code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" title="1"><span class="ex">docker</span> ps</a></code></pre></div>
 <p>何も表示されないはずである(command not found等と言われたら、あなたはまだ仮想環境の中にいるのでexitすること)。これは「現在実行中」のコンテナを表示しているからだ。<code>-a</code>オプションをつけることで終了したコンテナも表示できる。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">docker</span> ps -a
-<span class="ex">CONTAINER</span> ID        IMAGE               COMMAND             CREATED             STATUS                            PORTS               NAMES
-<span class="ex">06e9b4bcd4c6</span>        ubuntu:18.04        <span class="st">&quot;/bin/bash&quot;</span>         16 minutes ago      Exited (127) <span class="ex">About</span> a minute ago                       stupefied_sammet</code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb13-1" title="1">$ <span class="ex">docker</span> ps -a</a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="ex">CONTAINER</span> ID        IMAGE               COMMAND             CREATED             STATUS                            PORTS               NAMES</a>
+<a class="sourceLine" id="cb13-3" title="3"><span class="ex">06e9b4bcd4c6</span>        ubuntu:18.04        <span class="st">&quot;/bin/bash&quot;</span>         16 minutes ago      Exited (127) <span class="ex">About</span> a minute ago                       stupefied_sammet</a></code></pre></div>
 <p>終了したコンテナが表示されたはずだ。複数人で実行した場合は複数表示されるので、先ほど覚えたIDを使う。終了したコンテナを再び起動してみよう。先ほど覚えた3桁のIDを入力せよ(他のコンテナIDと区別できる最低限の桁数を指定すれば良いので、一つしかなければ最初の1桁でも良い)。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">docker</span> start 06e</code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" title="1"><span class="ex">docker</span> start 06e</a></code></pre></div>
 <p>すると、STATUSが実行中(UP)になるはずだ。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">docker</span> ps
-<span class="ex">CONTAINER</span> ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
-<span class="ex">06e9b4bcd4c6</span>        ubuntu:18.04        <span class="st">&quot;/bin/bash&quot;</span>         19 minutes ago      Up 51 seconds                           stupefied_sammet</code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb15-1" title="1">$ <span class="ex">docker</span> ps</a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="ex">CONTAINER</span> ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES</a>
+<a class="sourceLine" id="cb15-3" title="3"><span class="ex">06e9b4bcd4c6</span>        ubuntu:18.04        <span class="st">&quot;/bin/bash&quot;</span>         19 minutes ago      Up 51 seconds                           stupefied_sammet</a></code></pre></div>
 <p>この実行中のコンテナに接続(attach)しよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">docker</span> attach 06e
-<span class="ex">root@06e9b4bcd4c6</span>:/#        </code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb16-1" title="1">$ <span class="ex">docker</span> attach 06e</a>
+<a class="sourceLine" id="cb16-2" title="2"><span class="ex">root@06e9b4bcd4c6</span>:/#        </a></code></pre></div>
 <p>ログインできたはずだ。このコンテナには既にbastetがインストールされているはずなので実行してみよ。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">/usr/games/bastet</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb17-1" title="1"><span class="ex">/usr/games/bastet</span></a></code></pre></div>
 <p>実行できるはずだ。また終了して、仮想環境を抜けておくこと。</p>
 <p>仮想環境を抜けたらコンテナを消しておこう。それには<code>rm</code>コマンドを使う。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">docker</span> rm 06e</code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb18-1" title="1"><span class="ex">docker</span> rm 06e</a></code></pre></div>
 <p>ちゃんと削除されたか、<code>docker ps -a</code>コマンドで確認すること。</p>
 <h2 id="dockerfileを書いてみる">Dockerfileを書いてみる</h2>
 <p>Dockerを使う最大のメリットは、手順をファイルに書いておき、ファイルから環境を構築できることだ。これは「Infrastructure as Code（IaC）」と呼ばれ、ChefやAnsibleなどが有名だ(気になったら調べてみよ)。ここでは、先ほど行った手順をコード化し、イメージ作成を自動化してみよう。</p>
 <p>まず、適当なディレクトリを掘ろう。ここでは<code>docker</code>とするが、好きな名前にしてかまわない。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">mkdir</span> docker
-<span class="bu">cd</span> docker</code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb19-1" title="1"><span class="fu">mkdir</span> docker</a>
+<a class="sourceLine" id="cb19-2" title="2"><span class="bu">cd</span> docker</a></code></pre></div>
 <p>次に、<code>Dockerfile</code>を作成する。最初が大文字であることに注意。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">vim</span> Dockerfile</code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb20-1" title="1"><span class="ex">vim</span> Dockerfile</a></code></pre></div>
 <p>まずは以下の内容のファイルを作成せよ。</p>
-<div class="sourceCode"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="fu">FROM ubuntu:</span><span class="at">18.04</span>
-
-RUN apt-get update</code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb21-1" title="1">FROM ubuntu:18.04</a>
+<a class="sourceLine" id="cb21-2" title="2"></a>
+<a class="sourceLine" id="cb21-3" title="3">RUN apt-get update</a></code></pre></div>
 <p><code>FROM</code>は、元にするイメージを指定する。ここでは<code>ubuntu:18.04</code>にしよう。<code>RUN</code>は実行するコマンドだ。最初はパッケージのアップデートをする。</p>
 <p>ファイルが作成できたら、<code>docker build</code>によりイメージを作成しよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">docker</span> build -t watanabe/bastet .</code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb22-1" title="1"><span class="ex">docker</span> build -t watanabe/bastet .</a></code></pre></div>
 <p><code>-t</code>オプションで名前を指定する。「自分の名前/bastet」にしよう。最後のピリオドを忘れないように。これは<code>Dockerfile</code>へのパスを表す。今回はカレントディレクトリにあるので<code>.</code>で良い。</p>
 <p>実行に成功すれば</p>
-<pre class="txt"><code>Successfully built 876b1067a73b
-Successfully tagged watanabe/bastet:latest</code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb23-1" title="1">Successfully built 876b1067a73b</a>
+<a class="sourceLine" id="cb23-2" title="2">Successfully tagged watanabe/bastet:latest</a></code></pre></div>
 <p>などと表示されるはずだ。イメージが出来ているか見てみよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">docker</span> images
-<span class="ex">REPOSITORY</span>          TAG                 IMAGE ID            CREATED              SIZE
-<span class="ex">watanabe/bastet</span>     latest              876b1067a73b        About a minute ago   92.8MB
-<span class="ex">ubuntu</span>              18.04               c3c304cb4f22        6 weeks ago          64.2MB</code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb24-1" title="1">$ <span class="ex">docker</span> images</a>
+<a class="sourceLine" id="cb24-2" title="2"><span class="ex">REPOSITORY</span>          TAG                 IMAGE ID            CREATED              SIZE</a>
+<a class="sourceLine" id="cb24-3" title="3"><span class="ex">watanabe/bastet</span>     latest              876b1067a73b        About a minute ago   92.8MB</a>
+<a class="sourceLine" id="cb24-4" title="4"><span class="ex">ubuntu</span>              18.04               c3c304cb4f22        6 weeks ago          64.2MB</a></code></pre></div>
 <p>このIMAGE ID(<code>876b1067a73b</code>)の最初の数桁(<code>876</code>)も覚えておこう。</p>
 <p>さて、先ほどはパッケージのアップデートしなかったので、bastetのインストールを追加しよう。<code>Dockerfile</code>を以下のように修正せよ。</p>
-<div class="sourceCode"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="fu">FROM ubuntu:</span><span class="at">18.04</span>
-
-RUN apt-get update &amp;&amp; apt-get -y install bastet</code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb25-1" title="1">FROM ubuntu:18.04</a>
+<a class="sourceLine" id="cb25-2" title="2"></a>
+<a class="sourceLine" id="cb25-3" title="3">RUN apt-get update &amp;&amp; apt-get -y install bastet</a></code></pre></div>
 <p><code>&amp;&amp;</code>は、前のコマンドが成功した時にのみ次を実行するものだ。一方、<code>;</code>を使うと、前のコマンドの成否に関わらず次を実行する。また、<code>apt-get -y install bastet</code>の<code>-y</code>オプションを忘れないこと。</p>
 <p>ファイルを更新したら、もう一度<code>build</code>を走らせよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">docker</span> build -t watanabe/bastet .</code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb26-1" title="1"><span class="ex">docker</span> build -t watanabe/bastet .</a></code></pre></div>
 <p>先ほどとは違うImage IDが表示されたはずだ。</p>
-<pre class="txt"><code>Successfully built 6e343ebe467b
-Successfully tagged watanabe/bastet:latest</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb27-1" title="1">Successfully built 6e343ebe467b</a>
+<a class="sourceLine" id="cb27-2" title="2">Successfully tagged watanabe/bastet:latest</a></code></pre></div>
 <p>イメージ一覧を見てみよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">docker</span> images
-<span class="ex">REPOSITORY</span>          TAG                 IMAGE ID            CREATED              SIZE
-<span class="ex">watanabe/bastet</span>     latest              6e343ebe467b        About a minute ago   94.9MB
-<span class="op">&lt;</span><span class="ex">none</span><span class="op">&gt;</span>              <span class="op">&lt;</span>none<span class="op">&gt;</span>              876b1067a73b        9 minutes ago        92.8MB
-<span class="ex">ubuntu</span>              18.04               c3c304cb4f22        6 weeks ago          64.2MB</code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb28-1" title="1">$ <span class="ex">docker</span> images</a>
+<a class="sourceLine" id="cb28-2" title="2"><span class="ex">REPOSITORY</span>          TAG                 IMAGE ID            CREATED              SIZE</a>
+<a class="sourceLine" id="cb28-3" title="3"><span class="ex">watanabe/bastet</span>     latest              6e343ebe467b        About a minute ago   94.9MB</a>
+<a class="sourceLine" id="cb28-4" title="4"><span class="op">&lt;</span><span class="ex">none</span><span class="op">&gt;</span>              <span class="op">&lt;</span>none<span class="op">&gt;</span>              876b1067a73b        9 minutes ago        92.8MB</a>
+<a class="sourceLine" id="cb28-5" title="5"><span class="ex">ubuntu</span>              18.04               c3c304cb4f22        6 weeks ago          64.2MB</a></code></pre></div>
 <p>イメージを更新し、そちらに<code>watanabe/bastet</code>という同じ名前(タグ)を付けたため、名無しのイメージ<code>&lt;none&gt;</code>が出来たことがわかる。サイズもわりと大きいので消しておこう。イメージの削除は<code>rmi</code>を使う。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">docker</span> rmi 876</code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb29-1" title="1"><span class="ex">docker</span> rmi 876</a></code></pre></div>
 <p>不要なイメージが消えたはずだ。</p>
 <p>せっかくイメージを作成したので、そこからコンテナを作ってみよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">docker</span> run -it watanabe/bastet</code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb30-1" title="1"><span class="ex">docker</span> run -it watanabe/bastet</a></code></pre></div>
 <p>最初からbastetがインストール済みなので、そのまま実行できるはずである。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">/usr/games/bastet</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb31-1" title="1"><span class="ex">/usr/games/bastet</span></a></code></pre></div>
 <p>実行を確認したら、また仮想環境を抜けよう。</p>
 <p>次に、先ほど作ったイメージを消してみよう。名前でもIDでもどちらでも消すことができる。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">docker</span> rmi watanabe/bastet
-<span class="ex">Error</span> response from daemon: conflict: unable to remove repository reference <span class="st">&quot;watanabe/bastet&quot;</span> (must force) <span class="ex">-</span> container 4716a1ed11c2 is using its referenced image 6e343ebe467b</code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb32-1" title="1">$ <span class="ex">docker</span> rmi watanabe/bastet</a>
+<a class="sourceLine" id="cb32-2" title="2"><span class="ex">Error</span> response from daemon: conflict: unable to remove repository reference <span class="st">&quot;watanabe/bastet&quot;</span> (must force) <span class="ex">-</span> container 4716a1ed11c2 is using its referenced image 6e343ebe467b</a></code></pre></div>
 <p>「このイメージはコンテナ(4716a1ed11c2)が使っているから消せないよ」と文句を言われたはずだ。まずはそのコンテナを消してからイメージを消そう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">docker</span> rm 471
-<span class="ex">471</span>
-$ <span class="ex">docker</span> rmi watanabe/bastet
-<span class="ex">Untagged</span>: watanabe/bastet:latest
-<span class="ex">Deleted</span>: sha256:6e343ebe467bc4d03fad86ee8ab104fa7412ba1f3a15a937aa85d62cd92c7788
-<span class="ex">Deleted</span>: sha256:151596245487e3a389315bf4a41f5926959ee12b71865391c09cae6f1293ad92</code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb33-1" title="1">$ <span class="ex">docker</span> rm 471</a>
+<a class="sourceLine" id="cb33-2" title="2"><span class="ex">471</span></a>
+<a class="sourceLine" id="cb33-3" title="3">$ <span class="ex">docker</span> rmi watanabe/bastet</a>
+<a class="sourceLine" id="cb33-4" title="4"><span class="ex">Untagged</span>: watanabe/bastet:latest</a>
+<a class="sourceLine" id="cb33-5" title="5"><span class="ex">Deleted</span>: sha256:6e343ebe467bc4d03fad86ee8ab104fa7412ba1f3a15a937aa85d62cd92c7788</a>
+<a class="sourceLine" id="cb33-6" title="6"><span class="ex">Deleted</span>: sha256:151596245487e3a389315bf4a41f5926959ee12b71865391c09cae6f1293ad92</a></code></pre></div>
 <p>今度は消せたはずだ。</p>
 <p>以後、このDockerfileからイメージを作れば、間違いなくbastetが実行できる環境となる。また、この環境を作るのにどんなコマンドが必要だったかも全てファイルに残っている。まさにInfrastructure as Codeである。</p>
 <p>ここでは研究室サーバを使ったが、もし興味があればローカルマシンでやってみると良い。その場合はdockerグループへの所属は不要である。</p>

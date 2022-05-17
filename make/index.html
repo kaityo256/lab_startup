@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="generator" content="pandoc">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title></title>
+  <title>make/README.md</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
 div.sourceCode { overflow-x: auto; }
@@ -75,8 +75,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>make(メイク)は、ビルドツールと呼ばれるソフトウェアで、その名の通り、主にプログラムのビルドの自動化に使われる。プログラムは、通常、複数のコンポーネントから構成されている。これらのコンポーネントには「あるファイルを修正したら、このファイルとこのファイルをビルドしなおさなければならない」といった「依存関係」がある。一般に「〇〇したら〇〇しなければならない」もしくは「〇〇する前には〇〇しなければならない」といった状況は危険信号だ。依存関係が複雑になったら、自分の修正がどこまで波及するのかがわかりにくくなり、必ずミスが起きる。そのため、依存関係を認識し、ソフトウェアを正しくビルドするためのツールがビルドツールだ。makeは古典的なビルドツールで、better makeとしてのCMake、RubyによるRakeや、PythonのSConsなど、多くのビルドツールがあるが、まずはmakeを使えるようになってみよう。makeにも方言があるが、ここでは広く使われているGNU Makeの使い方を学ぶ。</p>
 <h2 id="makeの基本的な使い方">makeの基本的な使い方</h2>
 <p>makeは、makefileというファイルに「ルール」と呼ばれる <strong>依存関係</strong> と<strong>処理</strong>をまとめたもの記述する。</p>
-<div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dv">ターゲット:</span><span class="dt"> 依存するファイル1 依存するファイル2...</span>
-    コマンド</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode makefile"><code class="sourceCode makefile"><a class="sourceLine" id="cb1-1" title="1"><span class="dv">ターゲット:</span><span class="dt"> 依存するファイル1 依存するファイル2...</span></a>
+<a class="sourceLine" id="cb1-2" title="2">    コマンド</a></code></pre></div>
 <p>という形になる。ルールは</p>
 <ul>
 <li>ターゲット：このルールが作りたいもの</li>
@@ -85,16 +85,16 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul>
 <p>から構成される。</p>
 <p>まずは、簡単なmakefileを書いてみよう。まずは<code>github</code>ディレクトリに入り、練習用のリポジトリ<code>kaityo256/make_tutorial</code>をcloneせよ。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span> github
-<span class="fu">git</span> clone https://github.com/kaityo256/make_tutorial.git</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="bu">cd</span> github</a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="fu">git</span> clone https://github.com/kaityo256/make_tutorial.git</a></code></pre></div>
 <p>cloneできたら、リポジトリの<code>hello</code>というディレクトリに入ろう。そこには<code>hello.txt</code>というテキストファイルが置いてある。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="bu">cd</span> make_tutorial
-$ <span class="bu">cd</span> hello
-$ <span class="fu">cat</span> hello.txt
-<span class="ex">Hello</span> Make!</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1">$ <span class="bu">cd</span> make_tutorial</a>
+<a class="sourceLine" id="cb3-2" title="2">$ <span class="bu">cd</span> hello</a>
+<a class="sourceLine" id="cb3-3" title="3">$ <span class="fu">cat</span> hello.txt</a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="ex">Hello</span> Make!</a></code></pre></div>
 <p>この<code>cat hello.txt</code>をmakeにやらせてみよう。vim で<code>makefile</code>を開き、以下の内容を入力せよ</p>
-<div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dv">all:</span>
-    cat hello.txt</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode makefile"><code class="sourceCode makefile"><a class="sourceLine" id="cb4-1" title="1"><span class="dv">all:</span></a>
+<a class="sourceLine" id="cb4-2" title="2">    cat hello.txt</a></code></pre></div>
 <p>これは</p>
 <ul>
 <li><code>all</code>というターゲットを作るルールで</li>
@@ -109,9 +109,9 @@ $ <span class="fu">cat</span> hello.txt
 <li><code>cat hello.txt</code>の前は「タブ」を入力する(vimの設定によっては、<code>all:</code>で改行した時に自動的にタブが入るかもしれない)</li>
 </ul>
 <p>入力が終わったら、実行してみよう。端末で<code>make</code>を実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">make</span>
-<span class="fu">cat</span> hello.txt
-<span class="ex">Hello</span> Make!</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1">$ <span class="fu">make</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="fu">cat</span> hello.txt</a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="ex">Hello</span> Make!</a></code></pre></div>
 <p>この動作について説明しよう。</p>
 <ul>
 <li>まず、<code>make</code>はファイルを指定されずに実行されると、デフォルトのメイクファイルである<code>Makefile</code>もしくは<code>makefile</code>を探しに行く</li>
@@ -121,34 +121,34 @@ $ <span class="fu">cat</span> hello.txt
 <li>最後に、<code>cat hello.txt</code>の実行結果として<code>Hello Make!</code>が表示された。</li>
 </ul>
 <p>なお、コマンドに<code>@</code>をつけるとそのコマンドは表示されない。</p>
-<div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dv">all:</span>
-    <span class="ch">@</span><span class="fu">cat hello.txt</span></code></pre></div>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">make</span>
-<span class="ex">Hello</span> Make!</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode makefile"><code class="sourceCode makefile"><a class="sourceLine" id="cb6-1" title="1"><span class="dv">all:</span></a>
+<a class="sourceLine" id="cb6-2" title="2">    <span class="ch">@</span><span class="fu">cat hello.txt</span></a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" title="1">$ <span class="fu">make</span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="ex">Hello</span> Make!</a></code></pre></div>
 <p>なお、もう一度makeすると、もう一度コマンドが実行される。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">make</span>
-<span class="ex">Hello</span> Make!</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" title="1">$ <span class="fu">make</span></a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="ex">Hello</span> Make!</a></code></pre></div>
 <p>makeは「ターゲットが存在しない」もしくは「ターゲットが依存するファイルが存在しないか、ターゲットより新しい」場合にコマンドを実行する。今回はターゲット<code>all</code>のコマンドを実行しても、<code>all</code>が作成されないので、何度でも実行される。</p>
 <h2 id="依存関係の記述">依存関係の記述</h2>
 <p>次に、依存関係を記述してみよう。同じディレクトリ(<code>hello</code>)で、makefileを以下のように書き直そう。</p>
-<div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dv">all:</span><span class="dt"> result.txt</span>
-
-<span class="dv">result.txt:</span><span class="dt"> hello.txt</span>
-    cat hello.txt &gt; result.txt</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode makefile"><code class="sourceCode makefile"><a class="sourceLine" id="cb9-1" title="1"><span class="dv">all:</span><span class="dt"> result.txt</span></a>
+<a class="sourceLine" id="cb9-2" title="2"></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="dv">result.txt:</span><span class="dt"> hello.txt</span></a>
+<a class="sourceLine" id="cb9-4" title="4">    cat hello.txt &gt; result.txt</a></code></pre></div>
 <p>これは、</p>
 <ul>
 <li>ターゲットallは <code>result.txt</code>に依存しており、<code>all</code>に関しては何もしなくて良い(コマンドが無い)</li>
 <li>ターゲット<code>result.txt</code>は <code>hello.txt</code>に依存しており、作成するコマンドは <code>cat hello.txt &gt; result.txt</code>である。</li>
 </ul>
 <p>ことを表している。makeしてみよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">make</span>
-<span class="fu">cat</span> hello.txt <span class="op">&gt;</span> result.txt</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" title="1">$ <span class="fu">make</span></a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="fu">cat</span> hello.txt <span class="op">&gt;</span> result.txt</a></code></pre></div>
 <p>コマンドが実行され、<code>result.txt</code>が作成された。catで確認せよ。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">cat</span> result.txt
-<span class="ex">Hello</span> Make!</code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" title="1">$ <span class="fu">cat</span> result.txt</a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="ex">Hello</span> Make!</a></code></pre></div>
 <p>さて、前回と違って、今回はもう一度makeを実行すると、コマンドは実行されない。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">make</span>
-<span class="ex">make</span>: <span class="kw">`</span><span class="ex">all</span><span class="st">&#39; に対して行うべき事はありません.</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" title="1">$ <span class="fu">make</span></a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="ex">make</span>: <span class="kw">`</span><span class="ex">all</span><span class="st">&#39; に対して行うべき事はありません.</span></a></code></pre></div>
 <p>実行されると、makeは以下のように考える。</p>
 <ul>
 <li>allを作るためには、result.txtが必要だ</li>
@@ -159,302 +159,302 @@ $ <span class="fu">cat</span> hello.txt
 </ul>
 <p>以上から、makeは何もしない。</p>
 <p>次に、依存関係の処理について見てみよう。上記でmakeが何もしなかったは、<code>result.txt</code>のタイムスタンプが<code>hello.txt</code>より新しかったからだ。そこで、<code>hello.txt</code>のタイムスタンプを新しくしてみよう。タイムスタンプを変えるには<code>touch</code>コマンドを使う。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">touch</span> hello.txt
-$ <span class="fu">make</span>
-<span class="fu">cat</span> hello.txt <span class="op">&gt;</span> result.txt</code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb13-1" title="1">$ <span class="fu">touch</span> hello.txt</a>
+<a class="sourceLine" id="cb13-2" title="2">$ <span class="fu">make</span></a>
+<a class="sourceLine" id="cb13-3" title="3"><span class="fu">cat</span> hello.txt <span class="op">&gt;</span> result.txt</a></code></pre></div>
 <p>makeすると、<code>hello.txt</code>から<code>result.txt</code>が作り直された。このように、makeはターゲットが依存するファイルのタイムスタンプをチェックして、どのターゲットを実行するべきかを決める。</p>
 <h2 id="cの分割コンパイル">C++の分割コンパイル</h2>
 <p>次に、もう少し実戦的な例を見てみよう。リポジトリの<code>cpp</code>に移動せよ。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span> ..
-<span class="bu">cd</span> cpp</code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" title="1"><span class="bu">cd</span> ..</a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="bu">cd</span> cpp</a></code></pre></div>
 <p>そこには、以下の三つのファイルがある。</p>
 <p><code>main.cpp</code></p>
-<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&quot;param.hpp&quot;</span>
-<span class="pp">#include </span><span class="im">&lt;cstdio&gt;</span>
-
-<span class="dt">void</span> show(<span class="dt">void</span>);
-
-<span class="dt">int</span> main(<span class="dt">void</span>) {
-  printf(<span class="st">&quot;main: N is </span><span class="sc">%d\n</span><span class="st">&quot;</span>, N);
-  show();
-}</code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode cpp"><code class="sourceCode cpp"><a class="sourceLine" id="cb15-1" title="1"><span class="pp">#include </span><span class="im">&quot;param.hpp&quot;</span></a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="pp">#include </span><span class="im">&lt;cstdio&gt;</span></a>
+<a class="sourceLine" id="cb15-3" title="3"></a>
+<a class="sourceLine" id="cb15-4" title="4"><span class="dt">void</span> show(<span class="dt">void</span>);</a>
+<a class="sourceLine" id="cb15-5" title="5"></a>
+<a class="sourceLine" id="cb15-6" title="6"><span class="dt">int</span> main(<span class="dt">void</span>) {</a>
+<a class="sourceLine" id="cb15-7" title="7">  printf(<span class="st">&quot;main: N is </span><span class="sc">%d\n</span><span class="st">&quot;</span>, N);</a>
+<a class="sourceLine" id="cb15-8" title="8">  show();</a>
+<a class="sourceLine" id="cb15-9" title="9">}</a></code></pre></div>
 <p><code>sub.cpp</code></p>
-<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&quot;param.hpp&quot;</span>
-<span class="pp">#include </span><span class="im">&lt;cstdio&gt;</span>
-
-<span class="dt">void</span> show(<span class="dt">void</span>){
-  printf(<span class="st">&quot;sub:  N is </span><span class="sc">%d\n</span><span class="st">&quot;</span>,N);
-}</code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode cpp"><code class="sourceCode cpp"><a class="sourceLine" id="cb16-1" title="1"><span class="pp">#include </span><span class="im">&quot;param.hpp&quot;</span></a>
+<a class="sourceLine" id="cb16-2" title="2"><span class="pp">#include </span><span class="im">&lt;cstdio&gt;</span></a>
+<a class="sourceLine" id="cb16-3" title="3"></a>
+<a class="sourceLine" id="cb16-4" title="4"><span class="dt">void</span> show(<span class="dt">void</span>){</a>
+<a class="sourceLine" id="cb16-5" title="5">  printf(<span class="st">&quot;sub:  N is </span><span class="sc">%d\n</span><span class="st">&quot;</span>,N);</a>
+<a class="sourceLine" id="cb16-6" title="6">}</a></code></pre></div>
 <p><code>param.hpp</code></p>
-<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="at">const</span> <span class="dt">int</span> N = <span class="dv">10</span>;</code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode cpp"><code class="sourceCode cpp"><a class="sourceLine" id="cb17-1" title="1"><span class="at">const</span> <span class="dt">int</span> N = <span class="dv">10</span>;</a></code></pre></div>
 <p>パラメタを定義した<code>param.hpp</code>というヘッダファイルがあり、それを<code>main.cpp</code>と<code>sub.cpp</code>が依存している状況だ。</p>
 <p>まずは手動でビルドしてみよう。C/C++は、分割コンパイルができる。まずはソースファイルからオブジェクトファイルを作成し、それをリンクすることで実行バイナリを作成するのだが、ソースからオブジェクトファイルを作るところをファイル毎に行うことができる。</p>
 <p>コンパイラに<code>-c</code>オプションをつけると、コンパイルしてオブジェクトファイルを出力し、リンクしない。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">g++</span> -c main.cpp
-$ <span class="ex">g++</span> -c sub.cpp
-$ <span class="fu">ls</span> *.o
-<span class="ex">main.o</span>  sub.o</code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb18-1" title="1">$ <span class="ex">g++</span> -c main.cpp</a>
+<a class="sourceLine" id="cb18-2" title="2">$ <span class="ex">g++</span> -c sub.cpp</a>
+<a class="sourceLine" id="cb18-3" title="3">$ <span class="fu">ls</span> *.o</a>
+<a class="sourceLine" id="cb18-4" title="4"><span class="ex">main.o</span>  sub.o</a></code></pre></div>
 <p>作成されたオブジェクトファイルをリンクで「くっつける」と実行バイナリができあがる。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">g++</span> main.o sub.o
-$ <span class="ex">./a.out</span>
-<span class="ex">main</span>: N is 10
-<span class="ex">sub</span>:  N is 10</code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb19-1" title="1">$ <span class="ex">g++</span> main.o sub.o</a>
+<a class="sourceLine" id="cb19-2" title="2">$ <span class="ex">./a.out</span></a>
+<a class="sourceLine" id="cb19-3" title="3"><span class="ex">main</span>: N is 10</a>
+<a class="sourceLine" id="cb19-4" title="4"><span class="ex">sub</span>:  N is 10</a></code></pre></div>
 <p>実際にリンクしているのは「リンカ」と呼ばれるプログラムなのだが、<code>g++</code>が適切にコンパイラやリンカを呼び出して対処しているので、我々はあまり気にしなくて良い。</p>
 <p>さて、ここで<code>param.hpp</code>の内容を修正しよう。</p>
-<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="at">const</span> <span class="dt">int</span> N = <span class="dv">20</span>;</code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode cpp"><code class="sourceCode cpp"><a class="sourceLine" id="cb20-1" title="1"><span class="at">const</span> <span class="dt">int</span> N = <span class="dv">20</span>;</a></code></pre></div>
 <p>そして、<code>sub.cpp</code>の再コンパイルを忘れ、<code>main.cpp</code>のみ再コンパイルして、リンクしてしまったとしよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">g++</span> -c main.cpp
-$ <span class="ex">g++</span> main.o sub.o
-$ <span class="ex">./a.out</span>
-<span class="ex">main</span>: N is 20
-<span class="ex">sub</span>:  N is 10</code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb21-1" title="1">$ <span class="ex">g++</span> -c main.cpp</a>
+<a class="sourceLine" id="cb21-2" title="2">$ <span class="ex">g++</span> main.o sub.o</a>
+<a class="sourceLine" id="cb21-3" title="3">$ <span class="ex">./a.out</span></a>
+<a class="sourceLine" id="cb21-4" title="4"><span class="ex">main</span>: N is 20</a>
+<a class="sourceLine" id="cb21-5" title="5"><span class="ex">sub</span>:  N is 10</a></code></pre></div>
 <p>この場合でも実行バイナリは更新され、実行できるのだが、本来同じであるべき値がずれてしまっている。このような依存関係を認識し、自動的に必要なファイルを再コンパイルしてくれるのがmakeである。</p>
 <h3 id="クリーン">クリーン</h3>
 <p>依存関係をどう扱うかは後で説明することにして、まずは分割コンパイル、リンクをするmakefileを書いてみよう。</p>
-<div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dv">all:</span><span class="dt"> a.out</span>
-
-<span class="dv">a.out:</span><span class="dt"> main.o sub.o</span>
-    g++ main.o sub.o
-
-<span class="dv">main.o:</span><span class="dt"> main.cpp</span>
-    g++ -c main.cpp
-
-<span class="dv">sub.o:</span><span class="dt"> sub.cpp</span>
-    g++ -c sub.cpp</code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode makefile"><code class="sourceCode makefile"><a class="sourceLine" id="cb22-1" title="1"><span class="dv">all:</span><span class="dt"> a.out</span></a>
+<a class="sourceLine" id="cb22-2" title="2"></a>
+<a class="sourceLine" id="cb22-3" title="3"><span class="dv">a.out:</span><span class="dt"> main.o sub.o</span></a>
+<a class="sourceLine" id="cb22-4" title="4">    g++ main.o sub.o</a>
+<a class="sourceLine" id="cb22-5" title="5"></a>
+<a class="sourceLine" id="cb22-6" title="6"><span class="dv">main.o:</span><span class="dt"> main.cpp</span></a>
+<a class="sourceLine" id="cb22-7" title="7">    g++ -c main.cpp</a>
+<a class="sourceLine" id="cb22-8" title="8"></a>
+<a class="sourceLine" id="cb22-9" title="9"><span class="dv">sub.o:</span><span class="dt"> sub.cpp</span></a>
+<a class="sourceLine" id="cb22-10" title="10">    g++ -c sub.cpp</a></code></pre></div>
 <p>書けたら、実行バイナリやオブジェクトファイルを削除してからmakeしてみよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">rm</span> -f a.out *.o
-$ <span class="fu">make</span>
-<span class="ex">g++</span> -c main.cpp
-<span class="ex">g++</span> -c sub.cpp
-<span class="ex">g++</span> main.o sub.o
-$ <span class="ex">./a.out</span>
-<span class="ex">main</span>: N is 20
-<span class="ex">sub</span>:  N is 20</code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb23-1" title="1">$ <span class="fu">rm</span> -f a.out *.o</a>
+<a class="sourceLine" id="cb23-2" title="2">$ <span class="fu">make</span></a>
+<a class="sourceLine" id="cb23-3" title="3"><span class="ex">g++</span> -c main.cpp</a>
+<a class="sourceLine" id="cb23-4" title="4"><span class="ex">g++</span> -c sub.cpp</a>
+<a class="sourceLine" id="cb23-5" title="5"><span class="ex">g++</span> main.o sub.o</a>
+<a class="sourceLine" id="cb23-6" title="6">$ <span class="ex">./a.out</span></a>
+<a class="sourceLine" id="cb23-7" title="7"><span class="ex">main</span>: N is 20</a>
+<a class="sourceLine" id="cb23-8" title="8"><span class="ex">sub</span>:  N is 20</a></code></pre></div>
 <p><code>a.out</code>をビルドするための一連の動作をmakeがやってくれた。また、全てゼロからビルドしたから当たり前だが、値が正しく表示される、正しい実行バイナリができている。この、「全てゼロからビルド」するために、中間ファイルやターゲットを削除することを「クリーン」と呼ぶ。makefileでは、慣習として<code>clean</code>というターゲット名で「クリーン」のためのルールを記述する。</p>
 <p>先ほどの<code>makefile</code>の一番最後に、以下のルールを追加せよ。</p>
-<div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dv">clean:</span>
-    rm -f a.out *.o</code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode makefile"><code class="sourceCode makefile"><a class="sourceLine" id="cb24-1" title="1"><span class="dv">clean:</span></a>
+<a class="sourceLine" id="cb24-2" title="2">    rm -f a.out *.o</a></code></pre></div>
 <p>これにより、<code>make clean</code>と打つと、実行バイナリやオブジェクトファイルが削除される。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">make</span> clean
-<span class="fu">rm</span> -f a.out *.o</code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb25-1" title="1">$ <span class="fu">make</span> clean</a>
+<a class="sourceLine" id="cb25-2" title="2"><span class="fu">rm</span> -f a.out *.o</a></code></pre></div>
 <p>これにより</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">make</span> clean
-<span class="fu">make</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb26-1" title="1"><span class="fu">make</span> clean</a>
+<a class="sourceLine" id="cb26-2" title="2"><span class="fu">make</span></a></code></pre></div>
 <p>すれば、必ずクリーンな状態からビルドすることができる。</p>
 <h3 id="パターンルール">パターンルール</h3>
 <p>次に、ソースファイルから、オブジェクトファイルを作るコマンドが同じなので、ファイルが増えた時に毎回似たような処理を書くのは面倒だ。まとめてしまおう。</p>
 <p>makefileの以下の部分を削除する。</p>
-<div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dv">main.o:</span><span class="dt"> main.cpp</span>
-    g++ -c main.cpp
-
-<span class="dv">sub.o:</span><span class="dt"> sub.cpp</span>
-    g++ -c sub.cpp</code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode makefile"><code class="sourceCode makefile"><a class="sourceLine" id="cb27-1" title="1"><span class="dv">main.o:</span><span class="dt"> main.cpp</span></a>
+<a class="sourceLine" id="cb27-2" title="2">    g++ -c main.cpp</a>
+<a class="sourceLine" id="cb27-3" title="3"></a>
+<a class="sourceLine" id="cb27-4" title="4"><span class="dv">sub.o:</span><span class="dt"> sub.cpp</span></a>
+<a class="sourceLine" id="cb27-5" title="5">    g++ -c sub.cpp</a></code></pre></div>
 <p>削除後に、以下のルールを追加しよう。</p>
-<div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dv">%.o:</span><span class="dt"> %.cpp</span>
-    g++ -c <span class="ch">$&lt;</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode makefile"><code class="sourceCode makefile"><a class="sourceLine" id="cb28-1" title="1"><span class="dv">%.o:</span><span class="dt"> %.cpp</span></a>
+<a class="sourceLine" id="cb28-2" title="2">    g++ -c <span class="ch">$&lt;</span></a></code></pre></div>
 <p>これは「パターンルール」と呼ばれる構文で、「<code>%.o</code>というファイル名にマッチするものは、<code>%.cpp</code>から以下のコマンドで作れますよ」ということをmakeに教える。</p>
 <p><code>$&lt;</code>とは、マクロ、もしくは自動変数と呼ばれるもので、「必要条件」に展開される。</p>
 <p>最終的に、makefileは以下のようになったはずだ。</p>
-<div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dv">all:</span><span class="dt"> a.out</span>
-
-<span class="dv">a.out:</span><span class="dt"> main.o sub.o</span>
-            g++ main.o sub.o
-
-<span class="dv">%.o:</span><span class="dt"> %.cpp</span>
-        g++ -c <span class="ch">$&lt;</span>
-
-<span class="dv">clean:</span>
-        rm -f a.out *.o</code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode makefile"><code class="sourceCode makefile"><a class="sourceLine" id="cb29-1" title="1"><span class="dv">all:</span><span class="dt"> a.out</span></a>
+<a class="sourceLine" id="cb29-2" title="2"></a>
+<a class="sourceLine" id="cb29-3" title="3"><span class="dv">a.out:</span><span class="dt"> main.o sub.o</span></a>
+<a class="sourceLine" id="cb29-4" title="4">            g++ main.o sub.o</a>
+<a class="sourceLine" id="cb29-5" title="5"></a>
+<a class="sourceLine" id="cb29-6" title="6"><span class="dv">%.o:</span><span class="dt"> %.cpp</span></a>
+<a class="sourceLine" id="cb29-7" title="7">        g++ -c <span class="ch">$&lt;</span></a>
+<a class="sourceLine" id="cb29-8" title="8"></a>
+<a class="sourceLine" id="cb29-9" title="9"><span class="dv">clean:</span></a>
+<a class="sourceLine" id="cb29-10" title="10">        rm -f a.out *.o</a></code></pre></div>
 <p>実際にmakeしてみよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">make</span> clean
-<span class="fu">rm</span> -f a.out *.o
-$ <span class="fu">make</span>
-<span class="ex">g++</span> -c main.cpp
-<span class="ex">g++</span> -c sub.cpp
-<span class="ex">g++</span> main.o sub.o</code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb30-1" title="1">$ <span class="fu">make</span> clean</a>
+<a class="sourceLine" id="cb30-2" title="2"><span class="fu">rm</span> -f a.out *.o</a>
+<a class="sourceLine" id="cb30-3" title="3">$ <span class="fu">make</span></a>
+<a class="sourceLine" id="cb30-4" title="4"><span class="ex">g++</span> -c main.cpp</a>
+<a class="sourceLine" id="cb30-5" title="5"><span class="ex">g++</span> -c sub.cpp</a>
+<a class="sourceLine" id="cb30-6" title="6"><span class="ex">g++</span> main.o sub.o</a></code></pre></div>
 <p>正しくビルドできた。</p>
 <h3 id="依存関係の出力とインクルード">依存関係の出力とインクルード</h3>
 <p>ここまでで、makefileは<code>a.out</code>は<code>main.o</code>、<code>sub.o</code>に、<code>main.o</code>は<code>main.cpp</code>に、<code>sub.o</code>は<code>sub.cpp</code>に依存することを認識しているが、<code>main.cpp</code>と<code>sub.cpp</code>が<code>param.hpp</code>に依存していることは知らない。</p>
 <p>したがって、makefileに正しく依存関係を記述してあげる必要があるのだが、そもそも「人間は複雑な依存関係を処理できなくてミスするよね」というのがスタート地点なのに、人間に「makefileに正しく依存関係を書け」というのもおかしな話である。なので、依存関係の抽出もプログラムにやらせよう。<code>g++</code>には、依存関係を抽出してmakefile用に出力してくれるオプション<code>-MM</code>が存在する。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">g++</span> -MM *.cpp
-<span class="ex">main.o</span>: main.cpp param.hpp
-<span class="ex">sub.o</span>: sub.cpp param.hpp</code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb31-1" title="1">$ <span class="ex">g++</span> -MM *.cpp</a>
+<a class="sourceLine" id="cb31-2" title="2"><span class="ex">main.o</span>: main.cpp param.hpp</a>
+<a class="sourceLine" id="cb31-3" title="3"><span class="ex">sub.o</span>: sub.cpp param.hpp</a></code></pre></div>
 <p>これを、リダイレクトでファイルに落とそう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">g++</span> -MM *.cpp <span class="op">&gt;</span> makefile.dep</code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb32-1" title="1"><span class="ex">g++</span> -MM *.cpp <span class="op">&gt;</span> makefile.dep</a></code></pre></div>
 <p>できた依存関係記述ファイルを、makefileでインクルードしてやる。makefileのインクルードは<code>-include</code>で行う。makefileの最後に以下の文を記述せよ。</p>
-<div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="kw">-include</span> makefile.dep</code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode makefile"><code class="sourceCode makefile"><a class="sourceLine" id="cb33-1" title="1"><span class="kw">-include</span> makefile.dep</a></code></pre></div>
 <p>最終的に、makefileは以下のようになったはずだ。</p>
-<div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dv">all:</span><span class="dt"> a.out</span>
-
-<span class="dv">a.out:</span><span class="dt"> main.o sub.o</span>
-      g++ main.o sub.o
-
-<span class="dv">%.o:</span><span class="dt"> %.cpp</span>
-  g++ -c <span class="ch">$&lt;</span>
-
-<span class="dv">clean:</span>
-  rm -f a.out *.o
-
-<span class="kw">-include</span> makefile.dep</code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode makefile"><code class="sourceCode makefile"><a class="sourceLine" id="cb34-1" title="1"><span class="dv">all:</span><span class="dt"> a.out</span></a>
+<a class="sourceLine" id="cb34-2" title="2"></a>
+<a class="sourceLine" id="cb34-3" title="3"><span class="dv">a.out:</span><span class="dt"> main.o sub.o</span></a>
+<a class="sourceLine" id="cb34-4" title="4">      g++ main.o sub.o</a>
+<a class="sourceLine" id="cb34-5" title="5"></a>
+<a class="sourceLine" id="cb34-6" title="6"><span class="dv">%.o:</span><span class="dt"> %.cpp</span></a>
+<a class="sourceLine" id="cb34-7" title="7">  g++ -c <span class="ch">$&lt;</span></a>
+<a class="sourceLine" id="cb34-8" title="8"></a>
+<a class="sourceLine" id="cb34-9" title="9"><span class="dv">clean:</span></a>
+<a class="sourceLine" id="cb34-10" title="10">  rm -f a.out *.o</a>
+<a class="sourceLine" id="cb34-11" title="11"></a>
+<a class="sourceLine" id="cb34-12" title="12"><span class="kw">-include</span> makefile.dep</a></code></pre></div>
 <p>このmakefileが、正しく依存関係を認識しているか調べてみよう。まずはクリーンビルドする。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">make</span> clean
-<span class="fu">make</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb35-1" title="1"><span class="fu">make</span> clean</a>
+<a class="sourceLine" id="cb35-2" title="2"><span class="fu">make</span></a></code></pre></div>
 <p>この状態で、<code>sub.cpp</code>だけ更新してからmakeしてみよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">touch</span> sub.cpp
-$ <span class="fu">make</span>
-<span class="ex">g++</span> -c sub.cpp
-<span class="ex">g++</span> main.o sub.o</code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb36-1" title="1">$ <span class="fu">touch</span> sub.cpp</a>
+<a class="sourceLine" id="cb36-2" title="2">$ <span class="fu">make</span></a>
+<a class="sourceLine" id="cb36-3" title="3"><span class="ex">g++</span> -c sub.cpp</a>
+<a class="sourceLine" id="cb36-4" title="4"><span class="ex">g++</span> main.o sub.o</a></code></pre></div>
 <p>正しく、<code>sub.cpp</code>のみ再コンパイルされて、実行できた。</p>
 <p>次に<code>param.hpp</code>を更新してからmakeしてみよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">touch</span> param.hpp
-$ <span class="fu">make</span>
-<span class="ex">g++</span> -c main.cpp
-<span class="ex">g++</span> -c sub.cpp
-<span class="ex">g++</span> main.o sub.o</code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb37-1" title="1">$ <span class="fu">touch</span> param.hpp</a>
+<a class="sourceLine" id="cb37-2" title="2">$ <span class="fu">make</span></a>
+<a class="sourceLine" id="cb37-3" title="3"><span class="ex">g++</span> -c main.cpp</a>
+<a class="sourceLine" id="cb37-4" title="4"><span class="ex">g++</span> -c sub.cpp</a>
+<a class="sourceLine" id="cb37-5" title="5"><span class="ex">g++</span> main.o sub.o</a></code></pre></div>
 <p>正しく依存関係を認識し、<code>param.hpp</code>に依存する<code>main.cpp</code>と<code>sub.cpp</code>がどちらも再コンパイルされた。</p>
 <h3 id="変数の利用">変数の利用</h3>
 <p>最後に、変数を使ってみよう。場面によって、コンパイラが違うことがある。違うコンパイラを使う場合、</p>
-<div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dv">a.out:</span><span class="dt"> main.o sub.o</span>
-            g++ main.o sub.o
-
-<span class="dv">%.o:</span><span class="dt"> %.cpp</span>
-        g++ -c <span class="ch">$&lt;</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode makefile"><code class="sourceCode makefile"><a class="sourceLine" id="cb38-1" title="1"><span class="dv">a.out:</span><span class="dt"> main.o sub.o</span></a>
+<a class="sourceLine" id="cb38-2" title="2">            g++ main.o sub.o</a>
+<a class="sourceLine" id="cb38-3" title="3"></a>
+<a class="sourceLine" id="cb38-4" title="4"><span class="dv">%.o:</span><span class="dt"> %.cpp</span></a>
+<a class="sourceLine" id="cb38-5" title="5">        g++ -c <span class="ch">$&lt;</span></a></code></pre></div>
 <p>の二か所に出現する<code>g++</code>を修正しなければならない。「〇〇したら××しなければならない」は危険信号だ。一か所だけ修正したら全部修正できるように、変数を使おう。</p>
 <p>makefileの変数は、<code>変数名=値</code>で宣言し、利用は変数名を<code>$()</code>で囲んだ<code>$(変数名)</code>とする。</p>
 <p>まずは<code>makefile</code>の冒頭で、コンパイラを変数で定義しよう。慣習としてC++コンパイラは<code>CXX</code>とする。</p>
-<div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dt">CXX</span><span class="ch">=</span><span class="st">g++</span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode makefile"><code class="sourceCode makefile"><a class="sourceLine" id="cb39-1" title="1"><span class="dt">CXX</span><span class="ch">=</span><span class="st">g++</span></a></code></pre></div>
 <p>そして、<code>g++</code>とあるところを<code>$(CXX)</code>に置換する。</p>
 <p>最終的に、以下のようなmakefileになるはずだ。</p>
-<div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dt">CXX</span><span class="ch">=</span><span class="st">g++</span>
-
-<span class="dv">all:</span><span class="dt"> a.out</span>
-
-<span class="dv">a.out:</span><span class="dt"> main.o sub.o</span>
-            <span class="ch">$(</span><span class="dt">CXX</span><span class="ch">)</span> main.o sub.o
-
-<span class="dv">%.o:</span><span class="dt"> %.cpp</span>
-        <span class="ch">$(</span><span class="dt">CXX</span><span class="ch">)</span> -c <span class="ch">$&lt;</span>
-
-<span class="dv">clean:</span>
-        rm -f a.out *.o
-
-<span class="kw">-include</span> makefile.dep</code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode makefile"><code class="sourceCode makefile"><a class="sourceLine" id="cb40-1" title="1"><span class="dt">CXX</span><span class="ch">=</span><span class="st">g++</span></a>
+<a class="sourceLine" id="cb40-2" title="2"></a>
+<a class="sourceLine" id="cb40-3" title="3"><span class="dv">all:</span><span class="dt"> a.out</span></a>
+<a class="sourceLine" id="cb40-4" title="4"></a>
+<a class="sourceLine" id="cb40-5" title="5"><span class="dv">a.out:</span><span class="dt"> main.o sub.o</span></a>
+<a class="sourceLine" id="cb40-6" title="6">            <span class="ch">$(</span><span class="dt">CXX</span><span class="ch">)</span> main.o sub.o</a>
+<a class="sourceLine" id="cb40-7" title="7"></a>
+<a class="sourceLine" id="cb40-8" title="8"><span class="dv">%.o:</span><span class="dt"> %.cpp</span></a>
+<a class="sourceLine" id="cb40-9" title="9">        <span class="ch">$(</span><span class="dt">CXX</span><span class="ch">)</span> -c <span class="ch">$&lt;</span></a>
+<a class="sourceLine" id="cb40-10" title="10"></a>
+<a class="sourceLine" id="cb40-11" title="11"><span class="dv">clean:</span></a>
+<a class="sourceLine" id="cb40-12" title="12">        rm -f a.out *.o</a>
+<a class="sourceLine" id="cb40-13" title="13"></a>
+<a class="sourceLine" id="cb40-14" title="14"><span class="kw">-include</span> makefile.dep</a></code></pre></div>
 <p>GNU makeは非常に多機能だが、ここまででよく使う機能はだいたいカバーできたはずだ。</p>
 <h2 id="並列ビルドと変数置換">並列ビルドと変数置換</h2>
 <p>makeは依存関係があるものならなんでも使える。特に、変数置換と並列ビルドと組み合わせると、簡単なデータ処理などで便利な時がある。</p>
 <p>リポジトリの<code>makej</code>ディレクトリに入ってみよう。</p>
 <p>その中には、<code>input0.dat</code>から<code>input9.dat</code>までの10個のインプットファイルと、<code>convert.py</code>がある。<code>convert.py</code>にデータを食わせると、変換されたデータが出てくるものとしよう。</p>
 <p>例えば</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">python</span> convert.py <span class="op">&lt;</span> input0.dat <span class="op">&gt;</span> output0.dat</code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb41-1" title="1"><span class="ex">python</span> convert.py <span class="op">&lt;</span> input0.dat <span class="op">&gt;</span> output0.dat</a></code></pre></div>
 <p>などとする。<code>convert.py</code>は単に入力をそのまま出力するだけのスクリプトだが、時間のかかる処理を模擬するために、内部で一秒待っている。</p>
 <p>さて、これを10個のデータ全部に対してやりたい。もちろん、インプットデータが修正されたら、修正されたところだけアウトプットデータを修正したい。これをmakeにやらせよう。</p>
 <p>まず、手元にあるものは<code>input0.dat</code>から<code>input9.dat</code>だ。これを変数<code>INPUT</code>に代入する。</p>
-<div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dt">INPUTS</span><span class="ch">=$(</span><span class="kw">shell</span><span class="st"> ls input*.dat</span><span class="ch">)</span></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode makefile"><code class="sourceCode makefile"><a class="sourceLine" id="cb42-1" title="1"><span class="dt">INPUTS</span><span class="ch">=$(</span><span class="kw">shell</span><span class="st"> ls input*.dat</span><span class="ch">)</span></a></code></pre></div>
 <p>GNU Makeでは、<code>変数名=$(shell コマンド)</code>とすると、そのコマンドを実行した結果を変数に代入できる。この場合、<code>INPUTS</code>には<code>input0.dat input1.dat ... input9.dat</code>が代入される。</p>
 <p>欲しいのは、これらを全て変換した<code>output0.dat output1.dat ... output9.dat</code>だ。これをINPUTから作るために、変数の置換を利用する。</p>
-<div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dt">OUTPUTS</span><span class="ch">=$(</span><span class="dt">INPUTS</span><span class="er">:</span><span class="dt">input%</span><span class="er">=</span><span class="dt">output%</span><span class="ch">)</span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode makefile"><code class="sourceCode makefile"><a class="sourceLine" id="cb43-1" title="1"><span class="dt">OUTPUTS</span><span class="ch">=$(</span><span class="dt">INPUTS</span><span class="er">:</span><span class="dt">input%</span><span class="er">=</span><span class="dt">output%</span><span class="ch">)</span></a></code></pre></div>
 <p>このように<code>DEST=$(SRC:パターン=パターン)</code>と記述することで、変換した結果を得ることができる。</p>
 <p>今回のケースでは、<code>input0.dat</code>が<code>input%</code>にマッチし、<code>%</code>が<code>0.dat</code>となる。この<code>%</code>を<code>output%</code>を代入すると<code>output0.dat</code>が得られる。<code>input1.dat</code>なども同様である。こうして<code>OUTPUTS</code>に<code>output0.dat ... output9.dat</code>が代入された。</p>
 <p>最終的に欲しいもの(ビルドターゲット)は<code>OUTPUTS</code>であるから、<code>all</code>ターゲットは</p>
-<div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dv">all:</span><span class="dt"> </span><span class="ch">$(</span><span class="dt">OUTPUTS</span><span class="ch">)</span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode makefile"><code class="sourceCode makefile"><a class="sourceLine" id="cb44-1" title="1"><span class="dv">all:</span><span class="dt"> </span><span class="ch">$(</span><span class="dt">OUTPUTS</span><span class="ch">)</span></a></code></pre></div>
 <p>と書けばよい。</p>
 <p>以上を実装した、以下のようなmakefileが用意されている。</p>
-<div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dt">INPUTS</span><span class="ch">=$(</span><span class="kw">shell</span><span class="st"> ls input*.dat</span><span class="ch">)</span>
-<span class="dt">OUTPUTS</span><span class="ch">=$(</span><span class="dt">INPUTS</span><span class="er">:</span><span class="dt">input%</span><span class="er">=</span><span class="dt">output%</span><span class="ch">)</span>
-
-
-<span class="dv">all:</span><span class="dt"> </span><span class="ch">$(</span><span class="dt">OUTPUTS</span><span class="ch">)</span>
-
-<span class="dv">output%:</span><span class="dt"> input%</span>
-  python convert.py &lt; <span class="ch">$&lt;</span> &gt; <span class="ch">$@</span>
-
-<span class="dv">clean:</span>
-  rm -f <span class="ch">$(</span><span class="dt">OUTPUTS</span><span class="ch">)</span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode makefile"><code class="sourceCode makefile"><a class="sourceLine" id="cb45-1" title="1"><span class="dt">INPUTS</span><span class="ch">=$(</span><span class="kw">shell</span><span class="st"> ls input*.dat</span><span class="ch">)</span></a>
+<a class="sourceLine" id="cb45-2" title="2"><span class="dt">OUTPUTS</span><span class="ch">=$(</span><span class="dt">INPUTS</span><span class="er">:</span><span class="dt">input%</span><span class="er">=</span><span class="dt">output%</span><span class="ch">)</span></a>
+<a class="sourceLine" id="cb45-3" title="3"></a>
+<a class="sourceLine" id="cb45-4" title="4"></a>
+<a class="sourceLine" id="cb45-5" title="5"><span class="dv">all:</span><span class="dt"> </span><span class="ch">$(</span><span class="dt">OUTPUTS</span><span class="ch">)</span></a>
+<a class="sourceLine" id="cb45-6" title="6"></a>
+<a class="sourceLine" id="cb45-7" title="7"><span class="dv">output%:</span><span class="dt"> input%</span></a>
+<a class="sourceLine" id="cb45-8" title="8">  python convert.py &lt; <span class="ch">$&lt;</span> &gt; <span class="ch">$@</span></a>
+<a class="sourceLine" id="cb45-9" title="9"></a>
+<a class="sourceLine" id="cb45-10" title="10"><span class="dv">clean:</span></a>
+<a class="sourceLine" id="cb45-11" title="11">  rm -f <span class="ch">$(</span><span class="dt">OUTPUTS</span><span class="ch">)</span></a></code></pre></div>
 <p><code>input?.dat</code>から<code>output?.dat</code>を作るルール</p>
-<div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dv">output%:</span><span class="dt"> input%</span>
-  python convert.py &lt; <span class="ch">$&lt;</span> &gt; <span class="ch">$@</span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode makefile"><code class="sourceCode makefile"><a class="sourceLine" id="cb46-1" title="1"><span class="dv">output%:</span><span class="dt"> input%</span></a>
+<a class="sourceLine" id="cb46-2" title="2">  python convert.py &lt; <span class="ch">$&lt;</span> &gt; <span class="ch">$@</span></a></code></pre></div>
 <p>にある<code>$@</code>は自動変数の一種で、ターゲットに展開される。</p>
 <p>早速makeしてみよう。ただし、時間も測ってみる。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="bu">time</span> make
-<span class="ex">python</span> convert.py <span class="op">&lt;</span> input0.dat <span class="op">&gt;</span> output0.dat
-<span class="ex">python</span> convert.py <span class="op">&lt;</span> input1.dat <span class="op">&gt;</span> output1.dat
-<span class="ex">python</span> convert.py <span class="op">&lt;</span> input2.dat <span class="op">&gt;</span> output2.dat
-<span class="ex">python</span> convert.py <span class="op">&lt;</span> input3.dat <span class="op">&gt;</span> output3.dat
-<span class="ex">python</span> convert.py <span class="op">&lt;</span> input4.dat <span class="op">&gt;</span> output4.dat
-<span class="ex">python</span> convert.py <span class="op">&lt;</span> input5.dat <span class="op">&gt;</span> output5.dat
-<span class="ex">python</span> convert.py <span class="op">&lt;</span> input6.dat <span class="op">&gt;</span> output6.dat
-<span class="ex">python</span> convert.py <span class="op">&lt;</span> input7.dat <span class="op">&gt;</span> output7.dat
-<span class="ex">python</span> convert.py <span class="op">&lt;</span> input8.dat <span class="op">&gt;</span> output8.dat
-<span class="ex">python</span> convert.py <span class="op">&lt;</span> input9.dat <span class="op">&gt;</span> output9.dat
-<span class="fu">make</span>  0.33s user 1.66s system 15% cpu 12.898 total</code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb47-1" title="1">$ <span class="bu">time</span> make</a>
+<a class="sourceLine" id="cb47-2" title="2"><span class="ex">python</span> convert.py <span class="op">&lt;</span> input0.dat <span class="op">&gt;</span> output0.dat</a>
+<a class="sourceLine" id="cb47-3" title="3"><span class="ex">python</span> convert.py <span class="op">&lt;</span> input1.dat <span class="op">&gt;</span> output1.dat</a>
+<a class="sourceLine" id="cb47-4" title="4"><span class="ex">python</span> convert.py <span class="op">&lt;</span> input2.dat <span class="op">&gt;</span> output2.dat</a>
+<a class="sourceLine" id="cb47-5" title="5"><span class="ex">python</span> convert.py <span class="op">&lt;</span> input3.dat <span class="op">&gt;</span> output3.dat</a>
+<a class="sourceLine" id="cb47-6" title="6"><span class="ex">python</span> convert.py <span class="op">&lt;</span> input4.dat <span class="op">&gt;</span> output4.dat</a>
+<a class="sourceLine" id="cb47-7" title="7"><span class="ex">python</span> convert.py <span class="op">&lt;</span> input5.dat <span class="op">&gt;</span> output5.dat</a>
+<a class="sourceLine" id="cb47-8" title="8"><span class="ex">python</span> convert.py <span class="op">&lt;</span> input6.dat <span class="op">&gt;</span> output6.dat</a>
+<a class="sourceLine" id="cb47-9" title="9"><span class="ex">python</span> convert.py <span class="op">&lt;</span> input7.dat <span class="op">&gt;</span> output7.dat</a>
+<a class="sourceLine" id="cb47-10" title="10"><span class="ex">python</span> convert.py <span class="op">&lt;</span> input8.dat <span class="op">&gt;</span> output8.dat</a>
+<a class="sourceLine" id="cb47-11" title="11"><span class="ex">python</span> convert.py <span class="op">&lt;</span> input9.dat <span class="op">&gt;</span> output9.dat</a>
+<a class="sourceLine" id="cb47-12" title="12"><span class="fu">make</span>  0.33s user 1.66s system 15% cpu 12.898 total</a></code></pre></div>
 <p>内部で1秒待つので、最低でも10秒かかる。ここでは13秒かかっていた。</p>
 <p>では、並列ビルドを試してみよう。並列ビルドは<code>make -j 並列数</code>で指定する。例えば、5並列で処理してみよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">make</span> clean
-$ <span class="bu">time</span> make -j 5
-<span class="ex">python</span> convert.py <span class="op">&lt;</span> input0.dat <span class="op">&gt;</span> output0.dat
-<span class="ex">python</span> convert.py <span class="op">&lt;</span> input1.dat <span class="op">&gt;</span> output1.dat
-<span class="ex">python</span> convert.py <span class="op">&lt;</span> input2.dat <span class="op">&gt;</span> output2.dat
-<span class="ex">python</span> convert.py <span class="op">&lt;</span> input3.dat <span class="op">&gt;</span> output3.dat
-<span class="ex">python</span> convert.py <span class="op">&lt;</span> input4.dat <span class="op">&gt;</span> output4.dat
-<span class="ex">python</span> convert.py <span class="op">&lt;</span> input5.dat <span class="op">&gt;</span> output5.dat
-<span class="ex">python</span> convert.py <span class="op">&lt;</span> input6.dat <span class="op">&gt;</span> output6.dat
-<span class="ex">python</span> convert.py <span class="op">&lt;</span> input7.dat <span class="op">&gt;</span> output7.dat
-<span class="ex">python</span> convert.py <span class="op">&lt;</span> input8.dat <span class="op">&gt;</span> output8.dat
-<span class="ex">python</span> convert.py <span class="op">&lt;</span> input9.dat <span class="op">&gt;</span> output9.dat
-<span class="fu">make</span> -j 5  0.66s user 1.78s system 90% cpu 2.680 total</code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb48-1" title="1">$ <span class="fu">make</span> clean</a>
+<a class="sourceLine" id="cb48-2" title="2">$ <span class="bu">time</span> make -j 5</a>
+<a class="sourceLine" id="cb48-3" title="3"><span class="ex">python</span> convert.py <span class="op">&lt;</span> input0.dat <span class="op">&gt;</span> output0.dat</a>
+<a class="sourceLine" id="cb48-4" title="4"><span class="ex">python</span> convert.py <span class="op">&lt;</span> input1.dat <span class="op">&gt;</span> output1.dat</a>
+<a class="sourceLine" id="cb48-5" title="5"><span class="ex">python</span> convert.py <span class="op">&lt;</span> input2.dat <span class="op">&gt;</span> output2.dat</a>
+<a class="sourceLine" id="cb48-6" title="6"><span class="ex">python</span> convert.py <span class="op">&lt;</span> input3.dat <span class="op">&gt;</span> output3.dat</a>
+<a class="sourceLine" id="cb48-7" title="7"><span class="ex">python</span> convert.py <span class="op">&lt;</span> input4.dat <span class="op">&gt;</span> output4.dat</a>
+<a class="sourceLine" id="cb48-8" title="8"><span class="ex">python</span> convert.py <span class="op">&lt;</span> input5.dat <span class="op">&gt;</span> output5.dat</a>
+<a class="sourceLine" id="cb48-9" title="9"><span class="ex">python</span> convert.py <span class="op">&lt;</span> input6.dat <span class="op">&gt;</span> output6.dat</a>
+<a class="sourceLine" id="cb48-10" title="10"><span class="ex">python</span> convert.py <span class="op">&lt;</span> input7.dat <span class="op">&gt;</span> output7.dat</a>
+<a class="sourceLine" id="cb48-11" title="11"><span class="ex">python</span> convert.py <span class="op">&lt;</span> input8.dat <span class="op">&gt;</span> output8.dat</a>
+<a class="sourceLine" id="cb48-12" title="12"><span class="ex">python</span> convert.py <span class="op">&lt;</span> input9.dat <span class="op">&gt;</span> output9.dat</a>
+<a class="sourceLine" id="cb48-13" title="13"><span class="fu">make</span> -j 5  0.66s user 1.78s system 90% cpu 2.680 total</a></code></pre></div>
 <p>5個ずつ処理されたのがわかると思う。なお、makeの<code>-j</code>オプションは<strong>並列数を省略すると並列実行可能なタスクを全て同時に実行しようとする</strong>。したがって、100個データがある場合は、100個プロセスを立ち上げて100個同時に実行する。非常にシステムに負荷をかけるため、並列ビルドをする時には必ず並列数を指定する癖をつけておくこと。最高でもCPUコア数までとする。</p>
 <h2 id="実戦的な例アニメーション作成">実戦的な例：アニメーション作成</h2>
 <p>先ほどの並列ビルドは、単に入力をそのまま出力に出すだけだった。もう少し実戦的な例として、シミュレーションデータを可視化して、アニメーションを作成してみよう。</p>
 <p>リポジトリの<code>spiral</code>ディレクトリに入ろう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span> ..
-<span class="bu">cd</span> spiral</code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb49-1" title="1"><span class="bu">cd</span> ..</a>
+<a class="sourceLine" id="cb49-2" title="2"><span class="bu">cd</span> spiral</a></code></pre></div>
 <p>まず、シミュレーションをして、途中の結果をダンプする処理をしよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">python3</span> makedata.py
-<span class="ex">spiral00.dat</span>
-<span class="ex">spiral01.dat</span>
-<span class="ex">spiral02.dat</span>
-<span class="ex">spiral03.dat</span>
-<span class="ex">spiral04.dat</span>
-<span class="ex">spiral05.dat</span>
-<span class="ex">spiral06.dat</span>
-<span class="ex">spiral07.dat</span>
-<span class="ex">spiral08.dat</span>
-<span class="ex">spiral09.dat</span>
-<span class="ex">spiral10.dat</span>
-<span class="ex">spiral11.dat</span>
-<span class="ex">spiral12.dat</span>
-<span class="ex">spiral13.dat</span>
-<span class="ex">spiral14.dat</span>
-<span class="ex">spiral15.dat</span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb50-1" title="1">$ <span class="ex">python3</span> makedata.py</a>
+<a class="sourceLine" id="cb50-2" title="2"><span class="ex">spiral00.dat</span></a>
+<a class="sourceLine" id="cb50-3" title="3"><span class="ex">spiral01.dat</span></a>
+<a class="sourceLine" id="cb50-4" title="4"><span class="ex">spiral02.dat</span></a>
+<a class="sourceLine" id="cb50-5" title="5"><span class="ex">spiral03.dat</span></a>
+<a class="sourceLine" id="cb50-6" title="6"><span class="ex">spiral04.dat</span></a>
+<a class="sourceLine" id="cb50-7" title="7"><span class="ex">spiral05.dat</span></a>
+<a class="sourceLine" id="cb50-8" title="8"><span class="ex">spiral06.dat</span></a>
+<a class="sourceLine" id="cb50-9" title="9"><span class="ex">spiral07.dat</span></a>
+<a class="sourceLine" id="cb50-10" title="10"><span class="ex">spiral08.dat</span></a>
+<a class="sourceLine" id="cb50-11" title="11"><span class="ex">spiral09.dat</span></a>
+<a class="sourceLine" id="cb50-12" title="12"><span class="ex">spiral10.dat</span></a>
+<a class="sourceLine" id="cb50-13" title="13"><span class="ex">spiral11.dat</span></a>
+<a class="sourceLine" id="cb50-14" title="14"><span class="ex">spiral12.dat</span></a>
+<a class="sourceLine" id="cb50-15" title="15"><span class="ex">spiral13.dat</span></a>
+<a class="sourceLine" id="cb50-16" title="16"><span class="ex">spiral14.dat</span></a>
+<a class="sourceLine" id="cb50-17" title="17"><span class="ex">spiral15.dat</span></a></code></pre></div>
 <p>実行すると<code>spiral00.dat</code>から<code>spiral15.dat</code>までの16個のデータが出力されたはずだ。これがシミュレーションデータだと思うことにしよう。</p>
 <p>このデータを処理して、画像ファイルとして出力するスクリプト<code>convert.py</code>が用意してある。実行してみよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">python3</span> convert.py spiral00.dat
-<span class="ex">spiral00.png</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb51-1" title="1">$ <span class="ex">python3</span> convert.py spiral00.dat</a>
+<a class="sourceLine" id="cb51-2" title="2"><span class="ex">spiral00.png</span></a></code></pre></div>
 <p><code>spiral00.png</code>が出てきたはずだ。<code>eog</code>で見てみよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">eog</span> spiral00.png</code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb52-1" title="1"><span class="ex">eog</span> spiral00.png</a></code></pre></div>
 <p>らせん模様が見えただろうか？これを全て変換したいが、いちいちコマンドを入力するのは面倒だし、シミュレーションの途中でも可視化したいし、シミュレーションが終わったら、可視化していないデータのみ変換したい。こんな時はmakeの出番だ。</p>
-<div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dt">DAT</span><span class="ch">=$(</span><span class="kw">shell</span><span class="st"> ls *.dat</span><span class="ch">)</span>
-<span class="dt">PNG</span><span class="ch">=$(</span><span class="dt">DAT</span><span class="er">:</span><span class="dt">%.dat</span><span class="er">=</span><span class="dt">%.png</span><span class="ch">)</span>
-
-<span class="dv">all:</span><span class="dt"> </span><span class="ch">$(</span><span class="dt">PNG</span><span class="ch">)</span>
-
-
-<span class="dv">%.png:</span><span class="dt"> %.dat</span>
-        python3 convert.py <span class="ch">$&lt;</span>
-
-
-<span class="dv">gif:</span><span class="dt"> </span><span class="ch">$(</span><span class="dt">PNG</span><span class="ch">)</span>
-        convert -delay 5 -loop 0 -resize 50% spiral*.png spiral.gif
-
-<span class="dv">clean:</span>
-        rm -f spiral.gif spiral*.dat spiral*.png</code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode makefile"><code class="sourceCode makefile"><a class="sourceLine" id="cb53-1" title="1"><span class="dt">DAT</span><span class="ch">=$(</span><span class="kw">shell</span><span class="st"> ls *.dat</span><span class="ch">)</span></a>
+<a class="sourceLine" id="cb53-2" title="2"><span class="dt">PNG</span><span class="ch">=$(</span><span class="dt">DAT</span><span class="er">:</span><span class="dt">%.dat</span><span class="er">=</span><span class="dt">%.png</span><span class="ch">)</span></a>
+<a class="sourceLine" id="cb53-3" title="3"></a>
+<a class="sourceLine" id="cb53-4" title="4"><span class="dv">all:</span><span class="dt"> </span><span class="ch">$(</span><span class="dt">PNG</span><span class="ch">)</span></a>
+<a class="sourceLine" id="cb53-5" title="5"></a>
+<a class="sourceLine" id="cb53-6" title="6"></a>
+<a class="sourceLine" id="cb53-7" title="7"><span class="dv">%.png:</span><span class="dt"> %.dat</span></a>
+<a class="sourceLine" id="cb53-8" title="8">        python3 convert.py <span class="ch">$&lt;</span></a>
+<a class="sourceLine" id="cb53-9" title="9"></a>
+<a class="sourceLine" id="cb53-10" title="10"></a>
+<a class="sourceLine" id="cb53-11" title="11"><span class="dv">gif:</span><span class="dt"> </span><span class="ch">$(</span><span class="dt">PNG</span><span class="ch">)</span></a>
+<a class="sourceLine" id="cb53-12" title="12">        convert -delay 5 -loop 0 -resize 50% spiral*.png spiral.gif</a>
+<a class="sourceLine" id="cb53-13" title="13"></a>
+<a class="sourceLine" id="cb53-14" title="14"><span class="dv">clean:</span></a>
+<a class="sourceLine" id="cb53-15" title="15">        rm -f spiral.gif spiral*.dat spiral*.png</a></code></pre></div>
 <p>もう何をやっているかはわかると思う。早速<code>make</code>してみよう。せっかくなので並列ビルドしてしまおう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">make</span> -j</code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb54-1" title="1"><span class="fu">make</span> -j</a></code></pre></div>
 <p><code>spiral00.png</code>は作成済みであるから、<code>spiral01.png</code>から<code>spiral15.png</code>が作成されたはずだ。せっかく連番ファイルがえきたので、アニメーションgifを作ってみよう。ImageMagickのコマンドを毎回入力するのは面倒なので、それもmakeにやらせよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">make</span> gif
-<span class="ex">convert</span> -delay 5 -loop 0 -resize 50% spiral*.png spiral.gif</code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb55-1" title="1">$ <span class="fu">make</span> gif</a>
+<a class="sourceLine" id="cb55-2" title="2"><span class="ex">convert</span> -delay 5 -loop 0 -resize 50% spiral*.png spiral.gif</a></code></pre></div>
 <p><code>spiral.gif</code>が作成されたはずだ。見てみよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">eog</span> spiral.gif</code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb56-1" title="1"><span class="ex">eog</span> spiral.gif</a></code></pre></div>
 <p>うずまきがグルグル回っただろうか。</p>
 <p>とにかく「何か依存関係のある処理」を自動化するのにmakeは便利だ。単に便利というのみならず、人為的なミスも防ぐし、自動化しておくと「あれ？このデータからこの画像はどうやって作るんだっけ？」と忘れた時に、makeを見ればやり方を思い出すだろう。論文を書く時にも、データを更新したらmake一発で図も更新してPDFまで作る環境を作っておくことが望ましい。</p>
 </article>

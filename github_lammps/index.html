@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="generator" content="pandoc">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>README</title>
+  <title>github_lammps/README.md</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
 div.sourceCode { overflow-x: auto; }
@@ -79,14 +79,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>Gitでそのリポジトリをcloneする</li>
 <li>PythonでLAMMPS用の原子状態を出力する</li>
 <li>LAMMPSで実行、VMDで可視化する</li>
-<li>シミュレーションの条件を変更し、その結果をgit commit &amp;
-pushする。</li>
+<li>シミュレーションの条件を変更し、その結果をgit commit &amp; pushする。</li>
 </ol>
 <h2 id="シミュレーションの内容">シミュレーションの内容</h2>
 <p>簡単な分子動力学シミュレーションとして、液滴衝突をしてみよう。二つの液滴を用意し、それらに初速を与えて正面衝突させる。</p>
 <figure>
-<img src="fig/collision.png" alt="液滴衝突" />
-<figcaption aria-hidden="true">液滴衝突</figcaption>
+<img src="fig/collision.png" alt="液滴衝突" /><figcaption>液滴衝突</figcaption>
 </figure>
 <p>LAMMPSに与えるファイルは二つである。一つはLAMMPSのインプットファイルで、</p>
 <ul>
@@ -101,172 +99,143 @@ pushする。</li>
 <h2 id="githubでのfolk">GitHubでのfolk</h2>
 <p>まず、既存のリポジトリをfork(フォーク)しよう。forkとは、他人の公開リポジトリを、自分のアカウントにコピーすることだ。他人の公開リポジトリは、cloneすることはできるが、修正後にpushすることはできない。しかし、forkにより、自分のリポジトリとしてコピーすると、それは自分のファイルになるので、自由にpushすることができるようになる。</p>
 <figure>
-<img src="fig/fork.png" alt="forkとpush" />
-<figcaption aria-hidden="true">forkとpush</figcaption>
+<img src="fig/fork.png" alt="forkとpush" /><figcaption>forkとpush</figcaption>
 </figure>
 <p>では早速forkしてみよう。GitHubにログインした状態で、以下のリポジトリを見てみよ。</p>
-<p><a
-href="https://github.com/kaityo256/lammps_collision">https://github.com/kaityo256/lammps_collision</a></p>
+<p><a href="https://github.com/kaityo256/lammps_collision">https://github.com/kaityo256/lammps_collision</a></p>
 <p>左上に「Fork」ボタンがあるので、押してみよう。</p>
 <figure>
-<img src="fig/fork_button.png" alt="Forkボタン" />
-<figcaption aria-hidden="true">Forkボタン</figcaption>
+<img src="fig/fork_button.png" alt="Forkボタン" /><figcaption>Forkボタン</figcaption>
 </figure>
 <p>ボタンの隣の数字は「これまでに誰がForkしたか」なので、そこではなく「Fork」と書いてある方を押すこと。</p>
 <p>すると、しばらくしてから「GitHubの自分のアカウント」の画面に遷移する。</p>
 <figure>
-<img src="fig/forked_repository.png" alt="Forkしたリポジトリ" />
-<figcaption aria-hidden="true">Forkしたリポジトリ</figcaption>
+<img src="fig/forked_repository.png" alt="Forkしたリポジトリ" /><figcaption>Forkしたリポジトリ</figcaption>
 </figure>
-<p>通常の自分のリポジトリと違うところは、「forked from
-kaityo256/lammps_collision」とFork元が書いてあることである(また、リポジトリ名の左にあるアイコンも異なる)。しかし、後は自分のリポジトリと同じように、cloneやpushその他好きなことができる。</p>
+<p>通常の自分のリポジトリと違うところは、「forked from kaityo256/lammps_collision」とFork元が書いてあることである(また、リポジトリ名の左にあるアイコンも異なる)。しかし、後は自分のリポジトリと同じように、cloneやpushその他好きなことができる。</p>
 <p>また、このように既存のリポジトリをForkするのはプルリクエストを作る目的もあるのだが、ここでは触れない。</p>
-<p>Forkした後は、「Clone or
-download」ボタンからclone用のURLをコピーしよう。この時、SSH経由でcloneすること。もし「Clone
-with HTTPS」と書いてあったら、「Use
-SSH」をクリックし、SSH用のURLをコピーする。
-URLをコピーしたら、ターミナル(WindowsならPowerShell、Macならターミナル)の、<code>github</code>ディレクトリの下でcloneしよう。</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> github</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone git@github.com:アカウント名/lammps_collision.git</span></code></pre></div>
+<p>Forkした後は、「Clone or download」ボタンからclone用のURLをコピーしよう。この時、SSH経由でcloneすること。もし「Clone with HTTPS」と書いてあったら、「Use SSH」をクリックし、SSH用のURLをコピーする。 URLをコピーしたら、ターミナル(WindowsならPowerShell、Macならターミナル)の、<code>github</code>ディレクトリの下でcloneしよう。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="bu">cd</span> github</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="fu">git</span> clone git@github.com:アカウント名/lammps_collision.git</a></code></pre></div>
 <p>Cloneする時に秘密鍵のパスフレーズを聞かれるので入力すること。</p>
-<div class="sourceCode" id="cb2"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Receiving objects: 100% (10/10), done.</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb2-1" title="1">Receiving objects: 100% (10/10), done.</a></code></pre></div>
 <p>などと表示されたら無事にcloneされている。</p>
 <h2 id="pythonスクリプトの実行">Pythonスクリプトの実行</h2>
 <p>作成されたリポジトリに入り、VSCodeを起動しよう。</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> lammps_collision</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">code</span> .</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="bu">cd</span> lammps_collision</a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="ex">code</span> .</a></code></pre></div>
 <p>VSCodeが起動したら、左のウィンドウの<code>generate_config.py</code>をクリックして開く。これは、LAMMPSに入力するための原子配列を生成するPythonスクリプトである。スクリプトが開いたら、右上の「実行ボタン」をクリックして実行しよう。実行ウィンドウで</p>
-<div class="sourceCode" id="cb4"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>Generated collision.atoms</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb4-1" title="1">Generated collision.atoms</a></code></pre></div>
 <p>と表示され、かつVSCodeの左にあるファイル一覧(エクスプローラー)に<code>collision.atoms</code>が追加されれば正しく実行されてる。なお、<code>collision.atoms</code>は、「Gitで管理しないファイル」に登録されているため、VSCodeでは灰色で表示される。</p>
 <p>この「Gitで管理しないファイル(無視されるファイル)」は、リポジトリの<code>.gitignore</code>ファイルに含まれている。中身を見てみよう。</p>
-<div class="sourceCode" id="cb5"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>log.lammps</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>*.atoms</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>*.dump</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>vmd.state</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb5-1" title="1">log.lammps</a>
+<a class="sourceLine" id="cb5-2" title="2">*.atoms</a>
+<a class="sourceLine" id="cb5-3" title="3">*.dump</a>
+<a class="sourceLine" id="cb5-4" title="4">vmd.state</a></code></pre></div>
 <p>ここで<code>*.atoms</code>などと<code>*</code>マークがあるのは「ワイルドカード」と呼ばれる指定方法だ。この場合は「拡張子が<code>atoms</code>のファイル全て」を意味しており、<code>collision.atoms</code>はそれにマッチするために無視される。同様に今後作成される<code>collision.lammpstrj</code>や<code>log.lammps</code>などもGitから無視される。</p>
 <h2 id="lammpsの実行">LAMMPSの実行</h2>
 <p>いま、リポジトリには<code>collision.input</code>と<code>collision.atoms</code>があるはずだ。前者がLAMMPSでシミュレーションをするためのインプットファイルで、後者がシステムサイズや原子の位置、初速を記述するファイルである。これらをLAMMPSに入力して実行してみよう。</p>
 <p>研究室サーバで実行する場合は、以下を実行してパスを通しておくこと。</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">PATH</span><span class="op">=</span><span class="va">$PATH</span>:/home/apps/lammps</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" title="1"><span class="bu">export</span> <span class="va">PATH=$PATH</span>:/home/apps/lammps</a></code></pre></div>
 <p>ターミナルから</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">lmp_serial</span> <span class="op">&lt;</span> collision.input</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" title="1"><span class="ex">lmp_serial</span> <span class="op">&lt;</span> collision.input</a></code></pre></div>
 <p>として実行しよう。一分程度で実行が終わるはずである。同じディレクトリに<code>collision.lammpstrj</code>が生成されていれば正しく実行されている。</p>
 <h2 id="vmdによる可視化">VMDによる可視化</h2>
 <p>先ほど生成された<code>collision.lammpstrj</code>をVMDで読み込んでみよう。</p>
-<p>VMDを実行し、「VMD Main」の「File」から「New
-Molecule」を選び、「Browse」を押して先ほどの<code>collision.lammpstrj</code>を選ぶ。VMDは複数のファイルタイプに対応しているが、拡張子を<code>lammpstrj</code>にしておくと、自動的にLAMMPS
-Trajectoryを選んでくれる。</p>
-<p>次にVMD Mainの「Graphics」の「Representation」を選び、「Drawing
-Method」を「VDW」にすると、画面が玉に変わる。その状態で「Sphere
-Scale」を適切に設定しよう。おそらく0.5程度が適切と思われる。</p>
-<p>設定終了したら、VMD
-Mainの右下にあるアニメーションボタンを押してみよう。二つの液滴が衝突し、合体する様子が見られるはずである。</p>
+<p>VMDを実行し、「VMD Main」の「File」から「New Molecule」を選び、「Browse」を押して先ほどの<code>collision.lammpstrj</code>を選ぶ。VMDは複数のファイルタイプに対応しているが、拡張子を<code>lammpstrj</code>にしておくと、自動的にLAMMPS Trajectoryを選んでくれる。</p>
+<p>次にVMD Mainの「Graphics」の「Representation」を選び、「Drawing Method」を「VDW」にすると、画面が玉に変わる。その状態で「Sphere Scale」を適切に設定しよう。おそらく0.5程度が適切と思われる。</p>
+<p>設定終了したら、VMD Mainの右下にあるアニメーションボタンを押してみよう。二つの液滴が衝突し、合体する様子が見られるはずである。</p>
 <h2 id="シミュレーションの修正">シミュレーションの修正</h2>
 <p>手元にGit管理されたシミュレーションファイルがあるので、これをいろいろ修正してみよう。特に衝突する液滴の速度をより高速にしてみたらどうなるか調べてみよう。</p>
 <h3 id="インプットファイル">インプットファイル</h3>
 <p>LAMMPSに直接入力するファイルは<code>collision.input</code>である。サンプルでは<code>in.melt</code>となっていたが、ここでは私の趣味で「プロジェクト名.拡張子」という形で統一する。</p>
 <p><code>collision.input</code>の内容は以下の通りである。</p>
-<div class="sourceCode" id="cb8"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>units lj</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>atom_style atomic</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>boundary p p p</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>timestep 0.001</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>read_data collision.atoms</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>mass 1 1.0</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>pair_style lj/cut 2.5</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>pair_coeff 1 1 1.0 1.0 2.5</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>neighbor 0.3 bin</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>neigh_modify every 20 delay 0 check no</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>fix 1 all nve</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>dump id all atom 100 collision.lammpstrj</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>run 20000</span></code></pre></div>
-<p>なお、調べたいコマンドを<a
-href="https://lammps.sandia.gov/doc/Manual.html">LAMMPSのドキュメント</a>の検索窓に入力すれば説明が見つかるので適宜参照すること。</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb8-1" title="1">units lj</a>
+<a class="sourceLine" id="cb8-2" title="2">atom_style atomic</a>
+<a class="sourceLine" id="cb8-3" title="3">boundary p p p</a>
+<a class="sourceLine" id="cb8-4" title="4">timestep 0.001</a>
+<a class="sourceLine" id="cb8-5" title="5"></a>
+<a class="sourceLine" id="cb8-6" title="6">read_data collision.atoms</a>
+<a class="sourceLine" id="cb8-7" title="7"></a>
+<a class="sourceLine" id="cb8-8" title="8">mass 1 1.0</a>
+<a class="sourceLine" id="cb8-9" title="9"></a>
+<a class="sourceLine" id="cb8-10" title="10">pair_style lj/cut 2.5</a>
+<a class="sourceLine" id="cb8-11" title="11">pair_coeff 1 1 1.0 1.0 2.5</a>
+<a class="sourceLine" id="cb8-12" title="12"></a>
+<a class="sourceLine" id="cb8-13" title="13">neighbor 0.3 bin</a>
+<a class="sourceLine" id="cb8-14" title="14">neigh_modify every 20 delay 0 check no</a>
+<a class="sourceLine" id="cb8-15" title="15"></a>
+<a class="sourceLine" id="cb8-16" title="16">fix 1 all nve</a>
+<a class="sourceLine" id="cb8-17" title="17"></a>
+<a class="sourceLine" id="cb8-18" title="18">dump id all atom 100 collision.lammpstrj</a>
+<a class="sourceLine" id="cb8-19" title="19"></a>
+<a class="sourceLine" id="cb8-20" title="20">run 20000</a></code></pre></div>
+<p>なお、調べたいコマンドを<a href="https://lammps.sandia.gov/doc/Manual.html">LAMMPSのドキュメント</a>の検索窓に入力すれば説明が見つかるので適宜参照すること。</p>
 <p>最初に、系の概要の定義がある。</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">units</span>    lj       <span class="co"># LJ単位系をとる</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">atom_style</span> atomic <span class="co"># 原子タイプはデフォルト</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="ex">boundary</span> p p p    <span class="co"># 三方向に周期境界条件を採用する</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="ex">timestep</span> 0.001    <span class="co"># 時間刻みを0.001とする</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" title="1"><span class="ex">units</span>    lj       <span class="co"># LJ単位系をとる</span></a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="ex">atom_style</span> atomic <span class="co"># 原子タイプはデフォルト</span></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="ex">boundary</span> p p p    <span class="co"># 三方向に周期境界条件を採用する</span></a>
+<a class="sourceLine" id="cb9-4" title="4"><span class="ex">timestep</span> 0.001    <span class="co"># 時間刻みを0.001とする</span></a></code></pre></div>
 <p>次に、原子配置の読み込みをする。</p>
-<div class="sourceCode" id="cb10"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">read_data</span> collision.atoms</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" title="1"><span class="ex">read_data</span> collision.atoms</a></code></pre></div>
 <p>ここでは<code>collision.atom</code>というファイルを読み込んでいる。</p>
 <p>次のセクションも系の定義の続きだ。</p>
-<div class="sourceCode" id="cb11"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mass</span> 1 1.0 <span class="co"># 質量の設定</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ex">pair_style</span> lj/cut 2.5       <span class="co"># 原子間相互作用のタイプ</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="ex">pair_coeff</span> 1 1 1.0 1.0 2.5  <span class="co"># 原子間相互作用のパラメタ</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" title="1"><span class="ex">mass</span> 1 1.0 <span class="co"># 質量の設定</span></a>
+<a class="sourceLine" id="cb11-2" title="2"></a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="ex">pair_style</span> lj/cut 2.5       <span class="co"># 原子間相互作用のタイプ</span></a>
+<a class="sourceLine" id="cb11-4" title="4"><span class="ex">pair_coeff</span> 1 1 1.0 1.0 2.5  <span class="co"># 原子間相互作用のパラメタ</span></a></code></pre></div>
 <p>次のセクションはシミュレーション実行のためのテクニカルなパラメータである。いまはあまり気にしなくて良い。</p>
-<div class="sourceCode" id="cb12"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">neighbor</span> 0.3 bin <span class="co"># 相互作用ペア探索の距離</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">neigh_modify</span> every 20 delay 0 check no <span class="co"># 相互作用ペアリストの更新方法</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="ex">fix</span> 1 all nve <span class="co"># タイプ1の原子全てをNVEアンサンブルとする</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" title="1"><span class="ex">neighbor</span> 0.3 bin <span class="co"># 相互作用ペア探索の距離</span></a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="ex">neigh_modify</span> every 20 delay 0 check no <span class="co"># 相互作用ペアリストの更新方法</span></a>
+<a class="sourceLine" id="cb12-3" title="3"></a>
+<a class="sourceLine" id="cb12-4" title="4"><span class="ex">fix</span> 1 all nve <span class="co"># タイプ1の原子全てをNVEアンサンブルとする</span></a></code></pre></div>
 <p>次が、ダンプファイル(スナップショット)を出力する設定だ。</p>
-<div class="sourceCode" id="cb13"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">dump</span> id all atom 100 collision.lammpstrj</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb13-1" title="1"><span class="ex">dump</span> id all atom 100 collision.lammpstrj</a></code></pre></div>
 <p>ここでは全ての原子について、<code>collision.lammpstrj</code>というファイルに、100ステップごとにスナップショットを出力している。</p>
 <p>最後がシミュレーションの実行だ。</p>
-<div class="sourceCode" id="cb14"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">run</span> 20000</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" title="1"><span class="ex">run</span> 20000</a></code></pre></div>
 <p>20000ステップの計算をしている。</p>
 <h3 id="原子配置ファイル">原子配置ファイル</h3>
 <p><code>collision.input</code>から読み込まれる<code>collision.atoms</code>の内容も見ておこう。こんな感じである。</p>
 <h4 id="全体">全体</h4>
-<div class="sourceCode" id="cb15"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>Position Data</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>4696 atoms</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>1 atom types</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>-40.00 40.00 xlo xhi</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>-20.00 20.00 ylo yhi</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>-20.00 20.00 zlo zhi</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>Atoms</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>1 1 -27.75 -1.55 0.0</span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>2 1 -27.75 -0.775 0.775</span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>(snip)</span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>4695 1 28.525 1.55 0.775</span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>4696 1 28.525 2.325 0.0</span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>Velocities</span>
-<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>1 2.0 0.0 0.0</span>
-<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>2 2.0 0.0 0.0</span>
-<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>(snip)</span>
-<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>2439 -2.0 0.0 0.0</span>
-<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>2440 -2.0 0.0 0.0</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb15-1" title="1">Position Data</a>
+<a class="sourceLine" id="cb15-2" title="2"></a>
+<a class="sourceLine" id="cb15-3" title="3">4696 atoms</a>
+<a class="sourceLine" id="cb15-4" title="4">1 atom types</a>
+<a class="sourceLine" id="cb15-5" title="5"></a>
+<a class="sourceLine" id="cb15-6" title="6">-40.00 40.00 xlo xhi</a>
+<a class="sourceLine" id="cb15-7" title="7">-20.00 20.00 ylo yhi</a>
+<a class="sourceLine" id="cb15-8" title="8">-20.00 20.00 zlo zhi</a>
+<a class="sourceLine" id="cb15-9" title="9"></a>
+<a class="sourceLine" id="cb15-10" title="10">Atoms</a>
+<a class="sourceLine" id="cb15-11" title="11"></a>
+<a class="sourceLine" id="cb15-12" title="12">1 1 -27.75 -1.55 0.0</a>
+<a class="sourceLine" id="cb15-13" title="13">2 1 -27.75 -0.775 0.775</a>
+<a class="sourceLine" id="cb15-14" title="14">(snip)</a>
+<a class="sourceLine" id="cb15-15" title="15">4695 1 28.525 1.55 0.775</a>
+<a class="sourceLine" id="cb15-16" title="16">4696 1 28.525 2.325 0.0</a>
+<a class="sourceLine" id="cb15-17" title="17"></a>
+<a class="sourceLine" id="cb15-18" title="18"></a>
+<a class="sourceLine" id="cb15-19" title="19">Velocities</a>
+<a class="sourceLine" id="cb15-20" title="20"></a>
+<a class="sourceLine" id="cb15-21" title="21">1 2.0 0.0 0.0</a>
+<a class="sourceLine" id="cb15-22" title="22">2 2.0 0.0 0.0</a>
+<a class="sourceLine" id="cb15-23" title="23">(snip)</a>
+<a class="sourceLine" id="cb15-24" title="24">2439 -2.0 0.0 0.0</a>
+<a class="sourceLine" id="cb15-25" title="25">2440 -2.0 0.0 0.0</a></code></pre></div>
 <p>なお、ここで出てくる(snip)とは「中略」、つまり途中を省略したよ、という意味だ。</p>
 <p>また上から順番に見ていこう。</p>
 <h4 id="タイトルと原子定義">タイトルと原子定義</h4>
-<div class="sourceCode" id="cb16"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Position</span> Data</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="ex">2440</span> atoms    <span class="co"># 原子数</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="ex">1</span> atom types  <span class="co"># 原子の種類の数</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb16-1" title="1"><span class="ex">Position</span> Data</a>
+<a class="sourceLine" id="cb16-2" title="2"></a>
+<a class="sourceLine" id="cb16-3" title="3"><span class="ex">2440</span> atoms    <span class="co"># 原子数</span></a>
+<a class="sourceLine" id="cb16-4" title="4"><span class="ex">1</span> atom types  <span class="co"># 原子の種類の数</span></a></code></pre></div>
 <p>最初の行はタイトルだ。どうも必須らしい。次に原子数と原子の種類の数を指定する。</p>
 <h4 id="シミュレーションボックス">シミュレーションボックス</h4>
-<div class="sourceCode" id="cb17"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>-40.00 40.00 xlo xhi</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>-20.00 20.00 ylo yhi</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>-20.00 20.00 zlo zhi</span></code></pre></div>
-<p>次にシミュレーションボックスのサイズを指定する。X, Y,
-Z各軸の最小値と最大値を決めることで、X, Y,
-Z軸に辺が平行な直方体を指定する。</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb17-1" title="1">-40.00 40.00 xlo xhi</a>
+<a class="sourceLine" id="cb17-2" title="2">-20.00 20.00 ylo yhi</a>
+<a class="sourceLine" id="cb17-3" title="3">-20.00 20.00 zlo zhi</a></code></pre></div>
+<p>次にシミュレーションボックスのサイズを指定する。X, Y, Z各軸の最小値と最大値を決めることで、X, Y, Z軸に辺が平行な直方体を指定する。</p>
 <p>ここでは、</p>
 <ul>
 <li>-40 &lt; x &lt; 40</li>
@@ -275,97 +244,90 @@ Z軸に辺が平行な直方体を指定する。</p>
 </ul>
 <p>を満たす直方体をシミュレーション領域としている。</p>
 <h4 id="原子位置">原子位置</h4>
-<div class="sourceCode" id="cb18"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>Atoms</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>1 1 -27.75 -1.55 0.0</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>2 1 -27.75 -0.775 0.775</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>...</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb18-1" title="1">Atoms</a>
+<a class="sourceLine" id="cb18-2" title="2"></a>
+<a class="sourceLine" id="cb18-3" title="3">1 1 -27.75 -1.55 0.0</a>
+<a class="sourceLine" id="cb18-4" title="4">2 1 -27.75 -0.775 0.775</a>
+<a class="sourceLine" id="cb18-5" title="5">...</a></code></pre></div>
 <p><code>Atoms</code>の後に、原子の数だけ原子の位置を並べる。フォーマットは</p>
-<div class="sourceCode" id="cb19"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>ID 原子種別 X座標 Y座標 Z座標</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb19-1" title="1">ID 原子種別 X座標 Y座標 Z座標</a></code></pre></div>
 <p>だ。今回は原子が一種類しかないため、二桁目は全て「1」である。また、IDが「1はじまり」なのに注意。多くのプログラム言語が「0はじまり」を採用しているため、調整が必要だ。</p>
 <h4 id="原子速度">原子速度</h4>
-<div class="sourceCode" id="cb20"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>Velocities</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>1 2.0 0.0 0.0</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>2 2.0 0.0 0.0</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb20-1" title="1">Velocities</a>
+<a class="sourceLine" id="cb20-2" title="2"></a>
+<a class="sourceLine" id="cb20-3" title="3">1 2.0 0.0 0.0</a>
+<a class="sourceLine" id="cb20-4" title="4">2 2.0 0.0 0.0</a></code></pre></div>
 <p><code>Velocities</code>の後に、原子の数だけ速度を並べる。フォーマットは</p>
-<div class="sourceCode" id="cb21"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>ID X成分 Y成分 Z成分</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb21-1" title="1">ID X成分 Y成分 Z成分</a></code></pre></div>
 <p>である。原子配置ファイルのフォーマットは以上だ。</p>
-<h3
-id="原子配置ファイル生成スクリプト">原子配置ファイル生成スクリプト</h3>
+<h3 id="原子配置ファイル生成スクリプト">原子配置ファイル生成スクリプト</h3>
 <p>先ほどの<code>collision.atoms</code>は、Pythonスクリプトにより生成されたものだ。このファイルを生成するPythonスクリプト<code>generate_config.py</code>を見てみよう。</p>
 <h4 id="スクリプト全体">スクリプト全体</h4>
 <p>スクリプトは50行ちょっとだ。</p>
-<div class="sourceCode" id="cb22"><pre
-class="sourceCode py"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Atom:</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, x, y, z, xvel):</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.x <span class="op">=</span> x</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.y <span class="op">=</span> y</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.z <span class="op">=</span> z</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.<span class="bu">type</span> <span class="op">=</span> <span class="dv">1</span></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.vx <span class="op">=</span> xvel</span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.vy <span class="op">=</span> <span class="fl">0.0</span></span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.vz <span class="op">=</span> <span class="fl">0.0</span></span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> add_ball(atoms, xpos, xvel):</span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> <span class="dv">8</span></span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> <span class="fl">1.55</span></span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>    h <span class="op">=</span> <span class="fl">0.5</span> <span class="op">*</span> s</span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> ix <span class="kw">in</span> <span class="bu">range</span>(<span class="op">-</span>r, r<span class="op">+</span><span class="dv">1</span>):</span>
-<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> iy <span class="kw">in</span> <span class="bu">range</span>(<span class="op">-</span>r, r<span class="op">+</span><span class="dv">1</span>):</span>
-<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> iz <span class="kw">in</span> <span class="bu">range</span>(<span class="op">-</span>r, r<span class="op">+</span><span class="dv">1</span>):</span>
-<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>                x <span class="op">=</span> ix <span class="op">*</span> s</span>
-<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>                y <span class="op">=</span> iy <span class="op">*</span> s</span>
-<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>                z <span class="op">=</span> iz <span class="op">*</span> s</span>
-<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> (x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> y<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> z<span class="op">**</span><span class="dv">2</span> <span class="op">&gt;</span> r<span class="op">**</span><span class="dv">2</span>):</span>
-<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">continue</span></span>
-<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>                x <span class="op">=</span> x <span class="op">+</span> xpos</span>
-<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>                atoms.append(Atom(x, y, z, xvel))</span>
-<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>                atoms.append(Atom(x, y<span class="op">+</span>h, z<span class="op">+</span>h, xvel))</span>
-<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>                atoms.append(Atom(x<span class="op">+</span>h, y, z<span class="op">+</span>h, xvel))</span>
-<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a>                atoms.append(Atom(x<span class="op">+</span>h, y<span class="op">+</span>h, z, xvel))</span>
-<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> save_file(filename, atoms):</span>
-<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(filename, <span class="st">&quot;w&quot;</span>) <span class="im">as</span> f:</span>
-<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a>        f.write(<span class="st">&quot;Position Data</span><span class="ch">\n\n</span><span class="st">&quot;</span>)</span>
-<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a>        f.write(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> atoms</span><span class="ch">\n</span><span class="st">&quot;</span>.<span class="bu">format</span>(<span class="bu">len</span>(atoms)))</span>
-<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a>        f.write(<span class="st">&quot;1 atom types</span><span class="ch">\n\n</span><span class="st">&quot;</span>)</span>
-<span id="cb22-36"><a href="#cb22-36" aria-hidden="true" tabindex="-1"></a>        f.write(<span class="st">&quot;-40.00 40.00 xlo xhi</span><span class="ch">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb22-37"><a href="#cb22-37" aria-hidden="true" tabindex="-1"></a>        f.write(<span class="st">&quot;-20.00 20.00 ylo yhi</span><span class="ch">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb22-38"><a href="#cb22-38" aria-hidden="true" tabindex="-1"></a>        f.write(<span class="st">&quot;-20.00 20.00 zlo zhi</span><span class="ch">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb22-39"><a href="#cb22-39" aria-hidden="true" tabindex="-1"></a>        f.write(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb22-40"><a href="#cb22-40" aria-hidden="true" tabindex="-1"></a>        f.write(<span class="st">&quot;Atoms</span><span class="ch">\n\n</span><span class="st">&quot;</span>)</span>
-<span id="cb22-41"><a href="#cb22-41" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i, a <span class="kw">in</span> <span class="bu">enumerate</span>(atoms):</span>
-<span id="cb22-42"><a href="#cb22-42" aria-hidden="true" tabindex="-1"></a>            f.write(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="ch">\n</span><span class="st">&quot;</span>.<span class="bu">format</span>(i<span class="op">+</span><span class="dv">1</span>, a.<span class="bu">type</span>, a.x, a.y, a.z))</span>
-<span id="cb22-43"><a href="#cb22-43" aria-hidden="true" tabindex="-1"></a>        f.write(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb22-44"><a href="#cb22-44" aria-hidden="true" tabindex="-1"></a>        f.write(<span class="st">&quot;Velocities</span><span class="ch">\n\n</span><span class="st">&quot;</span>)</span>
-<span id="cb22-45"><a href="#cb22-45" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i, a <span class="kw">in</span> <span class="bu">enumerate</span>(atoms):</span>
-<span id="cb22-46"><a href="#cb22-46" aria-hidden="true" tabindex="-1"></a>            f.write(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="ch">\n</span><span class="st">&quot;</span>.<span class="bu">format</span>(i<span class="op">+</span><span class="dv">1</span>, a.vx, a.vy, a.vz))</span>
-<span id="cb22-47"><a href="#cb22-47" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Generated </span><span class="sc">{}</span><span class="st">&quot;</span>.<span class="bu">format</span>(filename))</span>
-<span id="cb22-48"><a href="#cb22-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-49"><a href="#cb22-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-50"><a href="#cb22-50" aria-hidden="true" tabindex="-1"></a>atoms <span class="op">=</span> []</span>
-<span id="cb22-51"><a href="#cb22-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-52"><a href="#cb22-52" aria-hidden="true" tabindex="-1"></a>add_ball(atoms, <span class="op">-</span><span class="dv">20</span>, <span class="fl">2.0</span>)</span>
-<span id="cb22-53"><a href="#cb22-53" aria-hidden="true" tabindex="-1"></a>add_ball(atoms, <span class="dv">20</span>, <span class="op">-</span><span class="fl">2.0</span>)</span>
-<span id="cb22-54"><a href="#cb22-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-55"><a href="#cb22-55" aria-hidden="true" tabindex="-1"></a>save_file(<span class="st">&quot;collision.atoms&quot;</span>, atoms)</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb22-1" title="1"><span class="kw">class</span> Atom:</a>
+<a class="sourceLine" id="cb22-2" title="2">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, x, y, z, xvel):</a>
+<a class="sourceLine" id="cb22-3" title="3">        <span class="va">self</span>.x <span class="op">=</span> x</a>
+<a class="sourceLine" id="cb22-4" title="4">        <span class="va">self</span>.y <span class="op">=</span> y</a>
+<a class="sourceLine" id="cb22-5" title="5">        <span class="va">self</span>.z <span class="op">=</span> z</a>
+<a class="sourceLine" id="cb22-6" title="6">        <span class="va">self</span>.<span class="bu">type</span> <span class="op">=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb22-7" title="7">        <span class="va">self</span>.vx <span class="op">=</span> xvel</a>
+<a class="sourceLine" id="cb22-8" title="8">        <span class="va">self</span>.vy <span class="op">=</span> <span class="fl">0.0</span></a>
+<a class="sourceLine" id="cb22-9" title="9">        <span class="va">self</span>.vz <span class="op">=</span> <span class="fl">0.0</span></a>
+<a class="sourceLine" id="cb22-10" title="10"></a>
+<a class="sourceLine" id="cb22-11" title="11"></a>
+<a class="sourceLine" id="cb22-12" title="12"><span class="kw">def</span> add_ball(atoms, xpos, xvel):</a>
+<a class="sourceLine" id="cb22-13" title="13">    r <span class="op">=</span> <span class="dv">8</span></a>
+<a class="sourceLine" id="cb22-14" title="14">    s <span class="op">=</span> <span class="fl">1.55</span></a>
+<a class="sourceLine" id="cb22-15" title="15">    h <span class="op">=</span> <span class="fl">0.5</span> <span class="op">*</span> s</a>
+<a class="sourceLine" id="cb22-16" title="16">    <span class="cf">for</span> ix <span class="kw">in</span> <span class="bu">range</span>(<span class="op">-</span>r, r<span class="op">+</span><span class="dv">1</span>):</a>
+<a class="sourceLine" id="cb22-17" title="17">        <span class="cf">for</span> iy <span class="kw">in</span> <span class="bu">range</span>(<span class="op">-</span>r, r<span class="op">+</span><span class="dv">1</span>):</a>
+<a class="sourceLine" id="cb22-18" title="18">            <span class="cf">for</span> iz <span class="kw">in</span> <span class="bu">range</span>(<span class="op">-</span>r, r<span class="op">+</span><span class="dv">1</span>):</a>
+<a class="sourceLine" id="cb22-19" title="19">                x <span class="op">=</span> ix <span class="op">*</span> s</a>
+<a class="sourceLine" id="cb22-20" title="20">                y <span class="op">=</span> iy <span class="op">*</span> s</a>
+<a class="sourceLine" id="cb22-21" title="21">                z <span class="op">=</span> iz <span class="op">*</span> s</a>
+<a class="sourceLine" id="cb22-22" title="22">                <span class="cf">if</span> (x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> y<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> z<span class="op">**</span><span class="dv">2</span> <span class="op">&gt;</span> r<span class="op">**</span><span class="dv">2</span>):</a>
+<a class="sourceLine" id="cb22-23" title="23">                    <span class="cf">continue</span></a>
+<a class="sourceLine" id="cb22-24" title="24">                x <span class="op">=</span> x <span class="op">+</span> xpos</a>
+<a class="sourceLine" id="cb22-25" title="25">                atoms.append(Atom(x, y, z, xvel))</a>
+<a class="sourceLine" id="cb22-26" title="26">                atoms.append(Atom(x, y<span class="op">+</span>h, z<span class="op">+</span>h, xvel))</a>
+<a class="sourceLine" id="cb22-27" title="27">                atoms.append(Atom(x<span class="op">+</span>h, y, z<span class="op">+</span>h, xvel))</a>
+<a class="sourceLine" id="cb22-28" title="28">                atoms.append(Atom(x<span class="op">+</span>h, y<span class="op">+</span>h, z, xvel))</a>
+<a class="sourceLine" id="cb22-29" title="29"></a>
+<a class="sourceLine" id="cb22-30" title="30"></a>
+<a class="sourceLine" id="cb22-31" title="31"><span class="kw">def</span> save_file(filename, atoms):</a>
+<a class="sourceLine" id="cb22-32" title="32">    <span class="cf">with</span> <span class="bu">open</span>(filename, <span class="st">&quot;w&quot;</span>) <span class="im">as</span> f:</a>
+<a class="sourceLine" id="cb22-33" title="33">        f.write(<span class="st">&quot;Position Data</span><span class="ch">\n\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb22-34" title="34">        f.write(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> atoms</span><span class="ch">\n</span><span class="st">&quot;</span>.<span class="bu">format</span>(<span class="bu">len</span>(atoms)))</a>
+<a class="sourceLine" id="cb22-35" title="35">        f.write(<span class="st">&quot;1 atom types</span><span class="ch">\n\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb22-36" title="36">        f.write(<span class="st">&quot;-40.00 40.00 xlo xhi</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb22-37" title="37">        f.write(<span class="st">&quot;-20.00 20.00 ylo yhi</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb22-38" title="38">        f.write(<span class="st">&quot;-20.00 20.00 zlo zhi</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb22-39" title="39">        f.write(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb22-40" title="40">        f.write(<span class="st">&quot;Atoms</span><span class="ch">\n\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb22-41" title="41">        <span class="cf">for</span> i, a <span class="kw">in</span> <span class="bu">enumerate</span>(atoms):</a>
+<a class="sourceLine" id="cb22-42" title="42">            f.write(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="ch">\n</span><span class="st">&quot;</span>.<span class="bu">format</span>(i<span class="op">+</span><span class="dv">1</span>, a.<span class="bu">type</span>, a.x, a.y, a.z))</a>
+<a class="sourceLine" id="cb22-43" title="43">        f.write(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb22-44" title="44">        f.write(<span class="st">&quot;Velocities</span><span class="ch">\n\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb22-45" title="45">        <span class="cf">for</span> i, a <span class="kw">in</span> <span class="bu">enumerate</span>(atoms):</a>
+<a class="sourceLine" id="cb22-46" title="46">            f.write(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="ch">\n</span><span class="st">&quot;</span>.<span class="bu">format</span>(i<span class="op">+</span><span class="dv">1</span>, a.vx, a.vy, a.vz))</a>
+<a class="sourceLine" id="cb22-47" title="47">    <span class="bu">print</span>(<span class="st">&quot;Generated </span><span class="sc">{}</span><span class="st">&quot;</span>.<span class="bu">format</span>(filename))</a>
+<a class="sourceLine" id="cb22-48" title="48"></a>
+<a class="sourceLine" id="cb22-49" title="49"></a>
+<a class="sourceLine" id="cb22-50" title="50">atoms <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb22-51" title="51"></a>
+<a class="sourceLine" id="cb22-52" title="52">add_ball(atoms, <span class="dv">-20</span>, <span class="fl">2.0</span>)</a>
+<a class="sourceLine" id="cb22-53" title="53">add_ball(atoms, <span class="dv">20</span>, <span class="fl">-2.0</span>)</a>
+<a class="sourceLine" id="cb22-54" title="54"></a>
+<a class="sourceLine" id="cb22-55" title="55">save_file(<span class="st">&quot;collision.atoms&quot;</span>, atoms)</a></code></pre></div>
 <p>最初にクラス定義、関数定義があり、最後にプログラムの実行がある。少しずつ見ていこう。</p>
 <h4 id="プログラムの実行">プログラムの実行</h4>
 <p>まず「最後」を見てみよう。</p>
-<div class="sourceCode" id="cb23"><pre
-class="sourceCode py"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>atoms <span class="op">=</span> []</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>add_ball(atoms, <span class="op">-</span><span class="dv">20</span>, <span class="fl">2.0</span>)</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>add_ball(atoms, <span class="dv">20</span>, <span class="op">-</span><span class="fl">2.0</span>)</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>save_file(<span class="st">&quot;collision.atoms&quot;</span>, atoms)</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb23-1" title="1">atoms <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb23-2" title="2"></a>
+<a class="sourceLine" id="cb23-3" title="3">add_ball(atoms, <span class="dv">-20</span>, <span class="fl">2.0</span>)</a>
+<a class="sourceLine" id="cb23-4" title="4">add_ball(atoms, <span class="dv">20</span>, <span class="fl">-2.0</span>)</a>
+<a class="sourceLine" id="cb23-5" title="5"></a>
+<a class="sourceLine" id="cb23-6" title="6">save_file(<span class="st">&quot;collision.atoms&quot;</span>, atoms)</a></code></pre></div>
 <p><code>atoms</code>は原子の情報をまとめるリストだ。これを<code>add_ball</code>という関数に渡して、原子を追加してもらっている。<code>add_ball</code>は、指定の位置に、指定の初速で原子を生成する関数だ。</p>
 <ul>
 <li>左の方(x=-20)に、右向きの初速(vx = 2.0)の玉</li>
@@ -375,133 +337,110 @@ class="sourceCode py"><code class="sourceCode python"><span id="cb23-1"><a href=
 <p>最後に、生成された原子情報を<code>save_file</code>でファイルに保存している。それだけのスクリプトだ。</p>
 <h4 id="原子クラス">原子クラス</h4>
 <p>まず、原子の情報をまとめて扱うために、原子クラスを定義している。</p>
-<div class="sourceCode" id="cb24"><pre
-class="sourceCode py"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Atom:</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, x, y, z, xvel):</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.x <span class="op">=</span> x</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.y <span class="op">=</span> y</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.z <span class="op">=</span> z</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.<span class="bu">type</span> <span class="op">=</span> <span class="dv">1</span></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.vx <span class="op">=</span> xvel</span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.vy <span class="op">=</span> <span class="fl">0.0</span></span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.vz <span class="op">=</span> <span class="fl">0.0</span></span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb24-1" title="1"><span class="kw">class</span> Atom:</a>
+<a class="sourceLine" id="cb24-2" title="2">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, x, y, z, xvel):</a>
+<a class="sourceLine" id="cb24-3" title="3">        <span class="va">self</span>.x <span class="op">=</span> x</a>
+<a class="sourceLine" id="cb24-4" title="4">        <span class="va">self</span>.y <span class="op">=</span> y</a>
+<a class="sourceLine" id="cb24-5" title="5">        <span class="va">self</span>.z <span class="op">=</span> z</a>
+<a class="sourceLine" id="cb24-6" title="6">        <span class="va">self</span>.<span class="bu">type</span> <span class="op">=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb24-7" title="7">        <span class="va">self</span>.vx <span class="op">=</span> xvel</a>
+<a class="sourceLine" id="cb24-8" title="8">        <span class="va">self</span>.vy <span class="op">=</span> <span class="fl">0.0</span></a>
+<a class="sourceLine" id="cb24-9" title="9">        <span class="va">self</span>.vz <span class="op">=</span> <span class="fl">0.0</span></a></code></pre></div>
 <p>要するに原子とは座標(<code>x,y,z</code>)、速度(<code>vx, vy, vz</code>)、タイプ(<code>type</code>)を持つものである、と定義している。このうち、座標と速度のx成分のみ受け取って、後はデフォルトの値を設定している。</p>
 <h4 id="液滴生成">液滴生成</h4>
 <p>次は指定の位置に液滴を置く関数<code>add_ball</code>だ。慣れないと読みづらいかもしれない。</p>
-<div class="sourceCode" id="cb25"><pre
-class="sourceCode py"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> add_ball(atoms, xpos, xvel):</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> <span class="dv">8</span></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> <span class="fl">1.55</span></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    h <span class="op">=</span> <span class="fl">0.5</span> <span class="op">*</span> s</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> ix <span class="kw">in</span> <span class="bu">range</span>(<span class="op">-</span>r, r<span class="op">+</span><span class="dv">1</span>):</span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> iy <span class="kw">in</span> <span class="bu">range</span>(<span class="op">-</span>r, r<span class="op">+</span><span class="dv">1</span>):</span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> iz <span class="kw">in</span> <span class="bu">range</span>(<span class="op">-</span>r, r<span class="op">+</span><span class="dv">1</span>):</span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>                x <span class="op">=</span> ix <span class="op">*</span> s</span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>                y <span class="op">=</span> iy <span class="op">*</span> s</span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>                z <span class="op">=</span> iz <span class="op">*</span> s</span>
-<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> (x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> y<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> z<span class="op">**</span><span class="dv">2</span> <span class="op">&gt;</span> r<span class="op">**</span><span class="dv">2</span>):</span>
-<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">continue</span></span>
-<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>                x <span class="op">=</span> x <span class="op">+</span> xpos</span>
-<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>                atoms.append(Atom(x, y, z, xvel))</span>
-<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>                atoms.append(Atom(x, y<span class="op">+</span>h, z<span class="op">+</span>h, xvel))</span>
-<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>                atoms.append(Atom(x<span class="op">+</span>h, y, z<span class="op">+</span>h, xvel))</span>
-<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>                atoms.append(Atom(x<span class="op">+</span>h, y<span class="op">+</span>h, z, xvel))</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb25-1" title="1"><span class="kw">def</span> add_ball(atoms, xpos, xvel):</a>
+<a class="sourceLine" id="cb25-2" title="2">    r <span class="op">=</span> <span class="dv">8</span></a>
+<a class="sourceLine" id="cb25-3" title="3">    s <span class="op">=</span> <span class="fl">1.55</span></a>
+<a class="sourceLine" id="cb25-4" title="4">    h <span class="op">=</span> <span class="fl">0.5</span> <span class="op">*</span> s</a>
+<a class="sourceLine" id="cb25-5" title="5">    <span class="cf">for</span> ix <span class="kw">in</span> <span class="bu">range</span>(<span class="op">-</span>r, r<span class="op">+</span><span class="dv">1</span>):</a>
+<a class="sourceLine" id="cb25-6" title="6">        <span class="cf">for</span> iy <span class="kw">in</span> <span class="bu">range</span>(<span class="op">-</span>r, r<span class="op">+</span><span class="dv">1</span>):</a>
+<a class="sourceLine" id="cb25-7" title="7">            <span class="cf">for</span> iz <span class="kw">in</span> <span class="bu">range</span>(<span class="op">-</span>r, r<span class="op">+</span><span class="dv">1</span>):</a>
+<a class="sourceLine" id="cb25-8" title="8">                x <span class="op">=</span> ix <span class="op">*</span> s</a>
+<a class="sourceLine" id="cb25-9" title="9">                y <span class="op">=</span> iy <span class="op">*</span> s</a>
+<a class="sourceLine" id="cb25-10" title="10">                z <span class="op">=</span> iz <span class="op">*</span> s</a>
+<a class="sourceLine" id="cb25-11" title="11">                <span class="cf">if</span> (x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> y<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> z<span class="op">**</span><span class="dv">2</span> <span class="op">&gt;</span> r<span class="op">**</span><span class="dv">2</span>):</a>
+<a class="sourceLine" id="cb25-12" title="12">                    <span class="cf">continue</span></a>
+<a class="sourceLine" id="cb25-13" title="13">                x <span class="op">=</span> x <span class="op">+</span> xpos</a>
+<a class="sourceLine" id="cb25-14" title="14">                atoms.append(Atom(x, y, z, xvel))</a>
+<a class="sourceLine" id="cb25-15" title="15">                atoms.append(Atom(x, y<span class="op">+</span>h, z<span class="op">+</span>h, xvel))</a>
+<a class="sourceLine" id="cb25-16" title="16">                atoms.append(Atom(x<span class="op">+</span>h, y, z<span class="op">+</span>h, xvel))</a>
+<a class="sourceLine" id="cb25-17" title="17">                atoms.append(Atom(x<span class="op">+</span>h, y<span class="op">+</span>h, z, xvel))</a></code></pre></div>
 <p>最初の<code>r</code>は液滴の半径、<code>s</code>は原子間距離、<code>h</code>はその半分の距離だ。原子間距離は、原子がちょうど結晶を組む距離(安定する距離)としている。そういう意味では液滴ではなく氷をぶつけていることになるのだが、あまり細かいことは気にしないこと。</p>
 <p>そのあとのループでは、原子をFCC(面心立方格子)状に配置している。ただし、</p>
-<div class="sourceCode" id="cb26"><pre
-class="sourceCode py"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> y<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> z<span class="op">**</span><span class="dv">2</span> <span class="op">&gt;</span> r<span class="op">**</span><span class="dv">2</span>):</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">continue</span></span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb26-1" title="1"><span class="cf">if</span> (x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> y<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> z<span class="op">**</span><span class="dv">2</span> <span class="op">&gt;</span> r<span class="op">**</span><span class="dv">2</span>):</a>
+<a class="sourceLine" id="cb26-2" title="2">    <span class="cf">continue</span></a></code></pre></div>
 <p>の行により、半径<code>r</code>以内に無い原子は追加しないことで液滴を作っている。逆に、この行をコメントアウトすれば、液滴ではなく立方体をぶつけることができる。</p>
-<div class="sourceCode" id="cb27"><pre
-class="sourceCode py"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>atoms.append(Atom(x, y, z, xvel))</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb27-1" title="1">atoms.append(Atom(x, y, z, xvel))</a></code></pre></div>
 <p>だが、これはもう少し丁寧に書くと</p>
-<div class="sourceCode" id="cb28"><pre
-class="sourceCode py"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> Atom(x, y, z, xvel)</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>atoms.append(a)</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb28-1" title="1">a <span class="op">=</span> Atom(x, y, z, xvel)</a>
+<a class="sourceLine" id="cb28-2" title="2">atoms.append(a)</a></code></pre></div>
 <p>という意味だ。まず<code>x, y, z</code>の位置と、<code>xvel</code>の初速を持つ原子を生成し<code>a</code>という名前をつける。そして<code>a</code>を<code>atoms</code>に追加している。この中間変数<code>a</code>を使わないで一行で書いてしまったのが先のプログラムである。</p>
 <h4 id="ファイル出力">ファイル出力</h4>
 <p>最後に、生成した原子リストを使ってファイルに出力する関数である。</p>
-<div class="sourceCode" id="cb29"><pre
-class="sourceCode py"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> save_file(filename, atoms):</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(filename, <span class="st">&quot;w&quot;</span>) <span class="im">as</span> f:</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>        f.write(<span class="st">&quot;Position Data</span><span class="ch">\n\n</span><span class="st">&quot;</span>)</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>        f.write(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> atoms</span><span class="ch">\n</span><span class="st">&quot;</span>.<span class="bu">format</span>(<span class="bu">len</span>(atoms)))</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>        f.write(<span class="st">&quot;1 atom types</span><span class="ch">\n\n</span><span class="st">&quot;</span>)</span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>        f.write(<span class="st">&quot;-40.00 40.00 xlo xhi</span><span class="ch">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>        f.write(<span class="st">&quot;-20.00 20.00 ylo yhi</span><span class="ch">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>        f.write(<span class="st">&quot;-20.00 20.00 zlo zhi</span><span class="ch">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>        f.write(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>        f.write(<span class="st">&quot;Atoms</span><span class="ch">\n\n</span><span class="st">&quot;</span>)</span>
-<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i, a <span class="kw">in</span> <span class="bu">enumerate</span>(atoms):</span>
-<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>            f.write(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="ch">\n</span><span class="st">&quot;</span>.<span class="bu">format</span>(i<span class="op">+</span><span class="dv">1</span>, a.<span class="bu">type</span>, a.x, a.y, a.z))</span>
-<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>        f.write(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>        f.write(<span class="st">&quot;Velocities</span><span class="ch">\n\n</span><span class="st">&quot;</span>)</span>
-<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i, a <span class="kw">in</span> <span class="bu">enumerate</span>(atoms):</span>
-<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>            f.write(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="ch">\n</span><span class="st">&quot;</span>.<span class="bu">format</span>(i<span class="op">+</span><span class="dv">1</span>, a.vx, a.vy, a.vz))</span>
-<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Generated </span><span class="sc">{}</span><span class="st">&quot;</span>.<span class="bu">format</span>(filename))</span></code></pre></div>
-<p>特に難しいことはやっていない。ファイル出力に関しては、例えば<a
-href="https://kaityo256.github.io/python_zero/file/index.html">プログラム基礎同演習の当該回</a>を参照のこと。</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb29-1" title="1"><span class="kw">def</span> save_file(filename, atoms):</a>
+<a class="sourceLine" id="cb29-2" title="2">    <span class="cf">with</span> <span class="bu">open</span>(filename, <span class="st">&quot;w&quot;</span>) <span class="im">as</span> f:</a>
+<a class="sourceLine" id="cb29-3" title="3">        f.write(<span class="st">&quot;Position Data</span><span class="ch">\n\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb29-4" title="4">        f.write(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> atoms</span><span class="ch">\n</span><span class="st">&quot;</span>.<span class="bu">format</span>(<span class="bu">len</span>(atoms)))</a>
+<a class="sourceLine" id="cb29-5" title="5">        f.write(<span class="st">&quot;1 atom types</span><span class="ch">\n\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb29-6" title="6">        f.write(<span class="st">&quot;-40.00 40.00 xlo xhi</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb29-7" title="7">        f.write(<span class="st">&quot;-20.00 20.00 ylo yhi</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb29-8" title="8">        f.write(<span class="st">&quot;-20.00 20.00 zlo zhi</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb29-9" title="9">        f.write(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb29-10" title="10">        f.write(<span class="st">&quot;Atoms</span><span class="ch">\n\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb29-11" title="11">        <span class="cf">for</span> i, a <span class="kw">in</span> <span class="bu">enumerate</span>(atoms):</a>
+<a class="sourceLine" id="cb29-12" title="12">            f.write(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="ch">\n</span><span class="st">&quot;</span>.<span class="bu">format</span>(i<span class="op">+</span><span class="dv">1</span>, a.<span class="bu">type</span>, a.x, a.y, a.z))</a>
+<a class="sourceLine" id="cb29-13" title="13">        f.write(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb29-14" title="14">        f.write(<span class="st">&quot;Velocities</span><span class="ch">\n\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb29-15" title="15">        <span class="cf">for</span> i, a <span class="kw">in</span> <span class="bu">enumerate</span>(atoms):</a>
+<a class="sourceLine" id="cb29-16" title="16">            f.write(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="ch">\n</span><span class="st">&quot;</span>.<span class="bu">format</span>(i<span class="op">+</span><span class="dv">1</span>, a.vx, a.vy, a.vz))</a>
+<a class="sourceLine" id="cb29-17" title="17">    <span class="bu">print</span>(<span class="st">&quot;Generated </span><span class="sc">{}</span><span class="st">&quot;</span>.<span class="bu">format</span>(filename))</a></code></pre></div>
+<p>特に難しいことはやっていない。ファイル出力に関しては、例えば<a href="https://kaityo256.github.io/python_zero/file/index.html">プログラム基礎同演習の当該回</a>を参照のこと。</p>
 <h3 id="自分のシミュレーション">自分のシミュレーション</h3>
 <p>以上の知識で、例えば</p>
 <ul>
 <li>衝突速度をより早くする</li>
 <li>液滴を大きく/小さくしてみる</li>
 <li>液滴の密度を変えてみる(<code>add_ball</code>の<code>s</code>を変える)</li>
-<li>球ではなく立方体をぶつけてみる
-(面ではなく角でぶつけると面白いかもしれない)</li>
+<li>球ではなく立方体をぶつけてみる (面ではなく角でぶつけると面白いかもしれない)</li>
 </ul>
 <p>などを試してみて、ローカルで修正したらコミットし、自分のリポジトリにpushしてみよ。</p>
 <h2 id="vmdによるアニメーション作成">VMDによるアニメーション作成</h2>
 <p>VMDによりアニメーションを作成する。まずはターミナルから<code>ffmpeg</code>が存在することを確認せよ。</p>
-<div class="sourceCode" id="cb30"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ffmpeg <span class="at">-L</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="ex">ffmpeg</span> version 4.0.2 Copyright <span class="er">(</span><span class="ex">c</span><span class="kw">)</span> <span class="ex">2000-2018</span> the FFmpeg developers</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="ex">snip</span><span class="kw">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb30-1" title="1">$ <span class="ex">ffmpeg</span> -L</a>
+<a class="sourceLine" id="cb30-2" title="2"><span class="ex">ffmpeg</span> version 4.0.2 Copyright (c) <span class="ex">2000-2018</span> the FFmpeg developers</a>
+<a class="sourceLine" id="cb30-3" title="3"><span class="kw">(</span><span class="ex">snip</span><span class="kw">)</span></a></code></pre></div>
 <p>LAMMPSをインストールしていれば<code>ffmpeg</code>もインストールされているはずだが、もしインストールされていなければインストールすること。</p>
 <p>以下、<code>lammps_collision</code>のtrajectoryが読み込まれていることを前提とする。</p>
-<p>まず、VMDのOpenGL
-Displayで適当な角度を指定する。液滴衝突であれば、例えばこんな角度にする。</p>
+<p>まず、VMDのOpenGL Displayで適当な角度を指定する。液滴衝突であれば、例えばこんな角度にする。</p>
 <figure>
-<img src="fig/vmd_animation1.png" alt="vmd_animation1" />
-<figcaption aria-hidden="true">vmd_animation1</figcaption>
+<img src="fig/vmd_animation1.png" alt="vmd_animation1" /><figcaption>vmd_animation1</figcaption>
 </figure>
-<p>この状態で、VMD Mainの「Extensions」→「Visualization」→「Movie
-Maker」を選ぶ。すると「VMD Movie Generator」が起動する。</p>
+<p>この状態で、VMD Mainの「Extensions」→「Visualization」→「Movie Maker」を選ぶ。すると「VMD Movie Generator」が起動する。</p>
 <figure>
-<img src="fig/vmd_animation2.png" alt="vmd_animation2" />
-<figcaption aria-hidden="true">vmd_animation2</figcaption>
+<img src="fig/vmd_animation2.png" alt="vmd_animation2" /><figcaption>vmd_animation2</figcaption>
 </figure>
-<p>Movie Settingsで、「Trajectory」を選び、さらに「Delete image
-files」のチェックを外すこと。</p>
-<p>次に、Working
-directoryを指定する。Macの場合は<code>lammps_collision</code>をクローンしたディレクトリを、Windowsの場合は、デスクトップに適当なフォルダ(例えばtest)を作って、そこに指定すると良いだろう。</p>
+<p>Movie Settingsで、「Trajectory」を選び、さらに「Delete image files」のチェックを外すこと。</p>
+<p>次に、Working directoryを指定する。Macの場合は<code>lammps_collision</code>をクローンしたディレクトリを、Windowsの場合は、デスクトップに適当なフォルダ(例えばtest)を作って、そこに指定すると良いだろう。</p>
 <p><code>Name of movie</code>は、連番ファイル名の基本の名前となる。なんでも良いが、ここでは<code>test</code>としておく。「Format」はMPEG-1(ppmtpmpeg)としておく。</p>
-<p>以上の設定をした上で「Make Movie」をクリックすると、Working
-Directoryに指定したディレクトリに<code>test.00012.ppm</code>といったファイルが大量に作成される。</p>
+<p>以上の設定をした上で「Make Movie」をクリックすると、Working Directoryに指定したディレクトリに<code>test.00012.ppm</code>といったファイルが大量に作成される。</p>
 <figure>
-<img src="fig/vmd_animation3.png" alt="vmd_animation3" />
-<figcaption aria-hidden="true">vmd_animation3</figcaption>
+<img src="fig/vmd_animation3.png" alt="vmd_animation3" /><figcaption>vmd_animation3</figcaption>
 </figure>
-<p>この状態で、Working
-Directoryに指定したディレクトリに大量のppmファイルがあるはずである。</p>
+<p>この状態で、Working Directoryに指定したディレクトリに大量のppmファイルがあるはずである。</p>
 <figure>
-<img src="fig/vmd_animation4.png" alt="vmd_animation4" />
-<figcaption aria-hidden="true">vmd_animation4</figcaption>
+<img src="fig/vmd_animation4.png" alt="vmd_animation4" /><figcaption>vmd_animation4</figcaption>
 </figure>
 <p>このppmファイルからアニメーションGIFを作るには、ターミナルからppmファイルがあるディレクトリで以下を実行する。</p>
-<div class="sourceCode" id="cb31"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ffmpeg</span> <span class="at">-i</span> test.%05d.ppm collision.gif</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb31-1" title="1"><span class="ex">ffmpeg</span> -i test.%05d.ppm collision.gif</a></code></pre></div>
 <p>これは「test.(五桁の整数の連番).ppmというファイルから、collision.gifを作れ」という意味だ。</p>
 <p>とせよ。できたファイルは、Windowsならダブルクリック、Linuxなら</p>
-<div class="sourceCode" id="cb32"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="ex">eog</span> collision.gif</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb32-1" title="1"><span class="ex">eog</span> collision.gif</a></code></pre></div>
 <p>Macなら</p>
-<div class="sourceCode" id="cb33"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="ex">qlmanage</span> <span class="at">-p</span> collision.gif </span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb33-1" title="1"><span class="ex">qlmanage</span> -p collision.gif </a></code></pre></div>
 <p>とすると見ることができる。</p>
 <p>また、WindowsでMPEGファイルを作りたければ、</p>
-<div class="sourceCode" id="cb34"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ffmpeg</span> <span class="at">-i</span> test.%05d.ppm collision.mpg</span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb34-1" title="1"><span class="ex">ffmpeg</span> -i test.%05d.ppm collision.mpg</a></code></pre></div>
 <p>とすればよい。同様に、連番のイメージファイルさえ作れば、FFMPEGを用いてアニメーションGIFでもMPEGでも作れるので使い方を覚えておきたい。</p>
 </article>
 </body>

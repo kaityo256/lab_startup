@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="generator" content="pandoc">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title></title>
+  <title>ssh/README.md</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
 div.sourceCode { overflow-x: auto; }
@@ -73,58 +73,55 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <article class="markdown-body">
 <h1 id="sshエージェント転送の設定">SSHエージェント転送の設定</h1>
 <p>SSHでリモートサーバにアクセスする場合、一般的に公開鍵認証を用いる。これは、ローカルマシンにある秘密鍵と、ログインしたサーバに登録した公開鍵を突き合わせることで「確かにこの公開鍵を登録した人がアクセスしている」と認証する仕組みだ。SSH公開鍵認証は、GitHubへのアクセスにも用いられる。実際には公開鍵認証はわりと複雑なことをしているのだが、とりあえずは「公開鍵に対応する秘密鍵を持つ人が、正当なアクセス権を持つ人と認証している」と思えばよい。</p>
-<div class="figure">
-<img src="fig/publickey.png" alt="公開鍵認証" />
-<p class="caption">公開鍵認証</p>
-</div>
+<figure>
+<img src="fig/publickey.png" alt="公開鍵認証" /><figcaption>公開鍵認証</figcaption>
+</figure>
 <p>秘密鍵は、認証したい人が持つ鍵で、文字通り秘密にしなければならない。一般には、秘密鍵を「パスフレーズ」と呼ばれる文字列を使って暗号化する。「パスワード認証」とは異なり、「パスフレーズ」は秘密鍵の暗号化を解くのに用いられ、ネットワークを流れることはない。パスフレーズをつけないこともできるのだが、個人的にはパスフレーズ無しの秘密鍵は推奨できないので、なるべく長いパスフレーズをつけるようにして欲しい。</p>
 <p>さて、いま「リモートサーバに公開鍵でアクセスし、そのリモートサーバからGitHubにアクセスしたい」と思ったとしよう。いわゆる「多段SSH」もしくは「踏み台サーバ」という状態である。なお、既にローカルPCからGitHubには公開鍵認証でアクセスできる(公開鍵が登録してある)ものとする。</p>
-<div class="figure">
-<img src="fig/fumidai.png" alt="踏み台SSH" />
-<p class="caption">踏み台SSH</p>
-</div>
+<figure>
+<img src="fig/fumidai.png" alt="踏み台SSH" /><figcaption>踏み台SSH</figcaption>
+</figure>
 <p>この時、最も単純には、リモートサーバに秘密鍵と公開鍵のペアを生成し、公開鍵をGitHubに登録することが考えられる。さらに手抜きをして、リモートサーバにローカルと同じ秘密鍵を置いてしまえばGitHubに登録する公開鍵はそのままで良い。いずれも、リモートサーバでもう一度パスフレーズを入力すれば、多段SSHできる。</p>
 <p><img src="fig/plan_1.png" alt="案1" /> <img src="fig/plan_2.png" alt="案2" /></p>
 <p>しかし一般論として、リモートサーバに秘密鍵を置くことは避けた方が良い。IPアドレスが公開されているリモートサーバは、ローカルマシンに比べて外部からの攻撃を受けやすい。万が一、リモートサーバがハックされた際、そこに秘密鍵があると、リモートサーバからアクセスしていた別のサーバも攻撃されることがある。</p>
 <p>実際にそのような事件が起きたことがある。あるユーザのスパコンアカウントが(おそらくキーロガーにより)クラックされた。クラックされたスパコンは被害が少なかったのだが、このスパコンに「パスフレーズ無しの秘密鍵」が置いてあり、攻撃者はそこを踏み台に別のスパコンにログインすることができた。そして別のスパコンのセキュリティホールをついて特権昇格に成功し、複数のスパコンが運用停止に追い込まれたことがある。パスフレーズにより暗号化されていても、原理的には時間をかければ解析できるため、リモートサーバには原則として秘密鍵を置かないようにしたい。</p>
 <p>さて、リモートサーバには秘密鍵を置きたくないが、多段SSHを行うためには秘密鍵が必要だ。そこで、SSHにはエージェント転送という機能がある。これは、ローカルマシンの秘密鍵の情報を、リモートサーバに持っていき、リモートサーバから別のサーバに接続する際にそれを使う機能だ。以下、SSHエージェント転送を使ってGitHubにアクセスする。</p>
-<div class="figure">
-<img src="fig/ssh-agent.png" alt="SSHエージェント転送" />
-<p class="caption">SSHエージェント転送</p>
-</div>
+<figure>
+<img src="fig/ssh-agent.png" alt="SSHエージェント転送" /><figcaption>SSHエージェント転送</figcaption>
+</figure>
 <h2 id="sshエージェントの設定">SSHエージェントの設定</h2>
 <p>MacとWindowsで設定方法が異なる。</p>
 <h3 id="macの場合">Macの場合</h3>
 <p>Macの場合は、デフォルトでSSHエージェントが起動している。ターミナルのホームディレクトリで</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">ssh-add</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">ssh-add</span></a></code></pre></div>
 <p>を実行せよ。秘密鍵のパスフレーズを聞かれるので、入力せよ。その後、研究室サーバにsshで接続してみよ。パスフレーズを聞かれずに接続できたら成功である。</p>
 <p>パスフレーズは、Macのキーチェインに保存される。これはログアウトされると消えるため、必要な時に毎回<code>ssh-add</code>の実行が必要となる。</p>
 <p>ターミナルを開いた時に自動でパスフレーズを聞かれるようにしたい場合は、<code>.bashrc</code>の最後に以下の記述を追加しておく。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">ssh-add</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">ssh-add</span></a></code></pre></div>
 <p>こうするとターミナルを開くたびに(まだ入力していなければ)パスフレーズを聞かれるようになる。必要な時に<code>ssh-add</code>を実行するか、<code>.bashrc</code>に記述してしまうかはお好みで。</p>
 <h3 id="windowsの場合">Windowsの場合</h3>
 <p>まず、SSHエージェントを起動する必要がある。いくつか方法があるが、<code>keychain</code>を導入するのが簡単だ。</p>
 <p>まず、不要なプロセスをすべて停止させる。WSLを停止した状態でWindowsのPowerShellを起動せよ。たとえば「Windowsキー+r」で「ファイル名を指定して実行」画面に「powershell」を入力するとPowerShellを起動できる。起動したら、以下を実行する。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">wsl</span> --shutdown</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="ex">wsl</span> --shutdown</a></code></pre></div>
 <p>次に、WSL2のUbuntuを起動し、<code>keychain</code>をインストールする。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">sudo</span> apt-get install keychain</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1"><span class="fu">sudo</span> apt-get install keychain</a></code></pre></div>
 <p>次に、<code>keychain</code>を起動する。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">/usr/bin/keychain</span> -q --nogui <span class="va">$HOME</span>/.ssh/id_rsa</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1"><span class="ex">/usr/bin/keychain</span> -q --nogui <span class="va">$HOME</span>/.ssh/id_rsa</a></code></pre></div>
 <p>初回起動時にはパスフレーズを聞かれるので入力する。すると、<code>$HOME/.keychain</code>にいくつかシェルスクリプトが出来るので、それを実行する。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">source</span> <span class="va">$HOME</span>/.keychain/<span class="va">$HOST</span>-sh</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" title="1"><span class="bu">source</span> <span class="va">$HOME</span>/.keychain/<span class="va">$HOST</span>-sh</a></code></pre></div>
 <p>これにより、<code>keychain</code>が<code>ssh-agent</code>を探し、既存のプロセスがあれば接続、なければ起動してくれる。</p>
 <p><code>keychain</code>の起動を毎回行うのは面倒なので、<code>.bashrc</code>の最後に</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">/usr/bin/keychain</span> -q --nogui <span class="va">$HOME</span>/.ssh/id_rsa
-<span class="bu">source</span> <span class="va">$HOME</span>/.keychain/<span class="va">$HOST</span>-sh</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" title="1"><span class="ex">/usr/bin/keychain</span> -q --nogui <span class="va">$HOME</span>/.ssh/id_rsa</a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="bu">source</span> <span class="va">$HOME</span>/.keychain/<span class="va">$HOST</span>-sh</a></code></pre></div>
 <p>と書いておくと良い。Zshなども同様だが、cshやfishは、<code>$HOST-sh</code>の<code>-sh</code>を<code>-csh</code>や<code>-fish</code>にすること。</p>
 <h2 id="多段ssh">多段SSH</h2>
 <p>上記の手順では、SSHエージェントに秘密鍵の情報を覚えさせることで、一度<code>ssh-add</code>実行時にパスフレーズを入力したら、次回よりパスフレーズの入力を省略できるものである。それだけでも便利であるが、以下ではエージェント転送により、多段SSHを実行してみよう。</p>
 <p>まず、研究室サーバに<code>-A</code>オプションをつけてSSHで接続せよ。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">ssh</span> username@place.of.server -A</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" title="1"><span class="fu">ssh</span> username@place.of.server -A</a></code></pre></div>
 <p>その後、適当なディレクトリ(例えばgithub)にて、GitHubに自分が公開しているリポジトリをcloneしてみよ。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">mkdir</span> github
-<span class="bu">cd</span> github
-<span class="fu">git</span> clone git@github.com:yourname/yourrepository.git</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" title="1"><span class="fu">mkdir</span> github</a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="bu">cd</span> github</a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="fu">git</span> clone git@github.com:yourname/yourrepository.git</a></code></pre></div>
 <p>パスフレーズの入力を求められずにcloneできれば成功である。なお、研究室サーバでgitのcommitやpushなどの操作をする前に、<a href="../git/README.md">Gitの設定</a>を参考にユーザ名やメールアドレスの設定をしておくこと。</p>
 </article>
 </body>
