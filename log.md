@@ -18,6 +18,10 @@
 * 4/25 GitHubのissueとKanban
 * 5/2 LAMMPSとVMDのインストール
 * 5/9 GitHubのフォークとLAMMPS
+* 5/16 機械学習ハンズオン (TensorFlowでFashion-MNISTを学習させてウェブで読み込む)
+* 5/23 GNU makeハンズオン
+* 5/30 PBS ハンズオン (バッチシステム)
+* 6/6 ParaViewハンズオン
 
 ## 2021年度
 
