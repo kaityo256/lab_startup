@@ -52,7 +52,7 @@ mpirun -np 40 ./a.out
 
 まずは研究室サーバにログインせよ。次に、`github`というディレクトリに移動せよ(なければ`mkdir`で作成せよ)。
 
-```
+```sh
 cd github
 ```
 
@@ -60,13 +60,6 @@ cd github
 
 ```sh
 git clone https://github.com/kaityo256/batch_sample.git
-cd batch_sample
-```
-
-もしくは、あとのためにサブモジュールも同時にcloneしておいても良い。
-
-```sh
-git clone --recursive https://github.com/kaityo256/batch_sample.git
 cd batch_sample
 ```
 
@@ -186,24 +179,16 @@ cd pi
 そこに`cps`というディレクトリがあるはずだ。そこが空であることを確認せよ。
 
 ```sh
-$ ls cps
+ls cps
 ```
 
-実は、このディレクトリはGitのSubmoduleと呼ばれる仕組みで、別のリポジトリを取り込む場所になっている。
+実は、このディレクトリはGitのSubmoduleと呼ばれる仕組みで、別のリポジトリを取り込む場所として予約されているが、こちらで指示するまでは空ディレクトリになっている。
 
-リポジトリのトップレベル(`README.md`があるディレクトリ)に移動せよ。
-
-```sh
-cd ..
-```
-
-ここで、Submoduleをアップデートする。
+では、ここでSubmoduleを更新することで、そのリポジトリをcloneしよう。
 
 ```sh
 git submodule update -i
 ```
-
-Git Submoduleの詳細についてはここでは説明しない。気になった人は各自調べること。
 
 また`pi`に移動し、`cps`の中身がcloneされたことを確認せよ。
 
@@ -212,6 +197,14 @@ $ cd pi
 $ ls cps
 LICENSE  README.md  cps.cpp  makefile  task.sh
 ```
+
+なお、最初にcloneする際に`--recursive`オプションをつけておくと、サブモジュールも同時にcloneされるため、この工程が不要となる。
+
+```sh
+git clone --recursive https://github.com/kaityo256/batch_sample.git
+```
+
+Git Submoduleの詳細についてはここでは説明しない。気になった人は各自調べること。
 
 さて、ディレクトリ`pi`には、モンテカルロ法で円周率を計算する`pi.py`がある。このスクリプトを実行すると入力待ちになるので、適当な数字を入力してみよう。その数字を乱数の種(シード)として円周率を計算する。
 
