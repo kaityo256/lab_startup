@@ -80,7 +80,6 @@ SPACING 1.0 1.0 1.0
 
 これで三次元空間上に21×21×21=9261点の格子点が定義された。
 
-
 ### 非構造格子
 
 構造格子の場合は「直方体の三辺の要素数」及び「単位直方体のサイズ(SPACING)」を指定すればそれで格子点が定義できた。しかし、分子動力学法の結果の可視化や、物体表面の可視化など、非構造格子を使いたい場合もあるだろう。その場合は非構造格子(Unstructured grid)を用いる。
@@ -202,6 +201,8 @@ python3 simple.py
 まずParaViewを起動し、Ctrl+O(もしくはFile→Open)で`simple.vtk`を開く。すると、Pipeline Browserに「simple.vtk」が追加され、目が閉じたアイコンが表示されたはず。この状態で「Properties」の「Apply」をクリックせよ。Pipeline Browserの「simple.vtk」の左にあるアイコンの目が開いたはずだ。
 
 ![simple-open](fig/simple_open.png)
+
+なお、WSLを使っている場合は、ファイルを開くのに工夫が必要だ。まず、ParaViewの「Open File」ウィンドウが開いたら、File nameのところに「\\wsl.localhost」と入力し、「Navigate」ボタンを押す。すると「Ubuntu」というファイルが見つかるため、そこから「home」「ユーザ名」「github」「paraview-sample」「simple」とディレクトリを移動すれば良い。
 
 次に、「Outline」となっている表示を「Volume」に変える。最初の実行で「Volumeレンダリングには時間がかかるが良いか？」と聞かれることがあるが、「わかったからもう聞かないで」を選ぶこと。
 
