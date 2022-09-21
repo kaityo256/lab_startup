@@ -73,7 +73,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <article class="markdown-body">
 <h1 id="バッチシステムの使い方">バッチシステムの使い方</h1>
 <h2 id="バッチ処理とは">バッチ処理とは</h2>
-<p>限られた計算資源を複数人で使いたいことがある。昔は計算機が非常に効果であり、使いたい時に対話的に使うことができなかった(そうするとアイドルタイムができてもったいないため)。そこで、あらかじめ計算機にやらせたいことをファイルに記述しておき、実行を予約して使われていた。これをバッチ処理、やらせたいことをバッチジョブと呼ぶ。現代においても、スパコンや計算クラスタなどでバッチ処理が行われている。以下では、研究室クラスタでバッチ処理をしてみよう。ここでバッチ処理に慣れておき、将来的にはスパコンを利用することを見据える。</p>
+<p>限られた計算資源を複数人で使いたいことがある。昔は計算機が非常に高価であり、使いたい時に対話的に使うことができなかった(そうするとアイドルタイムができてもったいないため)。そこで、あらかじめ計算機にやらせたいことをファイルに記述しておき、実行を予約して使われていた。これをバッチ処理、やらせたいことをバッチジョブと呼ぶ。現代においても、スパコンや計算クラスタなどでバッチ処理が行われている。以下では、研究室クラスタでバッチ処理をしてみよう。ここでバッチ処理に慣れておき、将来的にはスパコンを利用することを見据える。</p>
 <h2 id="ジョブスケジューラ">ジョブスケジューラ</h2>
 <p>バッチ処理とは、やらせたいことをあらかじめ記述しておき、その実行を依頼する仕組みである。その処理の単位を「ジョブ」と呼ぶ。ジョブの実行をリクエストされた際、空いている計算資源を調べ、どのジョブをどのような順番で実行するのかを決めるのがジョブスケジューラだ。世の中には多数のジョブスケジューラがあるが、研究室クラスタで採用しているのはOpenPBSと呼ばれるスケジューラである。これはPBS(Portable Batch System)のオープン版だ。スパコンなどではそのプロ版であるPBS Proなどが使われている。</p>
 <h2 id="バッチシステム">バッチシステム</h2>
@@ -88,12 +88,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>バッチシステムは、ジョブスクリプトと呼ばれるスクリプトを記述し、それをジョブスケジューラに登録することで実行を予約する。ジョブスケジューラはジョブスクリプトを見て、このジョブがどのような計算資源をどの程度占有したいかを調べ、どのタイミングでどの計算資源に割り当てるかを決める。ジョブを計算資源に割り当てて実行することを「ジョブのディスパッチ」と呼ぶ。</p>
 <p>大勢が使うシステムでは、優先度をつけて「多く使った人は優先度を下げる。まだあまり使っていない人は優先度を上げる」といった処理をする。これを「フェアシェア」と呼ぶ。しかし、研究室クラスタではいわゆる「FIFO」で運用されている。FIFOとは「First-in First-out」の略で、要するに「早い者勝ち」のシステムである。使う際は節度を守って利用すること。</p>
 <p>ジョブスクリプトは、シェルスクリプトにジョブスケジューラ用の情報を付加したものだ。例えば以下のようなフォーマットだ。</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="co">#!/bin/bash</span></a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="co">#PBS -l nodes=2:ppn=20</span></a>
-<a class="sourceLine" id="cb1-3" title="3"></a>
-<a class="sourceLine" id="cb1-4" title="4"><span class="bu">cd</span> <span class="va">$PBS_O_WORKDIR</span></a>
-<a class="sourceLine" id="cb1-5" title="5"></a>
-<a class="sourceLine" id="cb1-6" title="6"><span class="ex">mpirun</span> -np 40 ./a.out</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="co">#!/bin/bash</span>
+<span class="co">#PBS -l nodes=2:ppn=20</span>
+
+<span class="bu">cd</span> <span class="va">$PBS_O_WORKDIR</span>
+
+<span class="ex">mpirun</span> -np 40 ./a.out</code></pre></div>
 <p>ジョブスクリプトはシェルスクリプトなので、<code>#</code>以降はコメントである。しかし、いくつか「意味のあるコメント」がある。</p>
 <p>最初の行の<code>#!/bin/bash</code>は、Shebang(シバン、シェバン)等と呼ばれ、このスクリプトをどのシェル(インタプリタ)で実行するかを指定するものだ。これはジョブスクリプトだけでなく、シェルスクリプト全般で使われる。</p>
 <p>次の<code>#PBS</code>から始まる行が、ジョブスクリプトとしての情報を持つコメントである。それぞれ、</p>
@@ -105,168 +105,165 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>次に、<code>cd $PBS_O_WORKDIR</code>でカレントディレクトリを移動している。</p>
 <h2 id="ハンズオン">ハンズオン</h2>
 <p>まずは研究室サーバにログインせよ。次に、<code>github</code>というディレクトリに移動せよ(なければ<code>mkdir</code>で作成せよ)。</p>
-<pre><code>cd github</code></pre>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span> github</code></pre></div>
 <p>次に、サンプルプログラムをcloneする。</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="fu">git</span> clone https://github.com/kaityo256/batch_sample.git</a>
-<a class="sourceLine" id="cb3-2" title="2"><span class="bu">cd</span> batch_sample</a></code></pre></div>
-<p>もしくは、あとのためにサブモジュールも同時にcloneしておいても良い。</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1"><span class="fu">git</span> clone --recursive https://github.com/kaityo256/batch_sample.git</a>
-<a class="sourceLine" id="cb4-2" title="2"><span class="bu">cd</span> batch_sample</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> clone https://github.com/kaityo256/batch_sample.git
+<span class="bu">cd</span> batch_sample</code></pre></div>
 <h3 id="基本的な操作">基本的な操作</h3>
 <p>まずは、簡単なジョブスクリプトを見てみよう。ディレクトリ<code>hostname</code>に移動せよ。</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1"><span class="bu">cd</span> hostname</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span> hostname</code></pre></div>
 <p>ここに、MPIを使った並列プログラムのサンプル<code>test.cpp</code>がある。</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode cpp"><code class="sourceCode cpp"><a class="sourceLine" id="cb6-1" title="1"><span class="pp">#include </span><span class="im">&lt;mpi.h&gt;</span></a>
-<a class="sourceLine" id="cb6-2" title="2"><span class="pp">#include </span><span class="im">&lt;cstdio&gt;</span></a>
-<a class="sourceLine" id="cb6-3" title="3"><span class="pp">#include </span><span class="im">&lt;unistd.h&gt;</span></a>
-<a class="sourceLine" id="cb6-4" title="4"></a>
-<a class="sourceLine" id="cb6-5" title="5"><span class="dt">int</span> main(<span class="dt">int</span> argc, <span class="dt">char</span>**argv){</a>
-<a class="sourceLine" id="cb6-6" title="6">  MPI_Init(&amp;argc, &amp;argv);</a>
-<a class="sourceLine" id="cb6-7" title="7">  <span class="dt">int</span> rank, procs;</a>
-<a class="sourceLine" id="cb6-8" title="8">  MPI_Comm_rank(MPI_COMM_WORLD, &amp;rank);</a>
-<a class="sourceLine" id="cb6-9" title="9">  MPI_Comm_size(MPI_COMM_WORLD, &amp;procs);</a>
-<a class="sourceLine" id="cb6-10" title="10">  <span class="dt">char</span> hostname[<span class="dv">256</span>];</a>
-<a class="sourceLine" id="cb6-11" title="11">  gethostname(hostname, <span class="kw">sizeof</span>(hostname));</a>
-<a class="sourceLine" id="cb6-12" title="12">  printf(<span class="st">&quot;%02d / %02d at </span><span class="sc">%s\n</span><span class="st">&quot;</span>,rank, procs, hostname);</a>
-<a class="sourceLine" id="cb6-13" title="13">  sleep(<span class="dv">10</span>);</a>
-<a class="sourceLine" id="cb6-14" title="14">  MPI_Finalize();</a>
-<a class="sourceLine" id="cb6-15" title="15">}</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&lt;mpi.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;cstdio&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;unistd.h&gt;</span>
+
+<span class="dt">int</span> main(<span class="dt">int</span> argc, <span class="dt">char</span>**argv){
+  MPI_Init(&amp;argc, &amp;argv);
+  <span class="dt">int</span> rank, procs;
+  MPI_Comm_rank(MPI_COMM_WORLD, &amp;rank);
+  MPI_Comm_size(MPI_COMM_WORLD, &amp;procs);
+  <span class="dt">char</span> hostname[<span class="dv">256</span>];
+  gethostname(hostname, <span class="kw">sizeof</span>(hostname));
+  printf(<span class="st">&quot;</span><span class="sc">%02d</span><span class="st"> / </span><span class="sc">%02d</span><span class="st"> at </span><span class="sc">%s\n</span><span class="st">&quot;</span>,rank, procs, hostname);
+  sleep(<span class="dv">10</span>);
+  MPI_Finalize();
+}</code></pre></div>
 <p>このプログラムは、全プロセス数と、自分のID(ランク)、そして実行されたホストの名前を表示し、最後に10秒待つプログラムだ。まずはこれをビルドしよう。並列プログラムは<code>mpic++</code>でコンパイルする。</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" title="1"><span class="ex">mpic++</span> test.cpp</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">mpic++</span> test.cpp</code></pre></div>
 <p>すると、<code>a.out</code>が作成されるので実行してみよう。</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" title="1"><span class="ex">./a.out</span></a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">./a.out</span></code></pre></div>
 <p>ランク、プロセス数、そしてホスト名が表示されたはずだ。次に、並列実行してみよう。並列実行するためには<code>mpirun</code>を用いる。</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" title="1"><span class="ex">mpirun</span> -np 4 ./a.out</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">mpirun</span> -np 4 ./a.out</code></pre></div>
 <p><code>mpirun</code>の<code>-np</code>の後に、何プロセスで実行するかを指定する。ここでは4プロセスで実行している。</p>
 <p>さて、このプログラムを、バッチジョブとして実行してみよう。ジョブスクリプトは二つ用意してある。まずは、1ノードを占有実行する<code>test.sh</code>だ。</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" title="1"><span class="co">#!/bin/bash</span></a>
-<a class="sourceLine" id="cb10-2" title="2"><span class="co">#PBS -l nodes=1:ppn=20</span></a>
-<a class="sourceLine" id="cb10-3" title="3"></a>
-<a class="sourceLine" id="cb10-4" title="4"><span class="bu">cd</span> <span class="va">$PBS_O_WORKDIR</span></a>
-<a class="sourceLine" id="cb10-5" title="5"></a>
-<a class="sourceLine" id="cb10-6" title="6"><span class="ex">mpirun</span> -np 20 ./a.out</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="co">#!/bin/bash</span>
+<span class="co">#PBS -l nodes=1:ppn=20</span>
+
+<span class="bu">cd</span> <span class="va">$PBS_O_WORKDIR</span>
+
+<span class="ex">mpirun</span> -np 20 ./a.out</code></pre></div>
 <p>このジョブスクリプトを実行するには、<code>qsub</code>コマンドを用いる。</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" title="1"><span class="ex">qsub</span> test.sh</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">qsub</span> test.sh</code></pre></div>
 <p><code>qstat</code>コマンドによりジョブの状態を見ることができる。</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" title="1">$ <span class="ex">qstat</span></a>
-<a class="sourceLine" id="cb12-2" title="2"><span class="ex">Job</span> id            Name             User              Time Use S Queue</a>
-<a class="sourceLine" id="cb12-3" title="3"><span class="ex">----------------</span>  ---------------- ----------------  -------- - -----</a>
-<a class="sourceLine" id="cb12-4" title="4"><span class="ex">1254.hostname</span>     test.sh          watanabe          00:00:00 R workq</a>
-<a class="sourceLine" id="cb12-5" title="5"><span class="ex">1255.hostname</span>     test.sh          watanabe          00:00:00 R workq</a>
-<a class="sourceLine" id="cb12-6" title="6"><span class="ex">1256.hostname</span>     test.sh          watanabe                 0 Q workq</a>
-<a class="sourceLine" id="cb12-7" title="7"><span class="ex">1257.hostname</span>     test.sh          watanabe                 0 Q workq</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">qstat</span>
+<span class="ex">Job</span> id            Name             User              Time Use S Queue
+<span class="ex">----------------</span>  ---------------- ----------------  -------- - -----
+<span class="ex">1254.hostname</span>     test.sh          watanabe          00:00:00 R workq
+<span class="ex">1255.hostname</span>     test.sh          watanabe          00:00:00 R workq
+<span class="ex">1256.hostname</span>     test.sh          watanabe                 0 Q workq
+<span class="ex">1257.hostname</span>     test.sh          watanabe                 0 Q workq</code></pre></div>
 <p>ジョブにはジョブIDが振られる。また、誰が投げたか、実行中(R)か、実行待ち(Q)かなどがわかる。</p>
 <p>プログラムの標準出力と標準エラーは、ファイルに落とされる。この時、標準出力は「投入したシェルスクリプト名.oジョブID」、標準エラー出力は「投入したシェルスクリプト名.oジョブID」という名前で保存される。</p>
 <p>例えば<code>test.sh</code>というジョブスクリプトを投入し、Job idが1254であった場合、標準出力は<code>test.sh.o1254</code>に、標準エラー出力は<code>test.sh.e1254</code>に保存される。</p>
 <p>さて、自分の標準出力を見てみよ。実行のタイミングにより、<code>hostname</code>が異なるはずである。</p>
 <p>次に、2ノード占有ジョブを実行してみよう。</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb13-1" title="1"><span class="co">#!/bin/bash</span></a>
-<a class="sourceLine" id="cb13-2" title="2"><span class="co">#PBS -l nodes=2:ppn=20</span></a>
-<a class="sourceLine" id="cb13-3" title="3"></a>
-<a class="sourceLine" id="cb13-4" title="4"><span class="bu">cd</span> <span class="va">$PBS_O_WORKDIR</span></a>
-<a class="sourceLine" id="cb13-5" title="5"></a>
-<a class="sourceLine" id="cb13-6" title="6"><span class="ex">mpirun</span> -np 40 ./a.out</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="co">#!/bin/bash</span>
+<span class="co">#PBS -l nodes=2:ppn=20</span>
+
+<span class="bu">cd</span> <span class="va">$PBS_O_WORKDIR</span>
+
+<span class="ex">mpirun</span> -np 40 ./a.out</code></pre></div>
 <p><code>nodes=2</code>で2ノードを使うことを宣言し、<code>mpirun -np 40</code>で40プロセス実行することを宣言している。これは2ノードを占有するため、2ノードしかない計算資源では一度に一つしかジョブが走らない。</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" title="1"><span class="ex">qsub</span> test2.sh</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">qsub</span> test2.sh</code></pre></div>
 <p>実行が終わったら、標準出力を見てみよ。40プロセスのうち、20プロセスずつ別のホストで実行されたのがわかるはずだ。</p>
 <h3 id="バルクジョブ">バルクジョブ</h3>
 <p>次に、「バルクジョブ」と呼ばれるジョブを実行する。リポジトリの<code>pi</code>というディレクトリに移動せよ。</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb15-1" title="1"><span class="bu">cd</span> ..</a>
-<a class="sourceLine" id="cb15-2" title="2"><span class="bu">cd</span> pi</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span> ..
+<span class="bu">cd</span> pi</code></pre></div>
 <p>そこに<code>cps</code>というディレクトリがあるはずだ。そこが空であることを確認せよ。</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb16-1" title="1">$ <span class="fu">ls</span> cps</a></code></pre></div>
-<p>実は、このディレクトリはGitのSubmoduleと呼ばれる仕組みで、別のリポジトリを取り込む場所になっている。</p>
-<p>リポジトリのトップレベル(<code>README.md</code>があるディレクトリ)に移動せよ。</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb17-1" title="1"><span class="bu">cd</span> ..</a></code></pre></div>
-<p>ここで、Submoduleをアップデートする。</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb18-1" title="1"><span class="fu">git</span> submodule update -i</a></code></pre></div>
-<p>Git Submoduleの詳細についてはここでは説明しない。気になった人は各自調べること。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">ls</span> cps</code></pre></div>
+<p>実は、このディレクトリはGitのSubmoduleと呼ばれる仕組みで、別のリポジトリを取り込む場所として予約されているが、こちらで指示するまでは空ディレクトリになっている。</p>
+<p>では、ここでSubmoduleを更新することで、そのリポジトリをcloneしよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> submodule update -i</code></pre></div>
 <p>また<code>pi</code>に移動し、<code>cps</code>の中身がcloneされたことを確認せよ。</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb19-1" title="1">$ <span class="bu">cd</span> pi</a>
-<a class="sourceLine" id="cb19-2" title="2">$ <span class="fu">ls</span> cps</a>
-<a class="sourceLine" id="cb19-3" title="3"><span class="ex">LICENSE</span>  README.md  cps.cpp  makefile  task.sh</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="bu">cd</span> pi
+$ <span class="fu">ls</span> cps
+<span class="ex">LICENSE</span>  README.md  cps.cpp  makefile  task.sh</code></pre></div>
+<p>なお、最初にcloneする際に<code>--recursive</code>オプションをつけておくと、サブモジュールも同時にcloneされるため、この工程が不要となる。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">git</span> clone --recursive https://github.com/kaityo256/batch_sample.git</code></pre></div>
+<p>Git Submoduleの詳細についてはここでは説明しない。気になった人は各自調べること。</p>
 <p>さて、ディレクトリ<code>pi</code>には、モンテカルロ法で円周率を計算する<code>pi.py</code>がある。このスクリプトを実行すると入力待ちになるので、適当な数字を入力してみよう。その数字を乱数の種(シード)として円周率を計算する。</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb20-1" title="1">$ <span class="ex">python3</span> pi.py</a>
-<a class="sourceLine" id="cb20-2" title="2"><span class="ex">1</span></a>
-<a class="sourceLine" id="cb20-3" title="3"><span class="ex">3.1420144</span></a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">python3</span> pi.py
+<span class="ex">1</span>
+<span class="ex">3.1420144</span></code></pre></div>
 <p>これを様々な種を与えて並列に計算し、あとで統計処理をすることを考えよう。例えば<code>seed00.dat</code>には<code>0</code>を、<code>seed01.dat</code>には<code>1</code>などと、異なるシードをファイルに保存しておき、</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb21-1" title="1"><span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed00.dat <span class="op">&gt;</span> result00.dat</a>
-<a class="sourceLine" id="cb21-2" title="2"><span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed01.dat <span class="op">&gt;</span> result01.dat</a>
-<a class="sourceLine" id="cb21-3" title="3"><span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed02.dat <span class="op">&gt;</span> result02.dat</a>
-<a class="sourceLine" id="cb21-4" title="4"><span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed03.dat <span class="op">&gt;</span> result03.dat</a>
-<a class="sourceLine" id="cb21-5" title="5"><span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed04.dat <span class="op">&gt;</span> result04.dat</a>
-<a class="sourceLine" id="cb21-6" title="6"><span class="ex">...</span></a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed00.dat <span class="op">&gt;</span> result00.dat
+<span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed01.dat <span class="op">&gt;</span> result01.dat
+<span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed02.dat <span class="op">&gt;</span> result02.dat
+<span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed03.dat <span class="op">&gt;</span> result03.dat
+<span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed04.dat <span class="op">&gt;</span> result04.dat
+<span class="ex">...</span></code></pre></div>
 <p>といった計算を延々やりたい。これらのプログラムには全く依存関係がないから、同時に実行することができる。このようなジョブを自明並列(Trivial Parallelization)、別名「馬鹿パラ」と呼ぶ。</p>
 <p>同じディレクトリに<code>makeseed.py</code>があるので実行せよ。</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb22-1" title="1"><span class="ex">python3</span> makeseed.py</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">python3</span> makeseed.py</code></pre></div>
 <p>すると、<code>seed00.dat</code>から<code>seed18.dat</code>、そして<code>task.sh</code>が作成されたはずだ。<code>task.sh</code>には、並列実行したいタスクがずらずら記載されている。</p>
 <p>このタスクを並列実行するために作った手抜きプログラムがCPS(Command Processor Scheduler)である。まずはビルドしよう。</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb23-1" title="1"><span class="bu">cd</span> cps</a>
-<a class="sourceLine" id="cb23-2" title="2"><span class="fu">make</span></a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span> cps
+<span class="fu">make</span></code></pre></div>
 <p>これで<code>cps</code>というプログラムができたはずだ。これは、やりたいことが一行に一つ書かれたスクリプトを読み込んで、適当に並列実行するプログラムだ。</p>
 <p>先ほどのディレクトリ<code>pi</code>に戻ろう。</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb24-1" title="1"><span class="bu">cd</span> ..</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span> ..</code></pre></div>
 <p>ここに、<code>cps</code>を使って並列実行をするジョブスクリプト<code>pi.sh</code>がある。</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb25-1" title="1"><span class="co">#!/bin/bash</span></a>
-<a class="sourceLine" id="cb25-2" title="2"><span class="co">#PBS -l nodes=1:ppn=20</span></a>
-<a class="sourceLine" id="cb25-3" title="3"></a>
-<a class="sourceLine" id="cb25-4" title="4"><span class="bu">cd</span> <span class="va">$PBS_O_WORKDIR</span></a>
-<a class="sourceLine" id="cb25-5" title="5"><span class="fu">hostname</span></a>
-<a class="sourceLine" id="cb25-6" title="6"><span class="ex">mpirun</span> -np 20 ./cps/cps task.sh</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="co">#!/bin/bash</span>
+<span class="co">#PBS -l nodes=1:ppn=20</span>
+
+<span class="bu">cd</span> <span class="va">$PBS_O_WORKDIR</span>
+<span class="fu">hostname</span>
+<span class="ex">mpirun</span> -np 20 ./cps/cps task.sh</code></pre></div>
 <p>さっそく投入してみよう。</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb26-1" title="1"><span class="ex">qsub</span> pi.sh</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">qsub</span> pi.sh</code></pre></div>
 <p>間違えて<code>task.sh</code>などを投入しないように気をつけよう。実行が終わったら、標準出力を見てみよ。実行されたホスト名が表示されているはずだ。これは<code>pi.sh</code>の中で<code>hostname</code>を実行しているためだ。</p>
 <p><code>cps</code>は、実行ログを<code>cps.log</code>というファイルに保存する。見てみよう。</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb27-1" title="1">$ <span class="fu">cat</span> cps.log</a>
-<a class="sourceLine" id="cb27-2" title="2"><span class="ex">Number</span> of tasks : 19</a>
-<a class="sourceLine" id="cb27-3" title="3"><span class="ex">Number</span> of processes : 20</a>
-<a class="sourceLine" id="cb27-4" title="4"><span class="ex">Total</span> execution time: 39.713 [s]</a>
-<a class="sourceLine" id="cb27-5" title="5"><span class="ex">Elapsed</span> time: 2.1 [s]</a>
-<a class="sourceLine" id="cb27-6" title="6"><span class="ex">Parallel</span> Efficiency : 0.995313</a>
-<a class="sourceLine" id="cb27-7" title="7"></a>
-<a class="sourceLine" id="cb27-8" title="8"><span class="ex">Task</span> list:</a>
-<a class="sourceLine" id="cb27-9" title="9"><span class="ex">Command</span> : Elapsed time</a>
-<a class="sourceLine" id="cb27-10" title="10"><span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed00.dat <span class="op">&gt;</span> result00.dat : 2.098 [s]</a>
-<a class="sourceLine" id="cb27-11" title="11"><span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed01.dat <span class="op">&gt;</span> result01.dat : 2.087 [s]</a>
-<a class="sourceLine" id="cb27-12" title="12"><span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed02.dat <span class="op">&gt;</span> result02.dat : 2.098 [s]</a>
-<a class="sourceLine" id="cb27-13" title="13"><span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed03.dat <span class="op">&gt;</span> result03.dat : 2.086 [s]</a>
-<a class="sourceLine" id="cb27-14" title="14"><span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed04.dat <span class="op">&gt;</span> result04.dat : 2.089 [s]</a>
-<a class="sourceLine" id="cb27-15" title="15"><span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed05.dat <span class="op">&gt;</span> result05.dat : 2.087 [s]</a>
-<a class="sourceLine" id="cb27-16" title="16"><span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed06.dat <span class="op">&gt;</span> result06.dat : 2.098 [s]</a>
-<a class="sourceLine" id="cb27-17" title="17"><span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed07.dat <span class="op">&gt;</span> result07.dat : 2.077 [s]</a>
-<a class="sourceLine" id="cb27-18" title="18"><span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed08.dat <span class="op">&gt;</span> result08.dat : 2.098 [s]</a>
-<a class="sourceLine" id="cb27-19" title="19"><span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed09.dat <span class="op">&gt;</span> result09.dat : 2.086 [s]</a>
-<a class="sourceLine" id="cb27-20" title="20"><span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed10.dat <span class="op">&gt;</span> result10.dat : 2.1 [s]</a>
-<a class="sourceLine" id="cb27-21" title="21"><span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed11.dat <span class="op">&gt;</span> result11.dat : 2.086 [s]</a>
-<a class="sourceLine" id="cb27-22" title="22"><span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed12.dat <span class="op">&gt;</span> result12.dat : 2.097 [s]</a>
-<a class="sourceLine" id="cb27-23" title="23"><span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed13.dat <span class="op">&gt;</span> result13.dat : 2.065 [s]</a>
-<a class="sourceLine" id="cb27-24" title="24"><span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed14.dat <span class="op">&gt;</span> result14.dat : 2.092 [s]</a>
-<a class="sourceLine" id="cb27-25" title="25"><span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed15.dat <span class="op">&gt;</span> result15.dat : 2.086 [s]</a>
-<a class="sourceLine" id="cb27-26" title="26"><span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed16.dat <span class="op">&gt;</span> result16.dat : 2.096 [s]</a>
-<a class="sourceLine" id="cb27-27" title="27"><span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed17.dat <span class="op">&gt;</span> result17.dat : 2.088 [s]</a>
-<a class="sourceLine" id="cb27-28" title="28"><span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed18.dat <span class="op">&gt;</span> result18.dat : 2.099 [s]</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">cat</span> cps.log
+<span class="ex">Number</span> of tasks : 19
+<span class="ex">Number</span> of processes : 20
+<span class="ex">Total</span> execution time: 39.713 [s]
+<span class="ex">Elapsed</span> time: 2.1 [s]
+<span class="ex">Parallel</span> Efficiency : 0.995313
+
+<span class="ex">Task</span> list:
+<span class="ex">Command</span> : Elapsed time
+<span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed00.dat <span class="op">&gt;</span> result00.dat : 2.098 [s]
+<span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed01.dat <span class="op">&gt;</span> result01.dat : 2.087 [s]
+<span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed02.dat <span class="op">&gt;</span> result02.dat : 2.098 [s]
+<span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed03.dat <span class="op">&gt;</span> result03.dat : 2.086 [s]
+<span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed04.dat <span class="op">&gt;</span> result04.dat : 2.089 [s]
+<span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed05.dat <span class="op">&gt;</span> result05.dat : 2.087 [s]
+<span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed06.dat <span class="op">&gt;</span> result06.dat : 2.098 [s]
+<span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed07.dat <span class="op">&gt;</span> result07.dat : 2.077 [s]
+<span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed08.dat <span class="op">&gt;</span> result08.dat : 2.098 [s]
+<span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed09.dat <span class="op">&gt;</span> result09.dat : 2.086 [s]
+<span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed10.dat <span class="op">&gt;</span> result10.dat : 2.1 [s]
+<span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed11.dat <span class="op">&gt;</span> result11.dat : 2.086 [s]
+<span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed12.dat <span class="op">&gt;</span> result12.dat : 2.097 [s]
+<span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed13.dat <span class="op">&gt;</span> result13.dat : 2.065 [s]
+<span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed14.dat <span class="op">&gt;</span> result14.dat : 2.092 [s]
+<span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed15.dat <span class="op">&gt;</span> result15.dat : 2.086 [s]
+<span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed16.dat <span class="op">&gt;</span> result16.dat : 2.096 [s]
+<span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed17.dat <span class="op">&gt;</span> result17.dat : 2.088 [s]
+<span class="ex">python3</span> pi.py <span class="op">&lt;</span> seed18.dat <span class="op">&gt;</span> result18.dat : 2.099 [s]</code></pre></div>
 <p>全部で何個のタスクがあり、トータル何秒だったか、実際には何秒で実行できたか等が表示されている。</p>
 <p>また、同じディレクトリに<code>result00.dat</code>から<code>result18.dat</code>までファイルができているはずだ。一つ見てみよう。</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb28-1" title="1">$ <span class="fu">cat</span> result01.dat</a>
-<a class="sourceLine" id="cb28-2" title="2"><span class="ex">3.1420144</span></a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="fu">cat</span> result01.dat
+<span class="ex">3.1420144</span></code></pre></div>
 <p><code>result01.dat</code>は、乱数の種として「1」を入力した結果だ。先程Pythonで直接実行した時と同じ値が出ていることを確認せよ。乱数を使う計算では、「同じ乱数の種からは同じ結果が出る」という事実は覚えておきたい。Pythonの<code>random</code>モジュールは、デフォルトで乱数の種が固定されないため、実行される度に異なる結果を返す。これは「ランダムネス」という意味では良いが、数値計算においてはデバッグの障害となる。乱数を使うプログラムでは、乱数の種を指定しておく癖をつけておくこと。</p>
 <p>さて、あとはこれらのファイルを集計するだけだ。Pythonを使うならこんなスクリプトになるだろう。</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb29-1" title="1"><span class="im">import</span> glob</a>
-<a class="sourceLine" id="cb29-2" title="2"><span class="im">import</span> numpy <span class="im">as</span> np</a>
-<a class="sourceLine" id="cb29-3" title="3"></a>
-<a class="sourceLine" id="cb29-4" title="4">data <span class="op">=</span> []</a>
-<a class="sourceLine" id="cb29-5" title="5"><span class="cf">for</span> filename <span class="kw">in</span> glob.glob(<span class="st">&#39;result*.dat&#39;</span>):</a>
-<a class="sourceLine" id="cb29-6" title="6">  <span class="cf">with</span> <span class="bu">open</span>(filename) <span class="im">as</span> f:</a>
-<a class="sourceLine" id="cb29-7" title="7">    a <span class="op">=</span> f.readlines()[<span class="dv">0</span>]</a>
-<a class="sourceLine" id="cb29-8" title="8">    data.append(<span class="bu">float</span>(a))</a>
-<a class="sourceLine" id="cb29-9" title="9"></a>
-<a class="sourceLine" id="cb29-10" title="10">average <span class="op">=</span> np.average(data)</a>
-<a class="sourceLine" id="cb29-11" title="11">error <span class="op">=</span> np.std(data)</a>
-<a class="sourceLine" id="cb29-12" title="12"></a>
-<a class="sourceLine" id="cb29-13" title="13"><span class="bu">print</span>(<span class="ss">f&quot;</span><span class="sc">{</span>average<span class="sc">}</span><span class="ss"> +- </span><span class="sc">{</span>error<span class="sc">}</span><span class="ss">&quot;</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> glob
+<span class="im">import</span> numpy <span class="im">as</span> np
+
+data <span class="op">=</span> []
+<span class="cf">for</span> filename <span class="kw">in</span> glob.glob(<span class="st">&#39;result*.dat&#39;</span>):
+  <span class="cf">with</span> <span class="bu">open</span>(filename) <span class="im">as</span> f:
+    a <span class="op">=</span> f.readlines()[<span class="dv">0</span>]
+    data.append(<span class="bu">float</span>(a))
+
+average <span class="op">=</span> np.average(data)
+error <span class="op">=</span> np.std(data)
+
+<span class="bu">print</span>(<span class="ss">f&quot;</span><span class="sc">{</span>average<span class="sc">}</span><span class="ss"> +- </span><span class="sc">{</span>error<span class="sc">}</span><span class="ss">&quot;</span>)</code></pre></div>
 <p>実行してみよう。</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb30-1" title="1">$ <span class="ex">python3</span> average.py</a>
-<a class="sourceLine" id="cb30-2" title="2"><span class="ex">3.1416488</span> +- 0.0006905991052778619</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">python3</span> average.py
+<span class="ex">3.1416488</span> +- 0.0006905991052778619</code></pre></div>
 <p>上記の手続き、すなわち</p>
 <ul>
 <li>入力を受け取ってなにかを出力するシリアルプログラムを用意する</li>
