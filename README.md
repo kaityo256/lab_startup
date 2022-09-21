@@ -13,6 +13,7 @@
 「上から順」にセットアップしていくことを想定しており、下の物は上のセットアップが終わっていることが前提となっているものがある。
 
 * [WSL2のセットアップ(Windowsのみ)](wsl2/README.md)
+* [Home Brewのセットアップ(Macのみ)](homebrew/README.md)
 * [X Window Systemのセットアップ](X11/README.md)
 * [SSHエージェント転送の設定](ssh/README.md)
 * [Pythonのインストール](python/README.md)

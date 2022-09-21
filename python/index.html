@@ -106,48 +106,23 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>セルの真下に「Hello Python」と表示されて、次のセルが入力待ちになれば成功である。これでPythonを実行する環境は整った。</p>
 <p>最初に起動した画面の「Quit」を選ぶとJupyter Notebookは終了する。</p>
 <h2 id="mac編">Mac編</h2>
-<h3 id="home-brewのインストール">Home brewのインストール</h3>
-<p>もしインストールされていないのなら、まずHome Brewをインストールする。</p>
-<p>まず「ターミナル」を開く。Command+Spaceでスポットライトを開き、Terminal.appを選べば起動する。実行したら、今後良く使うのでDockに追加しておこう。ターミナルが開いたら、以下を実行せよ。</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" title="1"><span class="ex">brew</span></a></code></pre></div>
-<p>「Command not found」と言われたらインストールされていない。インストールするには<a href="https://brew.sh/index_ja">https://brew.sh/index_ja</a>の指示に従い、ターミナルで以下のコマンドを実行する。</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" title="1"><span class="ex">/bin/bash</span> -c <span class="st">&quot;</span><span class="va">$(</span><span class="ex">curl</span> -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh<span class="va">)</span><span class="st">&quot;</span></a></code></pre></div>
-<p>ターミナルにコピペして実行せよ。途中、パスワードが要求されるので入力すること。Home brewのインストールが終わったら、再度以下を実行せよ。</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" title="1"><span class="ex">brew</span></a></code></pre></div>
-<div class="sourceCode" id="cb10"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb10-1" title="1">Example usage:</a>
-<a class="sourceLine" id="cb10-2" title="2">  brew search [TEXT|/REGEX/]</a>
-<a class="sourceLine" id="cb10-3" title="3">  brew info [FORMULA...]</a>
-<a class="sourceLine" id="cb10-4" title="4">(snip)</a>
-<a class="sourceLine" id="cb10-5" title="5">Further help:</a>
-<a class="sourceLine" id="cb10-6" title="6">  brew commands</a>
-<a class="sourceLine" id="cb10-7" title="7">  brew help [COMMAND]</a>
-<a class="sourceLine" id="cb10-8" title="8">  man brew</a>
-<a class="sourceLine" id="cb10-9" title="9">  https://docs.brew.sh</a></code></pre></div>
-<p>などと表示されればインストールできている。もし</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" title="1"><span class="ex">Error</span>: You have not agreed to the Xcode license. Please resolve this by running:</a>
-<a class="sourceLine" id="cb11-2" title="2">  <span class="fu">sudo</span> xcodebuild -license accept</a></code></pre></div>
-<p>というエラーが起きて実行できなかった場合、</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" title="1"><span class="fu">sudo</span> xcodebuild -license accept</a></code></pre></div>
-<p>を実行せよ(パスワードが必要)。</p>
-<p>最後にHome Brewを最新版にする。以下を実行せよ(かなり時間がかかる)。</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb13-1" title="1"><span class="ex">brew</span> update --force <span class="kw">&amp;&amp;</span> <span class="ex">brew</span> upgrade</a></code></pre></div>
 <h3 id="python3のインストール">Python3のインストール</h3>
 <p>まずはPython3をインストールしよう。</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" title="1"><span class="ex">brew</span> install python3</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" title="1"><span class="ex">brew</span> install python3</a></code></pre></div>
 <p>Python3がインストールされたら、必要なパッケージをいれておこう。</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb15-1" title="1"><span class="ex">python3</span> -m pip install numpy matplotlib</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" title="1"><span class="ex">python3</span> -m pip install numpy matplotlib</a></code></pre></div>
 <h3 id="jupyter-notebookのテスト">Jupyter Notebookのテスト</h3>
 <p>次に、Jupyter Notebookをインストールしよう。</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb16-1" title="1"><span class="ex">python3</span> -m pip install --upgrade pip</a>
-<a class="sourceLine" id="cb16-2" title="2"><span class="ex">python3</span> -m pip install jupyter</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" title="1"><span class="ex">python3</span> -m pip install --upgrade pip</a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="ex">python3</span> -m pip install jupyter</a></code></pre></div>
 <p>ターミナルから以下を実行せよ。</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb17-1" title="1"><span class="ex">jupyter</span> notebook</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" title="1"><span class="ex">jupyter</span> notebook</a></code></pre></div>
 <p>デフォルトのブラウザで、Jupyter Notebookが開かれるので、右上の「New」ボタンから「Python 3」を選ぶ。</p>
 <figure>
 <img src="fig/newbook2.png" alt="newbook2.png" /><figcaption>newbook2.png</figcaption>
 </figure>
 <p>新しいタブが開き、入力待ちになるので、そこで何かプログラムを入力する。例えば</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb18-1" title="1"><span class="bu">print</span>(<span class="st">&quot;Hello Python&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb11-1" title="1"><span class="bu">print</span>(<span class="st">&quot;Hello Python&quot;</span>)</a></code></pre></div>
 <p>と入力し「Shift+Return」もしくは上の「Run」ボタンをクリックする。</p>
 <figure>
 <img src="fig/run2.png" alt="run2.png" /><figcaption>run2.png</figcaption>

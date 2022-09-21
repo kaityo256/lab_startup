@@ -66,61 +66,6 @@ print("Hello Python")
 
 ## Mac編
 
-### Home brewのインストール
-
-もしインストールされていないのなら、まずHome Brewをインストールする。
-
-まず「ターミナル」を開く。Command+Spaceでスポットライトを開き、Terminal.appを選べば起動する。実行したら、今後良く使うのでDockに追加しておこう。ターミナルが開いたら、以下を実行せよ。
-
-```sh
-brew
-```
-
-「Command not found」と言われたらインストールされていない。インストールするには[https://brew.sh/index_ja](https://brew.sh/index_ja)の指示に従い、ターミナルで以下のコマンドを実行する。
-
-```sh
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-```
-
-ターミナルにコピペして実行せよ。途中、パスワードが要求されるので入力すること。Home brewのインストールが終わったら、再度以下を実行せよ。
-
-```sh
-brew
-```
-
-```txt
-Example usage:
-  brew search [TEXT|/REGEX/]
-  brew info [FORMULA...]
-(snip)
-Further help:
-  brew commands
-  brew help [COMMAND]
-  man brew
-  https://docs.brew.sh
-```
-
-などと表示されればインストールできている。もし
-
-```sh
-Error: You have not agreed to the Xcode license. Please resolve this by running:
-  sudo xcodebuild -license accept
-```
-
-というエラーが起きて実行できなかった場合、
-
-```sh
-sudo xcodebuild -license accept
-```
-
-を実行せよ(パスワードが必要)。
-
-最後にHome Brewを最新版にする。以下を実行せよ(かなり時間がかかる)。
-
-```sh
-brew update --force && brew upgrade
-```
-
 ### Python3のインストール
 
 まずはPython3をインストールしよう。
