@@ -72,50 +72,84 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <body>
 <article class="markdown-body">
 <h1 id="vscodeのインストール">VSCodeのインストール</h1>
-<p>Visual Studio Code、通称VSCodeは、Microsoftが中心となって開発を進めているオープンソースのエディタである。Windows/Mac/Linuxで動作するクロスプラットフォームであり、豊富なプラグインがあるためにユーザが増えている。以下ではVSCodeのインストールと、VSCodeからPythonを実行する環境まで構築する。なお、自分の好きな開発環境があるならそれを使ってよい。</p>
+<p>Visual Studio
+Code、通称VSCodeは、Microsoftが中心となって開発を進めているオープンソースのエディタである。Windows/Mac/Linuxで動作するクロスプラットフォームであり、豊富なプラグインがあるためにユーザが増えている。以下ではVSCodeのインストールと、VSCodeからPythonを実行する環境まで構築する。なお、自分の好きな開発環境があるならそれを使ってよい。</p>
 <h2 id="windows編">Windows編</h2>
 <h3 id="ダウンロードとインストール">ダウンロードとインストール</h3>
-<p><a href="https://code.visualstudio.com/">https://code.visualstudio.com/</a>に行って、「Download for Windows Stable Build」をダウンロード、インストールする。</p>
+<p><a
+href="https://code.visualstudio.com/">https://code.visualstudio.com/</a>に行って、「Download
+for Windows Stable Build」をダウンロード、インストールする。</p>
 <p>途中で「追加タスクの選択」が現れたら、「ファイルコンテキストメニュー」と「ディレクトリコンテキストメニュー」に「「Codeで開く」アクションを追加する」がチェックされていることを確認し、もしされていなかったらチェックしておく。</p>
 <figure>
-<img src="fig/vscode_setup_win.png" alt="セットアップ" /><figcaption>セットアップ</figcaption>
+<img src="fig/vscode_setup_win.png" alt="セットアップ" />
+<figcaption aria-hidden="true">セットアップ</figcaption>
 </figure>
 <p>「デスクトップ上にアイコンを作成する」は、どちらでもかまわない。</p>
 <p>インストール後、VSCodeを起動する。</p>
 <h3 id="wslとの連携">WSLとの連携</h3>
-<p>Windowsマシンでは、原則としてWindows Subsystem for Linux (WSL)上で作業を行う。VSCodeは、WindowsでもWSL上でもシームレスに利用できるが、そのためにプラグインを入れておく必要がある。</p>
+<p>Windowsマシンでは、原則としてWindows Subsystem for Linux
+(WSL)上で作業を行う。VSCodeは、WindowsでもWSL上でもシームレスに利用できるが、そのためにプラグインを入れておく必要がある。</p>
 <p>VSCodeの左のメニューからExtentionsのアイコン(ブロックのマーク)をクリックし、現れた検索窓に「WSL」と入力すると「Remote-WSL」が表示されるので、「Install」をクリックする。</p>
 <figure>
-<img src="fig/wsl.png" alt="WSL" /><figcaption>WSL</figcaption>
+<img src="fig/wsl.png" alt="WSL" />
+<figcaption aria-hidden="true">WSL</figcaption>
 </figure>
 <p>これをインストールした状態で、WSLのターミナルから適当なディレクトリで</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="ex">code</span> .</a></code></pre></div>
-<p>を実行する。VS Codeが開いて、左下に「WSL:Ubuntu」と表示されれば成功だ。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">code</span> .</span></code></pre></div>
+<p>を実行する。VS
+Codeが開いて、左下に「WSL:Ubuntu」と表示されれば成功だ。</p>
 <figure>
-<img src="fig/wsl_vscode.png" alt="WSL-VSCode" /><figcaption>WSL-VSCode</figcaption>
+<img src="fig/wsl_vscode.png" alt="WSL-VSCode" />
+<figcaption aria-hidden="true">WSL-VSCode</figcaption>
 </figure>
 <p>以降、WSLのファイルをシームレスにVS Codeで編集できるようになる。</p>
 <h2 id="mac編">Mac編</h2>
-<h3 id="ダウンロードとインストール-1">ダウンロードとインストール</h3>
-<p><a href="https://code.visualstudio.com/">https://code.visualstudio.com/</a>に行って、「Download for Mac Stable Build」をダウンロード、インストールする。</p>
-<p>ダウンロードフォルダに「VSCode-darwin-stable.zip」がダウンロードされるので、クリックして解凍する。解凍されてできた「Visual Studio Code」を、アプリケーションフォルダに移動する。例えば「ダウンロード」を「Finderで開く」を選び、「Visual Studio Code」を「アプリケーション」にドラッグする。</p>
+<p><a
+href="https://code.visualstudio.com/">https://code.visualstudio.com/</a>に行って、「Download
+for Mac Stable Build」をダウンロード、インストールする。</p>
+<p>ダウンロードフォルダに「VSCode-darwin-stable.zip」がダウンロードされるので、クリックして解凍する。解凍されてできた「Visual
+Studio
+Code」を、アプリケーションフォルダに移動する。例えば「ダウンロード」を「Finderで開く」を選び、「Visual
+Studio Code」を「アプリケーション」にドラッグする。</p>
 <figure>
-<img src="fig/vscode_install_mac.png" alt="VSCodeのインストール" /><figcaption>VSCodeのインストール</figcaption>
+<img src="fig/vscode_install_mac.png" alt="VSCodeのインストール" />
+<figcaption aria-hidden="true">VSCodeのインストール</figcaption>
 </figure>
-<p>VSCodeを起動する。「アプリケーション」から「Visual Studio Code」を起動する。今後よく使うので、Dockに追加しておこう。</p>
+<p>VSCodeを起動する。「アプリケーション」から「Visual Studio
+Code」を起動する。今後よく使うので、Dockに追加しておこう。</p>
+<h2 id="設定windowsmac共通">設定(Windows/Mac共通)</h2>
+<h3
+id="シェルコマンドcodeのインストール">シェルコマンド<code>code</code>のインストール</h3>
 <p>ファイルを開く時、メニューから探しても良いが、ターミナルから</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="ex">code</span> filename</a></code></pre></div>
-<p>として開けるようにしておくと便利だ。この機能を使うにはコマンドパレット(Shift+Command+P)を開いて「shell」と入力すると出てくる「Shell Command: Install ‘code’ command in PATH」を実行すれば良い。</p>
-<h2 id="python環境のセットアップwindowsmac共通">Python環境のセットアップ(Windows/Mac共通)</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">code</span> filename</span></code></pre></div>
+<p>として開けるようにしておくと便利だ。この機能を使うにはコマンドパレット(Shift+Command+P)を開いて「shell
+command」と入力すると出てくる「Shell Command: Install ‘code’ command in
+PATH」を実行すれば良い。</p>
+<figure>
+<img src="fig/shellcommand.png" alt="shellcommand" />
+<figcaption aria-hidden="true">shellcommand</figcaption>
+</figure>
+<p>VSCodeではファイルではなくディレクトリを開くことが多い。カレントディレクトリをVSCodeで開くには</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">code</span> .</span></code></pre></div>
+<p>とする。よく使うので覚えておこう。このとき、最初に以下のような「このディレクトリを信用するか？」という確認ダイアログが出ることがある。</p>
+<figure>
+<img src="fig/trust.png" alt="trust" />
+<figcaption aria-hidden="true">trust</figcaption>
+</figure>
+<p>自分で作成し、管理しているディレクトリであれば問題ないので、「開く」を選んでよい。</p>
+<h3 id="python環境のセットアップ">Python環境のセットアップ</h3>
 <p>適当なディレクトリで</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="ex">code</span> test.py</a></code></pre></div>
-<p>を実行せよ。新規ファイルとして<code>test.py</code>が開かれるはずだ。その状態で、VSCodeの左のメニューからExtentionsのアイコン(ブロックのマーク)をクリックし、現れた検索窓に「python」と入力、現れた「Python extension for Visual Studio Code」の「install」ボタンを押して、インストールする。「再読み込みが必要です」というボタンに変わったら、クリックして再読み込みをする。</p>
-<p>この時、先にPython環境が正しくインストールされていれば、エディタの左下に「Python 3.7.6. 64-bit (‘base’:conda)」といった表示が現れるはずだ。</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">code</span> test.py</span></code></pre></div>
+<p>を実行せよ。新規ファイルとして<code>test.py</code>が開かれるはずだ。すると「Pythonにおすすめの拡張機能があるがインストールするか？」と聞かれるので、インストールする。聞かれなかった場合は、VSCodeの左のメニューからExtentionsのアイコン(ブロックのマーク)をクリックし、現れた検索窓に「python」と入力、現れた「Python
+extension for Visual Studio
+Code」の「install」ボタンを押して、インストールする。「再読み込みが必要です」というボタンに変わったら、クリックして再読み込みをする。</p>
+<p>この時、先にPython環境が正しくインストールされていれば、エディタの右下に「Python」といった表示が現れているはずだ。</p>
 <p>Pythonの実行環境が選ばれた状態で</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb4-1" title="1"><span class="bu">print</span>(<span class="st">&quot;Hello Python&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Hello Python&quot;</span>)</span></code></pre></div>
 <p>と入力し、右上にある三角のマーク(ターミナルでPythonを実行)をクリックせよ。</p>
 <figure>
-<img src="fig/vscode_python_execute.png" alt="実行ボタン" /><figcaption>実行ボタン</figcaption>
+<img src="fig/vscode_python_execute.png" alt="実行ボタン" />
+<figcaption aria-hidden="true">実行ボタン</figcaption>
 </figure>
 <p>下にウィンドウが開いて実行結果(<code>Hello Python</code>)が表示されるはずだ。これでVSCodeからPythonを実行する環境が整った。</p>
 </article>
