@@ -27,6 +27,25 @@ e-pTeX 3.14159265-p3.8.2-190908-2.6 (utf8.euc) (TeX Live 2019/Debian)
 (snip)
 ```
 
+また、修士論文執筆時に使うので、pdftkも入れておこう。
+
+```sh
+sudo apt install -y pdftk-java
+```
+
+以下を実行し、バージョンが表示されれば正しくインストールされている。
+
+```sh
+$ pdftk --version
+pdftk port to java 3.0.9 a Handy Tool for Manipulating PDF Documents
+Copyright (c) 2017-2018 Marc Vinyals - https://gitlab.com/pdftk-java/pdftk
+Copyright (c) 2003-2013 Steward and Lee, LLC.
+pdftk includes a modified version of the iText library.
+Copyright (c) 1999-2009 Bruno Lowagie, Paulo Soares, et al.
+This is free software; see the source code for copying conditions. There is
+NO warranty, not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+```
+
 ### Macの場合
 
 ターミナルを開き、以下を実行せよ。実行ディレクトリを趣味で`~/build`としているが、どこでも良い。
@@ -129,6 +148,25 @@ pdfTeX 3.141592653-2.6-1.40.23 (TeX Live 2022/dev)
 $ platex -v
 e-pTeX 3.141592653-p3.9.0-210218-2.6 (utf8.euc) (TeX Live 2021)
 (snip)
+```
+
+また、修士論文執筆時に使うので、pdftkも入れておこう。
+
+```sh
+brew install pdftk-java
+```
+
+以下のコマンドを実行し、バージョンが表示されれば正しくインストールされている。
+
+```sh
+$ pdftk --version
+pdftk port to java 3.3.3 a Handy Tool for Manipulating PDF Documents
+Copyright (c) 2017-2018 Marc Vinyals - https://gitlab.com/pdftk-java/pdftk
+Copyright (c) 2003-2013 Steward and Lee, LLC.
+pdftk includes a modified version of the iText library.
+Copyright (c) 1999-2009 Bruno Lowagie, Paulo Soares, et al.
+This is free software; see the source code for copying conditions. There is
+NO warranty, not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ```
 
 ### コンパイルの確認
