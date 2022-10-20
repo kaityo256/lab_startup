@@ -8,7 +8,7 @@ X Window System、通称「X11」は、Unix系のOS等でGUIを提供するた�
 
 ### Macの場合
 
-まず、XQuartzをインストールする。[https://www.xquartz.org/](https://www.xquartz.org/)から、最新版のXQuartz(2021年4月25日時点では`XQuartz-2.8.1.dmg`)をダウンロードし、dmgファイルを開いてXQuartz.pkgを実行してインストールする。実行後にログアウトが要求された場合は、一度ログアウトすること。
+まず、XQuartzをインストールする。[https://www.xquartz.org/](https://www.xquartz.org/)から、最新版のXQuartz(2022年10月18日時点では`XQuartz-2.8.2.dmg`)をダウンロードし、dmgファイルを開いてXQuartz.pkgを実行してインストールする。実行後にログアウトが要求された場合は、一度ログアウトすること。
 
 XQuartzを起動する。Finderから「アプリケーション」→「ユーティリティ」で開くか、Cmd+SpaceのSpotlight検索から「XQuartz」を探して実行する。
 
@@ -24,7 +24,20 @@ xeyes
 
 ![xeyes](fig/xeyes.png)
 
-もしうまく行かなかった場合、以下を試せ。
+もし
+
+```sh
+$ xeyes
+Error: Can't open display: 
+```
+
+などと言われたら、環境変数DISPLAYを設定して、もう一度試してみよ。
+
+```sh
+export DISPLAY=:0
+```
+
+それでもうまく行かなかった場合、以下を試せ。
 
 XQuartzの「環境設定」の「セキュリティ」タブで、「接続を認証」と「ネットワーク・クライアントからの接続を許可」の両方にチェックを入れる(デフォルトで「接続を認証」にはチェックが入っているはず)。
 
