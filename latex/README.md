@@ -298,13 +298,17 @@ latexmk testj
         },
 ```
 
-このうち、"args"の項目を全て削除して保存する。
+このうち、"args"の項目を'-pdf'と'-interaction=nonstopmod'だけ残して削除する。
 
 ```json
     "latex-workshop.latex.tools": [
         {
             "name": "latexmk",
             "command": "latexmk",
+            "args": [
+                "-interaction=nonstopmode",
+                "-pdf"
+            ],
             "env": {}
         },
 ```
@@ -316,9 +320,12 @@ latexmk testj
         {
             "name": "latexmk",
             "command": "latexmk",
+            "args": [
+                "-interaction=nonstopmode",
+                "-pdf"
+            ],
             "env": {}
-        }
-    ]
+        },
 ```
 
 JSONはカンマ区切りなので、他に項目がある場合はカンマを入れるのを忘れないこと。例えば、フォントサイズなどを指定していたら、`settings.json`は以下のようになる。
