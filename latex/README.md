@@ -306,8 +306,7 @@ latexmk testj
             "name": "latexmk",
             "command": "latexmk",
             "args": [
-                "-interaction=nonstopmode",
-                "-pdf"
+                "-interaction=nonstopmode"
             ],
             "env": {}
         },
@@ -321,8 +320,7 @@ latexmk testj
             "name": "latexmk",
             "command": "latexmk",
             "args": [
-                "-interaction=nonstopmode",
-                "-pdf"
+                "-interaction=nonstopmode"
             ],
             "env": {}
         },
