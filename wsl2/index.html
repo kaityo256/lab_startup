@@ -72,8 +72,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <body>
 <article class="markdown-body">
 <h1 id="wsl2のセットアップwindowsのみ">WSL2のセットアップ(Windowsのみ)</h1>
-<p>Windowsマシンでは、原則としてWSL(Windows Subsystem for Linux)上で作業を行う。そのためにWSLをインストールする。Linuxディストリビューションとしては、Ubuntu 20.04を用いる。</p>
-<p>基本的にはMicrosoftのドキュメントの<a href="https://docs.microsoft.com/ja-jp/windows/wsl/install-win10">Windows 10 用 Windows Subsystem for Linux のインストール ガイド</a>に記載されている手順のうち「手動インストール」に従ってインストールをすすめる。</p>
+<p>Windowsマシンでは、原則としてWSL(Windows Subsystem for Linux)上で作業を行う。そのためにWSLをインストールする。Linuxディストリビューションとしては、Ubuntu 22.04を用いる。</p>
+<p>基本的にはMicrosoftのドキュメントの<a href="https://learn.microsoft.com/ja-jp/windows/wsl/install">WSL を使用して Windows に Linux をインストールする</a>に記載されている手順に従えばよい。</p>
 <p>以下はIntelもしくはAMDのCPUが乗ったWindowsマシンを想定してるが、ARM64などの場合は別途対応が必要な場合がある。上記インストールガイドを参照のこと。</p>
 <h2 id="wslを有効にする">WSLを有効にする</h2>
 <p>最初に「管理者」としてPowerShellを実行する。左下の「ここに入力して検索」とある場所(以下、検索窓)に「powershell」として表示された「WIndows PowerShell」の、右側のメニューの「管理者とて実行する」を選べば良い。</p>
@@ -81,44 +81,24 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <img src="fig/powershell.png" alt="PowerShellを管理者として実行" /><figcaption>PowerShellを管理者として実行</figcaption>
 </figure>
 <p>その後、開いたシェルで以下を実行する。</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="ex">dism.exe</span> /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart</a></code></pre></div>
-<h2 id="windowsのバージョン確認">Windowsのバージョン確認</h2>
-<p>検索窓に「winver」と入力して実行し、現れたダイアログのバージョンを確認する。</p>
-<figure>
-<img src="fig/winver.png" alt="winver" /><figcaption>winver</figcaption>
-</figure>
-<p>バージョンが</p>
-<blockquote>
-<p>x64 システムの場合:バージョン 1903 以降、ビルド 18362 以上。</p>
-</blockquote>
-<p>を満たしていれば何もする必要は無いが、バージョンが低かったりビルド番号が小さかったりした場合はWindowsメニュー→設定→「更新とセキュリティー」から「更新プログラムのチェック」を選択してバージョンアップすること。</p>
-<h2 id="仮想マシンの機能を有効にする">仮想マシンの機能を有効にする</h2>
-<p>管理者としてPowerShellを開き、以下を実行する</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="ex">dism.exe</span> /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart</a></code></pre></div>
-<p>実行後は再起動すること。</p>
-<h2 id="linux-カーネル更新プログラム-パッケージをダウンロードする">Linux カーネル更新プログラム パッケージをダウンロードする</h2>
-<p>以下のパッケージをダウンロード、インストールする。インストール時に管理者特権を求めるダイアログが出るため、許可する。</p>
-<p><a href="https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi">x64 マシン用 WSL2 Linux カーネル更新プログラム パッケージ</a></p>
-<h2 id="wsl2をデフォルトとする">WSL2をデフォルトとする</h2>
-<p>PowerShellを開いて以下を実行する。</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="ex">wsl</span> --set-default-version 2</a></code></pre></div>
-<h2 id="ubuntu-20.04のインストール">Ubuntu 20.04のインストール</h2>
-<p>検索窓に「Microsoft Store」と入力してMicrosoft Storeを開く。右上の「検索」に「ubuntu」と入力し、現れた候補の中から「Ubuntu 20.04 LTS」を選択、インストールする。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="ex">wsl</span> --install</a></code></pre></div>
+<h2 id="ubuntu-22.04のインストール">Ubuntu 22.04のインストール</h2>
+<p>検索窓に「Microsoft Store」と入力してMicrosoft Storeを開く。右上の「検索」に「ubuntu」と入力し、現れた候補の中から「Ubuntu 22.04 LTS」を選択、インストールする。</p>
 <p>インストール後の最初に起動でUNIX usernameとパスワードを聞かれるので、アカウント名とパスワードを入力する。</p>
-<p>以上でWSL2のインストールは完了である。</p>
+<p>以上でUbuntuのインストールは完了である。</p>
 <h2 id="環境設定">環境設定</h2>
 <h3 id="デスクトップへのシンボリックリンク">デスクトップへのシンボリックリンク</h3>
 <p>WSL側からWindows側のデスクトップにシンボリックリンクを張っておくと後々便利だ。</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1"><span class="fu">ln</span> -s /mnt/c/Users/username/Desktop</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">ln</span> -s /mnt/c/Users/username/Desktop</a></code></pre></div>
 <p>上記の「username」を自分のWindowsのアカウント名にすること。アカウント名がわからない場合はWSLで以下のコマンドを実行することで確認できる。</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1"><span class="ex">cmd.exe</span> /c echo %USERNAME% <span class="op">2&gt;</span> /dev/null</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="ex">cmd.exe</span> /c echo %USERNAME% <span class="op">2&gt;</span> /dev/null</a></code></pre></div>
 <h3 id="explorer.exeへのエイリアス">explorer.exeへのエイリアス</h3>
 <p>WSLのディレクトリをエクスプローラで開くことができると便利だ。以下の一行を<code>.bashrc</code>の最後に記載しておくこと。</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" title="1"><span class="bu">alias</span> open=explorer.exe</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1"><span class="bu">alias</span> open=explorer.exe</a></code></pre></div>
 <p>保存したら、</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" title="1"><span class="bu">source</span> .bashrc</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1"><span class="bu">source</span> .bashrc</a></code></pre></div>
 <p>で読み込んだ後、</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" title="1"><span class="ex">open</span> .</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" title="1"><span class="ex">open</span> .</a></code></pre></div>
 <p>により、現在のディレクトリがエクスプローラで開かれることを確認せよ。</p>
 </article>
 </body>
