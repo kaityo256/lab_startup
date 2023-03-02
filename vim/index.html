@@ -73,36 +73,42 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <article class="markdown-body">
 <h1 id="vimの使い方">Vimの使い方</h1>
 <h2 id="vimとは">Vimとは</h2>
-<p>VimはVi IMprovedの略で、viというエディタを拡張したものだ。多くの環境で、単に<code>vi</code>とすると<code>vim</code>が起動する。以下、Vimのこともviと呼ぶことにする。viはUNIX-likeな環境において、Emacsと人気を二分するエディタである(<a href="https://ja.wikipedia.org/wiki/%E3%82%A8%E3%83%87%E3%82%A3%E3%82%BF%E6%88%A6%E4%BA%89">エディタ戦争</a>を参照)。本研究室ではリモートサーバにsshでログインして作業することが多くなる。この時、VSCodeなどをリモート接続してファイルを編集することも可能なのだが、せっかく数値計算の研究室に配属されたことだし、教養としてviとEmacsくらいは使えるようになっておこう。以下、私の趣味でviを使うが、簡単な操作くらいはどちらも使えるようになっておくのが望ましい。</p>
+<p>VimはVi
+IMprovedの略で、viというエディタを拡張したものだ。多くの環境で、単に<code>vi</code>とすると<code>vim</code>が起動する。以下、Vimのこともviと呼ぶことにする。viはUNIX-likeな環境において、Emacsと人気を二分するエディタである(<a
+href="https://ja.wikipedia.org/wiki/%E3%82%A8%E3%83%87%E3%82%A3%E3%82%BF%E6%88%A6%E4%BA%89">エディタ戦争</a>を参照)。本研究室ではリモートサーバにsshでログインして作業することが多くなる。この時、VSCodeなどをリモート接続してファイルを編集することも可能なのだが、せっかく数値計算の研究室に配属されたことだし、教養としてviとEmacsくらいは使えるようになっておこう。以下、私の趣味でviを使うが、簡単な操作くらいはどちらも使えるようになっておくのが望ましい。</p>
 <p>Vimの使い方を解説したサイトは多数あるが、例えば</p>
-<p><a href="https://knowledge.sakura.ad.jp/21687/">はじめてのVim 〜 Vimはいいぞ！ゴリラと学ぶVim講座</a></p>
+<p><a href="https://knowledge.sakura.ad.jp/21687/">はじめてのVim 〜
+Vimはいいぞ！ゴリラと学ぶVim講座</a></p>
 <p>等で学ぶと良いだろう。</p>
 <h2 id="モードについて">モードについて</h2>
 <p>Vimの最大の特徴はモードがあることだ。起動直後はノーマルモードとなっており、そのままでは入力ができない。<code>i</code>などを押すと入力モードとなり、文字が入力できるようになる。<code>ESC</code>を押すとノーマルモードに戻る。</p>
 <p>また、<code>:</code>を押すことでコマンドラインモードになる。ここでは置換など様々なことができる。<code>v</code>などを押すことでビジュアルモードになり、テキストの一部分を選択したり、選択した範囲について操作ができる。以下にモード間の遷移図を示すが、とりあえず「エスケープキーを押せばノーマルモードに戻る」と覚えておけばよい。</p>
 <figure>
-<img src="fig/mode.png" alt="modes" /><figcaption>modes</figcaption>
+<img src="fig/mode.png" alt="modes" />
+<figcaption aria-hidden="true">modes</figcaption>
 </figure>
 <h2 id="終了の仕方">終了の仕方</h2>
 <p>Vimで最初に躓きがちなのは「起動したは良いが終了の仕方がわからない」というものだ。何はともあれ終了方法を確認しよう。</p>
 <p>まず、適当なディレクトリで、新しいファイル<code>test.txt</code>をvimで開いてみよう。</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="ex">vim</span> test.txt</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">vim</span> test.txt</span></code></pre></div>
 <p>Vimは起動時に「ノーマルモード」になっており、そのままでは文字入力ができない。まずはこのまま終了してみよう。シフトキーを押しながら<code>z</code>を二回、すなわち<code>ZZ</code>と入力してみよう。Vimが終了してターミナルに戻ったはずだ。「何もしていなければノーマルモードで<code>ZZ</code>で終了する」とおぼえておこう。</p>
 <p>もう一度Vimを起動しよう。</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="ex">vim</span> test.txt</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">vim</span> test.txt</span></code></pre></div>
 <p>ここで「i」を押して編集モードに切り替えよう。</p>
 <p>画面の下が<code>-- 挿入 --</code>という表示になったはずだ。この状態では、通常のエディタのように文字列を入力することができる。この状態で、<code>Hello Vim!</code>と入力し、改行してからESCを押そう。ESCを押したらノーマルモードになる。この状態でやはり<code>ZZ</code>を入力しよう。編集内容が保存されて終了する。ちゃんと保存されたかcatで確認してみよう。</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1">$ <span class="fu">cat</span> test.txt</a>
-<a class="sourceLine" id="cb3-2" title="2"><span class="ex">Hello</span> Vim!</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cat test.txt</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Hello</span> Vim!</span></code></pre></div>
 <p>ちゃんと表示されたはずだ。</p>
 <p><code>ZZ</code>は、ノーマルモードにおいて「編集内容を保存して終了せよ」というコマンドだが、現在の編集内容を保存しないで終了したい場合もあるだろう。その場合はコマンドモードを使う。</p>
 <p>もう一度Vimを起動しよう。</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1"><span class="ex">vim</span> test.txt</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">vim</span> test.txt</span></code></pre></div>
 <p><code>i</code>キーでインサートモードになり、適当な文字を入力してからESCを押してノーマルモードに戻ろう。この状態で<code>:</code>を押すとコマンドモードとなる。コマンドモードで<code>q</code>を入力してエンターを押すと終了するが、保存されていない編集内容があるとメッセージが出て終了できない。ここで、<code>q!</code>と、<code>!</code>をつけると、保存してない内容があっても終了する。逆に<code>wq</code>とすると、現在の編集内容をファイルに書き込んでから終了する(ノーマルモードでの<code>ZZ</code>と同じ)。</p>
 <p>とりあえず</p>
 <ul>
-<li>現在の編集内容を保存して終了したい → ノーマルモードで<code>ZZ</code></li>
-<li>現在の編集内容を破棄して終了したい → コマンドモードで<code>q!</code></li>
+<li>現在の編集内容を保存して終了したい →
+ノーマルモードで<code>ZZ</code></li>
+<li>現在の編集内容を破棄して終了したい →
+コマンドモードで<code>q!</code></li>
 </ul>
 <p>とだけ覚えておけば良い。</p>
 <h2 id="カーソル移動の仕方">カーソル移動の仕方</h2>
@@ -139,7 +145,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>$</code> 行末へ移動</li>
 </ul>
 <p>である。</p>
-<h3 id="ファイルの先頭最後へ移動gg-g">ファイルの先頭、最後へ移動：gg, G</h3>
+<h3 id="ファイルの先頭最後へ移動gg-g">ファイルの先頭、最後へ移動：gg,
+G</h3>
 <p><code>gg</code>でファイルの先頭に、<code>G</code>でファイルの最後に移動できる。これも使用頻度が高いので覚えておきたい。</p>
 <h3 id="単語単位の移動web">単語単位の移動：w,e,b</h3>
 <p>「w, e, b」で単語単位の移動ができる。それぞれ</p>
@@ -148,27 +155,32 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>e 単語の最後へ移動</li>
 <li>b 前の単語の先頭へ移動</li>
 </ul>
-<p>となる。これらは「ピリオド、コンマ、エクスクラメーションマーク」といったマークを区別して移動する(マークを単語として扱う)が、大文字の「W, E, B」とするとマークを単語として扱わない。</p>
+<p>となる。これらは「ピリオド、コンマ、エクスクラメーションマーク」といったマークを区別して移動する(マークを単語として扱う)が、大文字の「W,
+E, B」とするとマークを単語として扱わない。</p>
 <h2 id="編集">編集</h2>
 <h3 id="ヤンク削除貼り付けydp">ヤンク、削除、貼り付け：y,d,p</h3>
 <p>Vimでは「yy」でカーソルのある行を一行コピーできる(ヤンクと呼ぶ)。コピーした行は「p」で貼り付けることができる。<code>Hello Vim!</code>の行で「yyp」と入力せよ。</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb5-1" title="1">Hello Vim!</a>
-<a class="sourceLine" id="cb5-2" title="2">Hello Vim!</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Hello Vim!</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>Hello Vim!</span></code></pre></div>
 <p>と二行になったはずだ。</p>
 <p>Vimは、操作の前に数字を入力すると、その数だけ操作を繰り返す。上記の状態で「5p」と入力せよ。</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb6-1" title="1">Hello Vim!</a>
-<a class="sourceLine" id="cb6-2" title="2">Hello Vim!</a>
-<a class="sourceLine" id="cb6-3" title="3">Hello Vim!</a>
-<a class="sourceLine" id="cb6-4" title="4">Hello Vim!</a>
-<a class="sourceLine" id="cb6-5" title="5">Hello Vim!</a>
-<a class="sourceLine" id="cb6-6" title="6">Hello Vim!</a>
-<a class="sourceLine" id="cb6-7" title="7">Hello Vim!</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>Hello Vim!</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>Hello Vim!</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>Hello Vim!</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>Hello Vim!</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>Hello Vim!</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>Hello Vim!</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>Hello Vim!</span></code></pre></div>
 <p>「5 行 追加しました」の表示とともに上記のように行が増えたはずだ。</p>
-<p>「dd」により行を一行削除できる。適当な行で「dd」と入力せよ。一行消え、「Hello Vim!」が6行になったはずだ。この状態で<code>gg</code>で一番上に行って、<code>5dd</code>と入力せよ。5行消えて、一行だけになったはずだ。</p>
+<p>「dd」により行を一行削除できる。適当な行で「dd」と入力せよ。一行消え、「Hello
+Vim!」が6行になったはずだ。この状態で<code>gg</code>で一番上に行って、<code>5dd</code>と入力せよ。5行消えて、一行だけになったはずだ。</p>
 <h3 id="アンドゥu">アンドゥ：u</h3>
 <p><code>u</code>で直前の操作のアンドゥが出来る。<code>dd</code>で一行消して、<code>u</code>を押してみよう。操作が取り消されたはずだ。</p>
 <h3 id="表示画面中の移動h-m-l">表示画面中の移動：H, M, L</h3>
-<p>また「Hello Vim!」を増やそう。<code>yy</code>、<code>100p</code>で100行くらい追加した後、以下のカーソル、画面移動コマンドを試そう。</p>
+<p>また「Hello
+Vim!」を増やそう。<code>yy</code>、<code>100p</code>で100行くらい追加した後、以下のカーソル、画面移動コマンドを試そう。</p>
 <ul>
 <li><code>hjkl</code>によるカーソル移動</li>
 <li><code>^</code>や<code>$</code>による行頭、行末への移動</li>
@@ -188,67 +200,69 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>その後<code>d</code>により全て消して良い。</p>
 <h3 id="対応する括弧へ飛ぶ">対応する括弧へ飛ぶ：<code>%</code></h3>
 <p><code>%</code>を押すと、対応する括弧に飛んでくれる。</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb7-1" title="1">((()))</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>((()))</span></code></pre></div>
 <p>と入力し、適当な括弧で<code>%</code>を押してみよ。カーソルが対応する括弧に飛ぶ。これはC/C++など、ブロックを括弧で作るプログラムを組む時に便利だ。</p>
 <h3 id="矩形選択ctrlv">矩形選択：Ctrl+v</h3>
 <p><code>v</code>で行単位の選択ができたが、<code>Ctrl+v</code>で矩形選択ができる。</p>
 <p>以下の文章を作成せよ。</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb8-1" title="1">* Hello Vim!</a>
-<a class="sourceLine" id="cb8-2" title="2">* Hello Vim!</a>
-<a class="sourceLine" id="cb8-3" title="3">* Hello Vim!</a>
-<a class="sourceLine" id="cb8-4" title="4">* Hello Vim!</a>
-<a class="sourceLine" id="cb8-5" title="5">* Hello Vim!</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>* Hello Vim!</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>* Hello Vim!</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>* Hello Vim!</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>* Hello Vim!</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>* Hello Vim!</span></code></pre></div>
 <p>このうち、Helloだけ消したくなったとする。置換でもできるが、最初のHelloの冒頭にカーソルを移動し、<code>Ctrl+v</code>で矩形選択開始、その後、最後のHelloの単語末まで移動して<code>d</code>。これでHelloが消えた。</p>
-<h3 id="カーソル位置にある数字の増減ctrla-ctrlx">カーソル位置にある数字の増減：Ctrl+a, Ctrl+x</h3>
+<h3
+id="カーソル位置にある数字の増減ctrla-ctrlx">カーソル位置にある数字の増減：Ctrl+a,
+Ctrl+x</h3>
 <p>カーソル位置にある数字を増減できる。</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb9-1" title="1"><span class="bu">print</span>(a[<span class="dv">1</span>])</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a[<span class="dv">1</span>])</span></code></pre></div>
 <p>と入力し、1のところにカーソルを合わせてCtrl+aやCtrl+xを押してみよ。数字が増減するはずだ。</p>
-<p>これを利用して面白いことができる。</p>
-<p>まず</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb10-1" title="1">1</a></code></pre></div>
-<p>とだけ書いて、これを100行くらいコピーしよう。そのあと、「2行目」から最後までを<code>v</code>で選択してから<code>g</code> <code>Ctrl+a</code>と入力せよ。</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb11-1" title="1">1</a>
-<a class="sourceLine" id="cb11-2" title="2">2</a>
-<a class="sourceLine" id="cb11-3" title="3">3</a>
-<a class="sourceLine" id="cb11-4" title="4">(snip)</a>
-<a class="sourceLine" id="cb11-5" title="5">101</a></code></pre></div>
-<p>と連番になったはずだ。</p>
 <h3 id="行ジャンプ数字">行ジャンプ:数字</h3>
 <p><code>:</code>を押すとコマンドモードになるが、そこで数字を入力すると行ジャンプができる。<code>:50</code>と入力してリターンを押してみよ。50行目に飛ぶはずだ。</p>
 <h3 id="行をまとめるj-gj">行をまとめる：J, gJ</h3>
 <p><code>J</code>で次の行をまとめることができる。</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb12-1" title="1">Hello</a>
-<a class="sourceLine" id="cb12-2" title="2">Vim!</a></code></pre></div>
-<p>と入力し、「Hello」の最後にカーソルを合わせて<code>J</code>を入力せよ。「Hello Vim!」になったはずだ。<code>J</code>では、改行が空白になる。空白を入れたくなければ<code>gJ</code>とする。<code>v</code>によるビジュアル選択を組み合わせるとたまに便利。</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>Hello</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>Vim!</span></code></pre></div>
+<p>と入力し、「Hello」の最後にカーソルを合わせて<code>J</code>を入力せよ。「Hello
+Vim!」になったはずだ。<code>J</code>では、改行が空白になる。空白を入れたくなければ<code>gJ</code>とする。<code>v</code>によるビジュアル選択を組み合わせるとたまに便利。</p>
 <h2 id="検索置換">検索・置換</h2>
 <h3 id="検索">検索</h3>
 <p><code>/</code>で検索ができる。<code>/</code>を入力するとカーソルが下に移動し、<code>/</code>の右で入力待ちになる。そこで何か入力する。</p>
 <figure>
-<img src="fig/search1.png" alt="search1.png" /><figcaption>search1.png</figcaption>
+<img src="fig/search1.png" alt="search1.png" />
+<figcaption aria-hidden="true">search1.png</figcaption>
 </figure>
 <p>この状態でリターンを押すと、カーソルが単語の先頭に飛び、検索した単語がハイライトされる。</p>
 <figure>
-<img src="fig/search2.png" alt="search2.png" /><figcaption>search2.png</figcaption>
+<img src="fig/search2.png" alt="search2.png" />
+<figcaption aria-hidden="true">search2.png</figcaption>
 </figure>
 <p>次に検索を行うまでハイライトされ続ける。ハイライトを消したければ、コマンドラインモードで<code>nohlsearch</code>と入力する。Vimはコマンドが判別できる最低限入力すれば実行できるため、<code>:noh</code>とだけ入力してもハイライトを消すことができる。</p>
 <p>デフォルトでは、入力が終わってリターンキーを押すまで検索されないが、<code>:set incsearch</code>により検索がインクリメンタルサーチになり、入力した文字列に一致する単語を動的に探してくれる。<code>:set noincsearch</code>で元に戻せる。</p>
 <h3 id="置換">置換</h3>
 <p>コマンドラインモードで<code>%s/置換前/置換後/g</code>を実行すると、「置換前」の文字列を「置換後」の文字列に置換できる。</p>
 <p>例えば、以下のプログラムを見てみよう。</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode cpp"><code class="sourceCode cpp"><a class="sourceLine" id="cb13-1" title="1">p[X] = p[X] + q[X] * h;</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>p<span class="op">[</span>X<span class="op">]</span> <span class="op">=</span> p<span class="op">[</span>X<span class="op">]</span> <span class="op">+</span> q<span class="op">[</span>X<span class="op">]</span> <span class="op">*</span> h<span class="op">;</span></span></code></pre></div>
 <p>これはx座標の運動量の更新のコードだが、Y座標に修正したい。この場合は<code>:%s/X/Y/g</code>を実行することで変更できる。</p>
 <p>置換実行直前</p>
 <figure>
-<img src="fig/replace1.png" alt="replace1.png" /><figcaption>replace1.png</figcaption>
+<img src="fig/replace1.png" alt="replace1.png" />
+<figcaption aria-hidden="true">replace1.png</figcaption>
 </figure>
 <p>置換実行直後</p>
 <figure>
-<img src="fig/replace2.png" alt="replace2.png" /><figcaption>replace2.png</figcaption>
+<img src="fig/replace2.png" alt="replace2.png" />
+<figcaption aria-hidden="true">replace2.png</figcaption>
 </figure>
 <p>1行にわたって、3箇所置換した、という結果が表示されている。</p>
 <p>最後のgを、gcにすると、置換を毎回確認するようになる。</p>
 <figure>
-<img src="fig/replace3.png" alt="replace3.png" /><figcaption>replace3.png</figcaption>
+<img src="fig/replace3.png" alt="replace3.png" />
+<figcaption aria-hidden="true">replace3.png</figcaption>
 </figure>
 <p>検索がヒットするたびに、検索するかどうかの確認をする。この状態で入力できる文字<code>(y/n/a/q/l/^E/^Y)?</code>の意味は以下の通り。</p>
 <ul>
@@ -258,23 +272,28 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>q</code> 置換を終了 (quit)</li>
 <li><code>l</code> 現在の候補を置換して終了 (last)</li>
 </ul>
-<p>最後の<code>^E</code>と<code>^Y</code>は、Ctrl + Eと Ctrl + Yで画面をスクロールできるよ、という意味だ。</p>
+<p>最後の<code>^E</code>と<code>^Y</code>は、Ctrl + Eと Ctrl +
+Yで画面をスクロールできるよ、という意味だ。</p>
 <p>ビジュアル選択した状態で置換することができる。まず、<code>v</code>でビジュアルモードに入り、一部を選択しよう。</p>
 <figure>
-<img src="fig/visual1.png" alt="visual1.png" /><figcaption>visual1.png</figcaption>
+<img src="fig/visual1.png" alt="visual1.png" />
+<figcaption aria-hidden="true">visual1.png</figcaption>
 </figure>
 <p>この状態で<code>:</code>を押すと、ビジュアル選択した状態でコマンドモードに入る。</p>
 <figure>
-<img src="fig/visual2.png" alt="visual2.png" /><figcaption>visual2.png</figcaption>
+<img src="fig/visual2.png" alt="visual2.png" />
+<figcaption aria-hidden="true">visual2.png</figcaption>
 </figure>
 <p>すると、コマンドモードに<code>:'&lt;,'&gt;</code>が入力された状態で入力待ちになる。ここで<code>:'&lt;,'&gt;s/Hello/Hi!/g</code>などと入力して実行すれば、選択されたところのみ置換される。</p>
 <p>置換実行前</p>
 <figure>
-<img src="fig/visual3.png" alt="visual3.png" /><figcaption>visual3.png</figcaption>
+<img src="fig/visual3.png" alt="visual3.png" />
+<figcaption aria-hidden="true">visual3.png</figcaption>
 </figure>
 <p>置換実行後</p>
 <figure>
-<img src="fig/visual4.png" alt="visual4.png" /><figcaption>visual4.png</figcaption>
+<img src="fig/visual4.png" alt="visual4.png" />
+<figcaption aria-hidden="true">visual4.png</figcaption>
 </figure>
 <p>3行に渡って3箇所置換されたことがわかる。</p>
 <h2 id="ヘルプ">ヘルプ</h2>
@@ -283,13 +302,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Vimは慣れると楽しいのだが、慣れていないと独特なキーバインドに戸惑うだろう。</p>
 <p>まずはVimのチュートリアルをすると、一通りの操作を覚えることができる。コマンドラインで<code>vimtutor</code>を実行してみよう。多くの場合、日本語版がインストールされているはずだ。</p>
 <figure>
-<img src="fig/vimtutor.png" alt="Vimtutor" /><figcaption>Vimtutor</figcaption>
+<img src="fig/vimtutor.png" alt="Vimtutor" />
+<figcaption aria-hidden="true">Vimtutor</figcaption>
 </figure>
 <p>あとはこの文章の指示にしたがって修正していくと自然にキーバインドを覚えることができる。</p>
 <p>また、Vimのキーバインドを覚えるためのゲームがある。</p>
 <p><a href="https://vim-adventures.com/">Vim Adventures</a></p>
 <figure>
-<img src="fig/vimadventures.png" alt="Vim Adventures" /><figcaption>Vim Adventures</figcaption>
+<img src="fig/vimadventures.png" alt="Vim Adventures" />
+<figcaption aria-hidden="true">Vim Adventures</figcaption>
 </figure>
 <p>こちらは英語だが、ゲームをしながらキーバインドに慣れることができる。</p>
 </article>
