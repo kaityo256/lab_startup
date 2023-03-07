@@ -1,4 +1,63 @@
-# SSHエージェント転送の設定
+# SSHの設定
+
+## SSH公開鍵の作成
+
+ターミナルのホームディレクトリで、`ssh-keygen`コマンドを実行せよ。
+
+```txt
+$ ssh-keygen
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/watanabe/.ssh/id_rsa): (1.)
+Created directory '/home/watanabe/.ssh'.
+Enter passphrase (empty for no passphrase): (2.)
+Enter same passphrase again: (3.)
+```
+
+1. コマンドを実行すると、まず鍵のペアを保存する場所の確認をする。Windowsなら`/home/ユーザー名/.ssh/id_rsa`、Macなら`/Users/ユーザー名/.ssh/id_rsa`などとなるはずだ。ここでは単にエンターキーを押せば良い。
+2. パスフレーズを入力する。これは普段使うパスワードで良い。キー入力しても何も表示されないので注意。入力が終わったらエンターキーを押す。
+3. パスフレーズを再入力する。入力が終わったらエンターキーを押す。一致していない場合は「Passphrases do not match.  Try again.」と言われてやり直しになる。
+
+パスフレーズを二回入力し、それが一致したら以下のような画面になるはず。
+
+```txt
+Your identification has been saved in /home/watanabe/.ssh/id_rsa
+Your public key has been saved in /home/watanabe/.ssh/id_rsa.pub
+The key fingerprint is:
+SHA256:g76VjkiuoPB3Pxvu2UV6P8oaj4XOmAULqOOy4Zeyu1M watanabe@DESKTOP-TB4E5C4
+The key's randomart image is:
++---[RSA 3072]----+
+|                 |
+|                 |
+|                 |
+|     . .         |
+|    . o S   .    |
+|   E . . = +     |
+|+ + o . = = +    |
+|=B *...*.X O ..  |
+|oB@oo.ooXo*.+... |
++----[SHA256]-----+
+```
+
+これは、今回作成した秘密鍵が`/home/watanabe/.ssh/id_rsa`に、公開鍵が`/home/watanabe/.ssh/id_rsa.pub`に保存されたよ、というメッセージだ。
+
+この状態で、公開鍵を表示しよう。`cat .ssh/id_rsa.pub`を実行せよ。
+
+```sh
+$ cat .ssh/id_rsa.pub
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDXSYL6KWq92VWEUObU9BKoknPQ/wIOjIPSpGdyPQ8KumPALTielmekOGK/gwqLVhOmz2uL6ILSDN1/UnWY9JWbXeMmzPiRmY0DmtgOMzANulqUSUhkcn4qlvX1VSgqyWUXlZKTvxVw2A7+26gAdcM6JmK4MIISGz6LDZsuQSdKWy78ukQ8ke5knSHZ4mVrFitsWVUe/EJVzB7sVXx52/ViVDWcT6/h7EL2DK6p3DcQdthSq0S8gjWaoOB3puFZk0/fMZZkob7f2VhAeNTcvyly+r0eqjdK4aq8N78j0QQ3tP1BleP52yBzXVgEmf6s3pDZbIb2+zOZaqMZaYlq4fPK/Fy+kHbGJQgU3tDK2SG8HvTjPF9nKzY1MFbw4xtA326/jI8sd1vSK3x9nWcPlYhZncHCCbEblXXH6sZ6iFvyrtKqXiLevGd9wk+cyYR6jb+f+smCmd43vq90+Rpvu1cLT18VVmb7UhBL/fJEkjlON8Ef9/O7aPBb75eg51tl+C8= watanabe@DESKTOP-TB4E5C4
+```
+
+この`ssh-rsa`から始まる一行のテキストが公開鍵だ。これを希望のアカウント名とともに渡辺に知らせること。なお、`-----BEGIN OPENSSH PRIVATE KEY-----`で始まるテキストは秘密鍵なので他の人に知らせてはならない。
+
+希望アカウント名と公開鍵を知らせたら、渡辺が研究室サーバにアカウントを作って知らせるので、ログインする。ログインは`ssh アカウント名@サーバー名`とする。
+
+```sh
+ssh username@server.example.org
+```
+
+サーバー名は別途知らせる。
+
+## SSHエージェント転送の設定
 
 SSHでリモートサーバにアクセスする場合、一般的に公開鍵認証を用いる。これは、ローカルマシンにある秘密鍵と、ログインしたサーバに登録した公開鍵を突き合わせることで「確かにこの公開鍵を登録した人がアクセスしている」と認証する仕組みだ。SSH公開鍵認証は、GitHubへのアクセスにも用いられる。実際には公開鍵認証はわりと複雑なことをしているのだが、とりあえずは「公開鍵に対応する秘密鍵を持つ人が、正当なアクセス権を持つ人と認証している」と思えばよい。
 
