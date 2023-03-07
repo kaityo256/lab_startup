@@ -15,7 +15,7 @@
 * [WSL2のセットアップ(Windowsのみ)](wsl2/README.md)
 * [Homebrewのセットアップ(Macのみ)](homebrew/README.md)
 * [X Window Systemのセットアップ](X11/README.md)
-* [SSHエージェント転送の設定](ssh/README.md)
+* [SSHの設定](ssh/README.md)
 * [Pythonのインストール](python/README.md)
 * [VSCodeのインストール](vscode/README.md)
 * [LAMMPSとVMDのインストール](lammps/README.md)
