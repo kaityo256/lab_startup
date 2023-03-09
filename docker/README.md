@@ -197,7 +197,7 @@ ubuntu              18.04               c3c304cb4f22        6 weeks ago         
 ```yaml
 FROM ubuntu:18.04
 
-RUN apt-get update && apt-get -y install bastet
+RUN apt-get update && apt-get install -y bastet
 ```
 
 `&&`は、前のコマンドが成功した時にのみ次を実行するものだ。一方、`;`を使うと、前のコマンドの成否に関わらず次を実行する。また、`apt-get -y install bastet`の`-y`オプションを忘れないこと。
@@ -269,4 +269,6 @@ Deleted: sha256:151596245487e3a389315bf4a41f5926959ee12b71865391c09cae6f1293ad92
 
 以後、このDockerfileからイメージを作れば、間違いなくbastetが実行できる環境となる。また、この環境を作るのにどんなコマンドが必要だったかも全てファイルに残っている。まさにInfrastructure as Codeである。
 
-ここでは研究室サーバを使ったが、もし興味があればローカルマシンでやってみると良い。その場合はdockerグループへの所属は不要である。
+最後に研究室サーバからログアウトしよう。Dockerグループから抜けるのと、サーバからログアウトするために二度`exit`を実行する必要がある。
+
+ここでは研究室サーバを使ったが、もし興味があればDocker Desktopをインストールしてローカルマシンでやってみると良い。その場合はdockerグループへの所属は不要である。
