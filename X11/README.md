@@ -112,10 +112,10 @@ xeyes
 このIPアドレスは再起動ごとに異なるため、再設定は面倒だ。そこで、`.bashrc`に以下のような行を追加せよ。
 
 ```sh
-export DISPLAY=`hostname | xargs dig +short | grep 192.168.11`:0.0
+export DISPLAY=`hostname | xargs dig +short | sed -n 1p`:0.0
 ```
 
-これは`hostname`を実行した結果を`dig +short`に食わせてIPアドレスを調べ、でてきたIPアドレスを使って`DISPLAY`環境変数を設定する、という意味だ。なお、IPアドレスが`192.168.0.?`だったり、`192.168.12.?`だったりした場合は、grepの項目を適切に設定しないといけない。
+これは`hostname`を実行した結果を`dig +short`に食わせてIPアドレスを調べ、最初に表示されたIPアドレスを使って`DISPLAY`環境変数を設定する、という意味だ。
 
 編集が終わったら以下で再読み込みをしよう。これは今回のみで、次回の起動からは不要だ。
 

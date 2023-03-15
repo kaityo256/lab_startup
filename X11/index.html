@@ -71,86 +71,112 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </head>
 <body>
 <article class="markdown-body">
-<h1 id="x-window-systemのセットアップ">X Window Systemのセットアップ</h1>
-<p>X Window System、通称「X11」は、Unix系のOS等でGUIを提供するためのシステムだ。MacやWindowsは独自のWindowシステムを持っているが、例えば研究室</p>
-<p>ローカルにインストールして利用するのが良いが、とりあえずは研究室サーバに接続して利用することにしよう。そのためにはX Window Systemのインストールが必要だ。ローカルへのインストールが終わったら、<a href="#server">研究室サーバへの接続</a>まで確認すること。</p>
-<h2 id="x-window-systemのインストール">X Window Systemのインストール</h2>
+<h1 id="x-window-systemのセットアップ">X Window
+Systemのセットアップ</h1>
+<p>X Window
+System、通称「X11」は、Unix系のOS等でGUIを提供するためのシステムだ。MacやWindowsは独自のWindowシステムを持っているが、例えば研究室</p>
+<p>ローカルにインストールして利用するのが良いが、とりあえずは研究室サーバに接続して利用することにしよう。そのためにはX
+Window
+Systemのインストールが必要だ。ローカルへのインストールが終わったら、<a
+href="#server">研究室サーバへの接続</a>まで確認すること。</p>
+<h2 id="x-window-systemのインストール">X Window
+Systemのインストール</h2>
 <h3 id="macの場合">Macの場合</h3>
-<p>まず、XQuartzをインストールする。<a href="https://www.xquartz.org/">https://www.xquartz.org/</a>から、最新版のXQuartz(2022年10月18日時点では<code>XQuartz-2.8.2.dmg</code>)をダウンロードし、dmgファイルを開いてXQuartz.pkgを実行してインストールする。実行後にログアウトが要求された場合は、一度ログアウトすること。</p>
+<p>まず、XQuartzをインストールする。<a
+href="https://www.xquartz.org/">https://www.xquartz.org/</a>から、最新版のXQuartz(2022年10月18日時点では<code>XQuartz-2.8.2.dmg</code>)をダウンロードし、dmgファイルを開いてXQuartz.pkgを実行してインストールする。実行後にログアウトが要求された場合は、一度ログアウトすること。</p>
 <p>XQuartzを起動する。Finderから「アプリケーション」→「ユーティリティ」で開くか、Cmd+SpaceのSpotlight検索から「XQuartz」を探して実行する。</p>
 <p>にインストールされるので起動する。「xterm」というウィンドウが開けばインストールできてる。実行できなければ、一度ログアウトしてログインしなおし、再度XQuartzを実行すること。</p>
 <p>XQuartzの実行中にターミナル(xtermでなくても良い)で</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="ex">xeyes</span></a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">xeyes</span></span></code></pre></div>
 <p>を実行せよ。以下のような、マウスを追いかける目玉が表示されたら成功だ。</p>
 <figure>
-<img src="fig/xeyes.png" alt="xeyes" /><figcaption>xeyes</figcaption>
+<img src="fig/xeyes.png" alt="xeyes" />
+<figcaption aria-hidden="true">xeyes</figcaption>
 </figure>
 <p>もし</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1">$ <span class="ex">xeyes</span></a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="ex">Error</span>: Can<span class="st">&#39;t open display: </span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> xeyes</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Error:</span> Can<span class="st">&#39;t open display: </span></span></code></pre></div>
 <p>などと言われたら、環境変数DISPLAYを設定して、もう一度試してみよ。</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="bu">export</span> <span class="va">DISPLAY=</span>:0</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">DISPLAY</span><span class="op">=</span>:0</span></code></pre></div>
 <p>それでもうまく行かなかった場合、以下を試せ。</p>
 <p>XQuartzの「環境設定」の「セキュリティ」タブで、「接続を認証」と「ネットワーク・クライアントからの接続を許可」の両方にチェックを入れる(デフォルトで「接続を認証」にはチェックが入っているはず)。</p>
 <p>さらに、ターミナルから</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1"><span class="ex">defaults</span> write org.macosforge.xquartz.X11 enable_iglx -bool true</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">defaults</span> write org.macosforge.xquartz.X11 enable_iglx <span class="at">-bool</span> true</span></code></pre></div>
 <p>を実行しておく。以上の変更を適用するためにXQuartzを再起動すること。</p>
 <h3 id="windowsの準備">Windowsの準備</h3>
-<p><a href="https://sourceforge.net/projects/vcxsrv/">https://sourceforge.net/projects/vcxsrv/</a>から、VcXsrvをインストールする。</p>
-<p>インストール後に、XLaunchを起動する。Windows 10なら「ここに入力して検索」と表示されている検索窓にXLaunchと入力すれば起動する。</p>
+<p><a
+href="https://sourceforge.net/projects/vcxsrv/">https://sourceforge.net/projects/vcxsrv/</a>から、VcXsrvをインストールする。</p>
+<p>インストール後に、XLaunchを起動する。Windows
+10なら「ここに入力して検索」と表示されている検索窓にXLaunchと入力すれば起動する。</p>
 <p>起動後にいろいろ聞かれる。</p>
-<p>「Display settings」は、デフォルトの「Multiple windows」のままで良い。</p>
+<p>「Display settings」は、デフォルトの「Multiple
+windows」のままで良い。</p>
 <figure>
-<img src="fig/xlaunch1.png" alt="fig/xlaunch1.png" /><figcaption>fig/xlaunch1.png</figcaption>
+<img src="fig/xlaunch1.png" alt="fig/xlaunch1.png" />
+<figcaption aria-hidden="true">fig/xlaunch1.png</figcaption>
 </figure>
 <p>「Client startup」も、デフォルトの「Start no client」で良い。</p>
 <figure>
-<img src="fig/xlaunch2.png" alt="fig/xlaunch2.png" /><figcaption>fig/xlaunch2.png</figcaption>
+<img src="fig/xlaunch2.png" alt="fig/xlaunch2.png" />
+<figcaption aria-hidden="true">fig/xlaunch2.png</figcaption>
 </figure>
-<p><strong>「Extra settings」において「Additional parameters for VcXsrv」に「-ac」と追加するのを忘れないこと</strong>。これを設定しないと、おそらく動かない。</p>
+<p><strong>「Extra settings」において「Additional parameters for
+VcXsrv」に「-ac」と追加するのを忘れないこと</strong>。これを設定しないと、おそらく動かない。</p>
 <figure>
-<img src="fig/xlaunch3.png" alt="fig/xlaunch3.png" /><figcaption>fig/xlaunch3.png</figcaption>
+<img src="fig/xlaunch3.png" alt="fig/xlaunch3.png" />
+<figcaption aria-hidden="true">fig/xlaunch3.png</figcaption>
 </figure>
 <p>「Finish configuration」では何もしないで「完了」で良い。</p>
 <figure>
-<img src="fig/xlaunch4.png" alt="fig/xlaunch4.png" /><figcaption>fig/xlaunch4.png</figcaption>
+<img src="fig/xlaunch4.png" alt="fig/xlaunch4.png" />
+<figcaption aria-hidden="true">fig/xlaunch4.png</figcaption>
 </figure>
 <p>その後、Ubuntuのターミナルを開いて、DISPLAY環境変数を設定する。まずは<code>xeyes</code>をインストールしておこう。</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1"><span class="fu">sudo</span> apt install x11-apps</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install x11-apps</span></code></pre></div>
 <p>次に、IPアドレスを確認する。</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" title="1"><span class="fu">hostname</span> <span class="kw">|</span> <span class="fu">xargs</span> dig +short</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hostname</span> <span class="kw">|</span> <span class="fu">xargs</span> dig +short</span></code></pre></div>
 <p>環境によって異なるが、例えば</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb7-1" title="1">172.29.80.1</a>
-<a class="sourceLine" id="cb7-2" title="2">192.167.11.4</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>172.29.80.1</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>192.167.11.4</span></code></pre></div>
 <p>などと数字が現れたはずだ。このうち、192の方を使うなら、</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" title="1"><span class="bu">export</span> <span class="va">DISPLAY=</span>192.167.11.4:0.0</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">DISPLAY</span><span class="op">=</span>192.167.11.4:0.0</span></code></pre></div>
 <p>を実行せよ。この状態で、</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" title="1"><span class="ex">xeyes</span></a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">xeyes</span></span></code></pre></div>
 <p>を実行し、以下のような、マウスを追いかける目玉が表示されたら成功だ。</p>
 <figure>
-<img src="fig/xeyes.png" alt="xeyes" /><figcaption>xeyes</figcaption>
+<img src="fig/xeyes.png" alt="xeyes" />
+<figcaption aria-hidden="true">xeyes</figcaption>
 </figure>
 <p>このIPアドレスは再起動ごとに異なるため、再設定は面倒だ。そこで、<code>.bashrc</code>に以下のような行を追加せよ。</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" title="1"><span class="bu">export</span> <span class="va">DISPLAY=</span><span class="kw">`</span><span class="fu">hostname</span> <span class="kw">|</span> <span class="fu">xargs</span> dig +short <span class="kw">|</span> <span class="fu">grep</span> 192.168.11<span class="kw">`</span>:0.0</a></code></pre></div>
-<p>これは<code>hostname</code>を実行した結果を<code>dig +short</code>に食わせてIPアドレスを調べ、でてきたIPアドレスを使って<code>DISPLAY</code>環境変数を設定する、という意味だ。なお、IPアドレスが<code>192.168.0.?</code>だったり、<code>192.168.12.?</code>だったりした場合は、grepの項目を適切に設定しないといけない。</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">DISPLAY</span><span class="op">=</span><span class="kw">`</span><span class="fu">hostname</span> <span class="kw">|</span> <span class="fu">xargs</span> dig +short <span class="kw">|</span> <span class="fu">sed</span> <span class="at">-n</span> 1p<span class="kw">`</span>:0.0</span></code></pre></div>
+<p>これは<code>hostname</code>を実行した結果を<code>dig +short</code>に食わせてIPアドレスを調べ、最初に表示されたIPアドレスを使って<code>DISPLAY</code>環境変数を設定する、という意味だ。</p>
 <p>編集が終わったら以下で再読み込みをしよう。これは今回のみで、次回の起動からは不要だ。</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" title="1"><span class="bu">source</span> .bashrc</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .bashrc</span></code></pre></div>
 <p>これで準備完了だ。</p>
 <p>また、ファイアウォールの設定によっては表示がうまくいかない場合がある。その場合は以下の手順でファイアウォールの設定でVcXsrvへの接続を許可する必要がある。</p>
-<p>「Windows Defender ファイアウォール」を起動し、「Windows Defender ファイアウォールを介したアプリまたは機能を許可」を選ぶ。</p>
+<p>「Windows Defender ファイアウォール」を起動し、「Windows Defender
+ファイアウォールを介したアプリまたは機能を許可」を選ぶ。</p>
 <figure>
-<img src="fig/defender1.png" alt="defender1.png" /><figcaption>defender1.png</figcaption>
+<img src="fig/defender1.png" alt="defender1.png" />
+<figcaption aria-hidden="true">defender1.png</figcaption>
 </figure>
 <p>許可されたアプリの一覧からVcXsrvを見つけて「パブリック」にチェックが入っていなければチェックを入れる。</p>
 <figure>
-<img src="fig/defender2.png" alt="defender2.png" /><figcaption>defender2.png</figcaption>
+<img src="fig/defender2.png" alt="defender2.png" />
+<figcaption aria-hidden="true">defender2.png</figcaption>
 </figure>
 <p>これでWSLからVcXsrvへの接続が許可されるはずだ。</p>
 <p><a id="server"></a> ## 研究室サーバへの接続</p>
-<p>X Window Systemは、リモートのGUIをローカルで実行することができる(リモートデスクトップのようなもの)。X Window Systemが起動した状態で、研究室サーバにsshで接続せよ。</p>
+<p>X Window
+Systemは、リモートのGUIをローカルで実行することができる(リモートデスクトップのようなもの)。X
+Window Systemが起動した状態で、研究室サーバにsshで接続せよ。</p>
 <pre class="ssh"><code>ssh username@servername -AY</code></pre>
 <p>最後に大文字で<code>-AY</code>と付けるのを忘れないこと。ログインしたら<code>xeyes</code>を実行しよう。</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb13-1" title="1"><span class="ex">xeyes</span></a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">xeyes</span></span></code></pre></div>
 <p>目玉が出てきたら成功だ。</p>
 </article>
 </body>
