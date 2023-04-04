@@ -7,6 +7,8 @@
 * 3/9 Dockerハンズオン
 * 3/16 gnuplot ハンズオン
 * 3/30 MarkdownとLaTeX記法ハンズオン
+* 4/6 Gitハンズオン
+
 
 ## 2022年度
 

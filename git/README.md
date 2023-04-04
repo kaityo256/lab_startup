@@ -56,19 +56,18 @@ git version 2.26.0
 
 と表示されればインストール完了である。
 
-### デフォルトブランチについて
 
-Gitのデフォルトブランチは`master`という名前だが、これを`main`に変えようという動きがある。また、GitHubではすでにデフォルトブランチが`main`になっている。これをうけて、Git 2.28より、デフォルトブランチを指定できるようになった。デフォルトブランチを`main`に変更する場合は以下を実行する。
+## Gitの初期設定
+
+Gitのインストールが完了したら、初期設定を行う。
+
+まず、デフォルトブランチを変更する。昔はGitのデフォルトブランチは`master`という名前だったが、現在は`main`とするのが一般的である。以下を実行して、デフォルトブランチを`main`に設定せよ。
 
 ```sh
 git config --global init.defaultBranch main
 ```
 
-ただし、現時点(2020年3月31日)でUbuntuで入るGitが2.25.1なので、以下はデフォルトブランチが`master`のままで作業する。
-
-## Gitの初期設定
-
-Gitのインストールが完了したら、「ユーザ名」と「メールアドレス」の設定を行う。ユーザ名とメールアドレスは、GitHub等で公開リポジトリを作った場合には誰からも見られる状態となることに注意。
+次に「ユーザ名」と「メールアドレス」の設定を行う。ユーザ名とメールアドレスは、GitHub等で公開リポジトリを作った場合には誰からも見られる状態となることに注意。
 
 ターミナルで以下を実行する。
 
@@ -88,6 +87,8 @@ cat .gitconfig
 以下のように表示されれば設定されている。
 
 ```txt
+[init]
+	defaultBranch = main
 [user]
         name = 先ほど設定したユーザー名
         email = 先ほど設定したメールアドレス
@@ -102,6 +103,8 @@ git config --global alias.st "status -s"
 これは、デフォルトの`git status`は情報過多のため、短い形式で表示させる`git status -s`を多用するので、それを`git st`として実行できるように登録したものだ。このあたりは完全に趣味なので、慣れてきたら自分好みに追加・削除・修正していくと良い。ここまでの設定で、`.gitconfig`は以下のようになったはずだ。
 
 ```txt
+[init]
+	defaultBranch = main
 [user]
         name = 先ほど設定したユーザー名
         email = 先ほど設定したメールアドレス
@@ -109,7 +112,7 @@ git config --global alias.st "status -s"
         st = status -s
 ```
 
-また、UbuntuのデフォルトエディタはGNU Nanoになっており、正直使いづらいのでVimにしておこう。
+また、UbuntuのデフォルトエディタはGNU Nanoであるが、当研究室ではVimを使う。
 
 ```sh
 git config --global core.editor vim
@@ -118,15 +121,15 @@ git config --global core.editor vim
 `.gitconfig`は以下のようになったはずだ。
 
 ```txt
+[init]
+	defaultBranch = main
 [user]
         name = 先ほど設定したユーザー名
         email = 先ほど設定したメールアドレス
 [alias]
-        co = checkout
         st = status -s
-        ci = commit -a
 [core]
-  editor = vim
+        editor = vim
 ```
 
 これでGitの利用準備が整った。
