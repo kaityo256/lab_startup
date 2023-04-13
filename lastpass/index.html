@@ -86,10 +86,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>をすべて満たす「LastPass」をおすすめする(他には、1Password等が有名)。もちろん、好きなものを使ってよい。</p>
 <p>パスワードのクラウド対応については、「パスワードデータがネットワークの向こう側に保存される」ことを不安視する人もいるかもしれない。これについては、「クラウドからパスワードが流出する」リスクと、「パスワードマネージャを使わないことで、パスワードを忘れたり、つい使いまわしたりしてしまうリスク」を比較し、どちらを重視するか、各自で検討して欲しい。以下、パスワードマネージャとしてLastPassを使った場合、多要素認証導入までの方法を紹介する。</p>
 <h2 id="lastpassのインストール">LastPassのインストール</h2>
-<p>LastPassはブラウザの拡張として使うタイプのパスワードマネージャであるので、普段使うブラウザでアクセスしよう。だいたいのブラウザにはLastPass拡張が用意されていると思うが、特に希望がなければGoogle Chromeを推奨する。</p>
-<p>まず、<a href="https://www.lastpass.com/">https://www.lastpass.com/</a>に行って、「Get LastPass Free」をクリックしよう。</p>
+<p>LastPassはブラウザの拡張として使うタイプのパスワードマネージャであるので、普段使うブラウザでアクセスしよう。だいたいのブラウザにはLastPass拡張が用意されていると思うが、特に希望がなければGoogle
+Chromeを推奨する。</p>
+<p>まず、<a
+href="https://www.lastpass.com/">https://www.lastpass.com/</a>に行って、「Get
+LastPass Free」をクリックしよう。</p>
 <figure>
-<img src="fig/create_account.png" alt="アカウント作成" /><figcaption>アカウント作成</figcaption>
+<img src="fig/create_account.png" alt="アカウント作成" />
+<figcaption aria-hidden="true">アカウント作成</figcaption>
 </figure>
 <p>メールアドレス(Email)がアカウント名となる。普段使うメールアドレス(例えばGmail)を設定すること。</p>
 <p>マスターパスワードは、最も重要なパスワードとなるので、強いパスワードにすること。LastPassは</p>
@@ -99,20 +103,31 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>大文字小文字が混ざる</li>
 <li>メールアドレスにしてはならない</li>
 </ul>
-<p>ことを求めており、記号を入れることを必須にしていない。JPCERTも<a href="https://www.jpcert.or.jp/pr/stop-password.html">記号を含めて短い、パスワードが長い方が強度に寄与する</a>という見解を打ち出している。とりあえず12文字あれば良いだろう。「パスワード生成」などで検索して、適当なサイトでパスワードを作ってから、紙などにメモしておこう(なくさないように)。</p>
-<p>Reminderは、パスワードを忘れた時のヒントなので、入力しなくてかまわない。</p>
-<p>無事にアカウントが作成されたら「Install LastPass」をクリックして、ブラウザの拡張機能をインストールしよう。Google Chromeならchrome ウェブストアが表示されるはずなので、「拡張機能の追加」をクリックしてブラウザに追加する。他のブラウザでも同様。</p>
+<p>ことを求めており、記号を入れることを必須にしていない。JPCERTも<a
+href="https://www.jpcert.or.jp/pr/stop-password.html">記号を含めて短い、パスワードが長い方が強度に寄与する</a>という見解を打ち出している。とりあえず12文字あれば良いだろう。「パスワード生成」などで検索して、適当なサイトでパスワードを作ってから、紙などにメモしておこう(なくさないように)。もしくは、pwgenを使うのも良い。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install pwgen <span class="co">#Macの場合</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install <span class="at">-y</span> pwgen</span></code></pre></div>
+<p>でインストールし、</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pwgen</span> <span class="at">-y</span> 12</span></code></pre></div>
+<p>などとしよう。Reminderは、パスワードを忘れた時のヒントなので、入力しなくてかまわない。</p>
+<p>無事にアカウントが作成されたら「Install
+LastPass」をクリックして、ブラウザの拡張機能をインストールしよう。Google
+Chromeならchrome
+ウェブストアが表示されるはずなので、「拡張機能の追加」をクリックしてブラウザに追加する。他のブラウザでも同様。</p>
 <p>正しくインストールされたら、ブラウザの右上にLastPassの黒いアイコンが表示されるはずである。</p>
 <figure>
-<img src="fig/lastpass_icon.png" alt="LastPassのアイコン" /><figcaption>LastPassのアイコン</figcaption>
+<img src="fig/lastpass_icon.png" alt="LastPassのアイコン" />
+<figcaption aria-hidden="true">LastPassのアイコン</figcaption>
 </figure>
 <p>この黒いアイコンをクリックすると、ログイン画面となるので、先ほど設定したメールとマスターパスワードでログインしよう。</p>
 <figure>
-<img src="fig/lastpass_login.png" alt="ログイン画面" /><figcaption>ログイン画面</figcaption>
+<img src="fig/lastpass_login.png" alt="ログイン画面" />
+<figcaption aria-hidden="true">ログイン画面</figcaption>
 </figure>
 <p>ログインに成功すると、アイコンが赤くなる。</p>
 <figure>
-<img src="fig/lastpass_after_login.png" alt="ログイン後のアイコン" /><figcaption>ログイン後のアイコン</figcaption>
+<img src="fig/lastpass_after_login.png" alt="ログイン後のアイコン" />
+<figcaption aria-hidden="true">ログイン後のアイコン</figcaption>
 </figure>
 <p>今後、LastPassにログインした状態で何かのサイトにログインすると、LastPassに追加するか聞かれるので、その時に「Add」を選ぶとLastPassがアカウント名とパスワードを覚えていく。他にもいろいろ便利な機能があるが、それについてはおいおい覚えていくと良いだろう。</p>
 <h2 id="多要素認証">多要素認証</h2>
@@ -123,27 +138,40 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>それに対して、多要素認証とは、「アカウントとパスワード」とは質的に異なるものを追加することで認証をセキュアにしよう、という方法論である。</p>
 <p>多要素認証には三つの要素がある。</p>
 <ul>
-<li>知識要素 (What you know) 「あなたしか知らない情報」パスワードや「秘密の質問」などがこれにあたる</li>
-<li>所持要素 (What you have)「あなたしか持っていない物」スマホを使ったワンタイムパスワードなどがこれにあたる</li>
-<li>生体要素 (What you are)　「あなた自身」指紋認証、静脈認証、顔認証などがこれにあたる</li>
+<li>知識要素 (What you know)
+「あなたしか知らない情報」パスワードや「秘密の質問」などがこれにあたる</li>
+<li>所持要素 (What you
+have)「あなたしか持っていない物」スマホを使ったワンタイムパスワードなどがこれにあたる</li>
+<li>生体要素 (What you
+are)　「あなた自身」指紋認証、静脈認証、顔認証などがこれにあたる</li>
 </ul>
 <p>例えばパスワードの他に「秘密の質問」を使った認証は、どちらも「知識要素」を使っているので二段階認証だが、多要素認証ではない。</p>
 <p>それに対して、パスワードの他にスマホを使った認証は、「知識要素」「所持要素」の二つを使っているので多要素認証となる。</p>
 <p>以下ではスマホを使った多要素認証を導入する。</p>
 <h3 id="google-authenticator">Google Authenticator</h3>
-<p>まず、スマホに「Google　Authenticator」を導入しよう。iPhoneならApple Store、AndroidならPlay Storeで「Google Authenticator」で検索することで見つかるだろう。</p>
+<p>まず、スマホに「Google　Authenticator」を導入しよう。iPhoneならApple
+Store、AndroidならPlay Storeで「Google
+Authenticator」で検索することで見つかるだろう。</p>
 <figure>
-<img src="fig/google_authenticator.png" alt="Google Authenticator" /><figcaption>Google Authenticator</figcaption>
+<img src="fig/google_authenticator.png" alt="Google Authenticator" />
+<figcaption aria-hidden="true">Google Authenticator</figcaption>
 </figure>
 <p>まずこれをインストールしよう。</p>
 <p>次に、LastPassで多要素認証を有効にする。</p>
-<p>まず、LastPassにログインし、「Open My Vault」を選ぶ(Vaultとは金庫室という意味である)。</p>
-<p>左のメニューから「Account Settings」を選ぶ。上のタブから「Multifactor Options」を選ぶ。</p>
-<p>一覧から「Google Authenticator」の列の右の鉛筆マークをクリックする。その後、指示に従うと、二次元コードが出てくるはずである。</p>
-<p>この状態でスマホを取り出し、Google Authenticatorを起動する。右下に「+」マークをクリックして「バーコードをスキャン」を選ぶと撮影モードになるので、表示されている二次元コードを映すことで追加できる。名前は「LastPass」とかにしておこう。</p>
-<p>以後、LastPassにログインしようとすると、パスワード認証の他にGoogle Authenticatorによる認証が要求される。Google Authenticatorを起動すると、先ほど名前をつけて保存した「LastPass」のところに6桁の数字が表示されるので、これを入力しよう。</p>
+<p>まず、LastPassにログインし、「Open My
+Vault」を選ぶ(Vaultとは金庫室という意味である)。</p>
+<p>左のメニューから「Account Settings」を選ぶ。上のタブから「Multifactor
+Options」を選ぶ。</p>
+<p>一覧から「Google
+Authenticator」の列の右の鉛筆マークをクリックする。その後、指示に従うと、二次元コードが出てくるはずである。</p>
+<p>この状態でスマホを取り出し、Google
+Authenticatorを起動する。右下に「+」マークをクリックして「バーコードをスキャン」を選ぶと撮影モードになるので、表示されている二次元コードを映すことで追加できる。名前は「LastPass」とかにしておこう。</p>
+<p>以後、LastPassにログインしようとすると、パスワード認証の他にGoogle
+Authenticatorによる認証が要求される。Google
+Authenticatorを起動すると、先ほど名前をつけて保存した「LastPass」のところに6桁の数字が表示されるので、これを入力しよう。</p>
 <figure>
-<img src="fig/google_number.png" alt="Google Authenticator" /><figcaption>Google Authenticator</figcaption>
+<img src="fig/google_number.png" alt="Google Authenticator" />
+<figcaption aria-hidden="true">Google Authenticator</figcaption>
 </figure>
 <p>この数字は一分毎に変わる、ワンタイムパスワードと呼ばれるものになっている。</p>
 <p>パスワードマネージャを使うかどうかは個人の自由だが、大事なアカウントを多要素認証で守るのは必須である。今後、GitHubアカウントを作成するが、これも多要素認証で守ること。</p>
