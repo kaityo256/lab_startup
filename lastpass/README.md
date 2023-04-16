@@ -102,7 +102,7 @@ pwgen -y 12
 
 次に、LastPassで多要素認証を有効にする。
 
-まず、LastPassにログインし、「Open My Vault」を選ぶ(Vaultとは金庫室という意味である)。
+まず、LastPassにログインし、「Vault」を選ぶ(Vaultとは金庫室という意味である)。
 
 左のメニューから「Account Settings」を選ぶ。上のタブから「Multifactor Options」を選ぶ。
 
