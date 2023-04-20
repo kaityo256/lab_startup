@@ -72,124 +72,176 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <body>
 <article class="markdown-body">
 <h1 id="lammpsとvmdのインストール">LammpsとVMDのインストール</h1>
-<p>Lammps (Large-scale Atomic/Molecular Massively Parallel Simulator)は、サンディア国立研究所の古典分子動力学プログラムだ。性能が良く、比較的容易に使えて、並列化もなされているため、広く使われている。</p>
+<p>Lammps (Large-scale Atomic/Molecular Massively Parallel
+Simulator)は、サンディア国立研究所の古典分子動力学プログラムだ。性能が良く、比較的容易に使えて、並列化もなされているため、広く使われている。</p>
 <h2 id="lammpsのインストール">Lammpsのインストール</h2>
 <h3 id="windows">Windows</h3>
 <p>WSLのターミナルで以下を実行する。</p>
 <p>まずはリポジトリを追加する。</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1">$ <span class="fu">sudo</span> add-apt-repository ppa:gladky-anton/lammps</a>
-<a class="sourceLine" id="cb1-2" title="2">$ <span class="fu">sudo</span> add-apt-repository ppa:openkim/latest</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo add-apt-repository ppa:gladky-anton/lammps</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo add-apt-repository ppa:openkim/latest</span></code></pre></div>
 <p>それぞれ「リポジトリを追加して良いか？」と聞いてくるので、エンターキーを押そう。</p>
 <p>リポジトリが追加されたら、パッケージをアップデートしてからLAMMPSをインストールする。</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1">$ <span class="fu">sudo</span> apt-get update</a>
-<a class="sourceLine" id="cb2-2" title="2">$ <span class="fu">sudo</span> apt-get install lammps-stable</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo apt-get update</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo apt-get install lammps-stable</span></code></pre></div>
 <p>これにより、<code>lmp_stable</code>という実行バイナリがインストールされる。バージョンを確認しよう。</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1">$ <span class="bu">echo</span> info <span class="kw">|</span> <span class="ex">lmp_stable</span></a>
-<a class="sourceLine" id="cb3-2" title="2"><span class="ex">LAMMPS</span> (3 Mar 2020)</a>
-<a class="sourceLine" id="cb3-3" title="3"></a>
-<a class="sourceLine" id="cb3-4" title="4"><span class="ex">Info-Info-Info-Info-Info-Info-Info-Info-Info-Info-Info</span></a>
-<a class="sourceLine" id="cb3-5" title="5"><span class="ex">Printed</span> on Mon May  2 15:12:31 2022</a>
-<a class="sourceLine" id="cb3-6" title="6"></a>
-<a class="sourceLine" id="cb3-7" title="7"></a>
-<a class="sourceLine" id="cb3-8" title="8"><span class="ex">Info-Info-Info-Info-Info-Info-Info-Info-Info-Info-Info</span></a>
-<a class="sourceLine" id="cb3-9" title="9"></a>
-<a class="sourceLine" id="cb3-10" title="10"><span class="ex">Total</span> wall time: 0:00:00</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo info <span class="kw">|</span> <span class="ex">lmp_stable</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">LAMMPS</span> <span class="er">(</span><span class="ex">3</span> Mar 2020<span class="kw">)</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Info-Info-Info-Info-Info-Info-Info-Info-Info-Info-Info</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Printed</span> on Mon May  2 15:12:31 2022</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="ex">Info-Info-Info-Info-Info-Info-Info-Info-Info-Info-Info</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="ex">Total</span> wall time: 0:00:00</span></code></pre></div>
 <p>以下、<code>lmp_serial</code>を<code>lmp_stable</code>と読み替えて実行すること。</p>
 <h3 id="mac">Mac</h3>
 <p>「ターミナル」で以下を実行しよう。</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1"><span class="ex">brew</span> install lammps</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install lammps</span></code></pre></div>
 <p>インストールが完了したら以下を実行せよ。</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1">$ <span class="bu">echo</span> info <span class="kw">|</span> <span class="ex">lmp_serial</span>  </a>
-<a class="sourceLine" id="cb5-2" title="2"><span class="ex">LAMMPS</span> (29 Oct 2020)</a>
-<a class="sourceLine" id="cb5-3" title="3"></a>
-<a class="sourceLine" id="cb5-4" title="4"><span class="ex">Info-Info-Info-Info-Info-Info-Info-Info-Info-Info-Info</span></a>
-<a class="sourceLine" id="cb5-5" title="5"><span class="ex">Printed</span> on Tue Mar 30 16:29:46 2021</a>
-<a class="sourceLine" id="cb5-6" title="6"></a>
-<a class="sourceLine" id="cb5-7" title="7"></a>
-<a class="sourceLine" id="cb5-8" title="8"><span class="ex">Info-Info-Info-Info-Info-Info-Info-Info-Info-Info-Info</span></a>
-<a class="sourceLine" id="cb5-9" title="9"></a>
-<a class="sourceLine" id="cb5-10" title="10"><span class="ex">Total</span> wall time: 0:00:00</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo info <span class="kw">|</span> <span class="ex">lmp_serial</span>  </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">LAMMPS</span> <span class="er">(</span><span class="ex">29</span> Oct 2020<span class="kw">)</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Info-Info-Info-Info-Info-Info-Info-Info-Info-Info-Info</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Printed</span> on Tue Mar 30 16:29:46 2021</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="ex">Info-Info-Info-Info-Info-Info-Info-Info-Info-Info-Info</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="ex">Total</span> wall time: 0:00:00</span></code></pre></div>
 <p>上記のようなバージョン情報が表示されれば問題なくインストールされている。</p>
 <h2 id="サンプルコードの実行">サンプルコードの実行</h2>
 <p>インストールが完了したら、サンプルコードを実行してみよう。サンプルファイルをgitでcloneする。</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" title="1"><span class="bu">cd</span> github</a>
-<a class="sourceLine" id="cb6-2" title="2"><span class="fu">git</span> clone --depth 1 https://github.com/lammps/lammps.git</a>
-<a class="sourceLine" id="cb6-3" title="3"><span class="bu">cd</span> lammps/examples/melt</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> github</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone <span class="at">--depth</span> 1 https://github.com/lammps/lammps.git</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> lammps/examples/melt</span></code></pre></div>
 <p>で目的の場所にいけるはず。異なるディレクトリにクローンした場合は適宜読み替えること。</p>
 <p>この状態で、以下を実行しよう(Windowsの場合は<code>lmp_stable</code>)。</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" title="1"><span class="ex">lmp_serial</span> <span class="op">&lt;</span> in.melt</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">lmp_serial</span> <span class="op">&lt;</span> in.melt</span></code></pre></div>
 <p>いろいろ表示されて、最後に</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb8-1" title="1">Total # of neighbors = 151513</a>
-<a class="sourceLine" id="cb8-2" title="2">Ave neighs/atom = 37.8783</a>
-<a class="sourceLine" id="cb8-3" title="3">Neighbor list builds = 12</a>
-<a class="sourceLine" id="cb8-4" title="4">Dangerous builds not checked</a>
-<a class="sourceLine" id="cb8-5" title="5">Total wall time: 0:00:00</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>Total # of neighbors = 151513</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>Ave neighs/atom = 37.8783</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>Neighbor list builds = 12</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>Dangerous builds not checked</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>Total wall time: 0:00:00</span></code></pre></div>
 <p>といった表示が出れば実行は成功だ。</p>
 <h2 id="in.meltの修正">in.meltの修正</h2>
 <p>次に、<code>in.melt</code>を修正しよう。</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" title="1"><span class="ex">code</span> in.melt</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">code</span> in.melt</span></code></pre></div>
 <p>と入力すれば、VSCodeで直接<code>in.melt</code>が開かれるはず。</p>
 <p>VSCodeでin.meltを開いたら、以下の行を探す。</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" title="1"><span class="co">#dump       id all atom 50 dump.melt</span></a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#dump       id all atom 50 dump.melt</span></span></code></pre></div>
 <p>この行頭の<code>#</code>を削除して保存しよう。</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" title="1"><span class="ex">dump</span>        id all atom 50 dump.melt</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">dump</span>        id all atom 50 dump.melt</span></code></pre></div>
 <p>この状態で、またlammpsを実行しよう。</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" title="1"><span class="ex">lmp_serial</span> <span class="op">&lt;</span> in.melt</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">lmp_serial</span> <span class="op">&lt;</span> in.melt</span></code></pre></div>
 <p>すると、今度は同じフォルダに<code>dump.melt</code>が作成されたはずだ。<code>ls</code>で確認せよ。これは原子の起動を保存したファイルで、これを後からVMDで読み込んで可視化する。</p>
 <h3 id="研究室サーバで実行する場合">研究室サーバで実行する場合</h3>
 <p>以下を実行せよ。</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb13-1" title="1"><span class="bu">export</span> <span class="va">PATH=$PATH</span>:/home/apps/lammps</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">PATH</span><span class="op">=</span><span class="va">$PATH</span>:/home/apps/lammps</span></code></pre></div>
 <p>これにより、<code>lmp_serial</code>が使えるようになる。</p>
 <h2 id="vmdのインストール">VMDのインストール</h2>
 <h3 id="windows-1">Windows</h3>
 <p>次にVMDをダウンロード、インストールしよう。</p>
-<p><a href="https://www.ks.uiuc.edu/Research/vmd/">ここ</a>に行って、「Download (all versions)」をクリックする。</p>
-<p>次に「Version 1.9.4 LATEST ALPHA (2020-12-21) Platforms:」の、「Windows 64-bit, CUDA, OptiX, OSPRay (64-bit Intel x86_64) (Windows 10)」を選ぶ。</p>
+<p><a
+href="https://www.ks.uiuc.edu/Research/vmd/">ここ</a>に行って、「Download
+(all versions)」をクリックする。</p>
+<p>次に「Version 1.9.4 LATEST ALPHA (2020-12-21)
+Platforms:」の、「Windows 64-bit, CUDA, OptiX, OSPRay (64-bit Intel
+x86_64) (Windows 10)」を選ぶ。</p>
 <p>もし実行時にエラーが起きて開けなかった場合、アンインストールして32-bit版をダウンロードした方が良いかも。</p>
-<p>すると、「Registration/Login」画面が現れるので、メールアドレスと、適当なパスワードを入力する。初回登録時には「New User Registration」画面となるので、必要事項を入力の上で「Register」を押す。</p>
+<p>すると、「Registration/Login」画面が現れるので、メールアドレスと、適当なパスワードを入力する。初回登録時には「New
+User
+Registration」画面となるので、必要事項を入力の上で「Register」を押す。</p>
 <p>ライセンスに同意することを示すと、ダウンロードが始まる。ダウンロードが完了したら、インストールする。特に設定項目はない。</p>
 <h3 id="mac-1">Mac</h3>
-<p><a href="https://www.ks.uiuc.edu/Research/vmd/">ここ</a>に行って、「Download (all versions)」をクリックする。</p>
-<p>M1 Macの場合は「MacOS 11.x, ARM64 (64-bit “M1” Macs) (Apple MacOS-X 11 or later)」を選ぶ。</p>
-<p>すると、「Registration/Login」画面が現れるので、メールアドレスと、適当なパスワードを入力する。初回登録時には「New User Registration」画面となるので、必要事項を入力の上で「Register」を押す。</p>
-<p>ライセンスに同意することを示すと、ダウンロードが始まる。ダウンロードが完了したら、インストールする。特に設定項目はない。</p>
-<p>なお、ダウンロードしたイメージを実行しようとすると「“startup.command”は、開発元が未確認のため開けません。」というエラーがでる場合がある。この場合はシステム環境設定の「セキュリティとプライバシー」の「一般」タブを表示しながら再度実行せよ。すると「“startup.command”は開発元が確認できないため、使用がブロックされました。」というメッセージの隣に「このまま開く」というボタンが現れるため、それを押して現れるダイアログの「開く」をクリックすれば実行できる。</p>
+<p><a
+href="https://www.ks.uiuc.edu/Research/vmd/">ここ</a>に行って、「Download
+(all versions)」をクリックする。</p>
+<p>M1 Macの場合は「MacOS 11.x, ARM64 (64-bit “M1” Macs) (Apple MacOS-X
+11 or later)」を選ぶ。</p>
+<p>すると、「Registration/Login」画面が現れるので、メールアドレスと、適当なパスワードを入力する。初回登録時には「New
+User
+Registration」画面となるので、必要事項を入力の上で「Register」を押す。</p>
+<p>ライセンスに同意することを示すと、ダウンロードが始まる。ダウンロードが完了したら、ディスクイメージファイル(dmgファイル)をクリックせよ。このような画面が出るはずだ。</p>
 <figure>
-<img src="fig/open_vmd.png" alt="open vmd" /><figcaption>open vmd</figcaption>
+<img src="fig/vmd_dmg.png" alt="vmd dmg" />
+<figcaption aria-hidden="true">vmd dmg</figcaption>
 </figure>
+<p>この画面を開いた状態で、Finderでアプリケーションを表示し、VMDをアプリケーションフォルダにドラッグしてコピーする。</p>
+<p>その後、「システム設定」の「プライバシーとセキュリティ」を開いた状態で、アプリケーションフォルダにあるVMDをダブルクリックして起動する。</p>
+<figure>
+<img src="fig/vmd_application.png" alt="vmd_application" />
+<figcaption aria-hidden="true">vmd_application</figcaption>
+</figure>
+<p>すると、「開発元を検証できないため開けません」という画面がでる。</p>
+<figure>
+<img src="fig/vmd_cannot_open.png" alt="vmd cannot open" />
+<figcaption aria-hidden="true">vmd cannot open</figcaption>
+</figure>
+<p>ここで「システム環境設定」の「プライバシーとセキュリティ」を開きながら「キャンセル」を押すと、「プライバシーとセキュリティ」に「“VMD
+…”は開発元を確認できないため、使用がブロックされました。」と表示されるので、そこに現れる「このまま開く」ボタンを押す。</p>
+<figure>
+<img src="fig/vmd_open.png" alt="vmd_open" />
+<figcaption aria-hidden="true">vmd_open</figcaption>
+</figure>
+<p>するとパスワードが要求されるので入力し、もう一度確認画面がでるのでOKを押すと、VMDが起動する。VMDをアプリケーションフォルダにコピーしておけば、二度目からは確認されない。</p>
 <h2 id="vmdによる可視化">VMDによる可視化</h2>
 <h3 id="windowsの場合">Windowsの場合</h3>
 <p>WSLにおいて、まず<code>dump.melt</code>が存在するディレクトリで</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" title="1"><span class="ex">open</span> .</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">open</span> .</span></code></pre></div>
 <p>と入力し、そのフォルダを開く。まだopenをエイリアス設定していない場合は</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb15-1" title="1"><span class="bu">alias</span> open=explorer.exe</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> open=explorer.exe</span></code></pre></div>
 <p>としておくこと。<code>.bashrc</code>に記載しておくことが望ましい。フォルダが開いたら、パスが表示されている場所(以下の赤で囲った部分)に「vmd」と入力すると、このディレクトリをカレントディレクトリとしてVMDが起動する。</p>
 <figure>
-<img src="fig/folder.png" alt="フォルダ" /><figcaption>フォルダ</figcaption>
+<img src="fig/folder.png" alt="フォルダ" />
+<figcaption aria-hidden="true">フォルダ</figcaption>
 </figure>
-<p>VMDが起動したら、「VMD Main」の「File」から「New Molecule」を選び、「Browse」を押して先ほどの<code>dump.melt</code>を選ぶ。</p>
+<p>VMDが起動したら、「VMD Main」の「File」から「New
+Molecule」を選び、「Browse」を押して先ほどの<code>dump.melt</code>を選ぶ。</p>
 <p>file typeとして「LAMMPS Trajectory」を選んでから「Load」を押す。</p>
 <figure>
-<img src="fig/vmd_dialog.png" alt="VMD" /><figcaption>VMD</figcaption>
+<img src="fig/vmd_dialog.png" alt="VMD" />
+<figcaption aria-hidden="true">VMD</figcaption>
 </figure>
-<p>すると、直線が多数重なったような画面が出たはずだ。この状態で、「VMD Main」の画面で「dump.melt」の行を選び、「Graphics」の「Representation」を選ぶ。</p>
-<p>ここで、「Drawing Method」を「VDW」にすると、画面が玉に変わるはず。その状態で「Sphere Scale」を小さくしよう。0.3くらいがちょうどよいと思う。</p>
+<p>すると、直線が多数重なったような画面が出たはずだ。この状態で、「VMD
+Main」の画面で「dump.melt」の行を選び、「Graphics」の「Representation」を選ぶ。</p>
+<p>ここで、「Drawing
+Method」を「VDW」にすると、画面が玉に変わるはず。その状態で「Sphere
+Scale」を小さくしよう。0.3くらいがちょうどよいと思う。</p>
 <figure>
-<img src="fig/vmd_representation.png" alt="Representation" /><figcaption>Representation</figcaption>
+<img src="fig/vmd_representation.png" alt="Representation" />
+<figcaption aria-hidden="true">Representation</figcaption>
 </figure>
-<p>この状態で、VMD Mainの右下にある再生ボタン「Play Forward」を押せば、原子が凍った状態から解けていくアニメーション(6フレームしかないが)が表示されるはずである。マウスでドラッグすると角度を変えられるので試してみよ。</p>
+<p>この状態で、VMD Mainの右下にある再生ボタン「Play
+Forward」を押せば、原子が凍った状態から解けていくアニメーション(6フレームしかないが)が表示されるはずである。マウスでドラッグすると角度を変えられるので試してみよ。</p>
 <h3 id="macの場合">Macの場合</h3>
-<p>VMDが起動したら、「VMD Main」の「File」から「New Molecule」を選び、「Browse」を押して先ほどの<code>dump.melt</code>を選ぶ。<code>/lammps</code>の中にあるはず。</p>
+<p>VMDが起動したら、「VMD Main」の「File」から「New
+Molecule」を選び、「Browse」を押して先ほどの<code>dump.melt</code>を選ぶ。<code>/lammps</code>の中にあるはず。</p>
 <p>file typeとして「LAMMPS Trajectory」を選んでから「Load」を押す。</p>
 <figure>
-<img src="fig/vmd_dialog.png" alt="VMD" /><figcaption>VMD</figcaption>
+<img src="fig/vmd_dialog.png" alt="VMD" />
+<figcaption aria-hidden="true">VMD</figcaption>
 </figure>
-<p>すると、直線が多数重なったような画面が出たはずだ。この状態で、「VMD Main」の画面で「dump.melt」の行を選び、「Graphics」の「Representation」を選ぶ。</p>
-<p>ここで、「Drawing Method」を「VDW」にすると、画面が玉に変わるはず。その状態で「Sphere Scale」を小さくしよう。0.3くらいがちょうどよいと思う。</p>
+<p>すると、直線が多数重なったような画面が出たはずだ。この状態で、「VMD
+Main」の画面で「dump.melt」の行を選び、「Graphics」の「Representation」を選ぶ。</p>
+<p>ここで、「Drawing
+Method」を「VDW」にすると、画面が玉に変わるはず。その状態で「Sphere
+Scale」を小さくしよう。0.3くらいがちょうどよいと思う。</p>
 <figure>
-<img src="fig/vmd_representation.png" alt="Representation" /><figcaption>Representation</figcaption>
+<img src="fig/vmd_representation.png" alt="Representation" />
+<figcaption aria-hidden="true">Representation</figcaption>
 </figure>
-<p>この状態で、VMD Mainの右下にある再生ボタン「Play Forward」を押せば、原子が凍った状態から解けていくアニメーション(6フレームしかないが)が表示されるはずである。マウスでドラッグすると角度を変えられるので試してみよ。</p>
+<p>この状態で、VMD Mainの右下にある再生ボタン「Play
+Forward」を押せば、原子が凍った状態から解けていくアニメーション(6フレームしかないが)が表示されるはずである。マウスでドラッグすると角度を変えられるので試してみよ。</p>
 </article>
 </body>
 </html>
