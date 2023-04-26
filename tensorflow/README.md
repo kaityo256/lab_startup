@@ -10,11 +10,11 @@ Fashion-MNISTというデータセットがある。MNISTは手書き数字だ�
 sudo apt-get install python3-venv
 ```
 
-まず、[kaityo256/fashion_mnist_check](https://github.com/kaityo256/fashion_mnist_check)をフォークしてからcloneせよ。ローカルでも研究室サーバでもかまわない。この際、sshでcloneすること。
+まず、[kaityo256/fashion_mnist_check](https://github.com/kaityo256/fashion_mnist_check)をhttpsでcloneせよ。
 
 ```sh
 cd github
-git clone git clone git@github.com:youraccount/fashion_mnist_check.git
+git clone https://github.com/kaityo256/fashion_mnist_check.git
 ```
 
 cloneできたら、そこに移動しよう。
@@ -30,6 +30,7 @@ python3 -m venv tf
 source tf/bin/activate
 python3 -m pip install --upgrade pip
 python3 -m pip install tensorflow tensorflowjs
+python3 -m pip install protobuf==3.20.*
 ```
 
 仮想環境は`deactivate`で出ることができる。次回からは同じディレクトリで
@@ -54,7 +55,7 @@ source tf/bin/activate
 python3 train.py
 ```
 
-正しくTensorFlowがインストールされていれば学習が進み、最終的に以下のような出力がされるはずである。
+正しくTensorFlowがインストールされていれば学習が進み、最終的に以下のような出力がされるはずである(出力される数字の詳細は異なる)。
 
 ```txt
 Test accuracy: 0.8709999918937683
@@ -99,32 +100,19 @@ model
 
 これをJavaScriptから読み込んで、自分で絵を書いて判定させてみよう。
 
-ただし、JavaScriptはセキュリティのため、デフォルトではローカルに保存されたファイルにアクセスできない。回避する方法もあるのだが、ここではそのままGitHubにアップロードし、GitHub Pagesでウェブサイトとして公開することでアクセスしよう。
+ただし、JavaScriptはセキュリティのため、デフォルトではローカルに保存されたファイルにアクセスできない。そこで、ローカルのhttpサーバを起動することでそれを回避する。
 
-まず、作成されたディレクトリ`model`をリポジトリに追加する。
-
-```sh
-git add model
-```
-
-その後、commit、pushしよう。
+まず、このリポジトリをカレントフォルダとしてVSCodeを起動せよ。
 
 ```sh
-git commit -m "adds model"
-git push
+code .
 ```
 
-## GitHub Pagesの公開
+VSCodeの拡張機能から「Live Server」を検索し、インストールせよ。
 
-GitHubの、自分のリポジトリを見てみよう。ブラウザをリロードすると、`model`が追加されているはずである。この状態でSettingsをクリックする。
+![liveserver](fig/liveserver.png)
 
-左のメニューに「Pages」という項目があるのでそこを選ぶ。
-
-GitHub Pagesの「Source」のところが「None」になっているので、クリックして「main」を選んで「Save」を選ぶ。
-
-![settings](fig/github_pages.png)
-
-すると、GitHub Pagesのところに「Your site is ready to be published at https://youraccount.github.io/fashion_mnist_check/.」という文章が表示されるので、「数分待ってから」アクセスする。
+そして、ファイルエクスプローラーからリポジトリにある`index.html`を選択し、右下のバーにある「Go Live」ボタンを押す。
 
 以下のような画面が出てきたら成功だ。
 
