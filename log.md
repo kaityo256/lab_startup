@@ -11,7 +11,7 @@
 * 4/13 LastPassと多要素認証
 * 4/20 LAMMPSとVMDのインストール
 * 4/27 機械学習ハンズオン (TensorFlowでFashion-MNISTを学習させてウェブで読み込む)
-* 5/11 PBS ハンズオン (バッチシステム)
+* 5/11 VSCode + Remote+SSH
 
 
 ## 2022年度
