@@ -95,3 +95,23 @@ print("Hello Python")
 ![実行ボタン](fig/vscode_python_execute.png)
 
 下にウィンドウが開いて実行結果(`Hello Python`)が表示されるはずだ。これでVSCodeからPythonを実行する環境が整った。
+
+## Remote-SSHのインストールと接続。
+
+注：ターミナルで研究室サーバにssh接続できることが前提。
+
+1. 拡張機能から、「Remote - SSH」をインストールする。
+2. Shift+Ctrl+P/Shift+CMD+Pで、コマンドパレットを表示し、「Remote-SSH: ホストに接続する」を選ぶ。
+3. 「+ 新規SSHホストを追加する」を選択し、研究室サーバへの接続コマンド(ssh username@hostname -AY)を入力
+4. 「更新するSSH構成ファイルを選択」では、Macなら`/Users/username/.ssh/config`、Windows(WSL)なら`C:\Users\username\.ssh\`を指定。
+5. 接続時、Select the platformと出てきたらLinux
+6. フィンガープリントを確認し、問題なければ「続行」
+
+WindowsでWSLから実行している場合、上記の「続行」を押した後「接続を確立できません」と出てくるので、「リモートを閉じる」を実行後、ターミナルから以下を実行する。
+
+```sh
+cd .ssh
+cp id_rsa /mnt/c/Users/username/.ssh
+```
+
+そして、「Remote-SSH: ホストに接続する」を選ぶと、先程追加したサーバがリストに表示されるので、それを選ぶ。するとパスフレーズを要求されるので、入力すると接続できる。

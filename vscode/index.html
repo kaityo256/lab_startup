@@ -152,6 +152,25 @@ Code」の「install」ボタンを押して、インストールする。「再
 <figcaption aria-hidden="true">実行ボタン</figcaption>
 </figure>
 <p>下にウィンドウが開いて実行結果(<code>Hello Python</code>)が表示されるはずだ。これでVSCodeからPythonを実行する環境が整った。</p>
+<h2
+id="remote-sshのインストールと接続">Remote-SSHのインストールと接続。</h2>
+<p>注：ターミナルで研究室サーバにssh接続できることが前提。</p>
+<ol type="1">
+<li>拡張機能から、「Remote - SSH」をインストールする。</li>
+<li>Shift+Ctrl+P/Shift+CMD+Pで、コマンドパレットを表示し、「Remote-SSH:
+ホストに接続する」を選ぶ。</li>
+<li>「+
+新規SSHホストを追加する」を選択し、研究室サーバへの接続コマンド(ssh
+username@hostname -AY)を入力</li>
+<li>「更新するSSH構成ファイルを選択」では、Macなら<code>/Users/username/.ssh/config</code>、Windows(WSL)なら<code>C:\Users\username\.ssh\</code>を指定。</li>
+<li>接続時、Select the platformと出てきたらLinux</li>
+<li>フィンガープリントを確認し、問題なければ「続行」</li>
+</ol>
+<p>WindowsでWSLから実行している場合、上記の「続行」を押した後「接続を確立できません」と出てくるので、「リモートを閉じる」を実行後、ターミナルから以下を実行する。</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> .ssh</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> id_rsa /mnt/c/Users/username/.ssh</span></code></pre></div>
+<p>そして、「Remote-SSH:
+ホストに接続する」を選ぶと、先程追加したサーバがリストに表示されるので、それを選ぶ。するとパスフレーズを要求されるので、入力すると接続できる。</p>
 </article>
 </body>
 </html>
