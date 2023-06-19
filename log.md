@@ -12,6 +12,8 @@
 * 4/20 LAMMPSとVMDのインストール
 * 4/27 機械学習ハンズオン (TensorFlowでFashion-MNISTを学習させてウェブで読み込む)
 * 5/11 VSCode + Remote+SSH
+* 5/18 GNU make
+* 6/1 GitHub+LAMMPS (衝突シミュレーション)
 
 
 ## 2022年度
