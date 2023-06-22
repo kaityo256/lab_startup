@@ -14,6 +14,7 @@
 * 5/11 VSCode + Remote+SSH
 * 5/18 GNU make
 * 6/1 GitHub+LAMMPS (衝突シミュレーション)
+* 6/22 バッチシステムの使い方
 
 
 ## 2022年度
