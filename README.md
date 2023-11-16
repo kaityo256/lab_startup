@@ -2,11 +2,13 @@
 
 ## ガイダンス
 
-* [研究室ガイダンス](https://speakerdeck.com/kaityo256/welcome-to-lab)
-* [論文の読み方](https://speakerdeck.com/kaityo256/how-to-survey)
-* [論文紹介のやり方](https://speakerdeck.com/kaityo256/how-to-review)
-* [輪講の準備の仕方](https://speakerdeck.com/kaityo256/book-reading)
-* [研究発表の仕方](https://speakerdeck.com/kaityo256/happy-presentation)
+Speakerdeckへのリンク。[File]をクリックすると、PDFやパワーポイントファイルがダウンロードできる。
+
+* [研究室ガイダンス](https://speakerdeck.com/kaityo256/welcome-to-lab) [[File](https://github.com/kaityo256/lab_startup/tree/main/welcome)]
+* [論文の読み方](https://speakerdeck.com/kaityo256/how-to-survey) [[File](https://github.com/kaityo256/lab_startup/tree/main/howtoreview)]
+* [論文紹介のやり方](https://speakerdeck.com/kaityo256/how-to-review) [[File](https://github.com/kaityo256/lab_startup/tree/main/howtoreview)]
+* [輪講の準備の仕方](https://speakerdeck.com/kaityo256/book-reading) [[File](https://github.com/kaityo256/lab_startup/tree/main/bookreading)]
+* [研究発表の仕方](https://speakerdeck.com/kaityo256/happy-presentation) [[File](https://github.com/kaityo256/lab_startup/tree/main/presentation)]
 
 ## セットアップ編
 
