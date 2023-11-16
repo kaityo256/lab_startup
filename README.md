@@ -9,6 +9,7 @@ Speakerdeckへのリンク。[File]をクリックすると、PDFやパワーポ
 * [論文紹介のやり方](https://speakerdeck.com/kaityo256/how-to-review) [[File](https://github.com/kaityo256/lab_startup/tree/main/howtoreview)]
 * [輪講の準備の仕方](https://speakerdeck.com/kaityo256/book-reading) [[File](https://github.com/kaityo256/lab_startup/tree/main/bookreading)]
 * [研究発表の仕方](https://speakerdeck.com/kaityo256/happy-presentation) [[File](https://github.com/kaityo256/lab_startup/tree/main/presentation)]
+* [卒業論文の書き方](https://speakerdeck.com/kaityo256/happy-writing) [[File](https://github.com/kaityo256/lab_startup/tree/main/graduate_thesis/slide)]
 
 ## セットアップ編
 
