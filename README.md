@@ -5,6 +5,8 @@
 Speakerdeckへのリンク。[File]をクリックすると、PDFやパワーポイントファイルがダウンロードできる。
 
 * [研究室ガイダンス](https://speakerdeck.com/kaityo256/welcome-to-lab) [[File](https://github.com/kaityo256/lab_startup/tree/main/welcome)]
+* [渡辺研Slackの使い方](https://speakerdeck.com/kaityo256/slack-local-rule) [[File]](https://github.com/kaityo256/lab_startup/tree/main/slack)
+
 * [論文の読み方](https://speakerdeck.com/kaityo256/how-to-survey) [[File](https://github.com/kaityo256/lab_startup/tree/main/howtoreview)]
 * [論文紹介のやり方](https://speakerdeck.com/kaityo256/how-to-review) [[File](https://github.com/kaityo256/lab_startup/tree/main/howtoreview)]
 * [輪講の準備の仕方](https://speakerdeck.com/kaityo256/book-reading) [[File](https://github.com/kaityo256/lab_startup/tree/main/bookreading)]
