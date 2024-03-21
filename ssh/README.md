@@ -149,18 +149,43 @@ source $HOME/.keychain/$HOST-sh
 
 上記の手順では、SSHエージェントに秘密鍵の情報を覚えさせることで、一度`ssh-add`実行時にパスフレーズを入力したら、次回よりパスフレーズの入力を省略できるものである。それだけでも便利であるが、以下ではエージェント転送により、多段SSHを実行してみよう。
 
-まず、研究室サーバに`-A`オプションをつけてSSHで接続せよ。
+まず、GitHubに手元のPCの公開鍵を登録しよう。
 
 ```sh
-ssh username@place.of.server -A
+cat .ssh/id_rsa.pub
 ```
 
-その後、適当なディレクトリ(例えばgithub)にて、GitHubに自分が公開しているリポジトリをcloneしてみよ。
+を実行した結果をクリップボードにコピーしておく。
+
+その後、GitHubにログインし、以下の手順により公開鍵を登録せよ。
+
+1. GitHubの一番右上のアイコンをクリックして現れるメニューの下の方の「Settings」を選ぶ。
+1. 左に「Account settings」というメニューが現れるので「SSH and GPG keys」を選ぶ。
+1. 「SSH keys」右にある「New SSH key」ボタンを押す
+1. 「Title」と「Key」を入力する。Titleはなんでも良いが、例えば「Git Bash」もしくは「University PC」とする。Keyには、.ssh/id_rsaファイルの中身をコピペする。Git Bashで以下を実行せよ。
+    ```
+    cat .ssh/id_rsa.pub
+    ```
+1. すると、ssh-rsaから始まるテキストが表示されるため、マウスで選択して右クリックから「Copy」、そして、先ほどのGitHubの画面の「Key」のところにペーストし、「Add SSH key」ボタンを押す。
+1. `This is a list of SSH keys associated with your account. Remove any keys that you do not recognize.`というメッセージの下に、先ほどつけたTitleの鍵が表示されていれば登録成功だ。
+
+
+GitHubに公開鍵の登録が済んだら、研究室サーバに`-A`オプションをつけてSSHで接続せよ。
 
 ```sh
-mkdir github
-cd github
-git clone git@github.com:yourname/yourrepository.git
+ssh username@name.of.server -A
 ```
 
-パスフレーズの入力を求められずにcloneできれば成功である。なお、研究室サーバでgitのcommitやpushなどの操作をする前に、[Gitの設定](../git/README.md)を参考にユーザ名やメールアドレスの設定をしておくこと。
+その後、GitHubに公開鍵認証が通るか確認しよう。
+
+```sh
+ssh -T git@github.com
+```
+
+パスフレーズを聞かれずに、
+
+```txt
+Hi (GitHubアカウント名)! You've successfully authenticated, but GitHub does not provide shell access.
+```
+
+という表示が出たら認証に成功だ。
