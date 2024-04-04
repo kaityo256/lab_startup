@@ -204,28 +204,42 @@ Vim!」を増やそう。<code>yy</code>、<code>100p</code>で100行くらい�
 class="sourceCode txt"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>((()))</span></code></pre></div>
 <p>と入力し、適当な括弧で<code>%</code>を押してみよ。カーソルが対応する括弧に飛ぶ。これはC/C++など、ブロックを括弧で作るプログラムを組む時に便利だ。</p>
 <h3 id="矩形選択ctrlv">矩形選択：Ctrl+v</h3>
-<p><code>v</code>で行単位の選択ができたが、<code>Ctrl+v</code>で矩形選択ができる。ただし、Windowsの</p>
-<p>以下の文章を作成せよ。</p>
+<p><code>v</code>で行単位の選択ができたが、<code>Ctrl+v</code>で矩形選択ができる。ただし、Windowsではデフォルトで<code>Ctrl+v</code>が「貼り付け」になっているためにこの機能は使えない。もし矩形選択を使いたければ、Windows
+Terminalの設定から「JSONファイルを開く」を選び、</p>
 <div class="sourceCode" id="cb8"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>* Hello Vim!</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>* Hello Vim!</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>* Hello Vim!</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>* Hello Vim!</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>* Hello Vim!</span></code></pre></div>
+class="sourceCode json"><code class="sourceCode json"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>        <span class="fu">{</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&quot;command&quot;</span><span class="fu">:</span> <span class="st">&quot;paste&quot;</span><span class="fu">,</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&quot;keys&quot;</span><span class="fu">:</span> <span class="st">&quot;ctrl+v&quot;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">}</span><span class="er">,</span></span></code></pre></div>
+<p>の行の下に</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>        <span class="fu">{</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&quot;command&quot;</span><span class="fu">:</span> <span class="st">&quot;null&quot;</span><span class="fu">,</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&quot;keys&quot;</span><span class="fu">:</span> <span class="st">&quot;ctrl+v&quot;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">}</span><span class="er">,</span></span></code></pre></div>
+<p>を追加すればよい。これで<code>Ctrl+V</code>で貼り付けができなくなるが、マウスの右クリックで貼り付けができるので問題ない。</p>
+<p>以下の文章を作成せよ。</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>* Hello Vim!</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>* Hello Vim!</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>* Hello Vim!</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>* Hello Vim!</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>* Hello Vim!</span></code></pre></div>
 <p>このうち、Helloだけ消したくなったとする。置換でもできるが、最初のHelloの冒頭にカーソルを移動し、<code>Ctrl+v</code>で矩形選択開始、その後、最後のHelloの単語末まで移動して<code>d</code>。これでHelloが消えた。</p>
 <h3
 id="カーソル位置にある数字の増減ctrla-ctrlx">カーソル位置にある数字の増減：Ctrl+a,
 Ctrl+x</h3>
 <p>カーソル位置にある数字を増減できる。</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a[<span class="dv">1</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode py"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a[<span class="dv">1</span>])</span></code></pre></div>
 <p>と入力し、1のところにカーソルを合わせてCtrl+aやCtrl+xを押してみよ。数字が増減するはずだ。</p>
 <h3 id="行ジャンプ数字">行ジャンプ:数字</h3>
 <p><code>:</code>を押すとコマンドモードになるが、そこで数字を入力すると行ジャンプができる。<code>:50</code>と入力してリターンを押してみよ。50行目に飛ぶはずだ。</p>
 <h3 id="行をまとめるj-gj">行をまとめる：J, gJ</h3>
 <p><code>J</code>で次の行をまとめることができる。</p>
-<div class="sourceCode" id="cb10"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>Hello</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>Vim!</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>Hello</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>Vim!</span></code></pre></div>
 <p>と入力し、「Hello」の最後にカーソルを合わせて<code>J</code>を入力せよ。「Hello
 Vim!」になったはずだ。<code>J</code>では、改行が空白になる。空白を入れたくなければ<code>gJ</code>とする。<code>v</code>によるビジュアル選択を組み合わせるとたまに便利。</p>
 <h2 id="検索置換">検索・置換</h2>
@@ -245,8 +259,8 @@ Vim!」になったはずだ。<code>J</code>では、改行が空白になる�
 <h3 id="置換">置換</h3>
 <p>コマンドラインモードで<code>%s/置換前/置換後/g</code>を実行すると、「置換前」の文字列を「置換後」の文字列に置換できる。</p>
 <p>例えば、以下のプログラムを見てみよう。</p>
-<div class="sourceCode" id="cb11"><pre
-class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>p<span class="op">[</span>X<span class="op">]</span> <span class="op">=</span> p<span class="op">[</span>X<span class="op">]</span> <span class="op">+</span> q<span class="op">[</span>X<span class="op">]</span> <span class="op">*</span> h<span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>p<span class="op">[</span>X<span class="op">]</span> <span class="op">=</span> p<span class="op">[</span>X<span class="op">]</span> <span class="op">+</span> q<span class="op">[</span>X<span class="op">]</span> <span class="op">*</span> h<span class="op">;</span></span></code></pre></div>
 <p>これはx座標の運動量の更新のコードだが、Y座標に修正したい。この場合は<code>:%s/X/Y/g</code>を実行することで変更できる。</p>
 <p>置換実行直前</p>
 <figure>

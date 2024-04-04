@@ -36,22 +36,25 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 
 ```sh
 $ docker images
-REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
-ubuntu              18.04               329ed837d508        13 days ago         63.3MB
+REPOSITORY   TAG       IMAGE ID       CREATED       SIZE
+ubuntu       22.04     ca2b0f26964c   5 weeks ago   77.9MB
 ```
 
-ubuntuの18.04があるはずだ(うちの研究室では)。イメージがない場合、リモートから取ってくることができる。それが`pull`コマンドだ。
+ubuntuの22.04があるはずだ(うちの研究室では)。イメージがない場合、リモートから取ってくることができる。それが`pull`コマンドだ。
 
 ```sh
-docker pull ubuntu:18.04
+docker pull ubuntu:22.04
 ```
 
-これは、ubuntuの「18.04」というタグのついたイメージを持ってきなさい、という命令だ。タグは、多くの場合バージョンの指定に使われる。省略すると`latest`を指定したことになる。
+これは、ubuntuの「22.04」というタグのついたイメージを持ってきなさい、という命令だ。タグは、多くの場合バージョンの指定に使われる。省略すると`latest`を指定したことになる。
 
 今回はローカルに既にイメージがあるために
 
 ```txt
-Status: Image is up to date for ubuntu:18.04
+22.04: Pulling from library/ubuntu
+Digest: sha256:77906da86b60585ce12215807090eb327e7386c8fafb5402369e421f44eff17e
+Status: Image is up to date for ubuntu:22.04
+docker.io/library/ubuntu:22.04
 ```
 
 と言って何もしない。
@@ -59,7 +62,7 @@ Status: Image is up to date for ubuntu:18.04
 次に、このイメージからコンテナを作成し、ログインしてみよう。
 
 ```sh
-$ docker run -it ubuntu:18.04
+$ docker run -it ubuntu:22.04
 ```
 
 `root@06e9b4bcd4c6:/#`といった文字列が出てきたはずである。この`root@`の右側は毎回異なる。この文字列を3桁くらい覚えておくこと。
@@ -67,13 +70,13 @@ $ docker run -it ubuntu:18.04
 さて、今まっさらなubuntuにログインした。まずはパッケージをアップデートしよう。
 
 ```sh
-apt-get update
+apt update
 ```
 
 アップデートが終わったら、何かインストールしてみよう。今回は「Bastard Tetris(いやがらせテトリス), bastet」をインストールしてみよう。以下のコマンドを実行せよ。
 
 ```sh
-apt-get install -y bastet
+apt install -y bastet
 ```
 
 ここで`-y`を指定するのを忘れないこと。これは「確認無しにインストールせよ」というオプションだ。
@@ -99,7 +102,7 @@ docker ps
 ```sh
 $ docker ps -a
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                            PORTS               NAMES
-06e9b4bcd4c6        ubuntu:18.04        "/bin/bash"         16 minutes ago      Exited (127) About a minute ago                       stupefied_sammet
+06e9b4bcd4c6        ubuntu:22.04        "/bin/bash"         16 minutes ago      Exited (127) About a minute ago                       stupefied_sammet
 ```
 
 終了したコンテナが表示されたはずだ。複数人で実行した場合は複数表示されるので、先ほど覚えたIDを使う。終了したコンテナを再び起動してみよう。先ほど覚えた3桁のIDを入力せよ(他のコンテナIDと区別できる最低限の桁数を指定すれば良いので、一つしかなければ最初の1桁でも良い)。
@@ -113,7 +116,7 @@ docker start 06e
 ```sh
 $ docker ps
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
-06e9b4bcd4c6        ubuntu:18.04        "/bin/bash"         19 minutes ago      Up 51 seconds                           stupefied_sammet
+06e9b4bcd4c6        ubuntu:22.04        "/bin/bash"         19 minutes ago      Up 51 seconds                           stupefied_sammet
 ```
 
 この実行中のコンテナに接続(attach)しよう。
@@ -159,12 +162,12 @@ vim Dockerfile
 まずは以下の内容のファイルを作成せよ。
 
 ```yaml
-FROM ubuntu:18.04
+FROM ubuntu:22.04
 
 RUN apt-get update
 ```
 
-`FROM`は、元にするイメージを指定する。ここでは`ubuntu:18.04`にしよう。`RUN`は実行するコマンドだ。最初はパッケージのアップデートをする。
+`FROM`は、元にするイメージを指定する。ここでは`ubuntu:22.04`にしよう。`RUN`は実行するコマンドだ。最初はパッケージのアップデートをする。
 
 ファイルが作成できたら、`docker build`によりイメージを作成しよう。
 
@@ -187,7 +190,7 @@ Successfully tagged watanabe/bastet:latest
 $ docker images
 REPOSITORY          TAG                 IMAGE ID            CREATED              SIZE
 watanabe/bastet     latest              876b1067a73b        About a minute ago   92.8MB
-ubuntu              18.04               c3c304cb4f22        6 weeks ago          64.2MB
+ubuntu              22.04               c3c304cb4f22        6 weeks ago          64.2MB
 ```
 
 このIMAGE ID(`876b1067a73b`)の最初の数桁(`876`)も覚えておこう。
@@ -195,7 +198,7 @@ ubuntu              18.04               c3c304cb4f22        6 weeks ago         
 さて、先ほどはパッケージのアップデートしなかったので、bastetのインストールを追加しよう。`Dockerfile`を以下のように修正せよ。
 
 ```yaml
-FROM ubuntu:18.04
+FROM ubuntu:22.04
 
 RUN apt-get update && apt-get install -y bastet
 ```
@@ -222,7 +225,7 @@ $ docker images
 REPOSITORY          TAG                 IMAGE ID            CREATED              SIZE
 watanabe/bastet     latest              6e343ebe467b        About a minute ago   94.9MB
 <none>              <none>              876b1067a73b        9 minutes ago        92.8MB
-ubuntu              18.04               c3c304cb4f22        6 weeks ago          64.2MB
+ubuntu              22.04               c3c304cb4f22        6 weeks ago          64.2MB
 ```
 
 イメージを更新し、そちらに`watanabe/bastet`という同じ名前(タグ)を付けたため、名無しのイメージ`<none>`が出来たことがわかる。サイズもわりと大きいので消しておこう。イメージの削除は`rmi`を使う。
