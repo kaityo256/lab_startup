@@ -17,10 +17,10 @@ $ sudo apt install -y lammps
 
 ```sh
 $ echo info | lmp
-LAMMPS (3 Mar 2020)
+LAMMPS (20 Nov 2019)
 
 Info-Info-Info-Info-Info-Info-Info-Info-Info-Info-Info
-Printed on Mon May  2 15:12:31 2022
+Printed on Mon Apr 22 18:08:04 2024
 
 
 Info-Info-Info-Info-Info-Info-Info-Info-Info-Info-Info
@@ -28,7 +28,7 @@ Info-Info-Info-Info-Info-Info-Info-Info-Info-Info-Info
 Total wall time: 0:00:00
 ```
 
-以下、`lmp_serial`を`lmp_stable`と読み替えて実行すること。
+以下、`lmp_serial`を`lmp`と読み替えて実行すること。
 
 ### Mac
 
