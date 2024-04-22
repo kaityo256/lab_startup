@@ -8,26 +8,15 @@ Lammps (Large-scale Atomic/Molecular Massively Parallel Simulator)は、サン�
 
 WSLのターミナルで以下を実行する。
 
-まずはリポジトリを追加する。
-
 ```sh
-$ sudo add-apt-repository ppa:gladky-anton/lammps
-$ sudo add-apt-repository ppa:openkim/latest
+$ sudo apt update
+$ sudo apt install -y lammps
 ```
 
-それぞれ「リポジトリを追加して良いか？」と聞いてくるので、エンターキーを押そう。
-
-リポジトリが追加されたら、パッケージをアップデートしてからLAMMPSをインストールする。
+これにより、`lmp`という実行バイナリがインストールされる。バージョンを確認しよう。
 
 ```sh
-$ sudo apt-get update
-$ sudo apt-get install lammps-stable
-```
-
-これにより、`lmp_stable`という実行バイナリがインストールされる。バージョンを確認しよう。
-
-```sh
-$ echo info | lmp_stable
+$ echo info | lmp
 LAMMPS (3 Mar 2020)
 
 Info-Info-Info-Info-Info-Info-Info-Info-Info-Info-Info
