@@ -134,13 +134,15 @@ export PATH=$PATH:/home/apps/lammps
 
 [ここ](https://www.ks.uiuc.edu/Research/vmd/)に行って、「Download (all versions)」をクリックする。
 
-次に「Version 1.9.4 LATEST ALPHA (2020-12-21) Platforms:」の、「Windows 64-bit, CUDA, OptiX, OSPRay (64-bit Intel x86_64) (Windows 10)」を選ぶ。
-
-もし実行時にエラーが起きて開けなかった場合、アンインストールして32-bit版をダウンロードした方が良いかも。
+次に「Version 1.9.4 LATEST ALPHA (2022-04-27) Platforms:」の、「Windows 64-bit, CUDA, OptiX, OSPRay (64-bit Intel x86_64) (Windows 10)」を選ぶ。
 
 すると、「Registration/Login」画面が現れるので、メールアドレスと、適当なパスワードを入力する。初回登録時には「New User Registration」画面となるので、必要事項を入力の上で「Register」を押す。
 
-ライセンスに同意することを示すと、ダウンロードが始まる。ダウンロードが完了したら、インストールする。特に設定項目はない。
+ライセンスに同意することを示すと、ダウンロードが始まる。ダウンロードが完了したら、インストールする。特に設定項目はない。インストール後に実行したら、以下のように「VMD」の文字が回転する画面が表示されれば成功である。
+
+![VMD](fig/vmd.png)
+
+もしインストール後に実行してもエラーが起きて開けなかった場合、アンインストールして32-bit版をインストールする。具体的には[VMDダウンロードページ](https://www.ks.uiuc.edu/Development/Download/download.cgi?PackageName=VMD)に行って、「Windows OpenGL (32-bit Intel x86) (Microsoft Windows XP/Vista/7/8/10 (32-bit) using OpenGL)」をダウンロードする。32-bitで、かつCUDAを使っていないものを選ぶこと。
 
 ### Mac
 
@@ -170,6 +172,10 @@ M1 Macの場合は「MacOS 11.x, ARM64 (64-bit "M1" Macs) (Apple MacOS-X 11 or l
 ![vmd_open](fig/vmd_open.png)
 
 するとパスワードが要求されるので入力し、もう一度確認画面がでるのでOKを押すと、VMDが起動する。VMDをアプリケーションフォルダにコピーしておけば、二度目からは確認されない。
+
+最終的に、以下のように「VMD」の文字が回転する画面が表示されれば成功である。
+
+![VMD](fig/vmd.png)
 
 ## VMDによる可視化
 
