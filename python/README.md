@@ -13,6 +13,7 @@ aptを使ってPython3をインストールする。
 ```sh
 sudo apt-get update
 sudo apt intall python3
+sudo apt install python3-pip
 ```
 
 また、後で必要なパッケージも入れておこう。
