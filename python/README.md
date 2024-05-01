@@ -19,6 +19,7 @@ sudo apt install python3-pip
 また、後で必要なパッケージも入れておこう。
 
 ```sh
+python3 -m pip install --upgrade pip
 python3 -m pip install numpy matplotlib
 ```
 
@@ -27,9 +28,16 @@ python3 -m pip install numpy matplotlib
 Pythonの開発ではJupyter Notebookを使うと便利だ。以下でインストールしよう。
 
 ```sh
-python3 -m pip install --upgrade pip
 python3 -m pip install jupyter
 ```
+
+標準で`.local/bin`にインストールされるため、パスを通す必要がある。以下を実行すること。
+
+```sh
+export PATH=$PATH:$HOME/.local/bin
+```
+
+なお、ターミナルを開くたびに上記設定が必要であるため、上記を`.bashrc`の最後に追加しておくと良い。
 
 Jupyter Notebookはブラウザ上でPythonを実行する環境であり、普通に実行すると自動でブラウザが開かれるが、WSL上で使うには少々工夫がいる。まず、Jupyter Notebookを、ブラウザなしモードで起動する。
 

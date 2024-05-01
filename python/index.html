@@ -81,24 +81,27 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt intall python3</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install python3-pip</span></code></pre></div>
 <p>また、後で必要なパッケージも入れておこう。</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> pip install numpy matplotlib</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> pip install <span class="at">--upgrade</span> pip</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> pip install numpy matplotlib</span></code></pre></div>
 <h3 id="jupyter-notebookのインストール">Jupyter
 Notebookのインストール</h3>
 <p>Pythonの開発ではJupyter
 Notebookを使うと便利だ。以下でインストールしよう。</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> pip install <span class="at">--upgrade</span> pip</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> pip install jupyter</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> pip install jupyter</span></code></pre></div>
+<p>標準で<code>.local/bin</code>にインストールされるため、パスを通す必要がある。以下を実行すること。</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">PATH</span><span class="op">=</span><span class="va">$PATH</span>:<span class="va">$HOME</span>/.local/bin</span></code></pre></div>
+<p>なお、ターミナルを開くたびに上記設定が必要であるため、上記を<code>.bashrc</code>の最後に追加しておくと良い。</p>
 <p>Jupyter
 Notebookはブラウザ上でPythonを実行する環境であり、普通に実行すると自動でブラウザが開かれるが、WSL上で使うには少々工夫がいる。まず、Jupyter
 Notebookを、ブラウザなしモードで起動する。</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">jupyter</span> notebook <span class="at">--no-browser</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">jupyter</span> notebook <span class="at">--no-browser</span></span></code></pre></div>
 <p>すると、以下のような表示がされるはずだ。</p>
-<div class="sourceCode" id="cb5"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>    To access the notebook, open this file in a browser:</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>        file:///home/watanabe/.local/share/jupyter/runtime/nbserver-985-open.html</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    Or copy and paste one of these URLs:</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        http://localhost:8888/?token=e4a7e2efbf7cf61ceb4d11652e8f538f67bc11b9aacdde54</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>     or http://127.0.0.1:8888/?token=e4a7e2efbf7cf61ceb4d11652e8f538f67bc11b9aacdde54</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>    To access the notebook, open this file in a browser:</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>        file:///home/watanabe/.local/share/jupyter/runtime/nbserver-985-open.html</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    Or copy and paste one of these URLs:</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        http://localhost:8888/?token=e4a7e2efbf7cf61ceb4d11652e8f538f67bc11b9aacdde54</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>     or http://127.0.0.1:8888/?token=e4a7e2efbf7cf61ceb4d11652e8f538f67bc11b9aacdde54</span></code></pre></div>
 <p>このうち、<code>http://localhost:8888</code>ではじまる行(<code>token=...</code>を含む)をブラウザのURLにコピペするとJupyter
 Notebookが開かれるので、右上の「New」ボタンから「Python 3」を選ぶ。</p>
 <figure>
@@ -106,7 +109,7 @@ Notebookが開かれるので、右上の「New」ボタンから「Python 3」�
 <figcaption aria-hidden="true">newbook2.png</figcaption>
 </figure>
 <p>新しいタブが開き、入力待ちになるので、そこで何かプログラムを入力する。例えば</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Hello Python&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Hello Python&quot;</span>)</span></code></pre></div>
 <p>と入力し「Shift+Return」もしくは上の「Run」ボタンをクリックする。</p>
 <figure>
 <img src="fig/run2.png" alt="run2.png" />
@@ -118,16 +121,17 @@ Python」と表示されて、次のセルが入力待ちになれば成功で�
 <h2 id="mac編">Mac編</h2>
 <h3 id="python3のインストール">Python3のインストール</h3>
 <p>まずはPython3をインストールしよう。</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install python3</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install python3</span></code></pre></div>
 <p>Python3がインストールされたら、必要なパッケージをいれておこう。</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> pip install numpy matplotlib</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> pip install numpy matplotlib</span></code></pre></div>
 <h3 id="jupyter-notebookのテスト">Jupyter Notebookのテスト</h3>
 <p>次に、Jupyter Notebookをインストールしよう。</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> pip install <span class="at">--upgrade</span> pip</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> pip install jupyter</span></code></pre></div>
-<p>ターミナルから以下を実行せよ。</p>
 <div class="sourceCode" id="cb10"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">jupyter</span> notebook</span></code></pre></div>
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> pip install <span class="at">--upgrade</span> pip</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> pip install jupyter</span></code></pre></div>
+<p>ターミナルから以下を実行せよ。</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">jupyter</span> notebook</span></code></pre></div>
 <p>デフォルトのブラウザで、Jupyter
 Notebookが開かれるので、右上の「New」ボタンから「Python 3」を選ぶ。</p>
 <figure>
@@ -135,8 +139,8 @@ Notebookが開かれるので、右上の「New」ボタンから「Python 3」�
 <figcaption aria-hidden="true">newbook2.png</figcaption>
 </figure>
 <p>新しいタブが開き、入力待ちになるので、そこで何かプログラムを入力する。例えば</p>
-<div class="sourceCode" id="cb11"><pre
-class="sourceCode py"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Hello Python&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode py"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Hello Python&quot;</span>)</span></code></pre></div>
 <p>と入力し「Shift+Return」もしくは上の「Run」ボタンをクリックする。</p>
 <figure>
 <img src="fig/run2.png" alt="run2.png" />
