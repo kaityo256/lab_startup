@@ -9,8 +9,8 @@ Lammps (Large-scale Atomic/Molecular Massively Parallel Simulator)は、サン�
 WSLのターミナルで以下を実行する。
 
 ```sh
-$ sudo apt update
-$ sudo apt install -y lammps
+sudo apt update
+sudo apt install -y lammps
 ```
 
 これにより、`lmp`という実行バイナリがインストールされる。バージョンを確認しよう。
