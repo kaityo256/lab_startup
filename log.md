@@ -9,6 +9,7 @@
 * 4/11 スパコンハンズオン
 * 4/18 gnuplotハンズオン
 * 4/25 LastPassと多要素認証(GitHubも)
+* 5/9 GNU make
 
 ## 2023年度
 
