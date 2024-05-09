@@ -24,7 +24,9 @@ xeyes
 
 ![xeyes](fig/xeyes.png)
 
-もし
+※現在のMacではこれだけでうまく行くはず。以下は古いMac向けの情報。
+
+もし`xeyes`を実行した時に
 
 ```sh
 $ xeyes
