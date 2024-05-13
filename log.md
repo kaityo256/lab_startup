@@ -10,6 +10,7 @@
 * 4/18 gnuplotハンズオン
 * 4/25 LastPassと多要素認証(GitHubも)
 * 5/9 GNU make
+* 5/16 ParaViewハンズオン
 
 ## 2023年度
 
