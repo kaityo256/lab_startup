@@ -2,9 +2,11 @@
 
 Lammps (Large-scale Atomic/Molecular Massively Parallel Simulator)は、サンディア国立研究所の古典分子動力学プログラムだ。性能が良く、比較的容易に使えて、並列化もなされているため、広く使われている。
 
-## Lammpsのインストール
+## Lammpsの使い方
 
-### Windows
+### インストール
+
+#### Windows
 
 WSLのターミナルで以下を実行する。
 
@@ -30,7 +32,7 @@ Total wall time: 0:00:00
 
 以下、`lmp_serial`を`lmp`と読み替えて実行すること。
 
-### Mac
+#### Mac
 
 「ターミナル」で以下を実行しよう。
 
@@ -55,7 +57,7 @@ Total wall time: 0:00:00
 
 上記のようなバージョン情報が表示されれば問題なくインストールされている。
 
-## サンプルコードの実行
+### サンプルコードの実行
 
 インストールが完了したら、サンプルコードを実行してみよう。サンプルファイルをgitでcloneする。
 
@@ -86,7 +88,7 @@ Total wall time: 0:00:00
 
 といった表示が出れば実行は成功だ。
 
-## in.meltの修正
+### in.meltの修正
 
 次に、`in.melt`を修正しよう。
 
@@ -126,9 +128,11 @@ export PATH=$PATH:/home/apps/lammps
 
 これにより、`lmp_serial`が使えるようになる。
 
-## VMDのインストール
+## VMD
 
-### Windows
+### インストール
+
+#### Windows
 
 次にVMDをダウンロード、インストールしよう。
 
@@ -144,7 +148,7 @@ export PATH=$PATH:/home/apps/lammps
 
 もしインストール後に実行してもエラーが起きて開けなかった場合、アンインストールして32-bit版をインストールする。具体的には[VMDダウンロードページ](https://www.ks.uiuc.edu/Development/Download/download.cgi?PackageName=VMD)に行って、「Windows OpenGL (32-bit Intel x86) (Microsoft Windows XP/Vista/7/8/10 (32-bit) using OpenGL)」をダウンロードする。32-bitで、かつCUDAを使っていないものを選ぶこと。
 
-### Mac
+#### Mac
 
 [ここ](https://www.ks.uiuc.edu/Research/vmd/)に行って、「Download (all versions)」をクリックする。
 
@@ -177,9 +181,9 @@ M1 Macの場合は「MacOS 11.x, ARM64 (64-bit "M1" Macs) (Apple MacOS-X 11 or l
 
 ![VMD](fig/vmd.png)
 
-## VMDによる可視化
+### VMDによる可視化
 
-### Windowsの場合
+#### Windowsの場合
 
 WSLにおいて、まず`dump.melt`が存在するディレクトリで
 
@@ -211,7 +215,7 @@ file typeとして「LAMMPS Trajectory」を選んでから「Load」を押す�
 
 この状態で、VMD Mainの右下にある再生ボタン「Play Forward」を押せば、原子が凍った状態から解けていくアニメーション(6フレームしかないが)が表示されるはずである。マウスでドラッグすると角度を変えられるので試してみよ。
 
-### Macの場合
+#### Macの場合
 
 VMDが起動したら、「VMD Main」の「File」から「New Molecule」を選び、「Browse」を押して先ほどの`dump.melt`を選ぶ。`/lammps`の中にあるはず。
 
@@ -226,3 +230,55 @@ file typeとして「LAMMPS Trajectory」を選んでから「Load」を押す�
 ![Representation](fig/vmd_representation.png)
 
 この状態で、VMD Mainの右下にある再生ボタン「Play Forward」を押せば、原子が凍った状態から解けていくアニメーション(6フレームしかないが)が表示されるはずである。マウスでドラッグすると角度を変えられるので試してみよ。
+
+### Drawing MethodとしてVDWをデフォルトにする
+
+ほとんどの場合、可視化方法としてVDW(ファンデルファールス)を選ぶと思われるので、毎回指定するのは面倒だ。以下、デフォルトで粒子のDrawing MethodをLinesからVDWにする方法を説明する。
+
+#### Mac
+
+Macは簡単であり、ホームディレクトリに
+
+```txt
+mol default style VDW
+menu main on
+```
+
+という内容の`.vmdrc`ファイルを作ればよい。このファイルはVMDが起動時に自動的に読み込まれるため、デフォルトスタイルがVDWになる。
+
+#### Windows
+
+Windowsでは、VDWの作業ディレクトリがデフォルトで`C:\Program Files (x86)\VMD\`になってしまうので面倒だ。
+そこで、VDWのショートカットを作成し、その「リンク先」として`.vmdrc`を指定する。
+
+まず、以下の内容の`.vmdrc`を作成する。
+
+```txt
+mol default style VDW
+menu main on
+```
+
+このファイルを(Ubuntuではなく)Windowsのホームディレクトリへコピーする。Windowsのホームディレクトリは、`C:\Users\name`という名前になっている。ここでは`c:\Users\watanabe`であるとする。
+
+WSLのUbuntuから作成したのなら、以下のようにしてUbuntu側からWindows側にコピーできる。
+
+```sh
+ cp .vmdrc /mnt/c/Users/watanabe
+```
+
+アカウント部分は適宜修正すること。
+
+次に、VMDのショートカットを作成する。
+
+`C:\Program Files (x86)\VMD`にある`vmd.exe`を右クリックし「その他のオプション」から「ショートカットの作成」を選ぶと、「ここにショートカットを作成することはできません。デスクトップ上に作成しますか？」と聞かれるので「はい」を選ぶ。
+
+デスクトップに作成された「vmd.exe - ショートカット」を右クリックし、プロパティを開いて「リンク先」を以下のように修正する。
+
+```txt
+"C:\Program Files (x86)\VMD\vmd.exe" -e "C:\Users\watanabe\.vmdrc"
+```
+![vmd_shortcut](fig/vmd_shortcut.png)
+
+アカウント名は適宜修正すること。
+
+これにより、このショートカットをダブルクリックすることで、VMDが`.vmdrc`を読み込んだ状態で起動する。

@@ -74,8 +74,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h1 id="lammpsとvmdのインストール">LammpsとVMDのインストール</h1>
 <p>Lammps (Large-scale Atomic/Molecular Massively Parallel
 Simulator)は、サンディア国立研究所の古典分子動力学プログラムだ。性能が良く、比較的容易に使えて、並列化もなされているため、広く使われている。</p>
-<h2 id="lammpsのインストール">Lammpsのインストール</h2>
-<h3 id="windows">Windows</h3>
+<h2 id="lammpsの使い方">Lammpsの使い方</h2>
+<h3 id="インストール">インストール</h3>
+<h4 id="windows">Windows</h4>
 <p>WSLのターミナルで以下を実行する。</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install <span class="at">-y</span> lammps</span></code></pre></div>
@@ -91,7 +92,7 @@ Simulator)は、サンディア国立研究所の古典分子動力学プログ�
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="ex">Total</span> wall time: 0:00:00</span></code></pre></div>
 <p>以下、<code>lmp_serial</code>を<code>lmp</code>と読み替えて実行すること。</p>
-<h3 id="mac">Mac</h3>
+<h4 id="mac">Mac</h4>
 <p>「ターミナル」で以下を実行しよう。</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install lammps</span></code></pre></div>
 <p>インストールが完了したら以下を実行せよ。</p>
@@ -106,7 +107,7 @@ Simulator)は、サンディア国立研究所の古典分子動力学プログ�
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="ex">Total</span> wall time: 0:00:00</span></code></pre></div>
 <p>上記のようなバージョン情報が表示されれば問題なくインストールされている。</p>
-<h2 id="サンプルコードの実行">サンプルコードの実行</h2>
+<h3 id="サンプルコードの実行">サンプルコードの実行</h3>
 <p>インストールが完了したら、サンプルコードを実行してみよう。サンプルファイルをgitでcloneする。</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> github</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone <span class="at">--depth</span> 1 https://github.com/lammps/lammps.git</span>
@@ -122,7 +123,7 @@ class="sourceCode txt"><code class="sourceCode default"><span id="cb7-1"><a href
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>Dangerous builds not checked</span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>Total wall time: 0:00:00</span></code></pre></div>
 <p>といった表示が出れば実行は成功だ。</p>
-<h2 id="in.meltの修正">in.meltの修正</h2>
+<h3 id="in.meltの修正">in.meltの修正</h3>
 <p>次に、<code>in.melt</code>を修正しよう。</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">code</span> in.melt</span></code></pre></div>
 <p>と入力すれば、VSCodeで直接<code>in.melt</code>が開かれるはず。</p>
@@ -140,8 +141,9 @@ class="sourceCode sh"><code class="sourceCode bash"><span id="cb11-1"><a href="#
 <div class="sourceCode" id="cb12"><pre
 class="sourceCode sh"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">PATH</span><span class="op">=</span><span class="va">$PATH</span>:/home/apps/lammps</span></code></pre></div>
 <p>これにより、<code>lmp_serial</code>が使えるようになる。</p>
-<h2 id="vmdのインストール">VMDのインストール</h2>
-<h3 id="windows-1">Windows</h3>
+<h2 id="vmd">VMD</h2>
+<h3 id="インストール-1">インストール</h3>
+<h4 id="windows-1">Windows</h4>
 <p>次にVMDをダウンロード、インストールしよう。</p>
 <p><a
 href="https://www.ks.uiuc.edu/Research/vmd/">ここ</a>に行って、「Download
@@ -162,7 +164,7 @@ href="https://www.ks.uiuc.edu/Development/Download/download.cgi?PackageName=VMD"
 OpenGL (32-bit Intel x86) (Microsoft Windows XP/Vista/7/8/10 (32-bit)
 using
 OpenGL)」をダウンロードする。32-bitで、かつCUDAを使っていないものを選ぶこと。</p>
-<h3 id="mac-1">Mac</h3>
+<h4 id="mac-1">Mac</h4>
 <p><a
 href="https://www.ks.uiuc.edu/Research/vmd/">ここ</a>に行って、「Download
 (all versions)」をクリックする。</p>
@@ -199,8 +201,8 @@ Registration」画面となるので、必要事項を入力の上で「Register
 <img src="fig/vmd.png" alt="VMD" />
 <figcaption aria-hidden="true">VMD</figcaption>
 </figure>
-<h2 id="vmdによる可視化">VMDによる可視化</h2>
-<h3 id="windowsの場合">Windowsの場合</h3>
+<h3 id="vmdによる可視化">VMDによる可視化</h3>
+<h4 id="windowsの場合">Windowsの場合</h4>
 <p>WSLにおいて、まず<code>dump.melt</code>が存在するディレクトリで</p>
 <div class="sourceCode" id="cb13"><pre
 class="sourceCode sh"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">open</span> .</span></code></pre></div>
@@ -230,7 +232,7 @@ Scale」を小さくしよう。0.3くらいがちょうどよいと思う。</p
 </figure>
 <p>この状態で、VMD Mainの右下にある再生ボタン「Play
 Forward」を押せば、原子が凍った状態から解けていくアニメーション(6フレームしかないが)が表示されるはずである。マウスでドラッグすると角度を変えられるので試してみよ。</p>
-<h3 id="macの場合">Macの場合</h3>
+<h4 id="macの場合">Macの場合</h4>
 <p>VMDが起動したら、「VMD Main」の「File」から「New
 Molecule」を選び、「Browse」を押して先ほどの<code>dump.melt</code>を選ぶ。<code>/lammps</code>の中にあるはず。</p>
 <p>file typeとして「LAMMPS Trajectory」を選んでから「Load」を押す。</p>
@@ -249,6 +251,40 @@ Scale」を小さくしよう。0.3くらいがちょうどよいと思う。</p
 </figure>
 <p>この状態で、VMD Mainの右下にある再生ボタン「Play
 Forward」を押せば、原子が凍った状態から解けていくアニメーション(6フレームしかないが)が表示されるはずである。マウスでドラッグすると角度を変えられるので試してみよ。</p>
+<h3 id="drawing-methodとしてvdwをデフォルトにする">Drawing
+MethodとしてVDWをデフォルトにする</h3>
+<p>ほとんどの場合、可視化方法としてVDW(ファンデルファールス)を選ぶと思われるので、毎回指定するのは面倒だ。以下、デフォルトで粒子のDrawing
+MethodをLinesからVDWにする方法を説明する。</p>
+<h4 id="mac-2">Mac</h4>
+<p>Macは簡単であり、ホームディレクトリに</p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>mol default style VDW</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>menu main on</span></code></pre></div>
+<p>という内容の<code>.vmdrc</code>ファイルを作ればよい。このファイルはVMDが起動時に自動的に読み込まれるため、デフォルトスタイルがVDWになる。</p>
+<h4 id="windows-2">Windows</h4>
+<p>Windowsでは、VDWの作業ディレクトリがデフォルトで<code>C:\Program Files (x86)\VMD\</code>になってしまうので面倒だ。
+そこで、VDWのショートカットを作成し、その「リンク先」として<code>.vmdrc</code>を指定する。</p>
+<p>まず、以下の内容の<code>.vmdrc</code>を作成する。</p>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>mol default style VDW</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>menu main on</span></code></pre></div>
+<p>このファイルを(Ubuntuではなく)Windowsのホームディレクトリへコピーする。Windowsのホームディレクトリは、<code>C:\Users\name</code>という名前になっている。ここでは<code>c:\Users\watanabe</code>であるとする。</p>
+<p>WSLのUbuntuから作成したのなら、以下のようにしてUbuntu側からWindows側にコピーできる。</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">cp</span> .vmdrc /mnt/c/Users/watanabe</span></code></pre></div>
+<p>アカウント部分は適宜修正すること。</p>
+<p>次に、VMDのショートカットを作成する。</p>
+<p><code>C:\Program Files (x86)\VMD</code>にある<code>vmd.exe</code>を右クリックし「その他のオプション」から「ショートカットの作成」を選ぶと、「ここにショートカットを作成することはできません。デスクトップ上に作成しますか？」と聞かれるので「はい」を選ぶ。</p>
+<p>デスクトップに作成された「vmd.exe -
+ショートカット」を右クリックし、プロパティを開いて「リンク先」を以下のように修正する。</p>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>&quot;C:\Program Files (x86)\VMD\vmd.exe&quot; -e &quot;C:\Users\watanabe\.vmdrc&quot;</span></code></pre></div>
+<figure>
+<img src="fig/vmd_shortcut.png" alt="vmd_shortcut" />
+<figcaption aria-hidden="true">vmd_shortcut</figcaption>
+</figure>
+<p>アカウント名は適宜修正すること。</p>
+<p>これにより、このショートカットをダブルクリックすることで、VMDが<code>.vmdrc</code>を読み込んだ状態で起動する。</p>
 </article>
 </body>
 </html>
