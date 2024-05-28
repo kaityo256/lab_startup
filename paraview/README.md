@@ -6,23 +6,39 @@ VMDは原子や粒子、すなわち「つぶつぶ」を可視化するため�
 
 [https://www.paraview.org/](https://www.paraview.org/)に行き、「Download」をクリックする。
 
-![Download](fig/download.png)
+Nightlyではなく、その時点での最新版(本記事執筆時はv5.12)を選ぶと良いだろう。
 
-Nightlyではなく、その時点での最新版(本記事執筆時はv5.8)を選ぶと良いだろう。
-
-Windowsの場合は、拡張子がexeで終わっており、かつMPI版ではないもの(本記事執筆時では`ParaView-5.8.0-Windows-Python3.7-msvc2015-64bit.exe`)を選ぶ。
+Windowsの場合は、拡張子がmsiで終わっており、かつMPI版ではないもの(本記事執筆時では`ParaView-5.12.1-Windows-Python3.10-msvc2017-AMD64.msi`)を選ぶ。
 
 ![Windows](fig/windows_download.png)
 
-Macの場合は、パッケージ版(拡張子がpkg)を選ぶと良いであろう
+Macの場合は、パッケージ版(拡張子がpkg)を選ぶと良いであろう。「このMacについて」を確認し、自分のMacのプロセッサがIntelである場合はx86版を、M1/M2等である場合はarm64版をダウンロードすること。
 
 ![Mac](fig/mac_download.png)
 
-直接インストーラで起動すると怒られる場合があるが、パッケージファイルを右クリックして出てきたメニューで「開く」を選べばインストールできるはずである。
+パッケージファイルをダブルクリックすればインストールできる。
 
 インストール後、実行すると、 「Startup Screen」が現れる。不要なら「Don't show tihs window again」にチェックして「Close」すると、次回から現れなくなる。
 
 以上でインストール完了だ。
+
+## FFmpegとImageMagickのインストール
+
+ParaViewを扱うのに必須ではないが、動画を作成するのにFFmpegとImageMagickがあると便利だ。事前にインストールしておくと良い。
+
+Windows(WSL)の場合。
+
+```sh
+sudo apt install ffmpeg
+sudo apt install imagemagick
+```
+
+Macの場合。
+
+```sh
+brew install ffmpeg
+brew install imagemagick
+```
 
 ## VTKファイルの構造
 
@@ -222,7 +238,7 @@ python3 simple.py
 
 この「Mapping Data」において、値の小さい方が左、値の大きい方が右である。つまり、この状態では「系の一番小さな値」が青く、「系の一番大きな値」が赤く表示されている。また、高さ方向は「濃さ(不透明度)」である。一番上が100%、つまり全く透過せず、一番下が0%、つまり完全透過である。
 
-下のカラーバーの、赤い部分をダブルクリックすると、カラーピッカーが表示される。
+下のカラーバーの、赤い部分を選んでからエンターキーを押すと、カラーピッカーが表示される。
 
 ![color picker](fig/color_picker.png)
 
