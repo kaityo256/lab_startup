@@ -65,7 +65,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </style>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://kaityo256.github.io/sevendayshpc/github-markdown.css" type="text/css" />
-  <script src="/usr/share/javascript/mathjax/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
@@ -74,40 +76,45 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <article class="markdown-body">
 <h1 id="markdown記法とlatex記法">Markdown記法とLaTeX記法</h1>
 <h2 id="準備">準備</h2>
-<p>VSCodeを開き、<code>test.md</code>という名前でファイルを新規作成せよ。拡張機能(Shift+Ctrl+X)で、「Markdown+Math」をインストールせよ。その状態で、</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb1-1" title="1"><span class="ss">$$</span></a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="ss">E = mc^2</span></a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="ss">$$</span></a></code></pre></div>
-<p>と入力し、「Ctrl+K, V (Ctrl+Kを押してから、Ctrlを離してV)」もしくは、コマンドパレットから「Markdown: プレビューを横に表示」を入力せよ。</p>
-<p>拡張機能が正しくインストールされていれば、以下の画面のように右側に数式が表示されたはずだ。</p>
+<p>VSCodeを開き、<code>test.md</code>という名前でファイルを新規作成せよ。その状態で、</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ss">$$</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ss">E = mc^2</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ss">$$</span></span></code></pre></div>
+<p>と入力し、「Ctrl+K, V
+(Ctrl+Kを押してから、Ctrlを離してV)」もしくは、コマンドパレットから「Markdown:
+プレビューを横に表示」を入力せよ。以下の画面のように右側に数式が表示されたはずだ。</p>
 <figure>
-<img src="fig/tex_preview.png" alt="tex_preview" /><figcaption>tex_preview</figcaption>
+<img src="fig/tex_preview.png" alt="tex_preview" />
+<figcaption aria-hidden="true">tex_preview</figcaption>
 </figure>
 <p>以下、VSCodeでプレビューを見ながらMarkdownやLaTeX記法を書いてみる。</p>
 <h2 id="markdown記法">Markdown記法</h2>
-<p>もともとはプレーンテキストをHTMLに変換することを目的として作られた「マークアップ言語」の一つ。様々な拡張がなされ、今ではPDF他、様々な形式に変換できる。方言が多いのが特徴(問題)。GitHubではMarkdownはHTMLに変換して表示されるため、ドキュメントのデファクトスタンダードになっている。ただし、GitHubではMarkdown中の数式は表示されないので注意。</p>
+<p>もともとはプレーンテキストをHTMLに変換することを目的として作られた「マークアップ言語」の一つ。様々な拡張がなされ、今ではPDF他、様々な形式に変換できる。方言が多いのが特徴(問題)。GitHubではMarkdownはHTMLに変換して表示されるため、ドキュメントのデファクトスタンダードになっている。</p>
 <h3 id="見出し">見出し</h3>
-<p><code>#</code>ではじまる文章は見出しになる。<code>#</code>、<code>##</code>など、<code>#</code>の数で見出しのレベルを表現する。 上の「見出し」は</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode md"><code class="sourceCode markdown"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">### 見出し</span></a></code></pre></div>
+<p><code>#</code>ではじまる文章は見出しになる。<code>#</code>、<code>##</code>など、<code>#</code>の数で見出しのレベルを表現する。
+上の「見出し」は</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode md"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">### 見出し</span></span></code></pre></div>
 <p>と書いてある。</p>
 <p>見出しは、VSCodeではアウトラインとして表示される。アウトラインの表示順は「名前」や「位置」があるが、通常は「位置」でソートした方がわかりやすい。</p>
 <figure>
-<img src="fig/outline.png" alt="outline" /><figcaption>outline</figcaption>
+<img src="fig/outline.png" alt="outline" />
+<figcaption aria-hidden="true">outline</figcaption>
 </figure>
 <h3 id="番号つきリスト">番号つきリスト</h3>
 <p>「行頭に数字＋ピリオド」で番号付きリストを作ることができる。</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode md"><code class="sourceCode markdown"><a class="sourceLine" id="cb3-1" title="1">1. <span class="fl">One</span></a>
-<a class="sourceLine" id="cb3-2" title="2"><span class="fl">2. Two</span></a>
-<a class="sourceLine" id="cb3-3" title="3"><span class="fl">3. Three</span></a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode md"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>One</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Two</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Three</span></code></pre></div>
 <ol type="1">
 <li>One</li>
 <li>Two</li>
 <li>Three</li>
 </ol>
 <p>Markdownに書く番号そのものは無視される。</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode md"><code class="sourceCode markdown"><a class="sourceLine" id="cb4-1" title="1">1. <span class="fl">One</span></a>
-<a class="sourceLine" id="cb4-2" title="2"><span class="fl">1. Two</span></a>
-<a class="sourceLine" id="cb4-3" title="3"><span class="fl">1. Three</span></a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode md"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>One</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Two</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Three</span></code></pre></div>
 <p>上記のように書いても以下のように表示される。</p>
 <ol type="1">
 <li>One</li>
@@ -115,12 +122,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>Three</li>
 </ol>
 <p>インデントすることで入れ子にできる。</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode md"><code class="sourceCode markdown"><a class="sourceLine" id="cb5-1" title="1">1. <span class="fl">One</span></a>
-<a class="sourceLine" id="cb5-2" title="2"><span class="fl">    1. Hey</span></a>
-<a class="sourceLine" id="cb5-3" title="3"><span class="fl">    1. Hi!</span></a>
-<a class="sourceLine" id="cb5-4" title="4"><span class="fl">1. Two</span></a>
-<a class="sourceLine" id="cb5-5" title="5"><span class="fl">    1. Hey</span></a>
-<a class="sourceLine" id="cb5-6" title="6"><span class="fl">    2. Hi!</span></a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode md"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>One</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ss">    1. </span>Hey</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ss">    1. </span>Hi!</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Two</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="ss">    1. </span>Hey</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="ss">    2. </span>Hi!</span></code></pre></div>
 <ol type="1">
 <li>One
 <ol type="1">
@@ -134,20 +141,21 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ol></li>
 </ol>
 <h3 id="番号無しリスト">番号無しリスト</h3>
-<p>名Bullet listとも。行頭に<code>*</code>か<code>-</code>をつけることでリストを作ることができる。<code>*</code>と<code>-</code>は混ぜても良い(推奨しないが)。</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode md"><code class="sourceCode markdown"><a class="sourceLine" id="cb6-1" title="1">* <span class="fl">Hey</span></a>
-<a class="sourceLine" id="cb6-2" title="2"><span class="fl">- Hi</span></a>
-<a class="sourceLine" id="cb6-3" title="3"><span class="fl">* Hello</span></a></code></pre></div>
+<p>名Bullet
+listとも。行頭に<code>*</code>か<code>-</code>をつけることでリストを作ることができる。<code>*</code>と<code>-</code>は混ぜても良い(推奨しないが)。</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode md"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Hey</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Hi</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Hello</span></code></pre></div>
 <ul>
 <li>Hey</li>
 <li>Hi</li>
 <li>Hello</li>
 </ul>
 <p>インデントすることで入れ子にすることもできる。</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode md"><code class="sourceCode markdown"><a class="sourceLine" id="cb7-1" title="1">* <span class="fl">Hey</span></a>
-<a class="sourceLine" id="cb7-2" title="2"><span class="fl">   * Hey</span></a>
-<a class="sourceLine" id="cb7-3" title="3"><span class="fl">- Hey</span></a>
-<a class="sourceLine" id="cb7-4" title="4"><span class="fl">   - Hey</span></a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode md"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Hey</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ss">   * </span>Hey</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Hey</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>Hey</span></code></pre></div>
 <ul>
 <li>Hey
 <ul>
@@ -159,14 +167,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 </ul>
 <p>番号つきリストと混ぜることもできる。</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode md"><code class="sourceCode markdown"><a class="sourceLine" id="cb8-1" title="1">1. <span class="fl">One</span></a>
-<a class="sourceLine" id="cb8-2" title="2"><span class="fl">    * O</span></a>
-<a class="sourceLine" id="cb8-3" title="3"><span class="fl">    * n</span></a>
-<a class="sourceLine" id="cb8-4" title="4"><span class="fl">    * e</span></a>
-<a class="sourceLine" id="cb8-5" title="5"><span class="fl">2. Two</span></a>
-<a class="sourceLine" id="cb8-6" title="6"><span class="fl">    * T</span></a>
-<a class="sourceLine" id="cb8-7" title="7"><span class="fl">    * w</span></a>
-<a class="sourceLine" id="cb8-8" title="8"><span class="fl">    * o</span></a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode md"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>One</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ss">    * </span>O</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ss">    * </span>n</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="ss">    * </span>e</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Two</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="ss">    * </span>T</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="ss">    * </span>w</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="ss">    * </span>o</span></code></pre></div>
 <ol type="1">
 <li>One
 <ul>
@@ -183,24 +191,31 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ol>
 <h3 id="リンク">リンク</h3>
 <p><code>[テキスト](URL)</code>の形でリンクを作ることができる。</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode md"><code class="sourceCode markdown"><a class="sourceLine" id="cb9-1" title="1"><span class="ot">[Yahoo](https://www.yahoo.co.jp)</span></a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode md"><code class="sourceCode markdown"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Yahoo</span><span class="co">](https://www.yahoo.co.jp)</span></span></code></pre></div>
 <p><a href="https://www.yahoo.co.jp">Yahoo</a></p>
 <h3 id="画像">画像</h3>
 <p><code>![テキスト](URL)</code>の形で画像を表示することができる。</p>
-<p><a href="https://www.google.co.jp">Google</a>に行って、ロゴのURLをコピーして、以下を入力せよ。</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode md"><code class="sourceCode markdown"><a class="sourceLine" id="cb10-1" title="1"><span class="al">![Google](https://www.google.co.jp/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png)</span></a></code></pre></div>
+<p><a
+href="https://www.google.co.jp">Google</a>に行って、ロゴのURLをコピーして、以下を入力せよ。</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode md"><code class="sourceCode markdown"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="al">![Google](https://www.google.co.jp/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png)</span></span></code></pre></div>
 <p>以下のように表示されるはずだ。</p>
 <figure>
-<img src="https://www.google.co.jp/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" alt="Google" /><figcaption>Google</figcaption>
+<img
+src="https://www.google.co.jp/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
+alt="Google" />
+<figcaption aria-hidden="true">Google</figcaption>
 </figure>
 <p>画像はローカルファイルも表示できる。</p>
 <h3 id="コードブロック">コードブロック</h3>
 <p>バッククォートを三つ続けたもので囲んだものはコードブロックとなる。最初のバッククォートの後に言語名を書くと、シンタックスハイライトされる場合がある。</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb11-1" title="1"><span class="cf">if</span> a<span class="op">==</span><span class="dv">0</span>:</a>
-<a class="sourceLine" id="cb11-2" title="2">    <span class="bu">print</span>(<span class="st">&quot;Hello Python&quot;</span>)</a></code></pre></div>
-<div class="sourceCode" id="cb12"><pre class="sourceCode cpp"><code class="sourceCode cpp"><a class="sourceLine" id="cb12-1" title="1"><span class="cf">if</span> ( a==<span class="dv">0</span> ){</a>
-<a class="sourceLine" id="cb12-2" title="2">    printf(<span class="st">&quot;Hello C++</span><span class="sc">\n</span><span class="st">&quot;</span>);</a>
-<a class="sourceLine" id="cb12-3" title="3">}</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode py"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> a<span class="op">==</span><span class="dv">0</span>:</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Hello Python&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span> a<span class="op">==</span><span class="dv">0</span> <span class="op">){</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    printf<span class="op">(</span><span class="st">&quot;Hello C++</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <h3 id="インライン要素">インライン要素</h3>
 <p>文の中に埋め込める要素をインライン要素と呼ぶ。</p>
 <p><code>*</code>で囲むと強調(イタリック) <em>強調</em></p>
@@ -208,7 +223,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p><code>~~</code>で囲むと打ち消し <del>打ち消し</del></p>
 <p><code>`</code>で囲むとコードブロック <code>Ruby</code></p>
 <h2 id="数式">数式</h2>
-<p><code>$</code> で囲むとインライン数式 <span class="math inline">\(E=mc^2\)</span></p>
+<p><code>$</code> で囲むとインライン数式 <span
+class="math inline">\(E=mc^2\)</span></p>
 <p><code>$$</code>で囲むとブロックの数式</p>
 <p><span class="math display">\[
 E=mc^2
@@ -218,49 +234,57 @@ E=mc^2
 <p>以下、LaTeXの数式記述について簡単に紹介する。</p>
 <h3 id="基本">基本</h3>
 <p>アルファベットをそのまま書くとイタリックになる。通常、変数はイタリックで表示する。</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb13-1" title="1">abcdefg</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>abcdefg</span></code></pre></div>
 <p><span class="math display">\[
 abcdefg
 \]</span></p>
 <p><code>^</code>で上付き、<code>_</code>で下付き文字が表現できる。</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb14-1" title="1">a^2</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>a^2</span></code></pre></div>
 <p><span class="math display">\[
 a^2
 \]</span></p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb15-1" title="1">x_i</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>x_i</span></code></pre></div>
 <p><span class="math display">\[
 x_i
 \]</span></p>
 <p>二文字以上を上付き、下付きにしたい場合は中括弧で囲む。</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb16-1" title="1">a^12</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>a^12</span></code></pre></div>
 <p>この例では、最初の1だけが上になり、<code>a^1 * 2</code>の意味になってしまう。</p>
 <p><span class="math display">\[
 a^12
 \]</span></p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb17-1" title="1">a^{12}</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>a^{12}</span></code></pre></div>
 <p>こうすればaの12乗の意味になる。</p>
 <p><span class="math display">\[
 a^{12}
 \]</span></p>
 <p>上付きと下付きを同時につけることもできる。</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb18-1" title="1">x_i^2</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>x_i^2</span></code></pre></div>
 <p><span class="math display">\[
 x_i^2
 \]</span></p>
 <p><code>^</code>と<code>_</code>の順序はどちらでも良い。</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb19-1" title="1">x^2_i</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>x^2_i</span></code></pre></div>
 <p><span class="math display">\[
 x^2_i
 \]</span></p>
 <h3 id="コマンド">コマンド</h3>
 <p>LaTeXは、バックスラッシュから始まるコマンドをもつ。例えばギリシャ文字が入力できる。</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb20-1" title="1"><span class="fu">\alpha</span></a>
-<a class="sourceLine" id="cb20-2" title="2"><span class="fu">\beta</span></a>
-<a class="sourceLine" id="cb20-3" title="3"><span class="fu">\gamma</span></a>
-<a class="sourceLine" id="cb20-4" title="4"><span class="fu">\delta</span></a>
-<a class="sourceLine" id="cb20-5" title="5"><span class="fu">\zeta</span></a>
-<a class="sourceLine" id="cb20-6" title="6"><span class="fu">\eta</span></a>
-<a class="sourceLine" id="cb20-7" title="7"><span class="fu">\theta</span></a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\alpha</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">\beta</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">\gamma</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">\delta</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="fu">\zeta</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="fu">\eta</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="fu">\theta</span></span></code></pre></div>
 <p><span class="math display">\[
 \alpha
 \beta
@@ -271,80 +295,94 @@ x^2_i
 \theta
 \]</span></p>
 <p>最初を大文字にすると、大文字のギリシャ文字が入力できる。</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb21-1" title="1"><span class="fu">\Gamma</span></a>
-<a class="sourceLine" id="cb21-2" title="2"><span class="fu">\Delta</span></a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\Gamma</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">\Delta</span></span></code></pre></div>
 <p><span class="math display">\[
 \Gamma
 \Delta
 \]</span></p>
 <p>その他、様々な記号がある。</p>
 <p>右向き矢印。</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb22-1" title="1"><span class="fu">\rightarrow</span></a></code></pre></div>
+<div class="sourceCode" id="cb22"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\rightarrow</span></span></code></pre></div>
 <p><span class="math display">\[
 \rightarrow
 \]</span></p>
 <p>点々。</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb23-1" title="1">a, b, <span class="fu">\cdots</span>, z</a></code></pre></div>
+<div class="sourceCode" id="cb23"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>a, b, <span class="fu">\cdots</span>, z</span></code></pre></div>
 <p><span class="math display">\[
 a, b, \cdots, z
 \]</span></p>
 <p>記号類も多数あるので適宜調べれば良いが、「無限」は<code>\infinity</code>ではなく<code>\infty</code>なので注意。</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb24-1" title="1"><span class="fu">\infty</span></a></code></pre></div>
+<div class="sourceCode" id="cb24"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\infty</span></span></code></pre></div>
 <p><span class="math display">\[
 \infty
 \]</span></p>
 <h3 id="修飾">修飾</h3>
 <p>頭に点を打つ。時間微分でよく使う。</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb25-1" title="1"><span class="fu">\dot</span>{x}</a></code></pre></div>
+<div class="sourceCode" id="cb25"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\dot</span>{x}</span></code></pre></div>
 <p><span class="math display">\[
 \dot{x}
 \]</span></p>
 <p>二つ点を打つ(時間の二階微分など)。</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb26-1" title="1"><span class="fu">\ddot</span>{x}</a></code></pre></div>
+<div class="sourceCode" id="cb26"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\ddot</span>{x}</span></code></pre></div>
 <p><span class="math display">\[
 \ddot{x}
 \]</span></p>
 <p>頭に矢印をつけてベクトルにする。</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb27-1" title="1"><span class="fu">\vec</span>{x}</a></code></pre></div>
+<div class="sourceCode" id="cb27"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\vec</span>{x}</span></code></pre></div>
 <p><span class="math display">\[
 \vec{x}
 \]</span></p>
 <p>その他ハットをつけるなど、大量にコマンドがあるので、必要に応じて調べること。</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb28-1" title="1"><span class="fu">\hat</span>{x}</a></code></pre></div>
+<div class="sourceCode" id="cb28"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\hat</span>{x}</span></code></pre></div>
 <p><span class="math display">\[
 \hat{x}
 \]</span></p>
 <h3 id="積分記号など">積分記号など</h3>
 <p><code>\int</code>で積分記号を表示できる。</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb29-1" title="1">F(x) = <span class="fu">\int</span> f(x) <span class="fu">\mathrm</span>{d} x</a></code></pre></div>
+<div class="sourceCode" id="cb29"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>F(x) = <span class="fu">\int</span> f(x) <span class="fu">\mathrm</span>{d} x</span></code></pre></div>
 <p><span class="math display">\[
 F(x) = \int f(x) \mathrm{d} x
 \]</span></p>
 <p>積分範囲は、下付き文字と上付き文字で表現できる。</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb30-1" title="1"><span class="fu">\int</span>_{-<span class="fu">\infty</span>}^{<span class="fu">\infty</span>} <span class="fu">\mathrm</span>{e}^{-x^2} <span class="fu">\mathrm</span>{d} x = <span class="fu">\sqrt</span>{<span class="fu">\pi</span>}</a></code></pre></div>
+<div class="sourceCode" id="cb30"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\int</span>_{-<span class="fu">\infty</span>}^{<span class="fu">\infty</span>} <span class="fu">\mathrm</span>{e}^{-x^2} <span class="fu">\mathrm</span>{d} x = <span class="fu">\sqrt</span>{<span class="fu">\pi</span>}</span></code></pre></div>
 <p><span class="math display">\[
 \int_{-\infty}^{\infty} \mathrm{e}^{-x^2} \mathrm{d} x = \sqrt{\pi}
 \]</span></p>
 <p><code>\sum</code>で和を表現できる。</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb31-1" title="1">f(x+h) = <span class="fu">\sum</span>_{k=0}^<span class="fu">\infty</span> <span class="fu">\frac</span>{h^k f^{k}(x)}{k!} </a></code></pre></div>
+<div class="sourceCode" id="cb31"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>f(x+h) = <span class="fu">\sum</span>_{k=0}^<span class="fu">\infty</span> <span class="fu">\frac</span>{h^k f^{k}(x)}{k!} </span></code></pre></div>
 <p><span class="math display">\[
-f(x+h) = \sum_{k=0}^\infty \frac{h^k f^{k}(x)}{k!} 
+f(x+h) = \sum_{k=0}^\infty \frac{h^k f^{k}(x)}{k!}
 \]</span></p>
 <p><code>\prod</code>で積も表現できる。</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb32-1" title="1"><span class="fu">\prod</span>_i x_i</a></code></pre></div>
+<div class="sourceCode" id="cb32"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\prod</span>_i x_i</span></code></pre></div>
 <p><span class="math display">\[
 \prod_i x_i
 \]</span></p>
 <h3 id="立体と斜体">立体と斜体</h3>
 <p>LaTeXの数式では、デフォルトでは斜体になるが、<code>\mathrm{}</code>で囲むと立体になる。</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb33-1" title="1">a <span class="fu">\mathrm</span>{a}</a></code></pre></div>
+<div class="sourceCode" id="cb33"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>a <span class="fu">\mathrm</span>{a}</span></code></pre></div>
 <p>この例では、最初が斜体、次が立体になる。</p>
 <p><span class="math display">\[
 a \mathrm{a}
 \]</span></p>
 <p>数式において、「変数は斜体、意味のある言葉は立体」という約束がある。</p>
 <p>例えばi番目の粒子のx座標であれば</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb34-1" title="1">x_i</a></code></pre></div>
+<div class="sourceCode" id="cb34"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>x_i</span></code></pre></div>
 <p><span class="math display">\[
 x_i
 \]</span></p>
@@ -353,48 +391,57 @@ x_i
 A_\mathrm{i}
 \]</span></p>
 <p>とiを立体にする(iは意味のある言葉だから)。</p>
-<p>sin, cos等の関数も立体にする。通常は<code>\sin</code>, <code>\cos</code>などコマンドを使う。</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb35-1" title="1"><span class="fu">\sin</span>(x) <span class="fu">\cos</span>(x)</a></code></pre></div>
+<p>sin, cos等の関数も立体にする。通常は<code>\sin</code>,
+<code>\cos</code>などコマンドを使う。</p>
+<div class="sourceCode" id="cb35"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\sin</span>(x) <span class="fu">\cos</span>(x)</span></code></pre></div>
 <p><span class="math display">\[
 \sin(x) \cos(x)
 \]</span></p>
 <p>これは</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb36-1" title="1">sin(x) cos(x)</a></code></pre></div>
+<div class="sourceCode" id="cb36"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>sin(x) cos(x)</span></code></pre></div>
 <p>とコマンドを使わずに書いてしまうと意味が異なるばかりか</p>
 <p><span class="math display">\[
 sin(x) cos(x)
 \]</span></p>
 <p>と、かなり見栄えが悪くなるのでちゃんとしたい。</p>
 <p>ネイピア数のeも立体にする。</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb37-1" title="1"><span class="fu">\mathrm</span>{e}^x</a></code></pre></div>
+<div class="sourceCode" id="cb37"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\mathrm</span>{e}^x</span></code></pre></div>
 <p><span class="math display">\[
 \mathrm{e}^x
 \]</span></p>
 <p>ネイピア数を立体で書くかどうかは国や分野による。面倒なので<code>e^x</code>と書いてしまうことも多い。論文を投稿する際には、その論文誌の規定に従うこと。</p>
 <p>微分のdも意味のある文字なので、例えば積分は</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb38-1" title="1">F(x) = <span class="fu">\int</span> f(x) <span class="fu">\mathrm</span>{d} x</a></code></pre></div>
+<div class="sourceCode" id="cb38"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>F(x) = <span class="fu">\int</span> f(x) <span class="fu">\mathrm</span>{d} x</span></code></pre></div>
 <p><span class="math display">\[
 F(x) = \int f(x) \mathrm{d} x
 \]</span></p>
 <p>と、dxのdだけ立体にする(分野もある)。それに従うと例えば微分も</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb39-1" title="1"><span class="fu">\frac</span>{<span class="fu">\mathrm</span>{d} y}{<span class="fu">\mathrm</span>{d} x}</a></code></pre></div>
+<div class="sourceCode" id="cb39"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\frac</span>{<span class="fu">\mathrm</span>{d} y}{<span class="fu">\mathrm</span>{d} x}</span></code></pre></div>
 <p><span class="math display">\[
 \frac{\mathrm{d} y}{\mathrm{d} x}
 \]</span></p>
 <p>などと書かなければならず、面倒なので気にしない場合もある。少なくともWikipediaでは微分のdもネイピア数のeも立体にしていないようだ。繰り返しになるが、論文を投稿する際には論文誌の規定に従うこと。</p>
 <h3 id="括弧の大きさと対応">括弧の大きさと対応</h3>
 <p><code>\frac{分子}{分母}</code>により、分数を表現できる。</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb40-1" title="1"><span class="fu">\frac</span>{a}{b}</a></code></pre></div>
+<div class="sourceCode" id="cb40"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\frac</span>{a}{b}</span></code></pre></div>
 <p><span class="math display">\[
 \frac{a}{b}
 \]</span></p>
 <p>分数をそのまま括弧で囲むと大きさが合わず見栄えがわるくなる。</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb41-1" title="1">(<span class="fu">\frac</span>{a}{b})</a></code></pre></div>
+<div class="sourceCode" id="cb41"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>(<span class="fu">\frac</span>{a}{b})</span></code></pre></div>
 <p><span class="math display">\[
 (\frac{a}{b})
 \]</span></p>
 <p>このような場合、<code>\left(</code>と<code>\right)</code>で囲むことで、括弧の大きさが自動調整される。</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb42-1" title="1"><span class="fu">\left</span>( <span class="fu">\frac</span>{a}{b} <span class="fu">\right</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb42"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\left</span>( <span class="fu">\frac</span>{a}{b} <span class="fu">\right</span>)</span></code></pre></div>
 <p>括弧は丸括弧だけでなく角括弧なども利用できる。</p>
 <p><span class="math display">\[
 \left( \frac{a}{b} \right)
@@ -403,24 +450,27 @@ F(x) = \int f(x) \mathrm{d} x
 \left[ \frac{a}{b} \right]
 \]</span></p>
 <p>括弧の片方をなくす場合は、<code>\right.</code>などと、括弧の代わりにピリオドを打つ</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb43-1" title="1"><span class="fu">\left</span>( <span class="fu">\frac</span>{a}{b} <span class="fu">\right</span>.</a></code></pre></div>
+<div class="sourceCode" id="cb43"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\left</span>( <span class="fu">\frac</span>{a}{b} <span class="fu">\right</span>.</span></code></pre></div>
 <p><span class="math display">\[
 \left( \frac{a}{b} \right.
 \]</span></p>
 <p>これは、微分に値を代入する時などに使う。</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb44-1" title="1"><span class="fu">\left</span>. <span class="fu">\frac</span>{dy}{dx} <span class="fu">\right</span>|_{x=1}</a></code></pre></div>
+<div class="sourceCode" id="cb44"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\left</span>. <span class="fu">\frac</span>{dy}{dx} <span class="fu">\right</span>|_{x=1}</span></code></pre></div>
 <p><span class="math display">\[
 \left. \frac{dy}{dx} \right|_{x=1}
 \]</span></p>
 <h3 id="環境">環境</h3>
 <p>環境とは<code>\begin{環境名}</code>と<code>\end{環境名}</code>で囲まれた領域である。</p>
 <p>式変形をする時など、=を縦に揃えたい時がある。その場合は<code>aligned</code>環境を使う。</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb45-1" title="1"><span class="kw">\begin</span>{<span class="ex">aligned</span>}</a>
-<a class="sourceLine" id="cb45-2" title="2">(x+y)^2 &amp;= (x+y) (x+y) <span class="fu">\\</span></a>
-<a class="sourceLine" id="cb45-3" title="3">&amp;= x(x+y) + y (x+y) <span class="fu">\\</span></a>
-<a class="sourceLine" id="cb45-4" title="4">&amp;= x^2 + xy + yx + y^2 <span class="fu">\\</span></a>
-<a class="sourceLine" id="cb45-5" title="5">&amp;= x^2 + 2xy+y^2</a>
-<a class="sourceLine" id="cb45-6" title="6"><span class="kw">\end</span>{<span class="ex">aligned</span>}</a></code></pre></div>
+<div class="sourceCode" id="cb45"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">aligned</span>}</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>(x+y)^2 &amp;= (x+y) (x+y) <span class="fu">\\</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>&amp;= x(x+y) + y (x+y) <span class="fu">\\</span></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>&amp;= x^2 + xy + yx + y^2 <span class="fu">\\</span></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>&amp;= x^2 + 2xy+y^2</span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">aligned</span>}</span></code></pre></div>
 <p><code>\\</code>で改行され、表示されない<code>&amp;</code>が縦に揃うようにレイアウトされる。</p>
 <p><span class="math display">\[
 \begin{aligned}
@@ -431,10 +481,11 @@ F(x) = \int f(x) \mathrm{d} x
 \end{aligned}
 \]</span></p>
 <p>行列は<code>pmatrix</code>環境を使う。</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb46-1" title="1"><span class="kw">\begin</span>{<span class="ex">pmatrix</span>}</a>
-<a class="sourceLine" id="cb46-2" title="2"><span class="ss">a &amp; b</span><span class="sc">\\</span></a>
-<a class="sourceLine" id="cb46-3" title="3"><span class="ss">c &amp; d</span></a>
-<a class="sourceLine" id="cb46-4" title="4"><span class="kw">\end</span>{<span class="ex">pmatrix</span>}</a></code></pre></div>
+<div class="sourceCode" id="cb46"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">pmatrix</span>}</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="ss">a &amp; b</span><span class="sc">\\</span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="ss">c &amp; d</span></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">pmatrix</span>}</span></code></pre></div>
 <p><span class="math display">\[
 \begin{pmatrix}
 a &amp; b\\
@@ -442,10 +493,11 @@ c &amp; d
 \end{pmatrix}
 \]</span></p>
 <p><code>bmatrix</code>を使うと角括弧になる。</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb47-1" title="1"><span class="kw">\begin</span>{<span class="ex">bmatrix</span>}</a>
-<a class="sourceLine" id="cb47-2" title="2"><span class="ss">a &amp; b</span><span class="sc">\\</span></a>
-<a class="sourceLine" id="cb47-3" title="3"><span class="ss">c &amp; d</span></a>
-<a class="sourceLine" id="cb47-4" title="4"><span class="kw">\end</span>{<span class="ex">bmatrix</span>}</a></code></pre></div>
+<div class="sourceCode" id="cb47"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">bmatrix</span>}</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="ss">a &amp; b</span><span class="sc">\\</span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="ss">c &amp; d</span></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">bmatrix</span>}</span></code></pre></div>
 <p><span class="math display">\[
 \begin{bmatrix}
 a &amp; b\\

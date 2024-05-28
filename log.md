@@ -11,6 +11,8 @@
 * 4/25 LastPassと多要素認証(GitHubも)
 * 5/9 GNU make
 * 5/16 ParaViewハンズオン
+* 5/23 バッチシステムの使い方
+* 5/30 MarkdownとLaTeX記法ハンズオン
 
 ## 2023年度
 
