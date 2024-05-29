@@ -20,7 +20,7 @@ Visual Studio Code、通称VSCodeは、Microsoftが中心となって開発を�
 
 Windowsマシンでは、原則としてWindows Subsystem for Linux (WSL)上で作業を行う。VSCodeは、WindowsでもWSL上でもシームレスに利用できるが、そのためにプラグインを入れておく必要がある。
 
-VSCodeの左のメニューからExtentionsのアイコン(ブロックのマーク)をクリックし、現れた検索窓に「WSL」と入力すると「Remote-WSL」が表示されるので、「Install」をクリックする。
+VSCodeの左のメニューからExtentionsのアイコン(ブロックのマーク)をクリックし、現れた検索窓に「wsl」と入力するとMicrosoftによるWSL拡張「WSL」が表示されるので、「Install」をクリックする。
 
 ![WSL](fig/wsl.png)
 
