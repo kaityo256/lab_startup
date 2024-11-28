@@ -256,17 +256,17 @@ $latex = 'platex -synctex=1 %O %S';
 $bibtex = 'pbibtex %O %B';
 $makeindex = 'memindex %O -o %D %S';
 $pdf_mode = 3;
-$dvipdf = 'dvipdfmx %O -o %D %S';
+$dvipdf = 'dvipdfmx -V 7 %O -o %D %S';
 ```
 
-この状態で、先程作った　`testj.tex`のあるディレクトリに移動し、`testj.dvi`と`testj.pdf`を削除してから`latexmk`を実行してみよう。
+この状態で、先程作った　`testj.tex`のあるディレクトリに移動し、`testj.dvi`や`testj.pdf`を削除してから`latexmk`を実行してみよう。
 
 ```sh
-rm -f testj.dvi testj.pdf
+latexmk -C
 latexmk testj
 ```
 
-一気にPDFまで作成されるはずだ。
+一気にPDFまで作成されるはずだ。なお、LaTeXは多くの中間ファイル(dviやaux、logなど)を作成するが、`latexmk -C`により一気に削除することができる。
 
 ### VS Codeの設定
 
@@ -298,7 +298,7 @@ latexmk testj
         },
 ```
 
-このうち、"args"の項目を'-pdf'と'-interaction=nonstopmod'だけ残して削除する。
+このうち、"args"の項目を'-interaction=nonstopmod'だけ残して削除する。
 
 ```json
     "latex-workshop.latex.tools": [
