@@ -62,13 +62,9 @@ pushしたら、リポジトリの当該ページをリロードして、内容�
 
 ## コラボレータの追加
 
-卒論リポジトリの「Settings」の「Manage access」を開く。
-
-![Settings](fig/settings.png)
-
-現れた画面の「Invite a collabolator」をクリックし、検索画面に指導教員のアカウント(kaityo256)を入れて、現れたアカウントを選び、「Add kaityo256 to this repository」をクリックして追加する。
-
-![kaityo256](fig/kaityo256.png)
+卒論リポジトリ(graduate_thesis)の、上のメニューの「Settings」をクリックし、左側に現れた「Collaborators」をクリックする。
+すると、「Manage access」の下に「Add people」ボタンが現れるので押す。
+現れた画面の検索画面に指導教員のアカウント(kaityo256)を入れて、現れたアカウントを選び、「Add kaityo256 to this repository」をクリックして追加する。
 
 すると、教員に招待状が飛び、教員が承諾するとリポジトリのWatchersが二人に増える。
 
