@@ -72,58 +72,61 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <body>
 <article class="markdown-body">
 <h1 id="卒業論文の準備">卒業論文の準備</h1>
-<p>卒業論文のテンプレートをダウンロードし、リポジトリとして管理、指導教員をコラボレータとして招待する。あらかじめ<a href="../latex/README.md">LaTeXのインストール</a>を参照して、LaTeXの環境を整えておくこと。また、ホームディレクトリに<code>github</code>というディレクトリが作られており、その下にリポジトリを作ることを想定しているが、異なるディレクトリ構成をしている場合は適宜読み替えること。</p>
+<p>卒業論文のテンプレートをダウンロードし、リポジトリとして管理、指導教員をコラボレータとして招待する。あらかじめ<a
+href="../latex/README.md">LaTeXのインストール</a>を参照して、LaTeXの環境を整えておくこと。また、ホームディレクトリに<code>github</code>というディレクトリが作られており、その下にリポジトリを作ることを想定しているが、異なるディレクトリ構成をしている場合は適宜読み替えること。</p>
 <h2 id="卒業論文の書き方">卒業論文の書き方</h2>
 <p>以下のスライドを参照。</p>
-<p><a href="https://speakerdeck.com/kaityo256/happy-writing">主に数値計算系の卒論の書き方</a></p>
+<p><a
+href="https://speakerdeck.com/kaityo256/happy-writing">主に数値計算系の卒論の書き方</a></p>
 <h2 id="リポジトリの作成">リポジトリの作成</h2>
-<p>まず<a href="https://github.com/kaityo256/graduate_thesis">kaityo256/graduate_thesis</a>にアクセスし、リポジトリをダウンロードする。Forkやcloneではないことに注意。</p>
-<figure>
-<img src="fig/downloadzip.png" alt="Zipダウンロード" /><figcaption>Zipダウンロード</figcaption>
-</figure>
-<p><code>graduate_thesis-main.zip</code>というファイルがダウンロードされるはずなので、<code>~/github</code>以下に展開する。</p>
-<p>例えばMacで「ダウンロード」に保存したのなら</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="bu">cd</span> github</a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="fu">cp</span> ~/Downloads/graduate_thesis-main.zip .</a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="fu">unzip</span> graduate_thesis-main.zip</a></code></pre></div>
-<p>で展開できる。</p>
-<p>Windowsでも、もしWSL2にDesktopというシンボリックリンクを作っていれば、デスクトップにダウンロードしてから、</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">cp</span> ~/Desktop/graduate_thesis-main.zip .</a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="fu">unzip</span> graduate_thesis-main.zip</a></code></pre></div>
-<p>ディレクトリの名前を<code>graduate-thesis-main</code>から好きな名前に変える。<code>sotsuron</code>でも<code>bachelor-thesis</code>でもなんでも良いが、特に希望がなければ`<code>graduate-thesis</code>などにする。</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="fu">mv</span> graduate_thesis-main graduate_thesis</a></code></pre></div>
+<p>どこでも良いが、たとえば<code>github</code>ディレクトリにて卒論リポジトリをクローンする。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> github</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/kaityo256/graduate_thesis.git</span></code></pre></div>
 <p>ターミナルで上のディレクトリに移動し、VS Codeでフォルダを開く。</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1"><span class="ex">code</span> .</a></code></pre></div>
-<p>VS Codeで<code>thesis.tex</code>を開き、ビルドが通ることを確認する。次に、指導教員、名前、学籍番号を修正の上でもう一度ビルドする。</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">code</span> .</span></code></pre></div>
+<p>VS
+Codeで<code>thesis.tex</code>を開き、ビルドが通ることを確認する。次に、指導教員、名前、学籍番号を修正の上でもう一度ビルドする。</p>
 <p>ビルドが通ったら、ターミナルで</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1"><span class="fu">git</span> init</a>
-<a class="sourceLine" id="cb5-2" title="2"><span class="fu">git</span> add *</a>
-<a class="sourceLine" id="cb5-3" title="3"><span class="fu">git</span> add .gitignore</a>
-<a class="sourceLine" id="cb5-4" title="4"><span class="fu">git</span> commit -m <span class="st">&quot;Initial commit&quot;</span></a></code></pre></div>
-<p>として、Gitリポジトリを作る。これが卒論のリポジトリとなる。なお、<code>.gitignore</code>が含まれているため、「以下のファイルは無視したよ。追加したければ <code>-f</code>つけな」的なメッセージが出るが気にしなくてよい。最初の<code>git add *</code>では<code>.gitignore</code>が追加されないので、それも個別に追加している。</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> .git</span></code></pre></div>
+<p>を実行し、リポジトリの情報を削除する。その上で、新たにGitリポジトリを作成する。</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> init</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">&quot;Initial commit&quot;</span></span></code></pre></div>
+<p>これが卒論のリポジトリとなる。</p>
 <h2 id="githubへのpush">GitHubへのpush</h2>
-<p>次に、卒論リポジトリをGitHubにpushする。<a href="https://github.com/">GitHub</a>にアクセスし、新しくリポジトリを作成せよ。</p>
+<p>次に、卒論リポジトリをGitHubにpushする。<a
+href="https://github.com/">GitHub</a>にアクセスし、新しくリポジトリを作成せよ。</p>
 <p>名前は先程設定したディレクトリ名と一致させる。Descriptionは適当でよいが「卒業論文リポジトリ」と書いておくとわかりやすいだろう。また、Privateリポジトリに設定するのを忘れないこと。</p>
 <figure>
-<img src="fig/private.png" alt="private" /><figcaption>private</figcaption>
+<img src="fig/private.png" alt="private" />
+<figcaption aria-hidden="true">private</figcaption>
 </figure>
-<p>準備が整ったら「Crate repository」をクリックし、現れた3つの選択肢から「…or push an existing repository from the command line」の内容をコピペして、ターミナルで実行する。こんな感じになるはず(<code>username</code>は自分のGitHubアカウント名に変更すること)。</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" title="1"><span class="fu">git</span> remote add origin git@github.com:username/graduate_thesis.git</a>
-<a class="sourceLine" id="cb6-2" title="2"><span class="fu">git</span> branch -M main</a>
-<a class="sourceLine" id="cb6-3" title="3"><span class="fu">git</span> push -u origin main</a></code></pre></div>
+<p>準備が整ったら「Crate
+repository」をクリックし、現れた3つの選択肢から「…or push an existing
+repository from the command
+line」の内容をコピペして、ターミナルで実行する。こんな感じになるはず(<code>username</code>は自分のGitHubアカウント名に変更すること)。</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> remote add origin git@github.com:username/graduate_thesis.git</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> branch <span class="at">-M</span> main</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push <span class="at">-u</span> origin main</span></code></pre></div>
 <p>pushしたら、リポジトリの当該ページをリロードして、内容があることを確認しよう。</p>
 <h2 id="コラボレータの追加">コラボレータの追加</h2>
 <p>卒論リポジトリの「Settings」の「Manage access」を開く。</p>
 <figure>
-<img src="fig/settings.png" alt="Settings" /><figcaption>Settings</figcaption>
+<img src="fig/settings.png" alt="Settings" />
+<figcaption aria-hidden="true">Settings</figcaption>
 </figure>
-<p>現れた画面の「Invite a collabolator」をクリックし、検索画面に指導教員のアカウント(kaityo256)を入れて、現れたアカウントを選び、「Add kaityo256 to this repository」をクリックして追加する。</p>
+<p>現れた画面の「Invite a
+collabolator」をクリックし、検索画面に指導教員のアカウント(kaityo256)を入れて、現れたアカウントを選び、「Add
+kaityo256 to this repository」をクリックして追加する。</p>
 <figure>
-<img src="fig/kaityo256.png" alt="kaityo256" /><figcaption>kaityo256</figcaption>
+<img src="fig/kaityo256.png" alt="kaityo256" />
+<figcaption aria-hidden="true">kaityo256</figcaption>
 </figure>
 <p>すると、教員に招待状が飛び、教員が承諾するとリポジトリのWatchersが二人に増える。</p>
 <figure>
-<img src="fig/watchers.png" alt="watchers" /><figcaption>watchers</figcaption>
+<img src="fig/watchers.png" alt="watchers" />
+<figcaption aria-hidden="true">watchers</figcaption>
 </figure>
 <p>これで招待は完了である。あとはガンガン卒論を書くだけ。</p>
 </article>

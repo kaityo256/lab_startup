@@ -10,33 +10,12 @@
 
 ## リポジトリの作成
 
-まず[kaityo256/graduate_thesis](https://github.com/kaityo256/graduate_thesis)にアクセスし、リポジトリをダウンロードする。Forkやcloneではないことに注意。
-
-![Zipダウンロード](fig/downloadzip.png)
-
-`graduate_thesis-main.zip`というファイルがダウンロードされるはずなので、`~/github`以下に展開する。
-
-例えばMacで「ダウンロード」に保存したのなら
+どこでも良いが、たとえば`github`ディレクトリにて卒論リポジトリをクローンする。
 
 ```sh
+cd
 cd github
-cp ~/Downloads/graduate_thesis-main.zip .
-unzip graduate_thesis-main.zip
-```
-
-で展開できる。
-
-Windowsでも、もしWSL2にDesktopというシンボリックリンクを作っていれば、デスクトップにダウンロードしてから、
-
-```sh
-cp ~/Desktop/graduate_thesis-main.zip .
-unzip graduate_thesis-main.zip
-```
-
-ディレクトリの名前を`graduate-thesis-main`から好きな名前に変える。`sotsuron`でも`bachelor-thesis`でもなんでも良いが、特に希望がなければ``graduate-thesis`などにする。
-
-```sh
-mv graduate_thesis-main graduate_thesis
+git clone https://github.com/kaityo256/graduate_thesis.git
 ```
 
 ターミナルで上のディレクトリに移動し、VS Codeでフォルダを開く。
@@ -50,13 +29,18 @@ VS Codeで`thesis.tex`を開き、ビルドが通ることを確認する。次�
 ビルドが通ったら、ターミナルで
 
 ```sh
+rm -rf .git
+```
+
+を実行し、リポジトリの情報を削除する。その上で、新たにGitリポジトリを作成する。
+
+```sh
 git init
-git add *
-git add .gitignore
+git add .
 git commit -m "Initial commit"
 ```
 
-として、Gitリポジトリを作る。これが卒論のリポジトリとなる。なお、`.gitignore`が含まれているため、「以下のファイルは無視したよ。追加したければ `-f`つけな」的なメッセージが出るが気にしなくてよい。最初の`git add *`では`.gitignore`が追加されないので、それも個別に追加している。
+これが卒論のリポジトリとなる。
 
 ## GitHubへのpush
 
