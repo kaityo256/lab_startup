@@ -20,7 +20,7 @@ wsl --install
 
 ## Ubuntu 22.04のインストール
 
-検索窓に「Microsoft Store」と入力してMicrosoft Storeを開く。右上の「検索」に「ubuntu」と入力し、現れた候補の中から「Ubuntu 22.04 LTS」を選択、インストールする。
+検索窓に「Microsoft Store」と入力してMicrosoft Storeを開く。右上の「検索」に「ubuntu」と入力し、現れた候補の中から「Ubuntu 24.04.1 LTS」を選択、インストールする。
 
 インストール後の最初に起動でUNIX usernameとパスワードを聞かれるので、アカウント名とパスワードを入力する。
 
@@ -41,6 +41,14 @@ ln -s /mnt/c/Users/username/Desktop
 ```sh
 cmd.exe /c echo %USERNAME% 2> /dev/null
 ```
+
+なお、OneDriveを利用している場合は、Desktopがその下にある。その場合は、
+
+```sh
+ln -s /mnt/c/Users/username/OneDrive/Desktop
+```
+
+とすること。
 
 ### explorer.exeへのエイリアス
 
