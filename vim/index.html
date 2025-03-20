@@ -112,7 +112,7 @@ Vimはいいぞ！ゴリラと学ぶVim講座</a></p>
 </ul>
 <p>とだけ覚えておけば良い。</p>
 <h2 id="カーソル移動の仕方">カーソル移動の仕方</h2>
-<p>この状態で<code>h</code>や<code>l</code>キーでカーソルが移動することを確認してみよう。Vimには、以下のように多様な移動手段がある。</p>
+<p>この状態で<code>h</code>や<code>l</code>キーでカーソルが移動することを確認してみよう。Vimには、以下のように多様な移動手段がある。これらについては後で試してみる。</p>
 <h3 id="カーソル移動hjkl">カーソル移動：h,j,k,l</h3>
 <p>まずはhjklでカーソル移動ができる。それぞれ以下の通りだ。</p>
 <ul>
@@ -157,6 +157,8 @@ G</h3>
 </ul>
 <p>となる。これらは「ピリオド、コンマ、エクスクラメーションマーク」といったマークを区別して移動する(マークを単語として扱う)が、大文字の「W,
 E, B」とするとマークを単語として扱わない。</p>
+<h3 id="行ジャンプ">行ジャンプ</h3>
+<p><code>:</code>を押すとコマンドモードになるが、そこで数字を入力すると行ジャンプができる。例えば「:」→「50」→「エンター」と入力すると、50行目に飛ぶ。エラー行ジャンプなどに便利。</p>
 <h2 id="編集">編集</h2>
 <h3 id="ヤンク削除貼り付けydp">ヤンク、削除、貼り付け：y,d,p</h3>
 <p>Vimでは「yy」でカーソルのある行を一行コピーできる(ヤンクと呼ぶ)。コピーした行は「p」で貼り付けることができる。<code>Hello Vim!</code>の行で「yyp」と入力せよ。</p>
@@ -178,7 +180,7 @@ class="sourceCode txt"><code class="sourceCode default"><span id="cb6-1"><a href
 Vim!」が6行になったはずだ。この状態で<code>gg</code>で一番上に行って、<code>5dd</code>と入力せよ。5行消えて、一行だけになったはずだ。</p>
 <h3 id="アンドゥu">アンドゥ：u</h3>
 <p><code>u</code>で直前の操作のアンドゥが出来る。<code>dd</code>で一行消して、<code>u</code>を押してみよう。操作が取り消されたはずだ。</p>
-<h3 id="表示画面中の移動h-m-l">表示画面中の移動：H, M, L</h3>
+<h3 id="移動コマンド">移動コマンド</h3>
 <p>また「Hello
 Vim!」を増やそう。<code>yy</code>、<code>100p</code>で100行くらい追加した後、以下のカーソル、画面移動コマンドを試そう。</p>
 <ul>
@@ -188,6 +190,10 @@ Vim!」を増やそう。<code>yy</code>、<code>100p</code>で100行くらい�
 <li><code>Ctrl+b</code>や<code>Ctrl+f</code>による画面移動</li>
 <li><code>gg</code>や<code>G</code>によるファイルの先頭、末尾への移動</li>
 <li><code>H</code>,<code>M</code>,<code>L</code>による画面内移動</li>
+<li><code>:</code>を用いた行ジャンプ。
+<ul>
+<li><code>:50</code>と入力してリターンを押してみよ。50行目に飛ぶはずだ。</li>
+</ul></li>
 </ul>
 <h3 id="ビジュアル選択モードv">ビジュアル選択モード：v</h3>
 <p><code>v</code>を押すことでビジュアル選択モードになる。適当なところで<code>v</code>を押して、<code>j</code>や<code>k</code>で選択範囲を指定できることを確認しよう。その後、<code>ESC</code>でノーマルモードに戻ってから、以下の操作でファイル全てを選択する。</p>
@@ -226,6 +232,7 @@ class="sourceCode txt"><code class="sourceCode default"><span id="cb10-1"><a hre
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>* Hello Vim!</span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>* Hello Vim!</span></code></pre></div>
 <p>このうち、Helloだけ消したくなったとする。置換でもできるが、最初のHelloの冒頭にカーソルを移動し、<code>Ctrl+v</code>で矩形選択開始、その後、最後のHelloの単語末まで移動して<code>d</code>。これでHelloが消えた。</p>
+<p>ただし、矩形選択は使用頻度が低いため、<code>ctrl+v</code>でペーストを優先したい場合は上記の設定はしなくても良い。</p>
 <h3
 id="カーソル位置にある数字の増減ctrla-ctrlx">カーソル位置にある数字の増減：Ctrl+a,
 Ctrl+x</h3>
@@ -233,8 +240,6 @@ Ctrl+x</h3>
 <div class="sourceCode" id="cb11"><pre
 class="sourceCode py"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a[<span class="dv">1</span>])</span></code></pre></div>
 <p>と入力し、1のところにカーソルを合わせてCtrl+aやCtrl+xを押してみよ。数字が増減するはずだ。</p>
-<h3 id="行ジャンプ数字">行ジャンプ:数字</h3>
-<p><code>:</code>を押すとコマンドモードになるが、そこで数字を入力すると行ジャンプができる。<code>:50</code>と入力してリターンを押してみよ。50行目に飛ぶはずだ。</p>
 <h3 id="行をまとめるj-gj">行をまとめる：J, gJ</h3>
 <p><code>J</code>で次の行をまとめることができる。</p>
 <div class="sourceCode" id="cb12"><pre
