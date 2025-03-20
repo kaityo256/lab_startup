@@ -207,7 +207,13 @@ Vim!」を増やそう。<code>yy</code>、<code>100p</code>で100行くらい�
 <h3 id="対応する括弧へ飛ぶ">対応する括弧へ飛ぶ：<code>%</code></h3>
 <p><code>%</code>を押すと、対応する括弧に飛んでくれる。</p>
 <div class="sourceCode" id="cb7"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>((()))</span></code></pre></div>
+class="sourceCode txt"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>と入力し、適当な括弧で<code>%</code>を押してみよ。カーソルが対応する括弧に飛ぶ。これはC/C++など、ブロックを括弧で作るプログラムを組む時に便利だ。</p>
 <h3 id="矩形選択ctrlv">矩形選択：Ctrl+v</h3>
 <p><code>v</code>で行単位の選択ができたが、<code>Ctrl+v</code>で矩形選択ができる。ただし、Windowsではデフォルトで<code>Ctrl+v</code>が「貼り付け」になっているためにこの機能は使えない。もし矩形選択を使いたければ、Windows
