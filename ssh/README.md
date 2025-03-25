@@ -2,10 +2,11 @@
 
 ## SSH公開鍵の作成
 
-ターミナルのホームディレクトリで、`ssh-keygen`コマンドにより、鍵のペアを作成する。
+ターミナルのホームディレクトリで、`ssh-keygen`コマンドにより、鍵のペアを作成する。`-t ed25519`は鍵のタイプ(署名アルゴリズム)の指定である。
+
 
 ```txt
-$ ssh-keygen
+$ ssh-keygen -t ed25519
 Generating public/private ed25519 key pair.
 Enter file in which to save the key (/Users/watanabe/.ssh/id_ed25519): (1)
 Enter passphrase (empty for no passphrase):  (2)

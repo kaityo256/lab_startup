@@ -73,9 +73,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <article class="markdown-body">
 <h1 id="sshの設定">SSHの設定</h1>
 <h2 id="ssh公開鍵の作成">SSH公開鍵の作成</h2>
-<p>ターミナルのホームディレクトリで、<code>ssh-keygen</code>コマンドにより、鍵のペアを作成する。</p>
+<p>ターミナルのホームディレクトリで、<code>ssh-keygen</code>コマンドにより、鍵のペアを作成する。<code>-t ed25519</code>は鍵のタイプ(署名アルゴリズム)の指定である。</p>
 <div class="sourceCode" id="cb1"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>$ ssh-keygen</span>
+class="sourceCode txt"><code class="sourceCode default"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>$ ssh-keygen -t ed25519</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>Generating public/private ed25519 key pair.</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>Enter file in which to save the key (/Users/watanabe/.ssh/id_ed25519): (1)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>Enter passphrase (empty for no passphrase):  (2)</span>
