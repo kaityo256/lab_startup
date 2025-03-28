@@ -140,18 +140,46 @@ hosts)に登録したよ』という意味だ。「Warning(警告)」と出て�
 <div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Enter</span> passphrase for key <span class="st">&#39;/home/watanabe/.ssh/id_ed25519&#39;</span>:</span></code></pre></div>
 <p>と、パスフレーズを要求されるので、先ほど鍵を作るのに使ったパスフレーズを入力すると、ログインできるはずである。この時、入力した文字列は表示されない。</p>
 <p>ログインができたら、<code>exit</code>を入力してサーバからログアウトすること。</p>
+<h3 id="githubへの公開鍵の登録">GitHubへの公開鍵の登録</h3>
+<p>次に、先ほど作成した公開鍵をGitHubにも登録しよう。</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> .ssh/id_ed25519.pub</span></code></pre></div>
+<p>を実行した結果をクリップボードにコピーしておく。</p>
+<p>その後、GitHubにログインし、以下の手順により公開鍵を登録せよ。</p>
+<ol type="1">
+<li>GitHubの一番右上のアイコンをクリックして現れるメニューの下の方の「Settings」を選ぶ。</li>
+<li>左に「Account settings」というメニューが現れるので「SSH and GPG
+keys」を選ぶ。</li>
+<li>「SSH keys」右にある「New SSH key」ボタンを押す</li>
+<li>「Title」と「Key」を入力する。Titleはなんでも良いが、例えば「Git
+Bash」もしくは「University
+PC」とする。Keyには、.ssh/id_ed25519ファイルの中身をコピペする。Git
+Bashで以下を実行せよ。 <code>cat .ssh/id_ed25519.pub</code></li>
+<li>すると、ssh-rsaから始まるテキストが表示されるため、マウスで選択して右クリックから「Copy」、そして、先ほどのGitHubの画面の「Key」のところにペーストし、「Add
+SSH key」ボタンを押す。</li>
+<li><code>This is a list of SSH keys associated with your account. Remove any keys that you do not recognize.</code>というメッセージの下に、先ほどつけたTitleの鍵が表示されていれば登録成功だ。</li>
+</ol>
+<p>GitHubに公開鍵の登録が済んだら、認証できる確認しよう。</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-T</span> git@github.com</span></code></pre></div>
+<p>やはり初回接続時には</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>Are you sure you want to continue connecting (yes/no/[fingerprint])?</span></code></pre></div>
+<p>と聞かれるので、フィンガープリント(後述)を確認の上で<code>yes</code>と入力せよ。</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>Hi (GitHubアカウント名)! You&#39;ve successfully authenticated, but GitHub does not provide shell access.</span></code></pre></div>
+<p>という出力が出たら認証成功である。</p>
 <h3 id="known_hosts">known_hosts</h3>
 <p>先ほどのように、これまでに接続したことがないホストに接続しようとすると、「本当に正しいホストか？」と確認され、ユーザが<code>yes</code>(正しいです)と意志表示すると</p>
-<div class="sourceCode" id="cb9"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>Warning: Permanently added &#39;name.of.server,xxx.xxx.xxx.xxx&#39; (ECDSA) to the list of known hosts.</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>Warning: Permanently added &#39;name.of.server,xxx.xxx.xxx.xxx&#39; (ECDSA) to the list of known hosts.</span></code></pre></div>
 <p>というメッセージが表示された。これは、一度接続したホストの公開鍵を「知ってるホストリストに恒久的に追加したよ」という意味であり、その実体は<code>.ssh/known_hosts</code>というファイルである。</p>
 <p>これまでに接続したことがないサーバに接続しようとすると、以下のような表示が出る。例えば、github.comに接続確認をしてみる。</p>
-<div class="sourceCode" id="cb10"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ssh <span class="at">-T</span> git@github.com</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">The</span> authenticity of host <span class="st">&#39;github.com (20.27.177.113)&#39;</span> can<span class="st">&#39;t be established.</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="st">ED25519 key fingerprint is SHA256:+DiY3wvvV6TuJJhbpZisF/zLDA0zPMSvHdkr4UvCOqU.</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="st">This key is not known by any other names.</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="st">Are you sure you want to continue connecting (yes/no/[fingerprint])?</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ssh <span class="at">-T</span> git@github.com</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="ex">The</span> authenticity of host <span class="st">&#39;github.com (20.27.177.113)&#39;</span> can<span class="st">&#39;t be established.</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="st">ED25519 key fingerprint is SHA256:+DiY3wvvV6TuJJhbpZisF/zLDA0zPMSvHdkr4UvCOqU.</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="st">This key is not known by any other names.</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="st">Are you sure you want to continue connecting (yes/no/[fingerprint])?</span></span></code></pre></div>
 <p>これは、</p>
 <ul>
 <li>20.27.177.113というIPアドレスを持つgithub.comにこれまで接続したことがないこと。</li>
@@ -175,34 +203,34 @@ href="https://docs.github.com/ja/authentication/keeping-your-account-and-data-se
 (Ed25519)</li>
 </ul>
 <p>先ほど表示されたフィンガープリントは、このリストの最後の鍵と一致するので「接続相手が正しい」と判断できるから、<code>yes</code>を入力すると、</p>
-<div class="sourceCode" id="cb11"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Are</span> you sure you want to continue connecting <span class="er">(</span><span class="ex">yes/no/[fingerprint]</span><span class="kw">)</span><span class="ex">?</span> yes</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Warning:</span> Permanently added <span class="st">&#39;github.com&#39;</span> <span class="er">(</span><span class="ex">ED25519</span><span class="kw">)</span> <span class="ex">to</span> the list of known hosts.</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Hi</span> kaityo256! You<span class="st">&#39;ve successfully authenticated, but GitHub does not provide shell access.</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Are</span> you sure you want to continue connecting <span class="er">(</span><span class="ex">yes/no/[fingerprint]</span><span class="kw">)</span><span class="ex">?</span> yes</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Warning:</span> Permanently added <span class="st">&#39;github.com&#39;</span> <span class="er">(</span><span class="ex">ED25519</span><span class="kw">)</span> <span class="ex">to</span> the list of known hosts.</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Hi</span> kaityo256! You<span class="st">&#39;ve successfully authenticated, but GitHub does not provide shell access.</span></span></code></pre></div>
 <p>と、<code>github.com</code>を「接続したことがあるホスト」のリストに追加したことが表示される。この「接続したことがあるホスト」のリストは、<code>.ssh/known_hosts</code>に保存される。</p>
 <p><code>known_hosts</code>に、既にホストの鍵が登録されているか確認するには<code>ssh-keygen -F</code>コマンドを用いる。</p>
-<div class="sourceCode" id="cb12"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ssh-keygen <span class="at">-F</span> github.com</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Host github.com found: line 3</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="kw">|</span><span class="ex">1</span><span class="kw">|</span><span class="ex">O/JuGv80cFBXGl4BSmfy4CcVOM4=</span><span class="kw">|</span><span class="ex">WB3zWF03NKs/JpnoE7GQL+J1l2E=</span> ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEmKSENjQEezOmxkZMy7opKgwFB9nkt5YRrYMjNuG5N87uRgg6CLrbo5wAdT/y6v0mKV0U2w0WZ2YB/++Tpockg=</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ssh-keygen <span class="at">-F</span> github.com</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Host github.com found: line 3</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="kw">|</span><span class="ex">1</span><span class="kw">|</span><span class="ex">O/JuGv80cFBXGl4BSmfy4CcVOM4=</span><span class="kw">|</span><span class="ex">WB3zWF03NKs/JpnoE7GQL+J1l2E=</span> ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEmKSENjQEezOmxkZMy7opKgwFB9nkt5YRrYMjNuG5N87uRgg6CLrbo5wAdT/y6v0mKV0U2w0WZ2YB/++Tpockg=</span></code></pre></div>
 <p>これは、<code>github.com</code>というホストの情報を<code>known_hosts</code>の3行目に見つけたよ、という意味だ。</p>
 <p>万が一、サーバの乗っ取りやDNS汚染などで、一度接続したサーバとは異なるサーバに接続されそうになったときには、警告がでて接続ができない。</p>
 <p>例えば、<code>known_hosts</code>に保存された鍵を書き換えてから、再度githubにアクセスしようとすると、以下のように表示され、認証に失敗する。</p>
-<div class="sourceCode" id="cb13"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ssh <span class="at">-T</span> git@github.com</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="ex">@</span>    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="ex">@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="ex">IT</span> IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Someone</span> could be eavesdropping on you right now <span class="er">(</span><span class="ex">man-in-the-middle</span> attack<span class="kw">)</span><span class="ex">!</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="ex">It</span> is also possible that a host key has just been changed.</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="ex">The</span> fingerprint for the ED25519 key sent by the remote host is</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="ex">SHA256:+DiY3wvvV6TuJJhbpZisF/zLDA0zPMSvHdkr4UvCOqU.</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="ex">Please</span> contact your system administrator.</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="ex">Add</span> correct host key in /Users/watanabe/.ssh/known_hosts to get rid of this message.</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="ex">Offending</span> ECDSA key in /Users/watanabe/.ssh/known_hosts:14</span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="ex">Host</span> key for github.com has changed and you have requested strict checking.</span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="ex">Host</span> key verification failed.</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ssh <span class="at">-T</span> git@github.com</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="ex">@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="ex">@</span>    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="ex">@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="ex">IT</span> IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Someone</span> could be eavesdropping on you right now <span class="er">(</span><span class="ex">man-in-the-middle</span> attack<span class="kw">)</span><span class="ex">!</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="ex">It</span> is also possible that a host key has just been changed.</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="ex">The</span> fingerprint for the ED25519 key sent by the remote host is</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="ex">SHA256:+DiY3wvvV6TuJJhbpZisF/zLDA0zPMSvHdkr4UvCOqU.</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="ex">Please</span> contact your system administrator.</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="ex">Add</span> correct host key in /Users/watanabe/.ssh/known_hosts to get rid of this message.</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="ex">Offending</span> ECDSA key in /Users/watanabe/.ssh/known_hosts:14</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="ex">Host</span> key for github.com has changed and you have requested strict checking.</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="ex">Host</span> key verification failed.</span></code></pre></div>
 <p>多くの場合、サーバの再インストールなどで鍵が変わってしまった、などが原因であるが、稀にDNS汚染などの攻撃の可能性もあるため、上記の表示が出たら接続前に確認すること。</p>
 <p>研究室サーバの再インストールなどが原因であれば、<code>.ssh/known_hosts</code>を一度削除してから再度接続すれば、新たにフィンガープリントを保存しなおしてくれる。</p>
 <h2 id="sshエージェントの設定">SSHエージェントの設定</h2>
@@ -212,76 +240,46 @@ class="sourceCode sh"><code class="sourceCode bash"><span id="cb13-1"><a href="#
 <p>SSHエージェントの設定は、MacとWindows (WSL)で異なる。</p>
 <h3 id="macの場合">Macの場合</h3>
 <p>Macの場合は、デフォルトでSSHエージェントが起動している。ターミナルのホームディレクトリで</p>
-<div class="sourceCode" id="cb14"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh-add</span></span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh-add</span></span></code></pre></div>
 <p>を実行せよ。秘密鍵のパスフレーズを聞かれるので、入力せよ。その後、研究室サーバにsshで接続してみよ。パスフレーズを聞かれずに接続できたら成功である。</p>
 <p>パスフレーズは、Macのキーチェインに保存される。これはログアウトされると消えるため、必要な時に毎回<code>ssh-add</code>の実行が必要となる。</p>
 <h3 id="windowsの場合">Windowsの場合</h3>
 <p>まず、SSHエージェントを起動する必要がある。いくつか方法があるが、<code>keychain</code>を導入するのが簡単だ。</p>
 <p>まず、不要なプロセスをすべて停止させる。WSLを停止した状態でWindowsのPowerShellを起動せよ。たとえば「Windowsキー+r」で「ファイル名を指定して実行」画面に「powershell」を入力するとPowerShellを起動できる。起動したら、以下を実行する。</p>
-<div class="sourceCode" id="cb15"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">wsl</span> <span class="at">--shutdown</span></span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">wsl</span> <span class="at">--shutdown</span></span></code></pre></div>
 <p>次に、WSL2のUbuntuを起動し、<code>keychain</code>をインストールする。</p>
-<div class="sourceCode" id="cb16"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get install keychain</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get install keychain</span></code></pre></div>
 <p>次に、<code>keychain</code>を起動する。</p>
-<div class="sourceCode" id="cb17"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/usr/bin/keychain</span> <span class="at">-q</span> <span class="at">--nogui</span> <span class="va">$HOME</span>/.ssh/id_ed25519</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/usr/bin/keychain</span> <span class="at">-q</span> <span class="at">--nogui</span> <span class="va">$HOME</span>/.ssh/id_ed25519</span></code></pre></div>
 <p>初回起動時にはパスフレーズを聞かれるので入力する。すると、<code>$HOME/.keychain</code>にいくつかシェルスクリプトが出来るので、それを実行する。</p>
-<div class="sourceCode" id="cb18"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> <span class="va">$HOME</span>/.keychain/<span class="va">$HOST</span>-sh</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> <span class="va">$HOME</span>/.keychain/<span class="va">$HOST</span>-sh</span></code></pre></div>
 <p>これにより、<code>keychain</code>が<code>ssh-agent</code>を探し、既存のプロセスがあれば接続、なければ起動してくれる。</p>
 <p><code>keychain</code>の起動を毎回行うのは面倒なので、<code>.bashrc</code>の最後に</p>
-<div class="sourceCode" id="cb19"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/usr/bin/keychain</span> <span class="at">-q</span> <span class="at">--nogui</span> <span class="va">$HOME</span>/.ssh/id_ed25519</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> <span class="va">$HOME</span>/.keychain/<span class="va">$HOST</span>-sh</span></code></pre></div>
-<p>と書いておくと良い。Zshなども同様だが、cshやfishは、<code>$HOST-sh</code>の<code>-sh</code>を<code>-csh</code>や<code>-fish</code>にすること。</p>
-<h2 id="sshエージェント転送">SSHエージェント転送</h2>
-<h3 id="多段ssh">多段SSH</h3>
-<p>いま「リモートサーバに公開鍵でアクセスし、そのリモートサーバからGitHubにアクセスしたい」と思ったとしよう。いわゆる「多段SSH」もしくは「踏み台サーバ」という状態である。なお、既にローカルPCからGitHubには公開鍵認証でアクセスできる(公開鍵が登録してある)ものとする。</p>
-<figure>
-<img src="fig/fumidai.png" alt="踏み台SSH" />
-<figcaption aria-hidden="true">踏み台SSH</figcaption>
-</figure>
-<p>この時、最も単純には、リモートサーバに秘密鍵と公開鍵のペアを生成し、公開鍵をGitHubに登録することが考えられる。さらに手抜きをして、リモートサーバにローカルと同じ秘密鍵を置いてしまえばGitHubに登録する公開鍵はそのままで良い。いずれも、リモートサーバでもう一度パスフレーズを入力すれば、多段SSHできる。</p>
-<p><img src="fig/plan_1.png" alt="案1" /> <img src="fig/plan_2.png"
-alt="案2" /></p>
-<p>しかし一般論として、リモートサーバに秘密鍵を置くことは避けた方が良い。IPアドレスが公開されているリモートサーバは、ローカルマシンに比べて外部からの攻撃を受けやすい。万が一、リモートサーバがハックされた際、そこに秘密鍵があると、リモートサーバからアクセスしていた別のサーバも攻撃されることがある。</p>
-<p>実際にそのような事件が起きたことがある。あるユーザのスパコンアカウントが(おそらくキーロガーにより)クラックされた。クラックされたスパコンは被害が少なかったのだが、このスパコンに「パスフレーズ無しの秘密鍵」が置いてあり、攻撃者はそこを踏み台に別のスパコンにログインすることができた。そして別のスパコンのセキュリティホールをついて特権昇格に成功し、複数のスパコンが運用停止に追い込まれたことがある。パスフレーズにより暗号化されていても、原理的には時間をかければ解析できるため、リモートサーバには原則として秘密鍵を置かないようにしたい。</p>
-<p>さて、リモートサーバには秘密鍵を置きたくないが、多段SSHを行うためには秘密鍵が必要だ。そこで、SSHにはエージェント転送という機能がある。これは、ローカルマシンの秘密鍵の情報を、リモートサーバに持っていき、リモートサーバから別のサーバに接続する際にそれを使う機能だ。以下、SSHエージェント転送を使ってGitHubにアクセスする。</p>
-<figure>
-<img src="fig/ssh-agent.png" alt="SSHエージェント転送" />
-<figcaption aria-hidden="true">SSHエージェント転送</figcaption>
-</figure>
-<h3 id="sshエージェント転送-1">SSHエージェント転送</h3>
-<p>上記の手順では、SSHエージェントに秘密鍵の情報を覚えさせることで、一度<code>ssh-add</code>実行時にパスフレーズを入力したら、次回よりパスフレーズの入力を省略できるものである。それだけでも便利であるが、以下ではエージェント転送により、多段SSHを実行してみよう。</p>
-<p>まず、GitHubに手元のPCの公開鍵を登録しよう。</p>
-<div class="sourceCode" id="cb20"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> .ssh/id_ed25519.pub</span></code></pre></div>
-<p>を実行した結果をクリップボードにコピーしておく。</p>
-<p>その後、GitHubにログインし、以下の手順により公開鍵を登録せよ。</p>
-<ol type="1">
-<li>GitHubの一番右上のアイコンをクリックして現れるメニューの下の方の「Settings」を選ぶ。</li>
-<li>左に「Account settings」というメニューが現れるので「SSH and GPG
-keys」を選ぶ。</li>
-<li>「SSH keys」右にある「New SSH key」ボタンを押す</li>
-<li>「Title」と「Key」を入力する。Titleはなんでも良いが、例えば「Git
-Bash」もしくは「University
-PC」とする。Keyには、.ssh/id_ed25519ファイルの中身をコピペする。Git
-Bashで以下を実行せよ。 <code>cat .ssh/id_ed25519.pub</code></li>
-<li>すると、ssh-rsaから始まるテキストが表示されるため、マウスで選択して右クリックから「Copy」、そして、先ほどのGitHubの画面の「Key」のところにペーストし、「Add
-SSH key」ボタンを押す。</li>
-<li><code>This is a list of SSH keys associated with your account. Remove any keys that you do not recognize.</code>というメッセージの下に、先ほどつけたTitleの鍵が表示されていれば登録成功だ。</li>
-</ol>
-<p>GitHubに公開鍵の登録が済んだら、研究室サーバに<code>-A</code>オプションをつけてSSHで接続せよ。</p>
-<div class="sourceCode" id="cb21"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> username@name.of.server <span class="at">-A</span></span></code></pre></div>
-<p>その後、研究室サーバにログインした状態でGitHubに公開鍵認証が通るか確認しよう。</p>
-<div class="sourceCode" id="cb22"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-T</span> git@github.com</span></code></pre></div>
-<p>パスフレーズを聞かれずに、</p>
 <div class="sourceCode" id="cb23"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>Hi (GitHubアカウント名)! You&#39;ve successfully authenticated, but GitHub does not provide shell access.</span></code></pre></div>
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/usr/bin/keychain</span> <span class="at">-q</span> <span class="at">--nogui</span> <span class="va">$HOME</span>/.ssh/id_ed25519</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> <span class="va">$HOME</span>/.keychain/<span class="va">$HOST</span>-sh</span></code></pre></div>
+<p>と書いておくと良い。Zshなども同様だが、cshやfishは、<code>$HOST-sh</code>の<code>-sh</code>を<code>-csh</code>や<code>-fish</code>にすること。</p>
+<h2
+id="sshエージェント転送による多段ssh">SSHエージェント転送による多段SSH</h2>
+<p>研究を進める上で、研究室サーバやスパコンを使うようになるだろう。このとき、そのようなリモートサーバ上からGitHubにアクセスしたくなる。すると、「リモートサーバにSSHでログインした上で、そのリモートサーバからさらにSSHでGitHubにアクセスする」という、多段SSHと呼ばれる状態になる。</p>
+<p>最も単純には、リモートサーバに秘密鍵と公開鍵のペアを生成し、リモートサーバの公開鍵をGitHubに登録することが考えられる。このとき、リモートサーバでもう一度パスフレーズを入力すれば、GitHubにアクセスできる。しかし一般論として、リモートサーバに秘密鍵を置くことは避けた方が良い。IPアドレスが公開されているリモートサーバは、ローカルマシンに比べて外部からの攻撃を受けやすい。万が一、リモートサーバがハックされた際、そこに秘密鍵があると、リモートサーバからアクセスしていた別のサーバも攻撃されることがある。</p>
+<p>実際にそのような事件が起きたことがある。あるユーザのスパコンアカウントが(おそらくキーロガーにより)クラックされた。クラックされたスパコンは被害が少なかったのだが、このスパコンに「パスフレーズ無しの秘密鍵」が置いてあり、攻撃者はそこを踏み台に別のスパコンにログインすることができた。そして別のスパコンのセキュリティホールをついて特権昇格に成功し、複数のスパコンが運用停止に追い込まれたことがある。パスフレーズにより暗号化されていても、原理的には時間をかければ解析できるため、リモートサーバには原則として秘密鍵を置かないようにしたい。</p>
+<p>さて、リモートサーバには秘密鍵を置きたくないが、多段SSHを行うためには秘密鍵が必要だ。そこで、SSHにはエージェント転送という機能がある。これは、秘密鍵による署名を転送する仕組みだ。いま、ローカルPCからリモートサーバに接続し、そこからGitHubにアクセスしようとすると、GitHubから秘密鍵による署名を要求される。リモートサーバのSSHエージェントはそれをローカルPCに転送し、ローカルPCで署名を作成してリモートサーバに送信、リモートサーバはさらにそれをGitHubに転送することで認証が完了する。</p>
+<p>この認証情報の転送を行うためには、リモートサーバ接続時に<code>-A</code>オプションをつける必要がある。</p>
+<p>研究室サーバに<code>-A</code>オプションをつけてSSHで接続せよ。</p>
+<div class="sourceCode" id="cb24"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> username@name.of.server <span class="at">-A</span></span></code></pre></div>
+<p>その後、研究室サーバにログインした状態でGitHubに公開鍵認証が通るか確認しよう。</p>
+<div class="sourceCode" id="cb25"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-T</span> git@github.com</span></code></pre></div>
+<p>パスフレーズを聞かれずに、</p>
+<div class="sourceCode" id="cb26"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>Hi (GitHubアカウント名)! You&#39;ve successfully authenticated, but GitHub does not provide shell access.</span></code></pre></div>
 <p>という表示が出たら認証に成功だ。以後、研究室サーバから<code>git pull/push</code>などの通信が可能となる。</p>
 </article>
 </body>
