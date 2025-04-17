@@ -77,30 +77,36 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h2 id="homebrewのインストール-1">Homebrewのインストール</h2>
 <p>もしインストールされていないのなら、まずHomebrewをインストールする。</p>
 <p>まず「ターミナル」を開く。Command+Spaceでスポットライトを開き、Terminal.appを選べば起動する。実行したら、今後良く使うのでDockに追加しておこう。ターミナルが開いたら、以下を実行せよ。</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="ex">brew</span></a></code></pre></div>
-<p><code>zsh: command not found: brew</code>と言われたらインストールされていない。インストールするには<a href="https://brew.sh/index_ja">https://brew.sh/index_ja</a>の指示に従い、ターミナルで以下のコマンドを実行する(以下のコマンドは変更される可能性があるため、最新版の指示に従うこと)。</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="ex">/bin/bash</span> -c <span class="st">&quot;</span><span class="va">$(</span><span class="ex">curl</span> -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh<span class="va">)</span><span class="st">&quot;</span></a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span></span></code></pre></div>
+<p><code>zsh: command not found: brew</code>と言われたらインストールされていない。インストールするには<a
+href="https://brew.sh/ja">https://brew.sh/ja</a>の指示に従い、ターミナルで以下のコマンドを実行する(以下のコマンドは変更される可能性があるため、最新版の指示に従うこと)。</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/bin/bash</span> <span class="at">-c</span> <span class="st">&quot;</span><span class="va">$(</span><span class="ex">curl</span> <span class="at">-fsSL</span> https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh<span class="va">)</span><span class="st">&quot;</span></span></code></pre></div>
 <p>上記をターミナルにコピペして実行せよ。途中、パスワードが要求されるので入力すること。</p>
-<p><code>Press RETURN/ENTER to continue or any other key to abort</code>と表示されたらエンターキーを押す。Home brewのインストールが終わったら、再度以下を実行せよ。</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="ex">brew</span></a></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb4-1" title="1">Example usage:</a>
-<a class="sourceLine" id="cb4-2" title="2">  brew search [TEXT|/REGEX/]</a>
-<a class="sourceLine" id="cb4-3" title="3">  brew info [FORMULA...]</a>
-<a class="sourceLine" id="cb4-4" title="4">(snip)</a>
-<a class="sourceLine" id="cb4-5" title="5">Further help:</a>
-<a class="sourceLine" id="cb4-6" title="6">  brew commands</a>
-<a class="sourceLine" id="cb4-7" title="7">  brew help [COMMAND]</a>
-<a class="sourceLine" id="cb4-8" title="8">  man brew</a>
-<a class="sourceLine" id="cb4-9" title="9">  https://docs.brew.sh</a></code></pre></div>
-<p>などと表示されればインストールできている。もし</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1"><span class="ex">Error</span>: You have not agreed to the Xcode license. Please resolve this by running:</a>
-<a class="sourceLine" id="cb5-2" title="2">  <span class="fu">sudo</span> xcodebuild -license accept</a></code></pre></div>
-<p>というエラーが起きて実行できなかった場合、</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" title="1"><span class="fu">sudo</span> xcodebuild -license accept</a></code></pre></div>
-<p>を実行せよ(パスワードが必要)。</p>
-<p>最後にHome Brewを最新版にする。以下を実行せよ。</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" title="1"><span class="ex">brew</span> update --force <span class="kw">&amp;&amp;</span> <span class="ex">brew</span> upgrade</a></code></pre></div>
-<p>新規インストール時であれば、<code>Already up-to-date.</code>と表示されて終わるはずである。すでにHomebrewをインストールしていた場合は、パッケージが最新版にアップデートされる。</p>
+<p><code>Press RETURN/ENTER to continue or any other key to abort</code>と表示されたらエンターキーを押す。Home
+brewのインストールが終わったら、パスの設定を促すメッセージが出る。</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>==&gt; Next steps:</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>- Run these commands in your terminal to add Homebrew to your PATH:</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    echo &gt;&gt; /Users/watanabe/.zprofile</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    echo &#39;eval &quot;$(/usr/local/bin/brew shellenv)&quot;&#39; &gt;&gt; /Users/watanabe/.zprofile</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    eval &quot;$(/usr/local/bin/brew shellenv)&quot;</span></code></pre></div>
+<p>このうち以下の三行(人によって異なる)を実行しておくこと。</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="op">&gt;&gt;</span> /Users/watanabe/.zprofile</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&#39;eval &quot;$(/usr/local/bin/brew shellenv)&quot;&#39;</span> <span class="op">&gt;&gt;</span> /Users/watanabe/.zprofile</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">eval</span> <span class="st">&quot;</span><span class="va">$(</span><span class="ex">/usr/local/bin/brew</span> shellenv<span class="va">)</span><span class="st">&quot;</span></span></code></pre></div>
+<p>これにより、<code>brew</code>にパスが通る。</p>
+<p>もう一度<code>brew</code>を実行し、使い方が表示されればインストール成功である。</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>Example usage:</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  brew search [TEXT|/REGEX/]</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  brew info [FORMULA...]</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>(snip)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>Further help:</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  brew commands</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  brew help [COMMAND]</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  man brew</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  https://docs.brew.sh</span></code></pre></div>
 </article>
 </body>
 </html>

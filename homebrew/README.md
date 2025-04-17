@@ -14,7 +14,7 @@ Homebrew(ホームブリュー)とは、主にMacで使われるパッケージ�
 brew
 ```
 
-`zsh: command not found: brew`と言われたらインストールされていない。インストールするには[https://brew.sh/index_ja](https://brew.sh/index_ja)の指示に従い、ターミナルで以下のコマンドを実行する(以下のコマンドは変更される可能性があるため、最新版の指示に従うこと)。
+`zsh: command not found: brew`と言われたらインストールされていない。インストールするには[https://brew.sh/ja](https://brew.sh/ja)の指示に従い、ターミナルで以下のコマンドを実行する(以下のコマンドは変更される可能性があるため、最新版の指示に従うこと)。
 
 ```sh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -22,7 +22,27 @@ brew
 
 上記をターミナルにコピペして実行せよ。途中、パスワードが要求されるので入力すること。
 
-`Press RETURN/ENTER to continue or any other key to abort`と表示されたらエンターキーを押す。Home brewのインストールが終わったら、再度以下を実行せよ。
+`Press RETURN/ENTER to continue or any other key to abort`と表示されたらエンターキーを押す。Home brewのインストールが終わったら、パスの設定を促すメッセージが出る。
+
+```txt
+==> Next steps:
+- Run these commands in your terminal to add Homebrew to your PATH:
+    echo >> /Users/watanabe/.zprofile
+    echo 'eval "$(/usr/local/bin/brew shellenv)"' >> /Users/watanabe/.zprofile
+    eval "$(/usr/local/bin/brew shellenv)"
+```
+
+このうち以下の三行(人によって異なる)を実行しておくこと。
+
+```sh
+echo >> /Users/watanabe/.zprofile
+echo 'eval "$(/usr/local/bin/brew shellenv)"' >> /Users/watanabe/.zprofile
+eval "$(/usr/local/bin/brew shellenv)"
+```
+
+これにより、`brew`にパスが通る。
+
+もう一度`brew`を実行し、使い方が表示されればインストール成功である。
 
 ```sh
 brew
@@ -39,26 +59,3 @@ Further help:
   man brew
   https://docs.brew.sh
 ```
-
-などと表示されればインストールできている。もし
-
-```sh
-Error: You have not agreed to the Xcode license. Please resolve this by running:
-  sudo xcodebuild -license accept
-```
-
-というエラーが起きて実行できなかった場合、
-
-```sh
-sudo xcodebuild -license accept
-```
-
-を実行せよ(パスワードが必要)。
-
-最後にHome Brewを最新版にする。以下を実行せよ。
-
-```sh
-brew update --force && brew upgrade
-```
-
-新規インストール時であれば、`Already up-to-date.`と表示されて終わるはずである。すでにHomebrewをインストールしていた場合は、パッケージが最新版にアップデートされる。

@@ -78,256 +78,329 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>ハンズオンでは研究室サーバを用いるが、ローカルでも使えるようにしておくと良い。</p>
 <h3 id="mac">Mac</h3>
 <p>brewでインストールする。</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="ex">brew</span> install gnuplot</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install gnuplot</span></code></pre></div>
 <h3 id="windows">Windows</h3>
 <p>WSL2のUbuntuにgnuplotを入れる。</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">sudo</span> apt-get install -y gnuplot</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get install <span class="at">-y</span> gnuplot</span></code></pre></div>
 <h2 id="基本的な使い方">基本的な使い方</h2>
 <h3 id="関数のプロット">関数のプロット</h3>
-<p>まずはgnuplotを起動しよう。研究室サーバにログインする。ローカルPCでX Window System (MacならXQuartz、WindowsならVcXsrv)が起動した状態で、</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="fu">ssh</span> username@servername.hogehoge.ac.jp -AY</a></code></pre></div>
+<p>まずはgnuplotを起動しよう。研究室サーバにログインする。ローカルPCでX
+Window System (MacならXQuartz、WindowsならVcXsrv)が起動した状態で、</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> username@servername.hogehoge.ac.jp <span class="at">-AY</span></span></code></pre></div>
 <p>と<code>-AY</code>オプション付きでssh接続せよ。接続できたら<code>gnuplot</code>を実行せよ。</p>
 <p>以下のような表示がされ、入力待ちとなる。</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1">$ <span class="ex">gnuplot</span></a>
-<a class="sourceLine" id="cb4-2" title="2"></a>
-<a class="sourceLine" id="cb4-3" title="3">        <span class="ex">G</span> N U P L O T</a>
-<a class="sourceLine" id="cb4-4" title="4">        <span class="ex">Version</span> 4.6 patchlevel 2    last modified 2013-03-14</a>
-<a class="sourceLine" id="cb4-5" title="5">        <span class="ex">Build</span> System: Linux x86_64</a>
-<a class="sourceLine" id="cb4-6" title="6"></a>
-<a class="sourceLine" id="cb4-7" title="7">        <span class="ex">Copyright</span> (C) <span class="ex">1986-1993</span>, 1998, 2004, 2007-2013</a>
-<a class="sourceLine" id="cb4-8" title="8">        <span class="ex">Thomas</span> Williams, Colin Kelley and many others</a>
-<a class="sourceLine" id="cb4-9" title="9"></a>
-<a class="sourceLine" id="cb4-10" title="10">        <span class="ex">gnuplot</span> home:     http://www.gnuplot.info</a>
-<a class="sourceLine" id="cb4-11" title="11">        <span class="ex">faq</span>, bugs, etc:   type <span class="st">&quot;help FAQ&quot;</span></a>
-<a class="sourceLine" id="cb4-12" title="12">        <span class="ex">immediate</span> help:   type <span class="st">&quot;help&quot;</span>  (plot window: hit <span class="st">&#39;h&#39;</span>)</a>
-<a class="sourceLine" id="cb4-13" title="13"></a>
-<a class="sourceLine" id="cb4-14" title="14"><span class="ex">Terminal</span> type set to <span class="st">&#39;x11&#39;</span></a>
-<a class="sourceLine" id="cb4-15" title="15"><span class="ex">gnuplot</span><span class="op">&gt;</span>        </a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> gnuplot</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="ex">G</span> N U P L O T</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        <span class="ex">Version</span> 4.6 patchlevel 2    last modified 2013-03-14</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        <span class="ex">Build</span> System: Linux x86_64</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        <span class="ex">Copyright</span> <span class="er">(</span><span class="ex">C</span><span class="kw">)</span> <span class="ex">1986-1993,</span> 1998, 2004, 2007-2013</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        <span class="ex">Thomas</span> Williams, Colin Kelley and many others</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        <span class="ex">gnuplot</span> home:     http://www.gnuplot.info</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        <span class="ex">faq,</span> bugs, etc:   type <span class="st">&quot;help FAQ&quot;</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        <span class="ex">immediate</span> help:   type <span class="st">&quot;help&quot;</span>  <span class="er">(</span><span class="ex">plot</span> window: hit <span class="st">&#39;h&#39;</span><span class="kw">)</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="ex">Terminal</span> type set to <span class="st">&#39;x11&#39;</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span>        </span></code></pre></div>
 <p>gnuplotは、様々な関数をプロットできる。例えばsin(x)を表示してみよう。</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> plot sin(x)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> plot sin<span class="er">(</span><span class="ex">x</span><span class="kw">)</span></span></code></pre></div>
 <figure>
-<img src="fig/sinx.png" alt="test.png" /><figcaption>test.png</figcaption>
+<img src="fig/sinx.png" alt="test.png" />
+<figcaption aria-hidden="true">test.png</figcaption>
 </figure>
 <p>サインカーブが表示されたはずだ。何も指定しないと、x軸は-10から10、y軸の範囲は自動で設定される。軸の範囲を変えてみよう。</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> plot [-20:20] sin(x)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> plot <span class="pp">[-</span><span class="ss">20:20</span><span class="pp">]</span> sin<span class="er">(</span><span class="ex">x</span><span class="kw">)</span></span></code></pre></div>
 <p>すると、x軸の範囲が-20から20に変更されたはずだ。</p>
 <p>あらかじめ範囲を指定しておくこともできる。</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> set xrange [-1:1]</a>
-<a class="sourceLine" id="cb7-2" title="2"><span class="ex">gnuplot</span><span class="op">&gt;</span> plot sin(x)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> set xrange <span class="pp">[-</span><span class="ss">1:1</span><span class="pp">]</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> plot sin<span class="er">(</span><span class="ex">x</span><span class="kw">)</span></span></code></pre></div>
 <p>また、y軸の範囲を指定することもできる。プロット時に指定する場合は、x軸の次に書く。</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> plot [-3:3] [-0.5:0.5] sin(x)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> plot <span class="pp">[-</span><span class="ss">3:3</span><span class="pp">]</span> <span class="pp">[-</span><span class="ss">0.5:0.5</span><span class="pp">]</span> sin<span class="er">(</span><span class="ex">x</span><span class="kw">)</span></span></code></pre></div>
 <p>もちろんx軸と同様に事前にy軸の範囲を指定することもできる。</p>
-<p>なお、プロットを表示した状態でマウスやキーボードの入力により、表示範囲を変更できる。これは便利な機能であるが、たまにプロットを見失ってしまうことがある。とりあえずデータや関数を見える状態にするには、<code>set autoscale y</code>を実行すれば良い。</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" title="1"><span class="ex">guplot</span><span class="op">&gt;</span> set autoscale y</a>
-<a class="sourceLine" id="cb9-2" title="2"><span class="ex">gnuplot</span><span class="op">&gt;</span> replot</a></code></pre></div>
-<p>これで少なくともデータ等が見えるようになるので、そのあとでx軸などを調整すればよい。</p>
+<p>なお、プロットを表示した状態でマウスやキーボードの入力により、表示範囲を変更できる。これは便利な機能であるが、たまにプロットを見失ってしまうことがある。とりあえずデータや関数を見える状態にするには、<code>reset</code>を実行すれば良い。</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">guplot</span><span class="op">&gt;</span> reset</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> replot</span></code></pre></div>
+<p>これで少なくともグラフ全体が見えるようになるので、そのあとでx軸などを調整すればよい。</p>
 <p>また<code>exit</code>によりgnuplotを終了することができる。</p>
 <h3 id="命令の省略">命令の省略</h3>
 <p>gnuplotは、命令やオプションは「他の単語と区別ができるところまで」省略することができる。</p>
 <p>例えば</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> plot sin(x)</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> plot sin<span class="er">(</span><span class="ex">x</span><span class="kw">)</span></span></code></pre></div>
 <p>は、以下のように書いても同じ意味になる。</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> plo sin(x)</a>
-<a class="sourceLine" id="cb11-2" title="2"><span class="ex">gnuplot</span><span class="op">&gt;</span> pl sin(x)</a>
-<a class="sourceLine" id="cb11-3" title="3"><span class="ex">gnuplot</span><span class="op">&gt;</span> p sin(x)</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> plo sin<span class="er">(</span><span class="ex">x</span><span class="kw">)</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> pl sin<span class="er">(</span><span class="ex">x</span><span class="kw">)</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> p sin<span class="er">(</span><span class="ex">x</span><span class="kw">)</span></span></code></pre></div>
 <p>また、</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> set xrange [-1:1]</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> set xrange <span class="pp">[-</span><span class="ss">1:1</span><span class="pp">]</span></span></code></pre></div>
 <p>は、</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb13-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> se xr [-1:1]</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> se xr <span class="pp">[-</span><span class="ss">1:1</span><span class="pp">]</span></span></code></pre></div>
 <p>と書いても正しく解釈される。</p>
 <p><code>plot</code>などは<code>p</code>と書いて良いと思うが、<code>set</code>を<code>se</code>、<code>xrange</code>を<code>xr</code>と書くのは可読性を損ねるため、省略はほどほどにしておいた方が良い。</p>
 <p>また、<code>linespoints</code>を<code>lp</code>など、個別の省略系が用意されている命令もある。</p>
 <h3 id="データのプロット">データのプロット</h3>
 <p>gnuplotは、データファイルのプロットができる。こんなデータを用意しよう(<code>test.dat</code>)。</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb14-1" title="1">1 1.1</a>
-<a class="sourceLine" id="cb14-2" title="2">2 1.9</a>
-<a class="sourceLine" id="cb14-3" title="3">3 3.2</a>
-<a class="sourceLine" id="cb14-4" title="4">4 4.1</a>
-<a class="sourceLine" id="cb14-5" title="5">5 4.8</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>1 1.1</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>2 1.9</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>3 3.2</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>4 4.1</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>5 4.8</span></code></pre></div>
 <p>ウェブからダウンロードしてもよい。</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb15-1" title="1"><span class="fu">wget</span> https://kaityo256.github.io/lab_startup/gnuplot/test.dat</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://kaityo256.github.io/lab_startup/gnuplot/test.dat</span></code></pre></div>
 <p>これをgnuplotでプロットしてみよう。</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb16-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> p <span class="st">&quot;test.dat&quot;</span></a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> p <span class="st">&quot;test.dat&quot;</span></span></code></pre></div>
 <p>以下のような表示がされたはずだ。</p>
 <figure>
-<img src="fig/test_dat_1.png" alt="デフォルトのプロット" /><figcaption>デフォルトのプロット</figcaption>
+<img src="fig/test_dat_1.png" alt="デフォルトのプロット" />
+<figcaption aria-hidden="true">デフォルトのプロット</figcaption>
 </figure>
 <p>これでは見づらいので、データ点のタイプとサイズを変更しよう。</p>
 <p>まず、データ点の形を変えよう。そのためには<code>pointtype</code>(省略形<code>pt</code>)を使う。</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb17-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> p <span class="st">&quot;test.dat&quot;</span> pt 6</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> p <span class="st">&quot;test.dat&quot;</span> pt 6</span></code></pre></div>
 <figure>
-<img src="fig/test_dat_2.png" alt="pointtype 6" /><figcaption>pointtype 6</figcaption>
+<img src="fig/test_dat_2.png" alt="pointtype 6" />
+<figcaption aria-hidden="true">pointtype 6</figcaption>
 </figure>
 <p>データ点が「+」から「〇」になった。しかし、まだ大きさが小さいので、こんどはデータ点のサイズを変えよう。<code>pointsize</code>(省略形<code>ps</code>)を使う。</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb18-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> p <span class="st">&quot;test.dat&quot;</span> pt 6 ps 2</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> p <span class="st">&quot;test.dat&quot;</span> pt 6 ps 2</span></code></pre></div>
 <figure>
-<img src="fig/test_dat_3.png" alt="pointsize 2" /><figcaption>pointsize 2</figcaption>
+<img src="fig/test_dat_3.png" alt="pointsize 2" />
+<figcaption aria-hidden="true">pointsize 2</figcaption>
 </figure>
 <p>データを点ではなく、折れ線で結びたいこともあるだろう。その場合には<code>with lines</code>と指定する。面倒なので私は<code>w l</code>と略記する。</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb19-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> p <span class="st">&quot;test.dat&quot;</span> w l</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> p <span class="st">&quot;test.dat&quot;</span> w l</span></code></pre></div>
 <figure>
-<img src="fig/test_dat_4.png" alt="with lines" /><figcaption>with lines</figcaption>
+<img src="fig/test_dat_4.png" alt="with lines" />
+<figcaption aria-hidden="true">with lines</figcaption>
 </figure>
 <p><code>with linespoints</code>を指定することで、データ点を表示しつつ線で結ぶこともできる(省略形<code>lp</code>)。</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb20-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> p <span class="st">&quot;test.dat&quot;</span> w lp</a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> p <span class="st">&quot;test.dat&quot;</span> w lp</span></code></pre></div>
 <figure>
-<img src="fig/test_dat_lp.png" alt="with linespoints" /><figcaption>with linespoints</figcaption>
+<img src="fig/test_dat_lp.png" alt="with linespoints" />
+<figcaption aria-hidden="true">with linespoints</figcaption>
 </figure>
 <p><code>linespoints</code>を指定した状態で、かつ点のタイプやサイズを変更することもできる。</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb21-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> p <span class="st">&quot;test.dat&quot;</span> w lp pt 6 ps 2</a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> p <span class="st">&quot;test.dat&quot;</span> w lp pt 6 ps 2</span></code></pre></div>
 <figure>
-<img src="fig/test_dat_lp_pt_ps.png" alt="with linespoints pt 6 ps 2" /><figcaption>with linespoints pt 6 ps 2</figcaption>
+<img src="fig/test_dat_lp_pt_ps.png" alt="with linespoints pt 6 ps 2" />
+<figcaption aria-hidden="true">with linespoints pt 6 ps 2</figcaption>
 </figure>
 <p>また、線やポイントの色を変えるには<code>linecolor(lc)</code>で指定できる。</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb22-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> p <span class="st">&quot;test.dat&quot;</span> w lp pt 6 ps 2 lc 2</a></code></pre></div>
+<div class="sourceCode" id="cb22"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> p <span class="st">&quot;test.dat&quot;</span> w lp pt 6 ps 2 lc 2</span></code></pre></div>
 <figure>
-<img src="fig/test_dat_lc.png" alt="p “test.dat” w lp pt 6 ps 2 lc 2" /><figcaption>p “test.dat” w lp pt 6 ps 2 lc 2</figcaption>
+<img src="fig/test_dat_lc.png" alt="p “test.dat” w lp pt 6 ps 2 lc 2" />
+<figcaption aria-hidden="true">p “test.dat” w lp pt 6 ps 2 lc
+2</figcaption>
 </figure>
 <p>線色には数字の他、色名を直接指定することもできる。</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb23-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> p <span class="st">&quot;test.dat&quot;</span> w lp pt 6 ps 2 lc <span class="st">&quot;red&quot;</span></a></code></pre></div>
+<div class="sourceCode" id="cb23"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> p <span class="st">&quot;test.dat&quot;</span> w lp pt 6 ps 2 lc <span class="st">&quot;red&quot;</span></span></code></pre></div>
 <figure>
-<img src="fig/test_dat_lc_red.png" alt="p “test.dat” w lp pt 6 ps 2 lc “red”" /><figcaption>p “test.dat” w lp pt 6 ps 2 lc “red”</figcaption>
+<img src="fig/test_dat_lc_red.png"
+alt="p “test.dat” w lp pt 6 ps 2 lc “red”" />
+<figcaption aria-hidden="true">p “test.dat” w lp pt 6 ps 2 lc
+“red”</figcaption>
 </figure>
 <p>色の名前をダブルクォーテーションで囲むのを忘れないこと。</p>
 <h2 id="フィッティング">フィッティング</h2>
 <p>gnuplotでは自由に関数を定義して、パラメータのフィッティングをすることができる。まずは比例するようなデータに対して傾きをフィッティングしてみよう。</p>
 <h3 id="簡単なフィッティング">簡単なフィッティング</h3>
 <p>まず、データと曲線は重ねて表示することができる。</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb24-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> p <span class="st">&quot;test.dat&quot;</span>, x</a></code></pre></div>
+<div class="sourceCode" id="cb24"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> p <span class="st">&quot;test.dat&quot;</span>, x</span></code></pre></div>
 <figure>
-<img src="fig/test_dat_x.png" alt="p test.dat, x" /><figcaption>p test.dat, x</figcaption>
+<img src="fig/test_dat_x.png" alt="p test.dat, x" />
+<figcaption aria-hidden="true">p test.dat, x</figcaption>
 </figure>
 <p>このようにカンマで区切ることで、複数のデータ、複数の曲線を重ねて表示できる。</p>
 <p>次に、関数を定義しよう。<code>y = a x</code>の形でフィッティングしたいので、そのように定義する。</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb25-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> f(x) = <span class="ex">a</span> * x</a></code></pre></div>
+<div class="sourceCode" id="cb25"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> f<span class="er">(</span><span class="ex">x</span><span class="kw">)</span> <span class="ex">=</span> a <span class="pp">*</span> x</span></code></pre></div>
 <p>係数<code>a</code>の初期値も与えておこう。</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb26-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> a = 1</a></code></pre></div>
+<div class="sourceCode" id="cb26"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> a = 1</span></code></pre></div>
 <p>このように、gnuplotでは変数も使える。この状態で、関数<code>f(x)</code>とデータを重ねてみよう。</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb27-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> p <span class="st">&quot;test.dat&quot;</span>, f(x)</a></code></pre></div>
+<div class="sourceCode" id="cb27"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> p <span class="st">&quot;test.dat&quot;</span>, f<span class="er">(</span><span class="ex">x</span><span class="kw">)</span></span></code></pre></div>
 <figure>
-<img src="fig/test_dat_fx.png" alt="p test.dat, f(x)" /><figcaption>p test.dat, f(x)</figcaption>
+<img src="fig/test_dat_fx.png" alt="p test.dat, f(x)" />
+<figcaption aria-hidden="true">p test.dat, f(x)</figcaption>
 </figure>
 <p>さて、このデータをフィッティングしてみよう。以下のように指定する。</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb28-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> fit f(x) <span class="st">&quot;test.dat&quot;</span> <span class="ex">via</span> a</a></code></pre></div>
-<p>コマンドは <code>fit 関数 データ via パラメタリスト</code>である。複数のパラメタを含む場合は<code>via a,b</code>などとしてカンマで区切って与える。こんな表示がされるはずだ。</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb29-1" title="1">Final set of parameters            Asymptotic Standard Error</a>
-<a class="sourceLine" id="cb29-2" title="2">=======================            ==========================</a>
-<a class="sourceLine" id="cb29-3" title="3"></a>
-<a class="sourceLine" id="cb29-4" title="4">a               = 0.998182         +/- 0.02234      (2.238%)</a>
-<a class="sourceLine" id="cb29-5" title="5"></a>
-<a class="sourceLine" id="cb29-6" title="6"></a>
-<a class="sourceLine" id="cb29-7" title="7">correlation matrix of the fit parameters:</a>
-<a class="sourceLine" id="cb29-8" title="8"></a>
-<a class="sourceLine" id="cb29-9" title="9">               a</a>
-<a class="sourceLine" id="cb29-10" title="10">a               1.000</a></code></pre></div>
+<div class="sourceCode" id="cb28"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> fit f<span class="er">(</span><span class="ex">x</span><span class="kw">)</span> <span class="st">&quot;test.dat&quot;</span> via a</span></code></pre></div>
+<p>コマンドは
+<code>fit 関数 データ via パラメタリスト</code>である。複数のパラメタを含む場合は<code>via a,b</code>などとしてカンマで区切って与える。こんな表示がされるはずだ。</p>
+<div class="sourceCode" id="cb29"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>Final set of parameters            Asymptotic Standard Error</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>=======================            ==========================</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>a               = 0.998182         +/- 0.02234      (2.238%)</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>correlation matrix of the fit parameters:</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>               a</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>a               1.000</span></code></pre></div>
 <p>まず注目して欲しいのは、<code>Final set of parameters</code>で、これにより<code>a = 1.00 +/- 0.02</code>であることがわかる。</p>
 <p>また、複数のパラメタをフィッティングした時には、<code>correlation matrix</code>も気にした方が良いが、ここでは触れない。</p>
 <p>この状態で<code>a</code>にはフィッティングした値が代入されている。<code>print</code>文により、変数の値を表示できる。</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb30-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> print a</a>
-<a class="sourceLine" id="cb30-2" title="2"><span class="ex">0.998181818193914</span></a></code></pre></div>
+<div class="sourceCode" id="cb30"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> print a</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="ex">0.998181818193914</span></span></code></pre></div>
 <p>また、もう一度<code>f(x)</code>と一緒にデータを表示すれば、フィッティング後の値が使われる。</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb31-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> p <span class="st">&quot;test.dat&quot;</span>, f(x)</a></code></pre></div>
+<div class="sourceCode" id="cb31"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> p <span class="st">&quot;test.dat&quot;</span>, f<span class="er">(</span><span class="ex">x</span><span class="kw">)</span></span></code></pre></div>
 <h3 id="誤差を考慮したフィッティング">誤差を考慮したフィッティング</h3>
 <p>gnuplotは、誤差を考慮したフィッティングもできる。以下のデータを考えよう(<code>test2.dat</code>)。</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb32-1" title="1">1 1.01 0.1</a>
-<a class="sourceLine" id="cb32-2" title="2">2 1.99 0.1</a>
-<a class="sourceLine" id="cb32-3" title="3">3 3.02 0.1</a>
-<a class="sourceLine" id="cb32-4" title="4">4 5.10 1.1</a>
-<a class="sourceLine" id="cb32-5" title="5">5 4.98 0.1</a></code></pre></div>
+<div class="sourceCode" id="cb32"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>1 1.01 0.1</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>2 1.99 0.1</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>3 3.02 0.1</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>4 5.10 1.1</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>5 4.98 0.1</span></code></pre></div>
 <p>上記のファイルのウェブからダウンロードできる。</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb33-1" title="1"><span class="fu">wget</span> https://kaityo256.github.io/lab_startup/gnuplot/test2.dat</a></code></pre></div>
-<p>それぞれ「x, y, 誤差」である。これを表示しよう。データをエラーバー付きで表示するには<code>with errorbars</code> を指定する。見づらいので、少しプロット範囲を広げよう。</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb34-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> p [0.9: 5.1] <span class="st">&quot;test2.dat&quot;</span> w e</a></code></pre></div>
+<div class="sourceCode" id="cb33"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://kaityo256.github.io/lab_startup/gnuplot/test2.dat</span></code></pre></div>
+<p>それぞれ「x, y,
+誤差」である。これを表示しよう。データをエラーバー付きで表示するには<code>with errorbars</code>
+を指定する。見づらいので、少しプロット範囲を広げよう。</p>
+<div class="sourceCode" id="cb34"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> p [0.9: 5.1] <span class="st">&quot;test2.dat&quot;</span> w e</span></code></pre></div>
 <figure>
-<img src="fig/test2.png" alt="p [0.9: 5.1] “test2.dat” w e" /><figcaption>p [0.9: 5.1] “test2.dat” w e</figcaption>
+<img src="fig/test2.png" alt="p [0.9: 5.1] “test2.dat” w e" />
+<figcaption aria-hidden="true">p [0.9: 5.1] “test2.dat” w e</figcaption>
 </figure>
 <p>一つだけエラーバーが大きな(つまり不正確な)データが含まれていることがわかる。</p>
 <p>まずはこの状態で y=axの形でフィッティングをかけてみよう。</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb35-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> f(x) = <span class="ex">a</span> * x</a>
-<a class="sourceLine" id="cb35-2" title="2"><span class="ex">gnuplot</span><span class="op">&gt;</span> fit f(x) <span class="st">&quot;test2.dat&quot;</span> <span class="ex">via</span> a  </a></code></pre></div>
+<div class="sourceCode" id="cb35"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> f<span class="er">(</span><span class="ex">x</span><span class="kw">)</span> <span class="ex">=</span> a <span class="pp">*</span> x</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> fit f<span class="er">(</span><span class="ex">x</span><span class="kw">)</span> <span class="st">&quot;test2.dat&quot;</span> via a  </span></code></pre></div>
 <p>デフォルトでは、gnuplotは誤差を考慮しない。その結果、<code>a = 1.08 +/-0.06</code>と、1より大き目の値が得られる。プロットしてみよう。</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb36-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> p [0.9: 5.1] <span class="st">&quot;test2.dat&quot;</span> w e, f(x)</a></code></pre></div>
+<div class="sourceCode" id="cb36"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> p [0.9: 5.1] <span class="st">&quot;test2.dat&quot;</span> w e, f<span class="er">(</span><span class="ex">x</span><span class="kw">)</span></span></code></pre></div>
 <figure>
-<img src="fig/test2_without_error.png" alt="誤差を考慮しなかった場合" /><figcaption>誤差を考慮しなかった場合</figcaption>
+<img src="fig/test2_without_error.png" alt="誤差を考慮しなかった場合" />
+<figcaption aria-hidden="true">誤差を考慮しなかった場合</figcaption>
 </figure>
 <p>上に外れたデータに引っ張られて、全体的に線が上にずれたことがわかるだろう。</p>
 <p>次に、誤差を考慮したフィッティングをしてみよう。そのためには<code>using</code>を使う。</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb37-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> fit f(x) <span class="st">&quot;test2.dat&quot;</span> <span class="ex">using</span> 1:2:3 via a</a></code></pre></div>
+<div class="sourceCode" id="cb37"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> fit f<span class="er">(</span><span class="ex">x</span><span class="kw">)</span> <span class="st">&quot;test2.dat&quot;</span> using 1:2:3 via a</span></code></pre></div>
 <p>その結果<code>a = 1.000 +/- 0.008</code>と、非常に1に近くなったことがわかるだろう。プロットしてみよう。</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb38-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> p [0.9: 5.1] <span class="st">&quot;test2.dat&quot;</span> w e, f(x)</a></code></pre></div>
+<div class="sourceCode" id="cb38"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> p [0.9: 5.1] <span class="st">&quot;test2.dat&quot;</span> w e, f<span class="er">(</span><span class="ex">x</span><span class="kw">)</span></span></code></pre></div>
 <figure>
-<img src="fig/test2_with_error.png" alt="誤差を考慮した場合" /><figcaption>誤差を考慮した場合</figcaption>
+<img src="fig/test2_with_error.png" alt="誤差を考慮した場合" />
+<figcaption aria-hidden="true">誤差を考慮した場合</figcaption>
 </figure>
 <p>信頼性の低いデータの重みが小さくなり、直線が他の信頼性の高いデータを貫いたことがわかる。</p>
 <h2 id="ファイルからの実行">ファイルからの実行</h2>
 <p>gnuplotは、コマンドを入力して実行していくタイプのプロッターだが、このコマンドをあらかじめファイルに保存しておき、gnuplotに食わせることでプロットすることができる。</p>
-<p>gnuplotは、プロットを画面に表示するだけでなく、PNGやPostScript、PDFなどの形式でも出力可能だが、このようなファイルに出力する場合は、コマンドを手で入力するのではなく、ファイルに保存して、gnuplotに食わせて出力したほうが良い。これにより、 <strong>生データからグラフまで一発で作成する</strong> 環境が整うからだ。科学において、論文の不正の多くはグラフの捏造や修正により行われる。不正を疑われた時、生データと、そのデータから論文に使われたグラフと同じものが「後から」作れることは非常に大事である。また、論文を執筆する際、例えば精度の低いデータで仮の図を作って論文を書いておき、後から精度の高いものに更新することがよくある。その時に、コマンド一発で更新されたデータから図を作ることができると作業効率が良い。</p>
+<p>gnuplotは、プロットを画面に表示するだけでなく、PNGやPostScript、PDFなどの形式でも出力可能だが、このようなファイルに出力する場合は、コマンドを手で入力するのではなく、ファイルに保存して、gnuplotに食わせて出力したほうが良い。これにより、
+<strong>生データからグラフまで一発で作成する</strong>
+環境が整うからだ。科学において、論文の不正の多くはグラフの捏造や修正により行われる。不正を疑われた時、生データと、そのデータから論文に使われたグラフと同じものが「後から」作れることは非常に大事である。また、論文を執筆する際、例えば精度の低いデータで仮の図を作って論文を書いておき、後から精度の高いものに更新することがよくある。その時に、コマンド一発で更新されたデータから図を作ることができると作業効率が良い。</p>
 <p>さて、出力先を画面ではなくPNGなどにする場合は<code>set terminal</code>を用いる。また、出力ファイル名は<code>set output ファイル名</code>で指定する。その他は全く同じである。</p>
 <p>プロットファイル<code>test.plt</code>を用意しよう。(まだgnuplotを実行中ならそれを終了してから)<code>vi test.plt</code>を実行し、以下の内容を記述して保存、終了せよ。</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb39-1" title="1">set terminal pngcairo</a>
-<a class="sourceLine" id="cb39-2" title="2">set output &quot;test.png&quot;</a>
-<a class="sourceLine" id="cb39-3" title="3"></a>
-<a class="sourceLine" id="cb39-4" title="4">p sin(x)</a></code></pre></div>
+<div class="sourceCode" id="cb39"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>set terminal pngcairo</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>set output &quot;test.png&quot;</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>p sin(x)</span></code></pre></div>
 <p>その後、このファイルをgnuplotに食わせよう。</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb40-1" title="1"><span class="ex">gnuplot</span> test.plt</a></code></pre></div>
-<p>正しく記述されていれば、同じディレクトリに<code>test.png</code>が作成されたはずだ。表示してみよう。Linux (CentOS)でPNGを表示するには<code>eog</code>、Macなら<code>open</code>、WindowsのWSLでは<code>explorer.exe</code>で開くことができる。</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb41-1" title="1"><span class="ex">eog</span> test.png <span class="co"># CentOS</span></a>
-<a class="sourceLine" id="cb41-2" title="2"><span class="ex">open</span> test.png <span class="co"># Mac</span></a>
-<a class="sourceLine" id="cb41-3" title="3"><span class="ex">explorer.exe</span> test.png <span class="co"># Windows</span></a></code></pre></div>
+<div class="sourceCode" id="cb40"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span> test.plt</span></code></pre></div>
+<p>正しく記述されていれば、同じディレクトリに<code>test.png</code>が作成されたはずだ。表示してみよう。Linux
+(CentOS)でPNGを表示するには<code>eog</code>、Macなら<code>open</code>、WindowsのWSLでは<code>explorer.exe</code>で開くことができる。</p>
+<div class="sourceCode" id="cb41"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="ex">eog</span> test.png <span class="co"># CentOS</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="ex">open</span> test.png <span class="co"># Mac</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="ex">explorer.exe</span> test.png <span class="co"># Windows</span></span></code></pre></div>
 <p>Windowsでいちいち<code>explorer.exe</code>とうつのは面倒なので、以下のようなaliasを作っておくと良い。</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb42-1" title="1"><span class="bu">alias</span> open=explorer.exe </a></code></pre></div>
+<div class="sourceCode" id="cb42"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> open=explorer.exe </span></code></pre></div>
 <p>論文用に図を作る場合は、PDFにするのが良いだろう。<code>test.plt</code>を以下のように修正せよ。</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb43-1" title="1">set terminal pdfcairo</a>
-<a class="sourceLine" id="cb43-2" title="2">set output &quot;test.pdf&quot;</a>
-<a class="sourceLine" id="cb43-3" title="3"></a>
-<a class="sourceLine" id="cb43-4" title="4">p sin(x)</a></code></pre></div>
+<div class="sourceCode" id="cb43"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>set terminal pdfcairo</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>set output &quot;test.pdf&quot;</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>p sin(x)</span></code></pre></div>
 <p>実行したディレクトリに<code>test.pdf</code>が作成されたはずなので確認せよ。</p>
 <p>論文に使う図でなくても、普段から図は必ずプロットファイル経由で作成する癖をつけておいた方がよい。コマンドから図を作った場合、一か月もすれば間違いなくどういう操作をしたか忘れてしまう。生データとプロットファイルをペアで保存して、プロットファイルと図のファイル名を揃えておけば、「このプロットファイルをgnuplotに食わせればこのファイルができる」と思い出すことができるし、いつでも生データから同じ図を作ることができる。</p>
 <h2 id="その他便利な機能">その他便利な機能</h2>
 <p>gnuplotは非常に多機能であり、図の作成に必要なことはほぼなんでもできる。そのすべての機能を紹介することは不可能だが、ここでいくつか便利な機能を紹介しておく。</p>
 <h3 id="ラベルの設定">ラベルの設定</h3>
 <p><code>set xlabel</code>でx軸のラベルを設定できる。まずはサインカーブをプロットしよう。</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb44-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> p sin(x)</a></code></pre></div>
+<div class="sourceCode" id="cb44"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> p sin<span class="er">(</span><span class="ex">x</span><span class="kw">)</span></span></code></pre></div>
 <p>この状態でx軸のラベルを設定する。</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb45-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> set xlabel <span class="st">&quot;Temperature&quot;</span></a></code></pre></div>
+<div class="sourceCode" id="cb45"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> set xlabel <span class="st">&quot;Temperature&quot;</span></span></code></pre></div>
 <p>設定しただけでは反映されない。<code>replot</code>により再描画しよう。</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb46-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> rep</a></code></pre></div>
+<div class="sourceCode" id="cb46"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> rep</span></code></pre></div>
 <figure>
-<img src="fig/label1.png" alt="label1.png" /><figcaption>label1.png</figcaption>
+<img src="fig/label1.png" alt="label1.png" />
+<figcaption aria-hidden="true">label1.png</figcaption>
 </figure>
 <p>軸の名前が設定されたはずだ。</p>
 <h4 id="フォントの設定">フォントの設定</h4>
 <p>軸のフォントサイズが小さいので、もう少し大きくしたい場合は、<code>font</code>コマンドを追加する。</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb47-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> set xlabel <span class="st">&quot;Time&quot;</span> font <span class="st">&quot;Helvetica,40&quot;</span></a></code></pre></div>
+<div class="sourceCode" id="cb47"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> set xlabel <span class="st">&quot;Time&quot;</span> font <span class="st">&quot;Helvetica,40&quot;</span></span></code></pre></div>
 <p>このように<code>font</code>の後で「フォント名、フォントサイズ」と指定するとフォントやサイズを変更できる。</p>
 <figure>
-<img src="fig/label2.png" alt="label2.png" /><figcaption>label2.png</figcaption>
+<img src="fig/label2.png" alt="label2.png" />
+<figcaption aria-hidden="true">label2.png</figcaption>
 </figure>
 <h4 id="ギリシャ文字">ギリシャ文字</h4>
 <p>gnuplotはラベルなどにギリシャ文字を表示できる。例えばx軸に「β」を表示したい場合は以下のようにする。</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb48-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> set xlabel <span class="st">&quot;{/Symbol b}&quot;</span></a></code></pre></div>
+<div class="sourceCode" id="cb48"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> set xlabel <span class="st">&quot;{/Symbol b}&quot;</span></span></code></pre></div>
 <figure>
-<img src="fig/label3.png" alt="label3.png" /><figcaption>label3.png</figcaption>
+<img src="fig/label3.png" alt="label3.png" />
+<figcaption aria-hidden="true">label3.png</figcaption>
 </figure>
 <p>中括弧で囲まれた中に<code>/Symbol 対応する文字</code>を書く。βに対応するのはbだ。</p>
 <h4 id="上付き下付き文字">上付き、下付き文字</h4>
 <p>上付き、下付き文字も設定できる。ギリシャ文字と組み合わせることもできる。上付き文字はハット「^」で、下付き文字はアンダースコア「_」で書く。</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb49-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> set xlabel <span class="st">&quot;{/Symbol b}^c&quot;</span></a>
-<a class="sourceLine" id="cb49-2" title="2"><span class="ex">gnuplot</span><span class="op">&gt;</span> set xlabel <span class="st">&quot;{/Symbol b}_c&quot;</span></a></code></pre></div>
+<div class="sourceCode" id="cb49"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> set xlabel <span class="st">&quot;{/Symbol b}^c&quot;</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> set xlabel <span class="st">&quot;{/Symbol b}_c&quot;</span></span></code></pre></div>
 <p>なお、二文字以上の言葉を上付き、下付きにしたい場合は中括弧で囲む。そうでないと、最初の文字だけが上付き、下付きになる。</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb50-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> set xlabel <span class="st">&quot;{/Symbol b}_{temp}&quot;</span></a></code></pre></div>
+<div class="sourceCode" id="cb50"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> set xlabel <span class="st">&quot;{/Symbol b}_{temp}&quot;</span></span></code></pre></div>
 <h3 id="サンプリング数の変更">サンプリング数の変更</h3>
 <p>gnuplotは、関数を折れ線グラフで表示している。一般には十分な解像度で表示されるが、場合によってはデフォルトの設定では解像度が不足するかもしれない。その場合は<code>set samples</code>で適切な値を設定してやる。</p>
-<p>例えば、-30 &lt; x &lt; 30の範囲でサインカーブを表示すると、デフォルトでは解像度が不足し、ガタガタになる。</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb51-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> p [-30:30] sin(x)</a></code></pre></div>
+<p>例えば、-30 &lt; x &lt;
+30の範囲でサインカーブを表示すると、デフォルトでは解像度が不足し、ガタガタになる。</p>
+<div class="sourceCode" id="cb51"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> p <span class="pp">[-</span><span class="ss">30:30</span><span class="pp">]</span> sin<span class="er">(</span><span class="ex">x</span><span class="kw">)</span></span></code></pre></div>
 <figure>
-<img src="fig/samples1.png" alt="fig/samples1.png" /><figcaption>fig/samples1.png</figcaption>
+<img src="fig/samples1.png" alt="fig/samples1.png" />
+<figcaption aria-hidden="true">fig/samples1.png</figcaption>
 </figure>
 <p>サンプル数を1000などにしてやればなめらかな線になる。</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb52-1" title="1"><span class="ex">gnuplot</span><span class="op">&gt;</span> set samples 1000</a>
-<a class="sourceLine" id="cb52-2" title="2"><span class="ex">gnuplot</span><span class="op">&gt;</span> rep</a></code></pre></div>
+<div class="sourceCode" id="cb52"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> set samples 1000</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="ex">gnuplot</span><span class="op">&gt;</span> rep</span></code></pre></div>
 <figure>
-<img src="fig/samples2.png" alt="fig/samples2.png" /><figcaption>fig/samples2.png</figcaption>
+<img src="fig/samples2.png" alt="fig/samples2.png" />
+<figcaption aria-hidden="true">fig/samples2.png</figcaption>
 </figure>
 <p>ただし、点の数が増えるため、PDFなどで出力する場合はファイルサイズも大きくなるので注意。</p>
 </article>
