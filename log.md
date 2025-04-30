@@ -10,6 +10,11 @@
 * 4/17 gnuplotハンズオン
 * 4/24 GNU makeハンズオン
 * 5/1 MarkdownとLaTeX記法
+* LAMMPSとVMDハンズオン
+* バッチシステムの使い方
+* ParaViewハンズオン
+* LaTeXハンズオン
+* 卒論執筆ハンズオン
 
 ## 2024年度
 
