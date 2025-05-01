@@ -406,11 +406,11 @@ $$
 `\sum`で和を表現できる。
 
 ```tex
-f(x+h) = \sum_{k=0}^\infty \frac{h^k f^{k}(x)}{k!} 
+f(x+h) = \sum_{k=0}^\infty \frac{h^k f^{(k)}(x)}{k!} 
 ```
 
 $$
-f(x+h) = \sum_{k=0}^\infty \frac{h^k f^{k}(x)}{k!} 
+f(x+h) = \sum_{k=0}^\infty \frac{h^k f^{(k)}(x)}{k!} 
 $$
 
 `\prod`で積も表現できる。
