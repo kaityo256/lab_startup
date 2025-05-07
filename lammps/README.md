@@ -2,11 +2,9 @@
 
 Lammps (Large-scale Atomic/Molecular Massively Parallel Simulator)は、サンディア国立研究所の古典分子動力学プログラムだ。性能が良く、比較的容易に使えて、並列化もなされているため、広く使われている。
 
-## Lammpsの使い方
+## Lammpsのインストール
 
-### インストール
-
-#### Windows
+### Windows
 
 WSLのターミナルで以下を実行する。
 
@@ -32,7 +30,7 @@ Total wall time: 0:00:00
 
 以下、`lmp_serial`を`lmp`と読み替えて実行すること。
 
-#### Mac
+### Mac
 
 「ターミナル」で以下を実行しよう。
 
@@ -57,67 +55,6 @@ Total wall time: 0:00:00
 
 上記のようなバージョン情報が表示されれば問題なくインストールされている。
 
-### サンプルコードの実行
-
-インストールが完了したら、サンプルコードを実行してみよう。サンプルファイルをgitでcloneする。
-
-
-```sh
-cd github
-git clone --depth 1 https://github.com/lammps/lammps.git
-cd lammps/examples/melt
-```
-
-で目的の場所にいけるはず。異なるディレクトリにクローンした場合は適宜読み替えること。
-
-この状態で、以下を実行しよう(Windowsの場合は`lmp_stable`)。
-
-```sh
-lmp_serial < in.melt
-```
-
-いろいろ表示されて、最後に
-
-```txt
-Total # of neighbors = 151513
-Ave neighs/atom = 37.8783
-Neighbor list builds = 12
-Dangerous builds not checked
-Total wall time: 0:00:00
-```
-
-といった表示が出れば実行は成功だ。
-
-### in.meltの修正
-
-次に、`in.melt`を修正しよう。
-
-```sh
-code in.melt
-```
-
-と入力すれば、VSCodeで直接`in.melt`が開かれるはず。
-
-VSCodeでin.meltを開いたら、以下の行を探す。
-
-```sh
-#dump		id all atom 50 dump.melt
-```
-
-この行頭の`#`を削除して保存しよう。
-
-```sh
-dump		id all atom 50 dump.melt
-```
-
-この状態で、またlammpsを実行しよう。
-
-```sh
-lmp_serial < in.melt
-```
-
-すると、今度は同じフォルダに`dump.melt`が作成されたはずだ。`ls`で確認せよ。これは原子の起動を保存したファイルで、これを後からVMDで読み込んで可視化する。
-
 ### 研究室サーバで実行する場合
 
 以下を実行せよ。
@@ -126,13 +63,11 @@ lmp_serial < in.melt
 export PATH=$PATH:/home/apps/lammps
 ```
 
-これにより、`lmp_serial`が使えるようになる。
+これにより、`lmp_serial`や、MPI版である`lmp_mpi`が使えるようになる。
 
-## VMD
+## VMDのインストール
 
-### インストール
-
-#### Windows
+### Windows
 
 次にVMDをダウンロード、インストールしよう。
 
@@ -148,7 +83,7 @@ export PATH=$PATH:/home/apps/lammps
 
 もしインストール後に実行してもエラーが起きて開けなかった場合、アンインストールして32-bit版をインストールする。具体的には[VMDダウンロードページ](https://www.ks.uiuc.edu/Development/Download/download.cgi?PackageName=VMD)に行って、「Windows OpenGL (32-bit Intel x86) (Microsoft Windows XP/Vista/7/8/10 (32-bit) using OpenGL)」をダウンロードする。32-bitで、かつCUDAを使っていないものを選ぶこと。
 
-#### Mac
+### Mac
 
 [ここ](https://www.ks.uiuc.edu/Research/vmd/)に行って、「Download (all versions)」をクリックする。
 
@@ -181,61 +116,222 @@ M1 Macの場合は「MacOS 11.x, ARM64 (64-bit "M1" Macs) (Apple MacOS-X 11 or l
 
 ![VMD](fig/vmd.png)
 
-### VMDによる可視化
+## VMDによる可視化
 
-#### Windowsの場合
+### サンプルファイルのクローン
 
-WSLにおいて、まず`dump.melt`が存在するディレクトリで
+まず、LAMMPSの可視化サンプルをクローンする。
+
+```sh
+cd github
+git clone https://github.com/kaityo256/lammps_samples.git
+```
+
+### 衝突シミュレーション
+
+まず、`collision`ディレクトリに移動して、`python3 generate_config.py`を実行することで、原子の初期配置ファイル`collision.atoms`を生成する。
+
+```sh
+cd collision
+python3 generate_config.py
+```
+
+その後、LAMMPSの実行ファイルである`lmp_serial`に`collision.input`を与えて実行する。
+
+```sh
+lmp_serial < collision.input
+```
+
+すると、以下のような出力がされる。
+
+```txt
+LAMMPS (10 Mar 2021)
+Reading data file ...
+  orthogonal box = (-40.000000 -20.000000 -20.000000) to (40.000000 20.000000 20.000000)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  4696 atoms
+(snip)
+Total # of neighbors = 155660
+Ave neighs/atom = 33.147359
+Neighbor list builds = 399
+Dangerous builds = 0
+Total wall time: 0:00:47
+```
+
+概ね、1分以内に実行が終わるはずである。実行後、`collision.lammpstrj`というファイルが生成されているので、これをVMDに読み込ませて可視化する。
+
+ファイルの読み込みについて、WindowsとMacで少々手続きが異なる。
+
+#### Mac
+
+VMDを起動し、「VMD Main」の「File」から「New Molecule」を選び、「Browse」を押して作業ディレクトリへ移動し、`collision.lammpstrj`を選んでから「Load」を押す。
+
+稀に、Macにおいてマウスが使えない(クリックが効かない)場合がある。その場合はVMDコマンドプロンプトを使う方法を試すこと。
+
+#### Windows
+
+WindowsではLAMMPSをWSL上で実行するが、VMDからWSLのディレクトリを開くのがやや面倒だ。以下の二つの方法を紹介する。
+
+* カレントディレクトリを指定してVMDを実行する方法
+* カレントディレクトリをコピーしてVMDから開く方法
+
+まず、WSLで開きたいlammpstrjファイルが存在するディレクトリで
 
 ```sh
 open .
 ```
 
-と入力し、そのフォルダを開く。まだopenをエイリアス設定していない場合は
+を実行し、そのフォルダを開く。まだopenをエイリアス設定していない場合は
 
 ```sh
 alias open=explorer.exe
 ```
 
-としておくこと。`.bashrc`に記載しておくことが望ましい。フォルダが開いたら、パスが表示されている場所(以下の赤で囲った部分)に「vmd」と入力すると、このディレクトリをカレントディレクトリとしてVMDが起動する。
+としておくこと。`.bashrc`に記載しておくことが望ましい。
+
+フォルダが開いたら、パスが表示されている場所に「vmd」と入力すると、このディレクトリをカレントディレクトリとしてVMDが起動する。
 
 ![フォルダ](fig/folder.png)
 
-VMDが起動したら、「VMD Main」の「File」から「New Molecule」を選び、「Browse」を押して先ほどの`dump.melt`を選ぶ。
-
-file typeとして「LAMMPS Trajectory」を選んでから「Load」を押す。
+VMDが起動したら、「VMD Main」の「File」から「New Molecule」を選び、「Browse」を押して`collision.lammpstrj`を選んで「LOAD」を押す。拡張子が`lammpstrj`であれば、file typeとして「LAMMPS Trajectory」が自動で選択される。
 
 ![VMD](fig/vmd_dialog.png)
 
-すると、直線が多数重なったような画面が出たはずだ。この状態で、「VMD Main」の画面で「dump.melt」の行を選び、「Graphics」の「Representation」を選ぶ。
+上記の方法でVMDがうまく起動しない場合は、エクスプローラーで作業ディレクトリを開き、そのパスをコピーする。その後、VMDを起動して、「File」から「New Molecule」を選び、「Browse」を押してから、先ほどコピーしたパスを貼り付けると、`collision.lammpstrj`ファイルが見つかるはずなので、それを選択して「LOAD」を押す。
 
-ここで、「Drawing Method」を「VDW」にすると、画面が玉に変わるはず。その状態で「Sphere Scale」を小さくしよう。0.3くらいがちょうどよいと思う。
+### 気泡シミュレーション
 
-![Representation](fig/vmd_representation.png)
+`lammps_samples`の中の`bubble`の中のファイルを実行する。
 
-この状態で、VMD Mainの右下にある再生ボタン「Play Forward」を押せば、原子が凍った状態から解けていくアニメーション(6フレームしかないが)が表示されるはずである。マウスでドラッグすると角度を変えられるので試してみよ。
+```sh
+cd bubble
+python3 generate_config.py
+lmp_serial < bubble.input
+```
 
-#### Macの場合
+すると`bubble.lammpstrj`が生成されるので、VMDで読み込む。
 
-VMDが起動したら、「VMD Main」の「File」から「New Molecule」を選び、「Browse」を押して先ほどの`dump.melt`を選ぶ。`/lammps`の中にあるはず。
+その後「Graphics」の「Represenation」から「Graphical Representation」ウィンドウを開く。
 
-file typeとして「LAMMPS Trajectory」を選んでから「Load」を押す。
+「Style Color Selection」とある下の「all」を含む行が選ばれた状態で、「Selected Atoms」の下の欄に以下を入力し、エンターキーを押してみよ。
 
-![VMD](fig/vmd_dialog.png)
+```txt
+-2 < z and z < 2
+```
 
-すると、直線が多数重なったような画面が出たはずだ。この状態で、「VMD Main」の画面で「dump.melt」の行を選び、「Graphics」の「Representation」を選ぶ。
+実は穴が空いており、しばらく後に穴がふさがっていく様子が見えるはずである。不安定性が起きている時に断面の様子を観察したい時などに有用である。
 
-ここで、「Drawing Method」を「VDW」にすると、画面が玉に変わるはず。その状態で「Sphere Scale」を小さくしよう。0.3くらいがちょうどよいと思う。
+### 相分離シミュレーション
 
-![Representation](fig/vmd_representation.png)
+`lammps_samples`の中の`phase_separation`の中のファイルを実行する。
 
-この状態で、VMD Mainの右下にある再生ボタン「Play Forward」を押せば、原子が凍った状態から解けていくアニメーション(6フレームしかないが)が表示されるはずである。マウスでドラッグすると角度を変えられるので試してみよ。
+```sh
+cd phase_separation
+python3 generate_config.py
+lmp_serial < phase_separation.input
+```
 
-### Drawing MethodとしてVDWをデフォルトにする
+すると`phase_separation.lammpstrj`が生成されるので、VMDで読み込む。すると、二種類の原子がランダムに配置された状態から相分離していく様子が見える。
 
-ほとんどの場合、可視化方法としてVDW(ファンデルファールス)を選ぶと思われるので、毎回指定するのは面倒だ。以下、デフォルトで粒子のDrawing MethodをLinesからVDWにする方法を説明する。
+その後「Graphics」の「Represenation」から「Graphical Representation」ウィンドウを開く。
+
+「Style Color Selection」とある下の「all」を含む行が選ばれた状態で、「Selected Atoms」の下の欄に以下を入力し、エンターキーを押してみよ。
+
+```txt
+type=1
+```
+
+すると、二種類の原子のうち「Type 1」の原子のみが表示される。同様に、
+
+```txt
+type=2
+```
+
+とすると「Type 2」の原子のみ表示される。多数の溶媒中に溶質が溶けているような系で、溶質のみ表示したい時などに有用である。
+
+### VMDコマンドプロンプト
+
+VMDを起動すると、以下のように表示されるターミナルも合わせて開く。
+
+```sh
+Info) VMD for WIN32, version 1.9.4a48 (October 13, 2020)
+(snip)
+vmd >  
+```
+
+この`vmd > `とあるのがVMDのコマンドプロンプトであり、多くの操作をここから実行できる。慣れるとウィンドウ操作よりも早い。
+
+このコマンドプロンプトで、`cd`で作業ディレクトリに移動し、`mol new filename.lammpstrj`を実行することでファイルを読み込むことができる。
 
 #### Mac
+
+Macの場合、ターミナルの作業ディレクトリで`pwd`を実行する。すると、例えば以下のような表示がされる。
+
+```sh
+$ pwd
+/home/watanabe/github/lammps_samples/collision
+```
+
+この`/home/...`をコピーして、VMDのコマンドプロンプトにて以下を実行する。
+
+```sh
+cd /home/watanabe/github/lammps_samples/collision
+```
+
+その後、
+
+```sh
+mol new collision.lammpstrj
+```
+
+を実行すると、`collision.lammpstrj`が読み込まれる。
+
+#### Windows
+
+Windowsの場合は、WSLのパスをVMDに分かるように修正し、さらにバックスラッシュ`\`を二つ重ねて`\\`にして、さらにダブルクオーテーションマークで囲む必要がある。例えば、WSL側のパスが
+
+```sh
+/home/watanabe/github/lammps_samples/collision
+```
+
+であるならば、VMDコマンドプロンプト上で
+
+```sh
+cd "\\\\wsl.localhost\\Ubuntu\\home\\watanabe\\github\\lammps_samples\\collision"
+```
+
+を実行する必要がある。これらを毎回手で変換するのは手間なので、例えば以下のワンライナーを実行すると良い。
+
+```sh
+echo "\"$(wslpath -w $(pwd) | sed 's/\\/\\\\/g')\""
+```
+
+すると`"\\\\wsl.localhost\\Ubuntu\\home\\watanabe\\github\\lammps_samples\\collision"`などの表示がされるため、これをコピーしてVMDでcdすれば良い。
+
+
+その後、
+
+```sh
+mol new collision.lammpstrj
+```
+
+を実行すると、`collision.lammpstrj`が読み込まれる。
+
+#### 可視化手法の修正
+
+`collision.lammpstrj`をロードしたら、直線が多数重なったような画面が出たはずだ。この状態で、「VMD Main」の画面で「collision.lammpstrj」の行を選び、「Graphics」の「Representation」を選ぶ。そして、「Drawing Method」を「VDW」にすると、画面が玉に変わるはず。その状態で「Sphere Scale」を小さくしよう。0.3くらいがちょうどよいと思う。
+
+![Representation](fig/vmd_representation.png)
+
+この状態で、VMD Mainの右下にある再生ボタン「Play Forward」を押せば、液滴が衝突のシミュレーションが表示される。マウスでドラッグすると角度を変えられるので試してみよ。
+
+
+## VMDの初期設定
+
+ほとんどの場合、可視化方法としてVDW(ファンデルファールス)を選ぶと思われるが、毎回指定するのは面倒だ。以下、デフォルトで粒子のDrawing MethodをLinesからVDWにする方法を説明する。
+
+### Mac
 
 Macは簡単であり、ホームディレクトリに
 
@@ -246,7 +342,7 @@ menu main on
 
 という内容の`.vmdrc`ファイルを作ればよい。このファイルはVMDが起動時に自動的に読み込まれるため、デフォルトスタイルがVDWになる。
 
-#### Windows
+### Windows
 
 Windowsでは、VDWの作業ディレクトリがデフォルトで`C:\Program Files (x86)\VMD\`になってしまうので面倒だ。
 そこで、VDWのショートカットを作成し、その「リンク先」として`.vmdrc`を指定する。
