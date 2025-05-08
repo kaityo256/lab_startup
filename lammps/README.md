@@ -125,6 +125,7 @@ M1 Macの場合は「MacOS 11.x, ARM64 (64-bit "M1" Macs) (Apple MacOS-X 11 or l
 ```sh
 cd github
 git clone https://github.com/kaityo256/lammps_samples.git
+cd lammps_samples
 ```
 
 ### 衝突シミュレーション
@@ -304,7 +305,7 @@ cd "\\\\wsl.localhost\\Ubuntu\\home\\watanabe\\github\\lammps_samples\\collision
 を実行する必要がある。これらを毎回手で変換するのは手間なので、例えば以下のワンライナーを実行すると良い。
 
 ```sh
-echo "\"$(wslpath -w $(pwd) | sed 's/\\/\\\\/g')\""
+echo "\"$(wslpath -w $(pwd) | sed 's/\\/\\\\\\\\/g')\""
 ```
 
 すると`"\\\\wsl.localhost\\Ubuntu\\home\\watanabe\\github\\lammps_samples\\collision"`などの表示がされるため、これをコピーしてVMDでcdすれば良い。

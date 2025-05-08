@@ -10,7 +10,7 @@
 * 4/17 gnuplotハンズオン
 * 4/24 GNU makeハンズオン
 * 5/1 MarkdownとLaTeX記法
-* LAMMPSとVMDハンズオン
+* 5/8 LAMMPSとVMDハンズオン
 * バッチシステムの使い方
 * ParaViewハンズオン
 * LaTeXハンズオン

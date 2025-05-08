@@ -173,7 +173,8 @@ Registration」画面となるので、必要事項を入力の上で「Register
 <h3 id="サンプルファイルのクローン">サンプルファイルのクローン</h3>
 <p>まず、LAMMPSの可視化サンプルをクローンする。</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> github</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/kaityo256/lammps_samples.git</span></code></pre></div>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/kaityo256/lammps_samples.git</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> lammps_samples</span></code></pre></div>
 <h3 id="衝突シミュレーション">衝突シミュレーション</h3>
 <p>まず、<code>collision</code>ディレクトリに移動して、<code>python3 generate_config.py</code>を実行することで、原子の初期配置ファイル<code>collision.atoms</code>を生成する。</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> collision</span>
@@ -291,7 +292,7 @@ class="sourceCode sh"><code class="sourceCode bash"><span id="cb21-1"><a href="#
 class="sourceCode sh"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="st">&quot;</span><span class="dt">\\\\</span><span class="st">wsl.localhost</span><span class="dt">\\</span><span class="st">Ubuntu</span><span class="dt">\\</span><span class="st">home</span><span class="dt">\\</span><span class="st">watanabe</span><span class="dt">\\</span><span class="st">github</span><span class="dt">\\</span><span class="st">lammps_samples</span><span class="dt">\\</span><span class="st">collision&quot;</span></span></code></pre></div>
 <p>を実行する必要がある。これらを毎回手で変換するのは手間なので、例えば以下のワンライナーを実行すると良い。</p>
 <div class="sourceCode" id="cb23"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="dt">\&quot;</span><span class="va">$(</span><span class="ex">wslpath</span> <span class="at">-w</span> <span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span> <span class="kw">|</span> <span class="fu">sed</span> <span class="st">&#39;s/\\/\\\\/g&#39;</span><span class="va">)</span><span class="dt">\&quot;</span><span class="st">&quot;</span></span></code></pre></div>
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="dt">\&quot;</span><span class="va">$(</span><span class="ex">wslpath</span> <span class="at">-w</span> <span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span> <span class="kw">|</span> <span class="fu">sed</span> <span class="st">&#39;s/\\/\\\\\\\\/g&#39;</span><span class="va">)</span><span class="dt">\&quot;</span><span class="st">&quot;</span></span></code></pre></div>
 <p>すると<code>"\\\\wsl.localhost\\Ubuntu\\home\\watanabe\\github\\lammps_samples\\collision"</code>などの表示がされるため、これをコピーしてVMDでcdすれば良い。</p>
 <p>その後、</p>
 <div class="sourceCode" id="cb24"><pre
