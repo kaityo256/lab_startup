@@ -11,8 +11,8 @@
 * 4/24 GNU makeハンズオン
 * 5/1 MarkdownとLaTeX記法
 * 5/8 LAMMPSとVMDハンズオン
-* バッチシステムの使い方
 * ParaViewハンズオン
+* バッチシステムの使い方
 * LaTeXハンズオン
 * 卒論執筆ハンズオン
 
