@@ -11,8 +11,9 @@
 * 4/24 GNU makeハンズオン
 * 5/1 MarkdownとLaTeX記法
 * 5/8 LAMMPSとVMDハンズオン
-* ParaViewハンズオン
-* バッチシステムの使い方
+* 5/15 ParaViewハンズオン
+* 5/22 Adobe Illustratorハンズオン
+* 5/29 バッチシステムの使い方
 * LaTeXハンズオン
 * 卒論執筆ハンズオン
 
