@@ -147,9 +147,6 @@ mass 1 1.0
 pair_style lj/cut 2.5
 pair_coeff 1 1 1.0 1.0 2.5
 
-neighbor 0.3 bin
-neigh_modify every 20 delay 0 check no
-
 fix 1 all nve
 
 dump id all atom 100 collision.lammpstrj
