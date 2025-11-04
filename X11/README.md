@@ -76,32 +76,15 @@ defaults write org.macosforge.xquartz.X11 enable_iglx -bool true
 ![fig/xlaunch4.png](fig/xlaunch4.png)
 
 
-その後、Ubuntuのターミナルを開いて、DISPLAY環境変数を設定する。まずは`xeyes`をインストールしておこう。
+その後、Ubuntuのターミナルを開く。
+
+X11の動作確認のため、`xeyes`をインストールしよう。
 
 ```sh
-sudo apt install x11-apps
+sudo apt install -y x11-apps
 ```
 
-次に、IPアドレスを確認する。
-
-```sh
-hostname | xargs dig +short
-```
-
-環境によって異なるが、例えば
-
-```txt
-172.29.80.1
-192.167.11.4
-```
-
-などと数字が現れたはずだ。このうち、192の方を使うなら、
-
-```sh
-export DISPLAY=192.167.11.4:0.0
-```
-
-を実行せよ。この状態で、
+インストール後、
 
 ```sh
 xeyes
@@ -110,34 +93,6 @@ xeyes
 を実行し、以下のような、マウスを追いかける目玉が表示されたら成功だ。
 
 ![xeyes](fig/xeyes.png)
-
-このIPアドレスは再起動ごとに異なるため、再設定は面倒だ。そこで、`.bashrc`に以下のような行を追加せよ。
-
-```sh
-export DISPLAY=`hostname | xargs dig +short | sed -n 1p`:0.0
-```
-
-これは`hostname`を実行した結果を`dig +short`に食わせてIPアドレスを調べ、最初に表示されたIPアドレスを使って`DISPLAY`環境変数を設定する、という意味だ。
-
-編集が終わったら以下で再読み込みをしよう。これは今回のみで、次回の起動からは不要だ。
-
-```sh
-source .bashrc
-```
-
-これで準備完了だ。
-
-また、ファイアウォールの設定によっては表示がうまくいかない場合がある。その場合は以下の手順でファイアウォールの設定でVcXsrvへの接続を許可する必要がある。
-
-「Windows Defender ファイアウォール」を起動し、「Windows Defender ファイアウォールを介したアプリまたは機能を許可」を選ぶ。
-
-![defender1.png](fig/defender1.png)
-
-許可されたアプリの一覧からVcXsrvを見つけて「パブリック」にチェックが入っていなければチェックを入れる。
-
-![defender2.png](fig/defender2.png)
-
-これでWSLからVcXsrvへの接続が許可されるはずだ。
 
 <a id="server"></a>
 ## 研究室サーバへの接続
