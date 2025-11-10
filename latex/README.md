@@ -9,9 +9,10 @@ PCにLaTeX(ラテック・レイテック)の処理系をインストールし�
 WSL2のUbuntu上で実行することを前提とする。ターミナルで以下を実行する。
 
 ```sh
+sudo apt-get install -y util-linux-extra
 sudo hwclock -s
 sudo apt update
-sudo apt upgrade
+sudo apt -y upgrade
 sudo apt install -y texlive-full latexmk
 ```
 
@@ -136,7 +137,7 @@ Enter command:
 
 こんな画面になり、「create symlinks to standard directories」にチェックが入っていることを確認して、`I`を入力してインストールを開始する。
 
-フルインストールに **30分ほど** かかるので、時間に余裕がある時に行うこと。
+フルインストールに **数時間ほど** かかるので、時間に余裕がある時に行うこと。
 
 インストール完了後、`latex -v`と`platex -v`を実行し、それぞれ以下のような表示がされれば正しくインストールされている。
 

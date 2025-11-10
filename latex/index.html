@@ -76,10 +76,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h2 id="インストールとvs-codeの設定">インストールとVS Codeの設定</h2>
 <h3 id="windowsの場合">Windowsの場合</h3>
 <p>WSL2のUbuntu上で実行することを前提とする。ターミナルで以下を実行する。</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> hwclock <span class="at">-s</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt upgrade</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install <span class="at">-y</span> texlive-full latexmk</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get install <span class="at">-y</span> util-linux-extra</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> hwclock <span class="at">-s</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt <span class="at">-y</span> upgrade</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install <span class="at">-y</span> texlive-full latexmk</span></code></pre></div>
 <p>最初に実行する<code>sudo hwclock -s</code>は、WSL2の時計を直す処理だ。WSL2はよく時計がずれるのでたまに実行すると良い。その後のインストールにはかなり時間がかかる(30分〜1時間?)ので、時間に余裕があるときに実行すること。インストール完了後、<code>latex -v</code>と<code>platex -v</code>を実行し、それぞれ以下のような表示がされれば正しくインストールされている。</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> latex <span class="at">-v</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">pdfTex</span> 3.14159265-2.6-1.40.20 <span class="er">(</span><span class="ex">Tex</span> Live 2019/Debian<span class="kw">)</span></span>
@@ -171,7 +172,7 @@ class="sourceCode txt"><code class="sourceCode default"><span id="cb9-1"><a href
 <span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>Enter command: </span></code></pre></div>
 <p>こんな画面になり、「create symlinks to standard
 directories」にチェックが入っていることを確認して、<code>I</code>を入力してインストールを開始する。</p>
-<p>フルインストールに <strong>30分ほど</strong>
+<p>フルインストールに <strong>数時間ほど</strong>
 かかるので、時間に余裕がある時に行うこと。</p>
 <p>インストール完了後、<code>latex -v</code>と<code>platex -v</code>を実行し、それぞれ以下のような表示がされれば正しくインストールされている。</p>
 <div class="sourceCode" id="cb10"><pre
