@@ -645,7 +645,7 @@ LaTeXで参考文献を入れるには、手で入れる方法とbibtexにより
 適当な論文、例えば[J. Chem. Phys. 141, 234703 (2014)](https://aip.scitation.org/doi/10.1063/1.4903811)のページに行ってみよう。これはアメリカ物理学協会(AIP)のJ. Chem. Phys.というジャーナルに掲載された論文だ。このページの上部に「TOOLS」というタブがあるのでクリックすると「Download Citation」という項目があるので選ぶ。「Include」では「Citation for this article (この記事だけ)」、「Format」では「BibTex」を選んで「DOWNLOAD ARTICLE CITATION DATA」をクリックすると、以下のようなbibtexエントリがダウンロードできる。
 
 ```tex
-@article{doi:10.1063/1.4903811,
+@article{10.1063/1.4903811,
 author = {Watanabe,Hiroshi  and Suzuki,Masaru  and Inaoka,Hajime  and Ito,Nobuyasu },
 title = {Ostwald ripening in multiple-bubble nuclei},
 journal = {The Journal of Chemical Physics},
@@ -670,7 +670,7 @@ eprint = {
 これを先ほどの`reference.bib`ファイルに追加し、`test.tex`に以下のような文章を追加しよう。
 
 ```tex
-渡辺らは気泡生成のシミュレーションを行った\cite{doi:10.1063/1.4903811}。
+渡辺らは気泡生成のシミュレーションを行った\cite{10.1063/1.4903811}。
 ```
 
 再度ビルドすると、

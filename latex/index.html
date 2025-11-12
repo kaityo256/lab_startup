@@ -435,97 +435,101 @@ class="sourceCode py"><code class="sourceCode python"><span id="cb36-1"><a href=
 <p>これを</p>
 <div class="sourceCode" id="cb37"><pre
 class="sourceCode sh"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> test.py</span></code></pre></div>
-<p>として実行すると<code>sin.pdf</code>ができる。これをLaTeXに取り込むには、まずプリアンブルで<code>graphicx</code>パッケージを取り込む。</p>
+<p>として実行すると<code>sin.pdf</code>ができる。もしくは</p>
 <div class="sourceCode" id="cb38"><pre
-class="sourceCode tex"><code class="sourceCode latex"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="bu">\documentclass</span>{<span class="ex">jarticle</span>}</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>[dvipdfmx]{<span class="ex">graphicx</span>}</span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">document</span>}</span></code></pre></div>
-<p><code>graphics</code>ではなく<code>graphicx</code>(最後がx)であることに注意。この状態で、</p>
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://github.com/kaityo256/lab_startup/raw/main/latex/sin.pdf</span></code></pre></div>
+<p>を実行してダウンロードしても良い。</p>
+<p>これをLaTeXに取り込むには、まずプリアンブルで<code>graphicx</code>パッケージを取り込む。</p>
 <div class="sourceCode" id="cb39"><pre
-class="sourceCode tex"><code class="sourceCode latex"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="bu">\includegraphics</span>{<span class="ex">sin.pdf</span>}</span></code></pre></div>
-<p>と入力し、ビルドしてみよ。おそらく警告が一つ出たはずだ。左下にある(i)マークをクリックすると</p>
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="bu">\documentclass</span>{<span class="ex">jarticle</span>}</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>[dvipdfmx]{<span class="ex">graphicx</span>}</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">document</span>}</span></code></pre></div>
+<p><code>graphics</code>ではなく<code>graphicx</code>(最後がx)であることに注意。この状態で、</p>
 <div class="sourceCode" id="cb40"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>Overfull \hbox (145.3509pt too wide)</span></code></pre></div>
-<p>という表示が出ている。これは「表示領域から何かがはみ出ているよ」という警告で、LaTeXを使っていると良く見かけるものだ。今回のケースでは図が大きすぎるために表示領域からはみ出してしまっているので、小さくしよう。サイズを指定するためには、<code>\includegraphics</code>にオプションとして<code>width</code>を指定する。</p>
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="bu">\includegraphics</span>{<span class="ex">sin.pdf</span>}</span></code></pre></div>
+<p>と入力し、ビルドしてみよ。おそらく警告が一つ出たはずだ。左下にある(i)マークをクリックすると</p>
 <div class="sourceCode" id="cb41"><pre
-class="sourceCode tex"><code class="sourceCode latex"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="bu">\includegraphics</span>[width=10cm]{<span class="ex">sin.pdf</span>}</span></code></pre></div>
+class="sourceCode txt"><code class="sourceCode default"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>Overfull \hbox (145.3509pt too wide)</span></code></pre></div>
+<p>という表示が出ている。これは「表示領域から何かがはみ出ているよ」という警告で、LaTeXを使っていると良く見かけるものだ。今回のケースでは図が大きすぎるために表示領域からはみ出してしまっているので、小さくしよう。サイズを指定するためには、<code>\includegraphics</code>にオプションとして<code>width</code>を指定する。</p>
+<div class="sourceCode" id="cb42"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="bu">\includegraphics</span>[width=10cm]{<span class="ex">sin.pdf</span>}</span></code></pre></div>
 <p>これで警告は消えるはずだ。</p>
 <p>さて、科学技術論文において、図を生で入れることはほとんどない。多くの場合「図番号」と「図の説明」を入れることだろう。そのためには<code>figure</code>環境を使う。先ほどの<code>includegraphics</code>命令を<code>figure</code>環境の中にいれよう。</p>
-<div class="sourceCode" id="cb42"><pre
-class="sourceCode tex"><code class="sourceCode latex"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">figure</span>}</span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="bu">\includegraphics</span>[width=10cm]{<span class="ex">sin.pdf</span>}</span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">figure</span>}</span></code></pre></div>
-<p>この状態でビルドすると、図が文中から別の場所(おそらく上部)に移動したはずだ。さて、この図に説明をつけよう。そのためには<code>figure</code>環境に<code>caption</code>命令を入れる。</p>
 <div class="sourceCode" id="cb43"><pre
 class="sourceCode tex"><code class="sourceCode latex"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">figure</span>}</span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="bu">\includegraphics</span>[width=10cm]{<span class="ex">sin.pdf</span>}</span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="fu">\caption</span>{正弦波のグラフ。}</span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">figure</span>}</span></code></pre></div>
-<p>ビルドすると、図の説明(キャプション)とともに、図番号が自動で入ったはずだ。この図もラベルをつけて参照することができる。</p>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">figure</span>}</span></code></pre></div>
+<p>この状態でビルドすると、図が文中から別の場所(おそらく上部)に移動したはずだ。さて、この図に説明をつけよう。そのためには<code>figure</code>環境に<code>caption</code>命令を入れる。</p>
 <div class="sourceCode" id="cb44"><pre
 class="sourceCode tex"><code class="sourceCode latex"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">figure</span>}</span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="bu">\includegraphics</span>[width=10cm]{<span class="ex">sin.pdf</span>}</span>
 <span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="fu">\caption</span>{正弦波のグラフ。}</span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="kw">\label</span>{<span class="ex">fig:sin</span>}</span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">figure</span>}</span>
-<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>正弦波のグラフを図<span class="fu">\ref</span>{fig:sin}に示す。</span></code></pre></div>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">figure</span>}</span></code></pre></div>
+<p>ビルドすると、図の説明(キャプション)とともに、図番号が自動で入ったはずだ。この図もラベルをつけて参照することができる。</p>
+<div class="sourceCode" id="cb45"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">figure</span>}</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="bu">\includegraphics</span>[width=10cm]{<span class="ex">sin.pdf</span>}</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="fu">\caption</span>{正弦波のグラフ。}</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="kw">\label</span>{<span class="ex">fig:sin</span>}</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">figure</span>}</span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>正弦波のグラフを図<span class="fu">\ref</span>{fig:sin}に示す。</span></code></pre></div>
 <p>上記をビルドして、「正弦波のグラフを図1に示す。」となれば成功だ。</p>
 <p>繰り返しになるが、式番号や図番号については <strong>必ず</strong>
 ラベルによる参照を行うこと。数が少ないからといって直接書いていると後で泣きを見る。どうせVS
 Codeその他のLaTeXに対応したエディタには補完機能があるため、さほど手間ではない。</p>
 <p>なお、<code>\includegraphics</code>だけの場合は、その位置に図が挿入されるが、<code>figure</code>環境を使うと図の挿入場所は自動で決められる。基本的にはLaTeXに任せておけば良いが、どうしても「ページの上が良い」「下が良い」「絶対ここが良い」といった希望がある場合は、オプションで希望をLaTeXに伝えることができる。例えば</p>
-<div class="sourceCode" id="cb45"><pre
-class="sourceCode tex"><code class="sourceCode latex"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">figure</span>}[htbp]</span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">figure</span>}[htbp]</span></code></pre></div>
 <p>とすると、順番に「この場所(here, h)」「上(top, t)」「下(bottom,
 b)」「独立したページ (page,
 p)」を意味しており、記述した順番で挿入を試みる。試しに上記のオプション<code>[htbp]</code>をつけてビルドしなおしてみよ。おそらく<code>h</code>が優先され、<code>\includegraphics</code>の場所に図が移動すると思われる。</p>
 <p>また、デフォルトでは、図はページの左側に寄せられてしまうため、図が小さいと見栄えが悪い。その場合は<code>\includegraphics</code>の直前に<code>\centering</code>を入れると良い。</p>
-<div class="sourceCode" id="cb46"><pre
-class="sourceCode tex"><code class="sourceCode latex"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">figure</span>}[htbp]</span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\centering</span></span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">\includegraphics</span>[width=10cm]{<span class="ex">sin.pdf</span>}</span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\caption</span>{正弦波のグラフ。}</span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">\label</span>{<span class="ex">fig:sin</span>}</span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">figure</span>}</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">figure</span>}[htbp]</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\centering</span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">\includegraphics</span>[width=10cm]{<span class="ex">sin.pdf</span>}</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\caption</span>{正弦波のグラフ。}</span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">\label</span>{<span class="ex">fig:sin</span>}</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">figure</span>}</span></code></pre></div>
 <p>図が中央寄せになったはずである。</p>
 <h3 id="参考文献の入れ方">参考文献の入れ方</h3>
 <p>科学技術論文では、何より「引用」が重要である。その研究分野においてどこまで何がわかっていて、これから使う手法は誰が開発、提案したもので、得られた結果は先行研究と比較してどうだったのかを、全て文献を引用しながら明らかにしなければならない。そのために論文の最後には「参考文献」として論文や書籍を並べ、本文中では番号を使って引用する。この際、本文中に出てこない論文を「参考文献」に入れてはならず、さらに「出現順」「年号順」「アルファベット順」など、適切な順序で並べる必要がある。これを手でやっていては必ず破綻するが、当然のことながらLaTeXに任せれば自動でやってくれる。</p>
 <p>LaTeXで参考文献を入れるには、手で入れる方法とbibtexにより半自動で入れる方法がある。原則として論文はbibtexを使うことを推奨するが、まずは手で入れる方法を紹介する。</p>
 <h4 id="手で入れる方法">手で入れる方法</h4>
 <p>まず、以下のような文献リストを文中の最後(<code>\end{document}</code>)に入れる。</p>
-<div class="sourceCode" id="cb47"><pre
-class="sourceCode tex"><code class="sourceCode latex"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">thebibliography</span>}{99}</span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">\bibitem</span>{okumura2020} 奥村 晴彦、黒木 裕介、LaTeX2ε美文書作成入門、技術評論社、2020.</span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">thebibliography</span>}</span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">thebibliography</span>}{99}</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="fu">\bibitem</span>{okumura2020} 奥村 晴彦、黒木 裕介、LaTeX2ε美文書作成入門、技術評論社、2020.</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">thebibliography</span>}</span></code></pre></div>
 <p>ここで<code>{99}</code>とあるのは、文献番号が何桁になるかをLaTeXに教えるためのもので、この場合は「二桁ですよ」と教えている。十件以内の場合は<code>{9}</code>、百件以上引用する場合は<code>{999}</code>などと指定するが、通常は<code>{99}</code>で良いだろう。</p>
 <p>この状態でビルドすると、「参考文献」という欄が作成されたはずだ。</p>
 <p>文献を文中で引用するには、<code>\cite{ラベル}</code>コマンドを使う。文献のラベルは<code>\bibitem{ラベル} 内容</code>という形式で指定できる。<code>\ref{ラベル}</code>と異なり、慣習的にこちらは名前空間を使わないようだ(もちろん使っても良い)。個人的には「筆頭著者名+出版年」を使っているが、個人で分かりやすければどのような名前をつけても自由だ。この場合は<code>okumura2020</code>が文献ラベルである。早速、引用してみよう。<code>thebibliography</code>環境の直前あたりに以下を記述せよ。</p>
-<div class="sourceCode" id="cb48"><pre
-class="sourceCode tex"><code class="sourceCode latex"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>本稿の執筆にはLaTeX<span class="fu">\cite</span>{okumura2020}を用いる。</span></code></pre></div>
-<p>これでコンパイルすると</p>
 <div class="sourceCode" id="cb49"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>本稿の執筆にはLaTeX[1]を用いる。</span></code></pre></div>
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>本稿の執筆にはLaTeX<span class="fu">\cite</span>{okumura2020}を用いる。</span></code></pre></div>
+<p>これでコンパイルすると</p>
+<div class="sourceCode" id="cb50"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>本稿の執筆にはLaTeX[1]を用いる。</span></code></pre></div>
 <p>となるはずだ。</p>
 <h4 id="bibtexを使う方法">bibtexを使う方法</h4>
 <p>先ほど、本文中に言及がないにも関わらず、文献リストに「LaTeX2ε美文書作成入門」が表示されていた。原則として文中で言及していない文献は文献リストに掲載してはならない。しかし、引用文献を追加したり削除したりしているうちに、どれに言及してどれに言及していないかの管理が面倒になるだろう。そこで、bibtexというファイルを使って文献リストを管理する。</p>
 <p>まずは文献ファイルを作ろう。TeXファイルと同じディレクトリに<code>reference.bib</code>というファイルを作成し、以下の内容を記述せよ。</p>
-<div class="sourceCode" id="cb50"><pre
-class="sourceCode tex"><code class="sourceCode latex"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>@book{okumura2020,</span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  author    = {奥村 晴彦 and 黒木 裕介},</span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>  title     = {LaTeX2ε美文書作成入門},</span>
-<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>  publisher = {技術評論社},</span>
-<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>  year      = {2020}</span>
-<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>@book{okumura2020,</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  author    = {奥村 晴彦 and 黒木 裕介},</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  title     = {LaTeX2ε美文書作成入門},</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  publisher = {技術評論社},</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>  year      = {2020}</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>ここで<code>@book</code>とあるのはbibtexエントリと呼ばれ、種類ごとに必須となる項目が異なる。<code>book</code>の場合は著者(author)、タイトル(title)、出版社(publisher)、出版年(year)が必須項目だ。<code>@book</code>の直後に文献ラベルをつける。著者名は<code>and</code>で区切ること。</p>
 <p>このBibTeXファイルを利用するには、先ほどの<code>thebibliography</code>の代わりに以下を指定する。手で書いた文献リストはコメントアウトしておこう。LaTeXは<code>%</code>から行末まではコメントと解釈されて無視される。</p>
-<div class="sourceCode" id="cb51"><pre
-class="sourceCode tex"><code class="sourceCode latex"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co">%\begin{thebibliography}{99}</span></span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="co">%    \bibitem{okumura2020} 奥村 晴彦、黒木 裕介、LaTeX2ε美文書作成入門、技術評論社、2020.</span></span>
-<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="co">%\end{thebibliography}</span></span>
-<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a><span class="bu">\bibliographystyle</span>{<span class="ex">junsrt</span>}</span>
-<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a><span class="bu">\bibliography</span>{<span class="ex">reference</span>}</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co">%\begin{thebibliography}{99}</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="co">%    \bibitem{okumura2020} 奥村 晴彦、黒木 裕介、LaTeX2ε美文書作成入門、技術評論社、2020.</span></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a><span class="co">%\end{thebibliography}</span></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a><span class="bu">\bibliographystyle</span>{<span class="ex">junsrt</span>}</span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a><span class="bu">\bibliography</span>{<span class="ex">reference</span>}</span></code></pre></div>
 <p><code>\bibliographystyle{junsrt}</code>は文献リストのスタイルをあらわす。<code>junsrt</code>は出現順にソートせよ、という意味だ。<code>\bibliography{reference}</code>はBibTeXファイルを指定する。拡張子を省くことに注意せよ。</p>
 <p>この状態でビルドすると、参考文献が更新されるはずだ。</p>
 <p>さて、BibTeXファイルを手で書くのは手間だ。多くの場合、出版社はbibtexエントリをエクスポートする機能を持っている。試してみよう。</p>
@@ -539,33 +543,33 @@ Citation」という項目があるので選ぶ。「Include」では「Citation
 article (この記事だけ)」、「Format」では「BibTex」を選んで「DOWNLOAD
 ARTICLE CITATION
 DATA」をクリックすると、以下のようなbibtexエントリがダウンロードできる。</p>
-<div class="sourceCode" id="cb52"><pre
-class="sourceCode tex"><code class="sourceCode latex"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>@article{doi:10.1063/1.4903811,</span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>author = {Watanabe,Hiroshi  and Suzuki,Masaru  and Inaoka,Hajime  and Ito,Nobuyasu },</span>
-<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>title = {Ostwald ripening in multiple-bubble nuclei},</span>
-<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>journal = {The Journal of Chemical Physics},</span>
-<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>volume = {141},</span>
-<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>number = {23},</span>
-<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>pages = {234703},</span>
-<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>year = {2014},</span>
-<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>doi = {10.1063/1.4903811},</span>
-<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a>URL = { </span>
-<span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a>        https://doi.org/10.1063/1.4903811</span>
-<span id="cb52-13"><a href="#cb52-13" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb52-14"><a href="#cb52-14" aria-hidden="true" tabindex="-1"></a>},</span>
-<span id="cb52-15"><a href="#cb52-15" aria-hidden="true" tabindex="-1"></a>eprint = { </span>
-<span id="cb52-16"><a href="#cb52-16" aria-hidden="true" tabindex="-1"></a>        https://doi.org/10.1063/1.4903811</span>
-<span id="cb52-17"><a href="#cb52-17" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb52-18"><a href="#cb52-18" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb52-19"><a href="#cb52-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-20"><a href="#cb52-20" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<p>これを先ほどの<code>reference.bib</code>ファイルに追加し、<code>test.tex</code>に以下のような文章を追加しよう。</p>
 <div class="sourceCode" id="cb53"><pre
-class="sourceCode tex"><code class="sourceCode latex"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>渡辺らは気泡生成のシミュレーションを行った<span class="fu">\cite</span>{doi:10.1063/1.4903811}。</span></code></pre></div>
-<p>再度ビルドすると、</p>
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>@article{10.1063/1.4903811,</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>author = {Watanabe,Hiroshi  and Suzuki,Masaru  and Inaoka,Hajime  and Ito,Nobuyasu },</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>title = {Ostwald ripening in multiple-bubble nuclei},</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>journal = {The Journal of Chemical Physics},</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>volume = {141},</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>number = {23},</span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>pages = {234703},</span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>year = {2014},</span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>doi = {10.1063/1.4903811},</span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a>URL = { </span>
+<span id="cb53-12"><a href="#cb53-12" aria-hidden="true" tabindex="-1"></a>        https://doi.org/10.1063/1.4903811</span>
+<span id="cb53-13"><a href="#cb53-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb53-14"><a href="#cb53-14" aria-hidden="true" tabindex="-1"></a>},</span>
+<span id="cb53-15"><a href="#cb53-15" aria-hidden="true" tabindex="-1"></a>eprint = { </span>
+<span id="cb53-16"><a href="#cb53-16" aria-hidden="true" tabindex="-1"></a>        https://doi.org/10.1063/1.4903811</span>
+<span id="cb53-17"><a href="#cb53-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb53-18"><a href="#cb53-18" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb53-19"><a href="#cb53-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-20"><a href="#cb53-20" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>これを先ほどの<code>reference.bib</code>ファイルに追加し、<code>test.tex</code>に以下のような文章を追加しよう。</p>
 <div class="sourceCode" id="cb54"><pre
-class="sourceCode tex"><code class="sourceCode latex"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>渡辺らは気泡生成のシミュレーションを行った[2].</span></code></pre></div>
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>渡辺らは気泡生成のシミュレーションを行った<span class="fu">\cite</span>{10.1063/1.4903811}。</span></code></pre></div>
+<p>再度ビルドすると、</p>
+<div class="sourceCode" id="cb55"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>渡辺らは気泡生成のシミュレーションを行った[2].</span></code></pre></div>
 <p>などと表示されたはずだ。</p>
 <p>せっかくなので別の出版社も試してみよう。今度は日本物理学会の論文、<a
 href="https://journals.jps.jp/doi/10.7566/JPSJ.88.024004">J. Phys. Soc.
@@ -574,36 +578,36 @@ Citation」とあるのでそこをクリックすると、Citation
 Managerのページに飛ぶので、Formatとして「BibTex」を選んで「Download
 citation
 data」をクリックする。すると以下のようなデータがダウンロードできる。</p>
-<div class="sourceCode" id="cb55"><pre
-class="sourceCode tex"><code class="sourceCode latex"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>@article{doi:10.7566/JPSJ.88.024004,</span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>author = {Watanabe ,Hiroshi and Morita ,Satoshi and Todo ,Synge and Kawashima ,Naoki},</span>
-<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>title = {Fast Algorithm for Generating Random Bit Strings and Multispin Coding for Directed Percolation},</span>
-<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>journal = {Journal of the Physical Society of Japan},</span>
-<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>volume = {88},</span>
-<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>number = {2},</span>
-<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>pages = {024004},</span>
-<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>year = {2019},</span>
-<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a>doi = {10.7566/JPSJ.88.024004},</span>
-<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a>URL = { </span>
-<span id="cb55-12"><a href="#cb55-12" aria-hidden="true" tabindex="-1"></a>        https://doi.org/10.7566/JPSJ.88.024004</span>
-<span id="cb55-13"><a href="#cb55-13" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb55-14"><a href="#cb55-14" aria-hidden="true" tabindex="-1"></a>},</span>
-<span id="cb55-15"><a href="#cb55-15" aria-hidden="true" tabindex="-1"></a>eprint = { </span>
-<span id="cb55-16"><a href="#cb55-16" aria-hidden="true" tabindex="-1"></a>        https://doi.org/10.7566/JPSJ.88.024004</span>
-<span id="cb55-17"><a href="#cb55-17" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb55-18"><a href="#cb55-18" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb55-19"><a href="#cb55-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-20"><a href="#cb55-20" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<p>いま、文献ラベルとしてDOIである<code>doi:10.7566/JPSJ.88.024004</code>が指定されているが、これでは分かりづらいので、<code>watanabe2019</code>に変更しよう。</p>
 <div class="sourceCode" id="cb56"><pre
-class="sourceCode tex"><code class="sourceCode latex"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>@article{watanabe2019,</span></code></pre></div>
-<p>この状態で<code>reference.bib</code>に追加し、texファイルに</p>
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>@article{doi:10.7566/JPSJ.88.024004,</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>author = {Watanabe ,Hiroshi and Morita ,Satoshi and Todo ,Synge and Kawashima ,Naoki},</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>title = {Fast Algorithm for Generating Random Bit Strings and Multispin Coding for Directed Percolation},</span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>journal = {Journal of the Physical Society of Japan},</span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>volume = {88},</span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>number = {2},</span>
+<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a>pages = {024004},</span>
+<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a>year = {2019},</span>
+<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a>doi = {10.7566/JPSJ.88.024004},</span>
+<span id="cb56-10"><a href="#cb56-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-11"><a href="#cb56-11" aria-hidden="true" tabindex="-1"></a>URL = { </span>
+<span id="cb56-12"><a href="#cb56-12" aria-hidden="true" tabindex="-1"></a>        https://doi.org/10.7566/JPSJ.88.024004</span>
+<span id="cb56-13"><a href="#cb56-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb56-14"><a href="#cb56-14" aria-hidden="true" tabindex="-1"></a>},</span>
+<span id="cb56-15"><a href="#cb56-15" aria-hidden="true" tabindex="-1"></a>eprint = { </span>
+<span id="cb56-16"><a href="#cb56-16" aria-hidden="true" tabindex="-1"></a>        https://doi.org/10.7566/JPSJ.88.024004</span>
+<span id="cb56-17"><a href="#cb56-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb56-18"><a href="#cb56-18" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb56-19"><a href="#cb56-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-20"><a href="#cb56-20" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>いま、文献ラベルとしてDOIである<code>doi:10.7566/JPSJ.88.024004</code>が指定されているが、これでは分かりづらいので、<code>watanabe2019</code>に変更しよう。</p>
 <div class="sourceCode" id="cb57"><pre
-class="sourceCode tex"><code class="sourceCode latex"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>渡辺らはランダムビット生成を行った<span class="fu">\cite</span>{watanabe2019}。</span></code></pre></div>
-<p>という文章を追加してコンパイルする。</p>
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>@article{watanabe2019,</span></code></pre></div>
+<p>この状態で<code>reference.bib</code>に追加し、texファイルに</p>
 <div class="sourceCode" id="cb58"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>渡辺らはランダムビット生成を行った[2]。</span></code></pre></div>
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>渡辺らはランダムビット生成を行った<span class="fu">\cite</span>{watanabe2019}。</span></code></pre></div>
+<p>という文章を追加してコンパイルする。</p>
+<div class="sourceCode" id="cb59"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>渡辺らはランダムビット生成を行った[2]。</span></code></pre></div>
 <p>と、文献番号が解決されたはずだ。番号は出現順に振られるため、先ほどの文章と順序を入れ替えると番号も変わる。</p>
 <p>まとめると、参考文献を管理する際は、</p>
 <ul>
@@ -619,101 +623,101 @@ href="https://www.mendeley.com/">Mendeley</a>といった文献管理ソフト�
 <h3 id="セクション">セクション</h3>
 <h4 id="セクションの入れ方">セクションの入れ方</h4>
 <p>論文には「イントロダクション」「背景」「手法」「結果」といった構造がある。その構造を表すのにセクション(節)を使う。いま、<code>test.tex</code>は以下のようになっているはず(多少違っていてもかまわないし、面倒なら以下をコピペしなおして良い)。</p>
-<div class="sourceCode" id="cb59"><pre
-class="sourceCode tex"><code class="sourceCode latex"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="bu">\documentclass</span>{<span class="ex">jarticle</span>}</span>
-<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>[dvipdfmx]{<span class="ex">graphicx</span>}</span>
-<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">document</span>}</span>
-<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>こんにちは。</span>
-<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a>さようなら。次の部分を<span class="fu">\textbf</span>{強調}します。</span>
-<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a>文中の数式は<span class="ss">$E=mc^2$</span>のように書く。</span>
-<span id="cb59-9"><a href="#cb59-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb59-10"><a href="#cb59-10" aria-hidden="true" tabindex="-1"></a>別行立ての数式は</span>
-<span id="cb59-11"><a href="#cb59-11" aria-hidden="true" tabindex="-1"></a><span class="ss">\[</span></span>
-<span id="cb59-12"><a href="#cb59-12" aria-hidden="true" tabindex="-1"></a><span class="ss">    E = mc^2</span></span>
-<span id="cb59-13"><a href="#cb59-13" aria-hidden="true" tabindex="-1"></a><span class="ss">\]</span></span>
-<span id="cb59-14"><a href="#cb59-14" aria-hidden="true" tabindex="-1"></a>と書く。</span>
-<span id="cb59-15"><a href="#cb59-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb59-16"><a href="#cb59-16" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">equation</span>}</span>
-<span id="cb59-17"><a href="#cb59-17" aria-hidden="true" tabindex="-1"></a><span class="ss">    E=mc^2 </span><span class="sc">\label</span><span class="ss">{eq:test}</span></span>
-<span id="cb59-18"><a href="#cb59-18" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">equation</span>}</span>
-<span id="cb59-19"><a href="#cb59-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb59-20"><a href="#cb59-20" aria-hidden="true" tabindex="-1"></a>数式(<span class="kw">\ref</span>{<span class="ex">eq:test</span>})を参照のこと。</span>
-<span id="cb59-21"><a href="#cb59-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb59-22"><a href="#cb59-22" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">figure</span>}[htbp]</span>
-<span id="cb59-23"><a href="#cb59-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\centering</span></span>
-<span id="cb59-24"><a href="#cb59-24" aria-hidden="true" tabindex="-1"></a>    <span class="bu">\includegraphics</span>[width=10cm]{<span class="ex">sin.pdf</span>}</span>
-<span id="cb59-25"><a href="#cb59-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\caption</span>{正弦波のグラフ。}</span>
-<span id="cb59-26"><a href="#cb59-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">\label</span>{<span class="ex">fig:sin</span>}</span>
-<span id="cb59-27"><a href="#cb59-27" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">figure</span>}</span>
-<span id="cb59-28"><a href="#cb59-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb59-29"><a href="#cb59-29" aria-hidden="true" tabindex="-1"></a>正弦波のグラフを図<span class="fu">\ref</span>{fig:sin}に示す。</span>
-<span id="cb59-30"><a href="#cb59-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb59-31"><a href="#cb59-31" aria-hidden="true" tabindex="-1"></a>本稿の執筆にはLaTeX<span class="fu">\cite</span>{okumura2020}を用いる。渡辺らは気泡生成のシミュレーションを行った<span class="fu">\cite</span>{watanabe2019}。</span>
-<span id="cb59-32"><a href="#cb59-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb59-33"><a href="#cb59-33" aria-hidden="true" tabindex="-1"></a><span class="co">%\begin{thebibliography}{99}</span></span>
-<span id="cb59-34"><a href="#cb59-34" aria-hidden="true" tabindex="-1"></a><span class="co">%    \bibitem{okumura2020} 奥村 晴彦、黒木 裕介、LaTeX2ε美文書作成入門、技術評論社、2020.</span></span>
-<span id="cb59-35"><a href="#cb59-35" aria-hidden="true" tabindex="-1"></a><span class="co">%\end{thebibliography}</span></span>
-<span id="cb59-36"><a href="#cb59-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb59-37"><a href="#cb59-37" aria-hidden="true" tabindex="-1"></a><span class="bu">\bibliographystyle</span>{<span class="ex">junsrt</span>}</span>
-<span id="cb59-38"><a href="#cb59-38" aria-hidden="true" tabindex="-1"></a><span class="bu">\bibliography</span>{<span class="ex">reference</span>}</span>
-<span id="cb59-39"><a href="#cb59-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb59-40"><a href="#cb59-40" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">document</span>}</span></code></pre></div>
-<p>ここに<code>\section</code>命令をいれよう。とりあえず「はじめに」「数式の入れ方」「図の入れ方」「参考文献の入れ方」の五つのセクションを以下のように入れてみよう。</p>
 <div class="sourceCode" id="cb60"><pre
 class="sourceCode tex"><code class="sourceCode latex"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="bu">\documentclass</span>{<span class="ex">jarticle</span>}</span>
 <span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>[dvipdfmx]{<span class="ex">graphicx</span>}</span>
 <span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">document</span>}</span>
-<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a><span class="kw">\section</span>{はじめに}</span>
-<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>こんにちは。</span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>こんにちは。</span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>さようなら。次の部分を<span class="fu">\textbf</span>{強調}します。</span>
 <span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-8"><a href="#cb60-8" aria-hidden="true" tabindex="-1"></a>さようなら。次の部分を<span class="fu">\textbf</span>{強調}します。</span>
+<span id="cb60-8"><a href="#cb60-8" aria-hidden="true" tabindex="-1"></a>文中の数式は<span class="ss">$E=mc^2$</span>のように書く。</span>
 <span id="cb60-9"><a href="#cb60-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-10"><a href="#cb60-10" aria-hidden="true" tabindex="-1"></a><span class="kw">\section</span>{数式の入れ方}</span>
-<span id="cb60-11"><a href="#cb60-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-12"><a href="#cb60-12" aria-hidden="true" tabindex="-1"></a>文中の数式は<span class="ss">$E=mc^2$</span>のように書く。</span>
-<span id="cb60-13"><a href="#cb60-13" aria-hidden="true" tabindex="-1"></a>...</span>
-<span id="cb60-14"><a href="#cb60-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-15"><a href="#cb60-15" aria-hidden="true" tabindex="-1"></a><span class="kw">\section</span>{図の入れ方}</span>
-<span id="cb60-16"><a href="#cb60-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-17"><a href="#cb60-17" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">figure</span>}[htbp]</span>
-<span id="cb60-18"><a href="#cb60-18" aria-hidden="true" tabindex="-1"></a>...</span>
+<span id="cb60-10"><a href="#cb60-10" aria-hidden="true" tabindex="-1"></a>別行立ての数式は</span>
+<span id="cb60-11"><a href="#cb60-11" aria-hidden="true" tabindex="-1"></a><span class="ss">\[</span></span>
+<span id="cb60-12"><a href="#cb60-12" aria-hidden="true" tabindex="-1"></a><span class="ss">    E = mc^2</span></span>
+<span id="cb60-13"><a href="#cb60-13" aria-hidden="true" tabindex="-1"></a><span class="ss">\]</span></span>
+<span id="cb60-14"><a href="#cb60-14" aria-hidden="true" tabindex="-1"></a>と書く。</span>
+<span id="cb60-15"><a href="#cb60-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-16"><a href="#cb60-16" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">equation</span>}</span>
+<span id="cb60-17"><a href="#cb60-17" aria-hidden="true" tabindex="-1"></a><span class="ss">    E=mc^2 </span><span class="sc">\label</span><span class="ss">{eq:test}</span></span>
+<span id="cb60-18"><a href="#cb60-18" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">equation</span>}</span>
 <span id="cb60-19"><a href="#cb60-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-20"><a href="#cb60-20" aria-hidden="true" tabindex="-1"></a><span class="kw">\section</span>{参考文献の入れ方}</span>
+<span id="cb60-20"><a href="#cb60-20" aria-hidden="true" tabindex="-1"></a>数式(<span class="kw">\ref</span>{<span class="ex">eq:test</span>})を参照のこと。</span>
 <span id="cb60-21"><a href="#cb60-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-22"><a href="#cb60-22" aria-hidden="true" tabindex="-1"></a>本稿の執筆にはLaTeX<span class="fu">\cite</span>{okumura2020}を用いた。</span>
-<span id="cb60-23"><a href="#cb60-23" aria-hidden="true" tabindex="-1"></a>...</span>
-<span id="cb60-24"><a href="#cb60-24" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">document</span>}</span></code></pre></div>
+<span id="cb60-22"><a href="#cb60-22" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">figure</span>}[htbp]</span>
+<span id="cb60-23"><a href="#cb60-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\centering</span></span>
+<span id="cb60-24"><a href="#cb60-24" aria-hidden="true" tabindex="-1"></a>    <span class="bu">\includegraphics</span>[width=10cm]{<span class="ex">sin.pdf</span>}</span>
+<span id="cb60-25"><a href="#cb60-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\caption</span>{正弦波のグラフ。}</span>
+<span id="cb60-26"><a href="#cb60-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">\label</span>{<span class="ex">fig:sin</span>}</span>
+<span id="cb60-27"><a href="#cb60-27" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">figure</span>}</span>
+<span id="cb60-28"><a href="#cb60-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-29"><a href="#cb60-29" aria-hidden="true" tabindex="-1"></a>正弦波のグラフを図<span class="fu">\ref</span>{fig:sin}に示す。</span>
+<span id="cb60-30"><a href="#cb60-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-31"><a href="#cb60-31" aria-hidden="true" tabindex="-1"></a>本稿の執筆にはLaTeX<span class="fu">\cite</span>{okumura2020}を用いる。渡辺らは気泡生成のシミュレーションを行った<span class="fu">\cite</span>{watanabe2019}。</span>
+<span id="cb60-32"><a href="#cb60-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-33"><a href="#cb60-33" aria-hidden="true" tabindex="-1"></a><span class="co">%\begin{thebibliography}{99}</span></span>
+<span id="cb60-34"><a href="#cb60-34" aria-hidden="true" tabindex="-1"></a><span class="co">%    \bibitem{okumura2020} 奥村 晴彦、黒木 裕介、LaTeX2ε美文書作成入門、技術評論社、2020.</span></span>
+<span id="cb60-35"><a href="#cb60-35" aria-hidden="true" tabindex="-1"></a><span class="co">%\end{thebibliography}</span></span>
+<span id="cb60-36"><a href="#cb60-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-37"><a href="#cb60-37" aria-hidden="true" tabindex="-1"></a><span class="bu">\bibliographystyle</span>{<span class="ex">junsrt</span>}</span>
+<span id="cb60-38"><a href="#cb60-38" aria-hidden="true" tabindex="-1"></a><span class="bu">\bibliography</span>{<span class="ex">reference</span>}</span>
+<span id="cb60-39"><a href="#cb60-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-40"><a href="#cb60-40" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">document</span>}</span></code></pre></div>
+<p>ここに<code>\section</code>命令をいれよう。とりあえず「はじめに」「数式の入れ方」「図の入れ方」「参考文献の入れ方」の五つのセクションを以下のように入れてみよう。</p>
+<div class="sourceCode" id="cb61"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="bu">\documentclass</span>{<span class="ex">jarticle</span>}</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>[dvipdfmx]{<span class="ex">graphicx</span>}</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">document</span>}</span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a><span class="kw">\section</span>{はじめに}</span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>こんにちは。</span>
+<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a>さようなら。次の部分を<span class="fu">\textbf</span>{強調}します。</span>
+<span id="cb61-9"><a href="#cb61-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-10"><a href="#cb61-10" aria-hidden="true" tabindex="-1"></a><span class="kw">\section</span>{数式の入れ方}</span>
+<span id="cb61-11"><a href="#cb61-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-12"><a href="#cb61-12" aria-hidden="true" tabindex="-1"></a>文中の数式は<span class="ss">$E=mc^2$</span>のように書く。</span>
+<span id="cb61-13"><a href="#cb61-13" aria-hidden="true" tabindex="-1"></a>...</span>
+<span id="cb61-14"><a href="#cb61-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-15"><a href="#cb61-15" aria-hidden="true" tabindex="-1"></a><span class="kw">\section</span>{図の入れ方}</span>
+<span id="cb61-16"><a href="#cb61-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-17"><a href="#cb61-17" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">figure</span>}[htbp]</span>
+<span id="cb61-18"><a href="#cb61-18" aria-hidden="true" tabindex="-1"></a>...</span>
+<span id="cb61-19"><a href="#cb61-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-20"><a href="#cb61-20" aria-hidden="true" tabindex="-1"></a><span class="kw">\section</span>{参考文献の入れ方}</span>
+<span id="cb61-21"><a href="#cb61-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-22"><a href="#cb61-22" aria-hidden="true" tabindex="-1"></a>本稿の執筆にはLaTeX<span class="fu">\cite</span>{okumura2020}を用いた。</span>
+<span id="cb61-23"><a href="#cb61-23" aria-hidden="true" tabindex="-1"></a>...</span>
+<span id="cb61-24"><a href="#cb61-24" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">document</span>}</span></code></pre></div>
 <p>この状態でビルドし、正しく節が設定されることを確認せよ。</p>
 <h4 id="セクションの参照">セクションの参照</h4>
 <p>セクションにもラベルをつけて参照できる。まずは先ほどのセクションに以下のようにラベルをつけよう。</p>
-<div class="sourceCode" id="cb61"><pre
-class="sourceCode tex"><code class="sourceCode latex"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="kw">\section</span>{はじめに} <span class="kw">\label</span>{<span class="ex">sec:introduction</span>}</span>
-<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>...</span>
-<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a><span class="kw">\section</span>{数式の入れ方} <span class="kw">\label</span>{<span class="ex">sec:equation</span>}</span>
-<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>...</span>
-<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a><span class="kw">\section</span>{図の入れ方} <span class="kw">\label</span>{<span class="ex">sec:figure</span>}</span>
-<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>...</span>
-<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a><span class="kw">\section</span>{参考文献の入れ方} <span class="kw">\label</span>{<span class="ex">sec:reference</span>}</span></code></pre></div>
+<div class="sourceCode" id="cb62"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="kw">\section</span>{はじめに} <span class="kw">\label</span>{<span class="ex">sec:introduction</span>}</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>...</span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a><span class="kw">\section</span>{数式の入れ方} <span class="kw">\label</span>{<span class="ex">sec:equation</span>}</span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>...</span>
+<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a><span class="kw">\section</span>{図の入れ方} <span class="kw">\label</span>{<span class="ex">sec:figure</span>}</span>
+<span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a>...</span>
+<span id="cb62-7"><a href="#cb62-7" aria-hidden="true" tabindex="-1"></a><span class="kw">\section</span>{参考文献の入れ方} <span class="kw">\label</span>{<span class="ex">sec:reference</span>}</span></code></pre></div>
 <p>一般に、イントロダクションの一番最後に論文の構成を記述することが多い。「はじめに」の最後、「数式の入れ方」の直前に以下の文章を記述し、コンパイルせよ。コピペしても良いが、VS
 Codeから記述してラベルの補完を確認するとなお良い。</p>
-<div class="sourceCode" id="cb62"><pre
-class="sourceCode tex"><code class="sourceCode latex"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>本論文の構成は以下の通り。まず第<span class="fu">\ref</span>{sec:equation}節にて数式の入れ方を述べる。次に第<span class="fu">\ref</span>{sec:figure}節にて図の入れ方を述べる。最後に第<span class="fu">\ref</span>{sec:reference}にて参考文献の入れ方を紹介した後、将来への展望について述べる。</span></code></pre></div>
+<div class="sourceCode" id="cb63"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>本論文の構成は以下の通り。まず第<span class="fu">\ref</span>{sec:equation}節にて数式の入れ方を述べる。次に第<span class="fu">\ref</span>{sec:figure}節にて図の入れ方を述べる。最後に第<span class="fu">\ref</span>{sec:reference}にて参考文献の入れ方を紹介した後、将来への展望について述べる。</span></code></pre></div>
 <h4 id="目次">目次</h4>
 <p>セクションがあると、目次も自動で作ることができる。<code>\begin{document}</code>の直後に</p>
-<div class="sourceCode" id="cb63"><pre
-class="sourceCode tex"><code class="sourceCode latex"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\tableofcontents</span></span></code></pre></div>
+<div class="sourceCode" id="cb64"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\tableofcontents</span></span></code></pre></div>
 <p>と入力してビルドしてみよ。目次が表示されるはずである。</p>
 <h4 id="タイトルと著者">タイトルと著者</h4>
 <p>タイトルや著者を設定することもできる。どこでも良いが、プリアンブル(<code>\begin{document}</code>の直前あたり)に以下を入力せよ。</p>
-<div class="sourceCode" id="cb64"><pre
-class="sourceCode tex"><code class="sourceCode latex"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\title</span>{LaTeXのテスト}</span>
-<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="fu">\author</span>{自分の名前}</span></code></pre></div>
-<p>そして、<code>\begin{document}</code>の直後、<code>\tableofcontents</code>の直前に以下を入力せよ。</p>
 <div class="sourceCode" id="cb65"><pre
-class="sourceCode tex"><code class="sourceCode latex"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\maketitle</span></span></code></pre></div>
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\title</span>{LaTeXのテスト}</span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a><span class="fu">\author</span>{自分の名前}</span></code></pre></div>
+<p>そして、<code>\begin{document}</code>の直後、<code>\tableofcontents</code>の直前に以下を入力せよ。</p>
+<div class="sourceCode" id="cb66"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\maketitle</span></span></code></pre></div>
 <p>タイトル、著者、日付が表示されたはずである。</p>
 <h2 id="トラブル対応">トラブル対応</h2>
 <p>LaTeXは参照の解決のため、何度もコンパイルが必要な場合がある。原則として<code>latexmk</code>が依存関係を自動認識し、必要な回数だけコンパイルしてくれるはずだが、何かの原因でビルドが止まらなくなったり、正しくビルドされなくなったりすることがある。</p>
