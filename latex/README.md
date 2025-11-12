@@ -484,7 +484,15 @@ plt.savefig("sin.pdf")
 python test.py
 ```
 
-として実行すると`sin.pdf`ができる。これをLaTeXに取り込むには、まずプリアンブルで`graphicx`パッケージを取り込む。
+として実行すると`sin.pdf`ができる。もしくは
+
+```sh
+wget https://github.com/kaityo256/lab_startup/raw/main/latex/sin.pdf
+```
+
+を実行してダウンロードしても良い。
+
+これをLaTeXに取り込むには、まずプリアンブルで`graphicx`パッケージを取り込む。
 
 ```tex
 \documentclass{jarticle}
