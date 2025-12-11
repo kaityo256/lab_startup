@@ -90,30 +90,39 @@ PowerShell」の、右側のメニューの「管理者とて実行する」を�
 </figure>
 <p>その後、開いたシェルで以下を実行する。</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">wsl</span> <span class="at">--install</span></span></code></pre></div>
-<h2 id="ubuntu-22.04のインストール">Ubuntu 22.04のインストール</h2>
-<p>検索窓に「Microsoft Store」と入力してMicrosoft
-Storeを開く。右上の「検索」に「ubuntu」と入力し、現れた候補の中から「Ubuntu
-24.04.1 LTS」を選択、インストールする。</p>
-<p>インストール後の最初に起動でUNIX
-usernameとパスワードを聞かれるので、アカウント名とパスワードを入力する。</p>
-<p>以上でUbuntuのインストールは完了である。</p>
+<p>上記で、デフォルトでUbuntuがインストールされる。</p>
+<p>Windowsの検索欄で「Ubuntu」を入力するとUbuntuが起動する。よく使うのでタスクバーにピン止めしておくとよい。ただし、デフォルトではPowerShellが起動してしまうため、「設定」の「スタートアップ」から「既定のプロファイル」をUbuntuにしておくとよい。</p>
+<p>Ubuntuの初回起動時、ユーザ名とパスワードを求められる。</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Provisioning</span> the new WSL instance Ubuntu</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">This</span> might take a while...</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Create</span> a default Unix user account: watanabe ← ここで自分のユーザ名を入力。空白や特殊文字は含めないほうが良い。</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">New</span> password: ←パスワードを入力。入力しても画面には表示されない</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Retype</span> new password: ←パスワードを再度入力。入力しても画面には表示されない</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ex">passwd:</span> password updated successfully ←二回のパスワードが一致したら成功</span></code></pre></div>
+<p>その後、以下のようなメッセージが表示される。</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">This</span> message is shown once a day. To disable it please create the</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/home/watanabe/.hushlogin</span> file.</span></code></pre></div>
+<p>上記の案内を次回ログインから表示させないため、</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> .hushlogin</span></code></pre></div>
+<p>を実行しておく。</p>
 <h2 id="環境設定">環境設定</h2>
 <h3
 id="デスクトップへのシンボリックリンク">デスクトップへのシンボリックリンク</h3>
 <p>WSL側からWindows側のデスクトップにシンボリックリンクを張っておくと後々便利だ。</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> /mnt/c/Users/username/Desktop</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> /mnt/c/Users/username/Desktop</span></code></pre></div>
 <p>上記の「username」を自分のWindowsのアカウント名にすること。アカウント名がわからない場合はWSLで以下のコマンドを実行することで確認できる。</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">cmd.exe</span> /c echo %USERNAME% <span class="dv">2</span><span class="op">&gt;</span> /dev/null</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">cmd.exe</span> /c echo %USERNAME% <span class="dv">2</span><span class="op">&gt;</span> /dev/null</span></code></pre></div>
 <p>なお、OneDriveを利用している場合は、Desktopがその下にある。その場合は、</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> /mnt/c/Users/username/OneDrive/Desktop</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> /mnt/c/Users/username/OneDrive/Desktop</span></code></pre></div>
 <p>とすること。</p>
 <h3 id="explorer.exeへのエイリアス">explorer.exeへのエイリアス</h3>
 <p>WSLのディレクトリをエクスプローラで開くことができると便利だ。以下の一行を<code>.bashrc</code>の最後に記載しておくこと。</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> open=explorer.exe</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> open=explorer.exe</span></code></pre></div>
 <p>保存したら、</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .bashrc</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .bashrc</span></code></pre></div>
 <p>で読み込んだ後、</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">open</span> .</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">open</span> .</span></code></pre></div>
 <p>により、現在のディレクトリがエクスプローラで開かれることを確認せよ。</p>
 </article>
 </body>

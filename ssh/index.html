@@ -88,9 +88,9 @@ Shell)とは、それまで平文で通信していたtelnetやrsh、rloginを�
 <h2 id="公開鍵の作成と接続">公開鍵の作成と接続</h2>
 <h3 id="ssh公開鍵の作成">SSH公開鍵の作成</h3>
 <p>まず、ユーザ認証に用いる秘密鍵と公開鍵のペアを作成しよう。ユーザ認証は、サーバ側に公開鍵をなんらかの方法で登録しておき、後は「その公開鍵に対応する秘密鍵を持つユーザは、真にそのユーザである」という所持認証で認証を行う。</p>
-<p>ターミナルのホームディレクトリで、<code>ssh-keygen</code>コマンドにより、鍵のペアを作成しよう。<code>-t ed25519</code>は鍵のタイプ(署名アルゴリズム)の指定である。</p>
+<p>ターミナルのホームディレクトリで、<code>ssh-keygen</code>コマンドにより、鍵のペアを作成しよう。</p>
 <div class="sourceCode" id="cb2"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>$ ssh-keygen -t ed25519</span>
+class="sourceCode txt"><code class="sourceCode default"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>$ ssh-keygen</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Generating public/private ed25519 key pair.</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>Enter file in which to save the key (/Users/watanabe/.ssh/id_ed25519): (1)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>Enter passphrase (empty for no passphrase):  (2)</span>
@@ -257,12 +257,12 @@ class="sourceCode sh"><code class="sourceCode bash"><span id="cb20-1"><a href="#
 class="sourceCode sh"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/usr/bin/keychain</span> <span class="at">-q</span> <span class="at">--nogui</span> <span class="va">$HOME</span>/.ssh/id_ed25519</span></code></pre></div>
 <p>初回起動時にはパスフレーズを聞かれるので入力する。すると、<code>$HOME/.keychain</code>にいくつかシェルスクリプトが出来るので、それを実行する。</p>
 <div class="sourceCode" id="cb22"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> <span class="va">$HOME</span>/.keychain/<span class="va">$HOST</span>-sh</span></code></pre></div>
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> <span class="va">$HOME</span>/.keychain/<span class="va">$HOSTNAME</span>-sh</span></code></pre></div>
 <p>これにより、<code>keychain</code>が<code>ssh-agent</code>を探し、既存のプロセスがあれば接続、なければ起動してくれる。</p>
 <p><code>keychain</code>の起動を毎回行うのは面倒なので、<code>.bashrc</code>の最後に</p>
 <div class="sourceCode" id="cb23"><pre
 class="sourceCode sh"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/usr/bin/keychain</span> <span class="at">-q</span> <span class="at">--nogui</span> <span class="va">$HOME</span>/.ssh/id_ed25519</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> <span class="va">$HOME</span>/.keychain/<span class="va">$HOST</span>-sh</span></code></pre></div>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> <span class="va">$HOME</span>/.keychain/<span class="va">$HOSTNAME</span>-sh</span></code></pre></div>
 <p>と書いておくと良い。Zshなども同様だが、cshやfishは、<code>$HOST-sh</code>の<code>-sh</code>を<code>-csh</code>や<code>-fish</code>にすること。</p>
 <h2
 id="sshエージェント転送による多段ssh">SSHエージェント転送による多段SSH</h2>

@@ -25,10 +25,10 @@ SSHにおいてホストに接続する際、以下の順番でやりとりが�
 
 まず、ユーザ認証に用いる秘密鍵と公開鍵のペアを作成しよう。ユーザ認証は、サーバ側に公開鍵をなんらかの方法で登録しておき、後は「その公開鍵に対応する秘密鍵を持つユーザは、真にそのユーザである」という所持認証で認証を行う。
 
-ターミナルのホームディレクトリで、`ssh-keygen`コマンドにより、鍵のペアを作成しよう。`-t ed25519`は鍵のタイプ(署名アルゴリズム)の指定である。
+ターミナルのホームディレクトリで、`ssh-keygen`コマンドにより、鍵のペアを作成しよう。
 
 ```txt
-$ ssh-keygen -t ed25519
+$ ssh-keygen
 Generating public/private ed25519 key pair.
 Enter file in which to save the key (/Users/watanabe/.ssh/id_ed25519): (1)
 Enter passphrase (empty for no passphrase):  (2)
@@ -273,7 +273,7 @@ sudo apt-get install keychain
 初回起動時にはパスフレーズを聞かれるので入力する。すると、`$HOME/.keychain`にいくつかシェルスクリプトが出来るので、それを実行する。
 
 ```sh
-source $HOME/.keychain/$HOST-sh
+source $HOME/.keychain/$HOSTNAME-sh
 ```
 
 これにより、`keychain`が`ssh-agent`を探し、既存のプロセスがあれば接続、なければ起動してくれる。
@@ -282,7 +282,7 @@ source $HOME/.keychain/$HOST-sh
 
 ```sh
 /usr/bin/keychain -q --nogui $HOME/.ssh/id_ed25519
-source $HOME/.keychain/$HOST-sh
+source $HOME/.keychain/$HOSTNAME-sh
 ```
 
 と書いておくと良い。Zshなども同様だが、cshやfishは、`$HOST-sh`の`-sh`を`-csh`や`-fish`にすること。

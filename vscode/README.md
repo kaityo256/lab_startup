@@ -14,8 +14,6 @@ Visual Studio Code、通称VSCodeは、Microsoftが中心となって開発を�
 
 「デスクトップ上にアイコンを作成する」は、どちらでもかまわない。
 
-インストール後、VSCodeを起動する。
-
 ### WSLとの連携
 
 Windowsマシンでは、原則としてWindows Subsystem for Linux (WSL)上で作業を行う。VSCodeは、WindowsでもWSL上でもシームレスに利用できるが、そのためにプラグインを入れておく必要がある。
@@ -47,6 +45,10 @@ code .
 VSCodeを起動する。「アプリケーション」から「Visual Studio Code」を起動する。今後よく使うので、Dockに追加しておこう。
 
 ## 設定(Windows/Mac共通)
+
+### 日本語化
+
+VSCodeの左のメニューからExtentionsのアイコン(ブロックのマーク)をクリックし、現れた検索窓に「Japanese」と入力すると、「Japanese Language Pack for Visual Studio Code」が現れるのでインストールする。インストール後、右下に「Change Language and Restart」というボタンが現れるので、クリックするとVSCodeが再起動し、メニューなどが日本語化される。
 
 ### シェルコマンド`code`のインストール
 
