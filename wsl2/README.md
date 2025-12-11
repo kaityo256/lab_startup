@@ -18,13 +18,35 @@ Windowsマシンでは、原則としてWSL(Windows Subsystem for Linux)上で�
 wsl --install
 ```
 
-## Ubuntu 22.04のインストール
+上記で、デフォルトでUbuntuがインストールされる。
 
-検索窓に「Microsoft Store」と入力してMicrosoft Storeを開く。右上の「検索」に「ubuntu」と入力し、現れた候補の中から「Ubuntu 24.04.1 LTS」を選択、インストールする。
+Windowsの検索欄で「Ubuntu」を入力するとUbuntuが起動する。よく使うのでタスクバーにピン止めしておくとよい。ただし、デフォルトではPowerShellが起動してしまうため、「設定」の「スタートアップ」から「既定のプロファイル」をUbuntuにしておくとよい。
 
-インストール後の最初に起動でUNIX usernameとパスワードを聞かれるので、アカウント名とパスワードを入力する。
+Ubuntuの初回起動時、ユーザ名とパスワードを求められる。
 
-以上でUbuntuのインストールは完了である。
+```sh
+Provisioning the new WSL instance Ubuntu
+This might take a while...
+Create a default Unix user account: watanabe ← ここで自分のユーザ名を入力。空白や特殊文字は含めないほうが良い。
+New password: ←パスワードを入力。入力しても画面には表示されない
+Retype new password: ←パスワードを再度入力。入力しても画面には表示されない
+passwd: password updated successfully ←二回のパスワードが一致したら成功
+```
+
+その後、以下のようなメッセージが表示される。
+
+```sh
+This message is shown once a day. To disable it please create the
+/home/watanabe/.hushlogin file.
+```
+
+上記の案内を次回ログインから表示させないため、
+
+```sh
+touch .hushlogin
+```
+
+を実行しておく。
 
 ## 環境設定
 
