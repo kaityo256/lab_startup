@@ -1,5 +1,7 @@
 # SSHの設定
 
+[説明スライド](https://speakerdeck.com/kaityo256/connecting-with-ssh-public-key-authentication)
+
 ## SSHとは
 
 SSH (Secure Shell)とは、それまで平文で通信していたtelnetやrsh、rloginを代替するために生まれたセキュアな通信手段である。SSHは規格であり、その実装が例えばOpenSSHとなる。ターミナルで`ssh -V`を実行すると、そのバージョンが分かる。
