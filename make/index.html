@@ -76,12 +76,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 makeとしてのCMake、RubyによるRakeや、PythonのSConsなど、多くのビルドツールがあるが、まずはmakeを使えるようになってみよう。makeにも方言があるが、ここでは広く使われているGNU
 Makeの使い方を学ぶ。</p>
 <h2 id="makeの基本的な使い方">makeの基本的な使い方</h2>
-<p>makeは、makefileというファイルに「ルール」と呼ばれる
+<p>makeは、<code>Makefile</code>というファイルに「ルール」と呼ばれる
 <strong>依存関係</strong>
 と<strong>処理</strong>をまとめたもの記述する。</p>
 <div class="sourceCode" id="cb1"><pre
 class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">ターゲット:</span><span class="dt"> 依存するファイル1 依存するファイル2...</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    コマンド</span></code></pre></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>コマンド</span></code></pre></div>
 <p>という形になる。ルールは</p>
 <ul>
 <li>ターゲット：このルールが作りたいもの</li>
@@ -89,7 +89,7 @@ class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb1-1"><
 <li>コマンド：必要な物が全て揃った後に実行されるコマンド</li>
 </ul>
 <p>から構成される。</p>
-<p>まずは、簡単なmakefileを書いてみよう。まずは<code>github</code>ディレクトリに入り、練習用のリポジトリ<code>kaityo256/make_tutorial</code>をcloneせよ。</p>
+<p>まずは、簡単な<code>Makefile</code>を書いてみよう。まずは<code>github</code>ディレクトリに入り、練習用のリポジトリ<code>kaityo256/make_tutorial</code>をcloneせよ。</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> github</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/kaityo256/make_tutorial.git</span></code></pre></div>
 <p>cloneできたら、リポジトリの<code>hello</code>というディレクトリに入ろう。そこには<code>hello.txt</code>というテキストファイルが置いてある。</p>
@@ -98,10 +98,10 @@ class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb1-1"><
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cat hello.txt</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Hello</span> Make!</span></code></pre></div>
 <p>この<code>cat hello.txt</code>をmakeにやらせてみよう。vim
-で<code>makefile</code>を開き、以下の内容を入力せよ</p>
+で<code>Makefile</code>を開き、以下の内容を入力せよ</p>
 <div class="sourceCode" id="cb4"><pre
 class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dv">all:</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    cat hello.txt</span></code></pre></div>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>cat hello.txt</span></code></pre></div>
 <p>これは</p>
 <ul>
 <li><code>all</code>というターゲットを作るルールで</li>
@@ -130,7 +130,7 @@ class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb4-1"><
 <p>なお、コマンドに<code>@</code>をつけるとそのコマンドは表示されない。</p>
 <div class="sourceCode" id="cb6"><pre
 class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="dv">all:</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="ch">@</span><span class="fu">cat hello.txt</span></span></code></pre></div>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="er">    </span><span class="ch">@</span><span class="fu">cat hello.txt</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> make</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Hello</span> Make!</span></code></pre></div>
 <p>なお、もう一度makeすると、もう一度コマンドが実行される。</p>
@@ -138,12 +138,12 @@ class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb6-1"><
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Hello</span> Make!</span></code></pre></div>
 <p>makeは「ターゲットが存在しない」もしくは「ターゲットが依存するファイルが存在しないか、ターゲットより新しい」場合にコマンドを実行する。今回はターゲット<code>all</code>のコマンドを実行しても、<code>all</code>が作成されないので、何度でも実行される。</p>
 <h2 id="依存関係の記述">依存関係の記述</h2>
-<p>次に、依存関係を記述してみよう。同じディレクトリ(<code>hello</code>)で、makefileを以下のように書き直そう。</p>
+<p>次に、依存関係を記述してみよう。同じディレクトリ(<code>hello</code>)で、<code>Makefile</code>を以下のように書き直そう。</p>
 <div class="sourceCode" id="cb9"><pre
 class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dv">all:</span><span class="dt"> result.txt</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="dv">result.txt:</span><span class="dt"> hello.txt</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    cat hello.txt &gt; result.txt</span></code></pre></div>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>cat hello.txt &gt; result.txt</span></code></pre></div>
 <p>これは、</p>
 <ul>
 <li>ターゲットallは
@@ -234,18 +234,18 @@ class="sourceCode sh"><code class="sourceCode bash"><span id="cb21-1"><a href="#
 <span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="ex">sub:</span>  N is 10</span></code></pre></div>
 <p>この場合でも実行バイナリは更新され、実行できるのだが、本来同じであるべき値がずれてしまっている。このような依存関係を認識し、自動的に必要なファイルを再コンパイルしてくれるのがmakeである。</p>
 <h3 id="クリーン">クリーン</h3>
-<p>依存関係をどう扱うかは後で説明することにして、まずは分割コンパイル、リンクをするmakefileを書いてみよう。</p>
+<p>依存関係をどう扱うかは後で説明することにして、まずは分割コンパイル、リンクをする<code>Makefile</code>を書いてみよう。</p>
 <div class="sourceCode" id="cb22"><pre
 class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="dv">all:</span><span class="dt"> a.out</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="dv">a.out:</span><span class="dt"> main.o sub.o</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    g++ main.o sub.o</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>g++ main.o sub.o</span>
 <span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="dv">main.o:</span><span class="dt"> main.cpp</span></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    g++ -c main.cpp</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>g++ -c main.cpp</span>
 <span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="dv">sub.o:</span><span class="dt"> sub.cpp</span></span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    g++ -c sub.cpp</span></code></pre></div>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>g++ -c sub.cpp</span></code></pre></div>
 <p>書けたら、実行バイナリやオブジェクトファイルを削除してからmakeしてみよう。</p>
 <div class="sourceCode" id="cb23"><pre
 class="sourceCode sh"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> rm <span class="at">-f</span> a.out <span class="pp">*</span>.o</span>
@@ -256,11 +256,11 @@ class="sourceCode sh"><code class="sourceCode bash"><span id="cb23-1"><a href="#
 <span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ./a.out</span>
 <span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="ex">main:</span> N is 20</span>
 <span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="ex">sub:</span>  N is 20</span></code></pre></div>
-<p><code>a.out</code>をビルドするための一連の動作をmakeがやってくれた。また、全てゼロからビルドしたから当たり前だが、値が正しく表示される、正しい実行バイナリができている。この、「全てゼロからビルド」するために、中間ファイルやターゲットを削除することを「クリーン」と呼ぶ。makefileでは、慣習として<code>clean</code>というターゲット名で「クリーン」のためのルールを記述する。</p>
-<p>先ほどの<code>makefile</code>の一番最後に、以下のルールを追加せよ。</p>
+<p><code>a.out</code>をビルドするための一連の動作をmakeがやってくれた。また、全てゼロからビルドしたから当たり前だが、値が正しく表示される、正しい実行バイナリができている。この、「全てゼロからビルド」するために、中間ファイルやターゲットを削除することを「クリーン」と呼ぶ。<code>Makefile</code>では、慣習として<code>clean</code>というターゲット名で「クリーン」のためのルールを記述する。</p>
+<p>先ほどの<code>Makefile</code>の一番最後に、以下のルールを追加せよ。</p>
 <div class="sourceCode" id="cb24"><pre
 class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="dv">clean:</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    rm -f a.out *.o</span></code></pre></div>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>rm -f a.out *.o</span></code></pre></div>
 <p>これにより、<code>make clean</code>と打つと、実行バイナリやオブジェクトファイルが削除される。</p>
 <div class="sourceCode" id="cb25"><pre
 class="sourceCode sh"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> make clean</span>
@@ -272,31 +272,31 @@ class="sourceCode sh"><code class="sourceCode bash"><span id="cb26-1"><a href="#
 <p>すれば、必ずクリーンな状態からビルドすることができる。</p>
 <h3 id="パターンルール">パターンルール</h3>
 <p>次に、ソースファイルから、オブジェクトファイルを作るコマンドが同じなので、ファイルが増えた時に毎回似たような処理を書くのは面倒だ。まとめてしまおう。</p>
-<p>makefileの以下の部分を削除する。</p>
+<p><code>Makefile</code>の以下の部分を削除する。</p>
 <div class="sourceCode" id="cb27"><pre
 class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="dv">main.o:</span><span class="dt"> main.cpp</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    g++ -c main.cpp</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>g++ -c main.cpp</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="dv">sub.o:</span><span class="dt"> sub.cpp</span></span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    g++ -c sub.cpp</span></code></pre></div>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>g++ -c sub.cpp</span></code></pre></div>
 <p>削除後に、以下のルールを追加しよう。</p>
 <div class="sourceCode" id="cb28"><pre
 class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="dv">%.o:</span><span class="dt"> %.cpp</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    g++ -c <span class="ch">$&lt;</span></span></code></pre></div>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>g++ -c <span class="ch">$&lt;</span></span></code></pre></div>
 <p>これは「パターンルール」と呼ばれる構文で、「<code>%.o</code>というファイル名にマッチするものは、<code>%.cpp</code>から以下のコマンドで作れますよ」ということをmakeに教える。</p>
 <p><code>$&lt;</code>とは、マクロ、もしくは自動変数と呼ばれるもので、「必要条件」に展開される。</p>
-<p>最終的に、makefileは以下のようになったはずだ。</p>
+<p>最終的に、<code>Makefile</code>は以下のようになったはずだ。</p>
 <div class="sourceCode" id="cb29"><pre
 class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="dv">all:</span><span class="dt"> a.out</span></span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="dv">a.out:</span><span class="dt"> main.o sub.o</span></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>            g++ main.o sub.o</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="er">            </span>g++ main.o sub.o</span>
 <span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="dv">%.o:</span><span class="dt"> %.cpp</span></span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>        g++ -c <span class="ch">$&lt;</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="er">        </span>g++ -c <span class="ch">$&lt;</span></span>
 <span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="dv">clean:</span></span>
-<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>        rm -f a.out *.o</span></code></pre></div>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="er">        </span>rm -f a.out *.o</span></code></pre></div>
 <p>実際にmakeしてみよう。</p>
 <div class="sourceCode" id="cb30"><pre
 class="sourceCode sh"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> make clean</span>
@@ -307,7 +307,7 @@ class="sourceCode sh"><code class="sourceCode bash"><span id="cb30-1"><a href="#
 <span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="ex">g++</span> main.o sub.o</span></code></pre></div>
 <p>正しくビルドできた。</p>
 <h3 id="依存関係の出力とインクルード">依存関係の出力とインクルード</h3>
-<p>ここまでで、makefileは<code>a.out</code>は<code>main.o</code>、<code>sub.o</code>に、<code>main.o</code>は<code>main.cpp</code>に、<code>sub.o</code>は<code>sub.cpp</code>に依存することを認識しているが、<code>main.cpp</code>と<code>sub.cpp</code>が<code>param.hpp</code>に依存していることは知らない。</p>
+<p>ここまでで、<code>Makefile</code>は<code>a.out</code>は<code>main.o</code>、<code>sub.o</code>に、<code>main.o</code>は<code>main.cpp</code>に、<code>sub.o</code>は<code>sub.cpp</code>に依存することを認識しているが、<code>main.cpp</code>と<code>sub.cpp</code>が<code>param.hpp</code>に依存していることは知らない。</p>
 <p>例えば、一度makeする。</p>
 <div class="sourceCode" id="cb31"><pre
 class="sourceCode sh"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span></span></code></pre></div>
@@ -316,32 +316,32 @@ class="sourceCode sh"><code class="sourceCode bash"><span id="cb31-1"><a href="#
 class="sourceCode sh"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> touch param.hpp</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> make</span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="ex">make:</span> <span class="st">&#39;all&#39;</span> に対して行うべき事はありません.</span></code></pre></div>
-<p>したがって、makefileに正しく依存関係を記述してあげる必要があるのだが、そもそも「人間は複雑な依存関係を処理できなくてミスするよね」というのがスタート地点なのに、人間に「makefileに正しく依存関係を書け」というのもおかしな話である。なので、依存関係の抽出もプログラムにやらせよう。<code>g++</code>には、依存関係を抽出してmakefile用に出力してくれるオプション<code>-MM</code>が存在する。</p>
+<p>したがって、<code>Makefile</code>に正しく依存関係を記述してあげる必要があるのだが、そもそも「人間は複雑な依存関係を処理できなくてミスするよね」というのがスタート地点なのに、人間に「<code>Makefile</code>に正しく依存関係を書け」というのもおかしな話である。なので、依存関係の抽出もプログラムにやらせよう。<code>g++</code>には、依存関係を抽出して<code>Makefile</code>用に出<code>Mしてくれるオプ</code>ション<code>-MM</code>が存在する。</p>
 <div class="sourceCode" id="cb33"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> g++ <span class="at">-MM</span> <span class="pp">*</span>.cpp</span>
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="ex">M</span> g++ <span class="at">-MM</span> <span class="pp">*</span>.cpp</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="ex">main.o:</span> main.cpp param.hpp</span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="ex">sub.o:</span> sub.cpp param.hpp</span></code></pre></div>
 <p>これを、リダイレクトでファイルに落とそう。</p>
 <div class="sourceCode" id="cb34"><pre
 class="sourceCode sh"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="ex">g++</span> <span class="at">-MM</span> <span class="pp">*</span>.cpp <span class="op">&gt;</span> makefile.dep</span></code></pre></div>
-<p>できた依存関係記述ファイルを、makefileでインクルードしてやる。makefileのインクルードは<code>-include</code>で行う。makefileの最後に以下の文を記述せよ。</p>
+<p>できた依存関係記述ファイルを、makefileでインクルードしてやる。<code>Makefile</code>のインクルードは<code>-include</code>で行う。makefileの最後に以下の文を記述せよ。</p>
 <div class="sourceCode" id="cb35"><pre
 class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">-include</span> makefile.dep</span></code></pre></div>
-<p>最終的に、makefileは以下のようになったはずだ。</p>
+<p>最終的に、<code>Makefile</code>は以下のようになったはずだ。</p>
 <div class="sourceCode" id="cb36"><pre
 class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="dv">all:</span><span class="dt"> a.out</span></span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="dv">a.out:</span><span class="dt"> main.o sub.o</span></span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>      g++ main.o sub.o</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="er">      </span>g++ main.o sub.o</span>
 <span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="dv">%.o:</span><span class="dt"> %.cpp</span></span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>  g++ -c <span class="ch">$&lt;</span></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="er">  </span>g++ -c <span class="ch">$&lt;</span></span>
 <span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a><span class="dv">clean:</span></span>
-<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>  rm -f a.out *.o</span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a><span class="er">  </span>rm -f a.out *.o</span>
 <span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a><span class="kw">-include</span> makefile.dep</span></code></pre></div>
-<p>このmakefileが、正しく依存関係を認識しているか調べてみよう。まずはクリーンビルドする。</p>
+<p>この<code>Makefile</code>が、正しく依存関係を認識しているか調べてみよう。まずはクリーンビルドする。</p>
 <div class="sourceCode" id="cb37"><pre
 class="sourceCode sh"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> clean</span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span></span></code></pre></div>
@@ -364,13 +364,13 @@ class="sourceCode sh"><code class="sourceCode bash"><span id="cb39-1"><a href="#
 <p>最後に、変数を使ってみよう。場面によって、コンパイラが違うことがある。違うコンパイラを使う場合、</p>
 <div class="sourceCode" id="cb40"><pre
 class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="dv">a.out:</span><span class="dt"> main.o sub.o</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>            g++ main.o sub.o</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="er">            </span>g++ main.o sub.o</span>
 <span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="dv">%.o:</span><span class="dt"> %.cpp</span></span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>        g++ -c <span class="ch">$&lt;</span></span></code></pre></div>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="er">        </span>g++ -c <span class="ch">$&lt;</span></span></code></pre></div>
 <p>の二か所に出現する<code>g++</code>を修正しなければならない。「〇〇したら××しなければならない」は危険信号だ。一か所だけ修正したら全部修正できるように、変数を使おう。</p>
-<p>makefileの変数は、<code>変数名=値</code>で宣言し、利用は変数名を<code>$()</code>で囲んだ<code>$(変数名)</code>とする。</p>
-<p>まずは<code>makefile</code>の冒頭で、コンパイラを変数で定義しよう。慣習としてC++コンパイラは<code>CXX</code>とする。</p>
+<p><code>Makefile</code>の変数は、<code>変数名=値</code>で宣言し、利用は変数名を<code>$()</code>で囲んだ<code>$(変数名)</code>とする。</p>
+<p>まずは<code>Makefile</code>の冒頭で、コンパイラを変数で定義しよう。慣習としてC++コンパイラは<code>CXX</code>とする。</p>
 <div class="sourceCode" id="cb41"><pre
 class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="dt">CXX</span><span class="ch">=</span><span class="st">g++</span></span></code></pre></div>
 <p>そして、<code>g++</code>とあるところを<code>$(CXX)</code>に置換する。</p>
@@ -381,13 +381,13 @@ class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb42-1">
 <span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="dv">all:</span><span class="dt"> a.out</span></span>
 <span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="dv">a.out:</span><span class="dt"> main.o sub.o</span></span>
-<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>            <span class="ch">$(</span><span class="dt">CXX</span><span class="ch">)</span> main.o sub.o</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="er">            </span><span class="ch">$(</span><span class="dt">CXX</span><span class="ch">)</span> main.o sub.o</span>
 <span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a><span class="dv">%.o:</span><span class="dt"> %.cpp</span></span>
-<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>        <span class="ch">$(</span><span class="dt">CXX</span><span class="ch">)</span> -c <span class="ch">$&lt;</span></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a><span class="er">        </span><span class="ch">$(</span><span class="dt">CXX</span><span class="ch">)</span> -c <span class="ch">$&lt;</span></span>
 <span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a><span class="dv">clean:</span></span>
-<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>        rm -f a.out *.o</span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a><span class="er">        </span>rm -f a.out *.o</span>
 <span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a><span class="kw">-include</span> makefile.dep</span></code></pre></div>
 <p>GNU
@@ -415,7 +415,7 @@ class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb45-1">
 <div class="sourceCode" id="cb46"><pre
 class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="dv">all:</span><span class="dt"> </span><span class="ch">$(</span><span class="dt">OUTPUTS</span><span class="ch">)</span></span></code></pre></div>
 <p>と書けばよい。</p>
-<p>以上を実装した、以下のようなmakefileが用意されている。</p>
+<p>以上を実装した、以下のような<code>Makefile</code>が用意されている。</p>
 <div class="sourceCode" id="cb47"><pre
 class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="dt">INPUTS</span><span class="ch">=$(</span><span class="kw">shell</span><span class="st"> ls input*.dat</span><span class="ch">)</span></span>
 <span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="dt">OUTPUTS</span><span class="ch">=$(</span><span class="dt">INPUTS</span><span class="kw">:</span><span class="ss">input%</span><span class="kw">=</span><span class="ss">output%</span><span class="ch">)</span></span>
@@ -424,14 +424,14 @@ class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb47-1">
 <span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="dv">all:</span><span class="dt"> </span><span class="ch">$(</span><span class="dt">OUTPUTS</span><span class="ch">)</span></span>
 <span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a><span class="dv">output%:</span><span class="dt"> input%</span></span>
-<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>  python convert.py &lt; <span class="ch">$&lt;</span> &gt; <span class="ch">$@</span></span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a><span class="er">  </span>python convert.py &lt; <span class="ch">$&lt;</span> &gt; <span class="ch">$@</span></span>
 <span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a><span class="dv">clean:</span></span>
-<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a>  rm -f <span class="ch">$(</span><span class="dt">OUTPUTS</span><span class="ch">)</span></span></code></pre></div>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a><span class="er">  </span>rm -f <span class="ch">$(</span><span class="dt">OUTPUTS</span><span class="ch">)</span></span></code></pre></div>
 <p><code>input?.dat</code>から<code>output?.dat</code>を作るルール</p>
 <div class="sourceCode" id="cb48"><pre
 class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="dv">output%:</span><span class="dt"> input%</span></span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  python convert.py &lt; <span class="ch">$&lt;</span> &gt; <span class="ch">$@</span></span></code></pre></div>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="er">  </span>python convert.py &lt; <span class="ch">$&lt;</span> &gt; <span class="ch">$@</span></span></code></pre></div>
 <p>にある<code>$@</code>は自動変数の一種で、ターゲットに展開される。</p>
 <p>早速makeしてみよう。ただし、時間も測ってみる。</p>
 <div class="sourceCode" id="cb49"><pre
@@ -507,14 +507,14 @@ class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb55-1">
 <span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a><span class="dv">%.png:</span><span class="dt"> %.dat</span></span>
-<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>        python3 convert.py <span class="ch">$&lt;</span></span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a><span class="er">        </span>python3 convert.py <span class="ch">$&lt;</span></span>
 <span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a><span class="dv">gif:</span><span class="dt"> </span><span class="ch">$(</span><span class="dt">PNG</span><span class="ch">)</span></span>
-<span id="cb55-12"><a href="#cb55-12" aria-hidden="true" tabindex="-1"></a>        convert -delay 5 -loop 0 -resize 50% spiral*.png spiral.gif</span>
+<span id="cb55-12"><a href="#cb55-12" aria-hidden="true" tabindex="-1"></a><span class="er">        </span>convert -delay 5 -loop 0 -resize 50% spiral*.png spiral.gif</span>
 <span id="cb55-13"><a href="#cb55-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb55-14"><a href="#cb55-14" aria-hidden="true" tabindex="-1"></a><span class="dv">clean:</span></span>
-<span id="cb55-15"><a href="#cb55-15" aria-hidden="true" tabindex="-1"></a>        rm -f spiral.gif spiral*.dat spiral*.png</span></code></pre></div>
+<span id="cb55-15"><a href="#cb55-15" aria-hidden="true" tabindex="-1"></a><span class="er">        </span>rm -f spiral.gif spiral*.dat spiral*.png</span></code></pre></div>
 <p>もう何をやっているかはわかると思う。早速<code>make</code>してみよう。せっかくなので並列ビルドしてしまおう。</p>
 <div class="sourceCode" id="cb56"><pre
 class="sourceCode sh"><code class="sourceCode bash"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-j</span></span></code></pre></div>
