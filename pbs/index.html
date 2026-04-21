@@ -93,10 +93,12 @@ Proなどが使われている。</p>
 First-out」の略で、要するに「早い者勝ち」のシステムである。使う際は節度を守って利用すること。</p>
 <p>ジョブスクリプトは、シェルスクリプトにジョブスケジューラ用の情報を付加したものだ。例えば以下のようなフォーマットだ。</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">mpirun</span> <span class="at">-np</span> 40 ./a.out</span></code></pre></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -N 1</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">mpirun</span> <span class="at">-np</span> 40 ./a.out</span></code></pre></div>
 <p>ジョブスクリプトはシェルスクリプトなので、<code>#</code>以降はコメントである。しかし、いくつか「意味のあるコメント」がある。</p>
 <p>最初の行の<code>#!/bin/bash</code>は、Shebang(シバン、シェバン)等と呼ばれ、このスクリプトをどのシェル(インタプリタ)で実行するかを指定するものだ。これはジョブスクリプトだけでなく、シェルスクリプト全般で使われる。</p>
+<p>次の<code>#SBATCH -N 1</code>はジョブスケジューラにわたすオプションである。今回は詳細には触れない。</p>
 <h3 id="良く使うコマンド">良く使うコマンド</h3>
 <p>バッチシステムにおいて、良く使うコマンドは以下の通り。</p>
 <ul>
