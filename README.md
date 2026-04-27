@@ -32,23 +32,29 @@ SpeakerDeckへのリンク。[File]をクリックすると、PDFやパワーポ
 ## 開発編
 
 * [Vimの使い方](vim/README.md)
-* [gnuplotの使い方](gnuplot/README.md)
-* [GitHubのフォークとLAMMPS](github_lammps/README.md)
-* [GNU Makeの使い方](make/README.md)
-* [C++のコンパイルとSIMDの確認](simd/README.md)
-* [TensorFlowでFashion-MNISTを学習させてウェブで読み込む](tensorflow/README.md)
 * [Dockerの簡単な使い方](docker/README.md)
-* [ParaViewの使い方](paraview/README.md)
+* [gnuplotの使い方](gnuplot/README.md)
+* [GNU Makeの使い方](make/README.md)
 * [バッチシステムの使い方](pbs/README.md)
-* [簡単なSIMD化](simd_tutorial/README.md)
 * [Markdown記法とLaTeX記法](mdtex/README.md)
-* [cronの使い方](cron/README.md)
+* [ParaViewの使い方](paraview/README.md)
+
 
 ## 執筆編
 
 * [LaTeXのインストール](latex/README.md)
 * [卒業論文の準備](graduate_thesis/README.md)
 * [Adobe Illustratorの使い方](illustrator/README.md)
+
+## 個別の情報
+
+ハンズオンは実施しないが情報をまとめたもの。
+
+* [C++のコンパイルとSIMDの確認](simd/README.md)
+* [TensorFlowでFashion-MNISTを学習させてウェブで読み込む](tensorflow/README.md)
+* [GitHubのフォークとLAMMPS](github_lammps/README.md)
+* [簡単なSIMD化](simd_tutorial/README.md)
+* [cronの使い方](cron/README.md)
 
 ## 古い情報
 
