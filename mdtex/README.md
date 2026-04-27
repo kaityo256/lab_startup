@@ -2,7 +2,13 @@
 
 ## 拡張機能のインストール
 
+最初に「Markdown Preview Enhanced」という拡張機能をインストールする。
 
+VS Codeを起動し、拡張機能ボタンをクリック、開いた検索ウィンドウに「Markdown preview enhanced」と入力せよ。
+
+![extensions](fig/extension.png)
+
+すると、Yiyi Wangによる作成された「Markdown Preview Enhanced」が現れるのでインストールする。これで準備完了である。
 
 ## 準備
 
