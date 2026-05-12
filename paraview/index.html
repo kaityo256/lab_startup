@@ -101,11 +101,19 @@ again」にチェックして「Close」すると、次回から現れなくな�
 id="ffmpegとimagemagickのインストール">FFmpegとImageMagickのインストール</h2>
 <p>ParaViewを扱うのに必須ではないが、動画を作成するのにFFmpegとImageMagickがあると便利だ。事前にインストールしておくと良い。</p>
 <p>Windows(WSL)の場合。</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install ffmpeg</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install imagemagick</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install ffmpeg</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install imagemagick</span></code></pre></div>
 <p>Macの場合。</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install ffmpeg</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install imagemagick</span></code></pre></div>
+<h2 id="pipの準備">PIPの準備</h2>
+<p>以下を実行できるか確認。</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> pip <span class="at">--version</span></span></code></pre></div>
+<p><code>No module named pip</code>などと表示されて実行できない場合はpipをインストールしておく。</p>
+<p>Windowsの場合</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install python3-pip</span></code></pre></div>
+<p>Macはデフォルトで入っているはず。</p>
 <h2 id="vtkファイルの構造">VTKファイルの構造</h2>
 <p>ParaViewは非常に多くの可視化ができる。このParaViewにデータを食わせる方法はいくつかあるが、最も簡単なのはVTKレガシーフォーマット(Visualization
 Toolkit Simple Legacy
@@ -115,24 +123,24 @@ Format)を使うことだ。VTKレガシーフォーマットとは、「レガ�
 href="http://www.vtk.org/VTK/img/file-formats.pdf">http://www.vtk.org/VTK/img/file-formats.pdf</a></p>
 <h3 id="ファイルの構造">ファイルの構造</h3>
 <p>VTKファイルは、例えばこんな構造をしている。</p>
-<div class="sourceCode" id="cb3"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a># vtk DataFile Version 1.0</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>test</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>ASCII</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>DATASET STRUCTURED_POINTS</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>DIMENSIONS 21 21 21</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>ORIGIN 0.0 0.0 0.0</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>SPACING 1.0 1.0 1.0</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>POINT_DATA 9261</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>SCALARS intensity float</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>LOOKUP_TABLE default</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>0</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>0</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>0</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>0</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>(以下データが続く)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a># vtk DataFile Version 1.0</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>test</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>ASCII</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>DATASET STRUCTURED_POINTS</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>DIMENSIONS 21 21 21</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>ORIGIN 0.0 0.0 0.0</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>SPACING 1.0 1.0 1.0</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>POINT_DATA 9261</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>SCALARS intensity float</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>LOOKUP_TABLE default</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>0</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>0</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>0</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>0</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>(以下データが続く)</span></code></pre></div>
 <ol type="1">
 <li>最初の行はファイルのバージョン情報。大文字小文字は区別し、バージョンをあらわす数字x.x以外の場所はこの通りに記述する必要がある。</li>
 <li>次がファイルの名前。最大256文字。適当に書けばよいと思うが、個人的にはファイル名をここに記述している。</li>
@@ -144,11 +152,11 @@ Grid)と非構造格子(Unstructured Grid)のみ扱う。</li>
 <h3 id="構造格子">構造格子</h3>
 <p>ファイルの最初の三行がヘッダーで、四行目からデータ構造の記述になる。もっとも簡単なデータ構造は「構造格子(Structured
 Grid)」だ。構造格子の定義は以下のようなフォーマットになる。</p>
-<div class="sourceCode" id="cb4"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>DATASET STRUCTURED_POINTS</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>DIMENSIONS 21 21 21</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>ORIGIN 0.0 0.0 0.0</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>SPACING 1.0 1.0 1.0</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>DATASET STRUCTURED_POINTS</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>DIMENSIONS 21 21 21</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>ORIGIN 0.0 0.0 0.0</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>SPACING 1.0 1.0 1.0</span></code></pre></div>
 <ol type="1">
 <li>最初の行がデータセット(DATASET)の構造を指定する。ここでは構造格子(STRUCTURED_POINTS)を指定している。</li>
 <li>次の行は、三次元直方体の三辺の点の数を与える。ここでは21×21×21の立方体構造を与えている。</li>
@@ -160,26 +168,26 @@ class="sourceCode txt"><code class="sourceCode default"><span id="cb4-1"><a href
 <p>構造格子の場合は「直方体の三辺の要素数」及び「単位直方体のサイズ(SPACING)」を指定すればそれで格子点が定義できた。しかし、分子動力学法の結果の可視化や、物体表面の可視化など、非構造格子を使いたい場合もあるだろう。その場合は非構造格子(Unstructured
 grid)を用いる。</p>
 <p>非構造格子の定義は以下のようにする。</p>
-<div class="sourceCode" id="cb5"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>DATASET UNSTRUCTURED_GRID</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>POINTS NumberOfPoints</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>x1 y1 z1</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>x2 y2 z2</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>x3 y3 z3</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>...</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>DATASET UNSTRUCTURED_GRID</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>POINTS NumberOfPoints</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>x1 y1 z1</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>x2 y2 z2</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>x3 y3 z3</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>...</span></code></pre></div>
 <p>データセットは非構造格子(UNSTRUCTURED_GRID)であり、何点あるかを指定した後は、ベクトル場と同様に(x,y,z)座標をずらずら並べるだけで良い。</p>
 <h3 id="データセット">データセット</h3>
 <p>格子が定義されたら、それぞれの格子上に定義される物理量を指定する。フォーマットはこんな感じになる。</p>
-<div class="sourceCode" id="cb6"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>POINT_DATA 9261</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>SCALARS intensity float</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>LOOKUP_TABLE default</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>0</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>0</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>0</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>0</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>....</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>POINT_DATA 9261</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>SCALARS intensity float</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>LOOKUP_TABLE default</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>0</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>0</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>0</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>0</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>....</span></code></pre></div>
 <ol type="1">
 <li>最初に、これは点上に定義されたデータだと宣言する(POINT_DATA)。データ数もここで教える。</li>
 <li>次からデータセット。いくつか種類があるが、本稿では主にスカラー量(SCALARS)とベクトル量(VECTORS)を扱う。</li>
@@ -190,56 +198,56 @@ class="sourceCode txt"><code class="sourceCode default"><span id="cb6-1"><a href
 <p>なお、データセットは複数定義できる。その場合はParaView側でどのデータをどのような可視化に用いるか選ぶことができる。その際、ここで定義した名前が参照されるので、後で自分がわかりやすいように名前を付けておくこと。</p>
 <h3 id="スカラー場">スカラー場</h3>
 <p>スカラーの場合は、データを一つずつ並べるだけだ。</p>
-<div class="sourceCode" id="cb7"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>SCALARS intensity float</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>LOOKUP_TABLE default</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>0</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>0</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>0</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>0</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>....</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>SCALARS intensity float</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>LOOKUP_TABLE default</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>0</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>0</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>0</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>0</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>....</span></code></pre></div>
 <p>スカラー場の場合はルックアップテーブルを指定する必要があるが、ここで詳細には触れない。「おまじない」として記述しておくこと。</p>
 <h3 id="ベクトル場">ベクトル場</h3>
 <p>ベクトル場の場合、単純にデータを3つずつ並べれば良い。ベクトル場ではルックアップテーブルは不要だ。データフォーマットはこんな感じになる。</p>
-<div class="sourceCode" id="cb8"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>VECTORS velocity float</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>x1 y1 z1</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>x2 y2 z2</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>x3 y3 z3</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>...</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>VECTORS velocity float</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>x1 y1 z1</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>x2 y2 z2</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>x3 y3 z3</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>...</span></code></pre></div>
 <h3 id="複数のデータセット">複数のデータセット</h3>
 <p>ベクトル場を可視化する場合、単純に矢印だけ表示しても見づらいことが多い。そこで、各格子点に可視化補助用のスカラー量も定義しておくと良い。スカラー場とベクトル場は単純に並べてかける。</p>
-<div class="sourceCode" id="cb9"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>VECTORS nameofvector float</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>x1 y1 z1</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>x2 y2 z2</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>x3 y3 z3</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>...</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>SCALARS nameofscalar float</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>LOOKUP_TABLE default</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>s1</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>s2</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>s3</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>...</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>VECTORS nameofvector float</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>x1 y1 z1</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>x2 y2 z2</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>x3 y3 z3</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>...</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>SCALARS nameofscalar float</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>LOOKUP_TABLE default</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>s1</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>s2</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>s3</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>...</span></code></pre></div>
 <p>以下のサンプルでは、ベクトルの角度や、z座標をスカラー場として定義しておき、矢印のカラーリングに使っている。</p>
 <h2 id="可視化のサンプル">可視化のサンプル</h2>
 <p>では、さっそく可視化をしてみよう。まずはサンプル用のリポジトリ<code>kaityo256/paraview-sample</code>をクローンする。後でpushするわけではないので、httpsでクローンして良い。</p>
-<div class="sourceCode" id="cb10"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> github</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/kaityo256/paraview-sample.git</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> github</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/kaityo256/paraview-sample.git</span></code></pre></div>
 <p>クローンしたらそのディレクトリに移動しておこう。</p>
-<div class="sourceCode" id="cb11"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> paraview-sample</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> paraview-sample</span></code></pre></div>
 <h3
 id="構造格子におけるボリュームレンダリング">構造格子におけるボリュームレンダリング</h3>
 <p>最初は最も簡単な構造格子(Structured
 Grid)のボリュームレンダリングをしてみよう。</p>
 <p>ディレクトリ<code>simple</code>に<code>simple.py</code>があるので実行せよ。</p>
-<div class="sourceCode" id="cb12"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> simple</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> simple.py</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> simple</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> simple.py</span></code></pre></div>
 <p>同じディレクトリに<code>simple.vtk</code>ができたはずだ。これをParaViewで開こう。</p>
 <p>まずParaViewを起動し、Ctrl+O(もしくはFile→Open)で<code>simple.vtk</code>を開く。すると、Pipeline
 Browserに「simple.vtk」が追加され、目が閉じたアイコンが表示されたはず。この状態で「Properties」の「Apply」をクリックせよ。Pipeline
@@ -288,9 +296,9 @@ Data」において、値の小さい方が左、値の大きい方が右であ�
 <p>先程は、すべて正の値の密度場のボリュームレンダリング、つまり「濃いところ」の可視化のみを行った。次は、正負の値を持つ密度場の可視化の例として、波動関数を可視化してみよう。水素原子の波動関数は、最低エネルギー(1s軌道)以外は「節」を持つ。すなわち、正負の値を取る。この波動関数を密度場として保存する。</p>
 <p>なお、カラーマップをいじっていてわけがわからなくなった場合(よくある)は、ParaViewを再起動すると良い。</p>
 <p>ディレクトリ<code>wavefunction</code>に、<code>wavefunction.py</code>があるので実行せよ。カレントディレクトリが<code>simple</code>の場合は、一度<code>cd ..</code>を実行して上のディレクトリに移動しておくこと。</p>
-<div class="sourceCode" id="cb13"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> wavefunction</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3wavefunction.py</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> wavefunction</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3wavefunction.py</span></span></code></pre></div>
 <p>すると、以下の三つのファイルが作成される。</p>
 <ul>
 <li><code>2pz.vtk</code></li>
@@ -326,9 +334,9 @@ class="sourceCode sh"><code class="sourceCode bash"><span id="cb13-1"><a href="#
 id="glyphによるベクトル場の可視化">Glyphによるベクトル場の可視化</h3>
 <p>これまではスカラー場を可視化してきた。しかし、速度場など、ベクトル場を可視化したいことがある。そのために「Glyph」という矢印を使った可視化が用意されている。</p>
 <p>ディレクトリ<code>glyph</code>に、<code>tgv.py</code>があるので実行せよ。</p>
-<div class="sourceCode" id="cb14"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> glyph</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3tgv.py</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> glyph</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3tgv.py</span></span></code></pre></div>
 <p>すると、同じディレクトリに<code>tgv.vtk</code>が作成されるので、それをParaViewで開いてApplyする。</p>
 <p>次に、「Glyph」というフィルタを適用する。デフォルトでアイコンがあるので、それをクリックしてApplyする。</p>
 <figure>
@@ -356,9 +364,9 @@ id="非構造格子上のベクトル場の可視化">非構造格子上のベ�
 <p>これまでは、系に規則的な格子が存在し、そこに物理量が定義されていた。次は非構造格子(Unstructured
 Grid)の可視化を試してみよう。</p>
 <p>ディレクトリ<code>unstructured</code>に<code>sphere.py</code>があるので実行せよ。</p>
-<div class="sourceCode" id="cb15"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> unstructured</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> sphere.py</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> unstructured</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> sphere.py</span></code></pre></div>
 <p>同じディレクトリに<code>sphere.vtk</code>ができるので、ParaViewで開いてApplyせよ。</p>
 <p>その後、また「Glyph」フィルターを適用せよ。以下のような表示が得られるはずだ。</p>
 <figure>
@@ -369,12 +377,12 @@ class="sourceCode sh"><code class="sourceCode bash"><span id="cb15-1"><a href="#
 <h3 id="gray-scott模型">Gray-Scott模型</h3>
 <p>最後にシミュレーション結果をアニメーションとして可視化してみよう。シミュレーションするのはGray-Scott模型と呼ばれる、反応拡散方程式の一種である。Gray-Scottモデルは、活性化因子と抑制因子の二種類が、お互いに反応しながら拡散する様子をモデル化したものだ。</p>
 <p>ディレクトリ<code>gray-scott</code>に<code>gs.py</code>があるので実行せよ。</p>
-<div class="sourceCode" id="cb16"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> gray-scott</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> gs.py</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> gray-scott</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> gs.py</span></code></pre></div>
 <p>なお、<code>matplotlib</code>モジュールが無い、<code>numba</code>モジュールが無いなどと文句を言われたら<code>pip</code>で入れること。</p>
-<div class="sourceCode" id="cb17"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> pip install matplotlib numba</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> pip install matplotlib numba</span></code></pre></div>
 <p>実行すると、<code>conf000.vtk</code>から<code>conf119.vtk</code>までの120個のファイルが作成される。これをParaViewで開こう。</p>
 <p>ParaViewでは、連番のファイルは<code>conf..vtk</code>のように<code>..</code>で表示され、まとめて読み込むことができる。</p>
 <figure>
@@ -441,14 +449,14 @@ Factorを10に修正してからApplyを押す。これは、デフォルトの1
 <p>アニメーションとして保存したい場合は、「File」→「Save
 Animation」から連番PNGを出力し、ImageMagickでアニメーションGIFにするなり、FFmpegでmp4にするなりできる。参考のためにコマンドだけ書いておく。インストール方法などは各自調べること。以下は<code>gs.0000.png</code>などという形で連番で出力した場合だ。</p>
 <p>ImageMagickを使ってアニメーションGiFを作る場合。</p>
-<div class="sourceCode" id="cb18"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">convert</span> <span class="at">-delay</span> 5 <span class="at">-loop</span> 0 <span class="at">-resize</span> 50% gs.<span class="pp">*</span>.png gs.gif</span></code></pre></div>
-<p>FFmpegでmp4ファイルを作る場合。</p>
-<div class="sourceCode" id="cb19"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ffmpeg</span> <span class="at">-i</span> gs.%04d.png  <span class="at">-pix_fmt</span> yuv420p gs.mp4</span></code></pre></div>
-<p>なお、「幅が2の倍数ではない」などと怒られたら、<code>mogrify</code>を使ってリサイズすると良い。</p>
 <div class="sourceCode" id="cb20"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mogrify</span> <span class="at">-resize</span> 860x616! <span class="pp">*</span>.png</span></code></pre></div>
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">convert</span> <span class="at">-delay</span> 5 <span class="at">-loop</span> 0 <span class="at">-resize</span> 50% gs.<span class="pp">*</span>.png gs.gif</span></code></pre></div>
+<p>FFmpegでmp4ファイルを作る場合。</p>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ffmpeg</span> <span class="at">-i</span> gs.%04d.png  <span class="at">-pix_fmt</span> yuv420p gs.mp4</span></code></pre></div>
+<p>なお、「幅が2の倍数ではない」などと怒られたら、<code>mogrify</code>を使ってリサイズすると良い。</p>
+<div class="sourceCode" id="cb22"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mogrify</span> <span class="at">-resize</span> 860x616! <span class="pp">*</span>.png</span></code></pre></div>
 <p>最後の<code>!</code>は上書き保存という意味だ。</p>
 </article>
 </body>

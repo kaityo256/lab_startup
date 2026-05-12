@@ -33,6 +33,7 @@ ParaViewを扱うのに必須ではないが、動画を作成するのにFFmpeg
 Windows(WSL)の場合。
 
 ```sh
+sudo apt update
 sudo apt install ffmpeg
 sudo apt install imagemagick
 ```
@@ -43,6 +44,24 @@ Macの場合。
 brew install ffmpeg
 brew install imagemagick
 ```
+
+## PIPの準備
+
+以下を実行できるか確認。
+
+```sh
+python3 -m pip --version
+```
+
+`No module named pip`などと表示されて実行できない場合はpipをインストールしておく。
+
+Windowsの場合
+
+```sh
+sudo apt install python3-pip
+```
+
+Macはデフォルトで入っているはず。
 
 ## VTKファイルの構造
 
