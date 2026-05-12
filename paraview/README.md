@@ -379,9 +379,12 @@ cd gray-scott
 python3 gs.py
 ```
 
-なお、`matplotlib`モジュールが無い、`numba`モジュールが無いなどと文句を言われたら`pip`で入れること。
+なお、`matplotlib`モジュールが無い、`numba`モジュールが無いなどと文句を言われたら仮想環境を構築して`pip`で入れ、改めて実行すること。
 
 ```sh
+python3 -m venv .venv
+source .venv/bin/activate
+python3 -m pip install --upgrade pip
 python3 -m pip install matplotlib numba
 ```
 

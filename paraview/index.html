@@ -380,9 +380,12 @@ class="sourceCode sh"><code class="sourceCode bash"><span id="cb17-1"><a href="#
 <div class="sourceCode" id="cb18"><pre
 class="sourceCode sh"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> gray-scott</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> gs.py</span></code></pre></div>
-<p>なお、<code>matplotlib</code>モジュールが無い、<code>numba</code>モジュールが無いなどと文句を言われたら<code>pip</code>で入れること。</p>
+<p>なお、<code>matplotlib</code>モジュールが無い、<code>numba</code>モジュールが無いなどと文句を言われたら仮想環境を構築して<code>pip</code>で入れ、改めて実行すること。</p>
 <div class="sourceCode" id="cb19"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> pip install matplotlib numba</span></code></pre></div>
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> venv .venv</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> pip install <span class="at">--upgrade</span> pip</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> pip install matplotlib numba</span></code></pre></div>
 <p>実行すると、<code>conf000.vtk</code>から<code>conf119.vtk</code>までの120個のファイルが作成される。これをParaViewで開こう。</p>
 <p>ParaViewでは、連番のファイルは<code>conf..vtk</code>のように<code>..</code>で表示され、まとめて読み込むことができる。</p>
 <figure>
