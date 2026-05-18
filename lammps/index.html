@@ -110,6 +110,8 @@ Simulator)は、サンディア国立研究所の古典分子動力学プログ�
 <p>以下を実行せよ。</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">PATH</span><span class="op">=</span><span class="va">$PATH</span>:/home/apps/lammps</span></code></pre></div>
 <p>これにより、<code>lmp_serial</code>や、MPI版である<code>lmp_mpi</code>が使えるようになる。</p>
+<p>ただし、研究室サーバのVMDをMacからX
+Window越しに利用することはできない。</p>
 <h2 id="vmdのインストール">VMDのインストール</h2>
 <h3 id="windows-1">Windows</h3>
 <p>次にVMDをダウンロード、インストールしよう。</p>
@@ -175,7 +177,7 @@ Registration」画面となるので、必要事項を入力の上で「Register
 <div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> github</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/kaityo256/lammps_samples.git</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> lammps_samples</span></code></pre></div>
-<h3 id="衝突シミュレーション">衝突シミュレーション</h3>
+<h3 id="シミュレーションの実行">シミュレーションの実行</h3>
 <p>まず、<code>collision</code>ディレクトリに移動して、<code>python3 generate_config.py</code>を実行することで、原子の初期配置ファイル<code>collision.atoms</code>を生成する。</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> collision</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> generate_config.py</span></code></pre></div>
@@ -228,77 +230,7 @@ typeとして「LAMMPS Trajectory」が自動で選択される。</p>
 </figure>
 <p>上記の方法でVMDがうまく起動しない場合は、エクスプローラーで作業ディレクトリを開き、そのパスをコピーする。その後、VMDを起動して、「File」から「New
 Molecule」を選び、「Browse」を押してから、先ほどコピーしたパスを貼り付けると、<code>collision.lammpstrj</code>ファイルが見つかるはずなので、それを選択して「LOAD」を押す。</p>
-<h3 id="気泡シミュレーション">気泡シミュレーション</h3>
-<p><code>lammps_samples</code>の中の<code>bubble</code>の中のファイルを実行する。</p>
-<div class="sourceCode" id="cb12"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> bubble</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> generate_config.py</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="ex">lmp_serial</span> <span class="op">&lt;</span> bubble.input</span></code></pre></div>
-<p>すると<code>bubble.lammpstrj</code>が生成されるので、VMDで読み込む。</p>
-<p>その後「Graphics」の「Represenation」から「Graphical
-Representation」ウィンドウを開く。</p>
-<p>「Style Color
-Selection」とある下の「all」を含む行が選ばれた状態で、「Selected
-Atoms」の下の欄に以下を入力し、エンターキーを押してみよ。</p>
-<div class="sourceCode" id="cb13"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>-2 &lt; z and z &lt; 2</span></code></pre></div>
-<p>実は穴が空いており、しばらく後に穴がふさがっていく様子が見えるはずである。不安定性が起きている時に断面の様子を観察したい時などに有用である。</p>
-<h3 id="相分離シミュレーション">相分離シミュレーション</h3>
-<p><code>lammps_samples</code>の中の<code>phase_separation</code>の中のファイルを実行する。</p>
-<div class="sourceCode" id="cb14"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> phase_separation</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> generate_config.py</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="ex">lmp_serial</span> <span class="op">&lt;</span> phase_separation.input</span></code></pre></div>
-<p>すると<code>phase_separation.lammpstrj</code>が生成されるので、VMDで読み込む。すると、二種類の原子がランダムに配置された状態から相分離していく様子が見える。</p>
-<p>その後「Graphics」の「Represenation」から「Graphical
-Representation」ウィンドウを開く。</p>
-<p>「Style Color
-Selection」とある下の「all」を含む行が選ばれた状態で、「Selected
-Atoms」の下の欄に以下を入力し、エンターキーを押してみよ。</p>
-<div class="sourceCode" id="cb15"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>type=1</span></code></pre></div>
-<p>すると、二種類の原子のうち「Type
-1」の原子のみが表示される。同様に、</p>
-<div class="sourceCode" id="cb16"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>type=2</span></code></pre></div>
-<p>とすると「Type
-2」の原子のみ表示される。多数の溶媒中に溶質が溶けているような系で、溶質のみ表示したい時などに有用である。</p>
-<h3 id="vmdコマンドプロンプト">VMDコマンドプロンプト</h3>
-<p>VMDを起動すると、以下のように表示されるターミナルも合わせて開く。</p>
-<div class="sourceCode" id="cb17"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Info</span><span class="er">)</span> <span class="ex">VMD</span> for WIN32, version 1.9.4a48 <span class="er">(</span><span class="ex">October</span> 13, 2020<span class="kw">)</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="ex">snip</span><span class="kw">)</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="ex">vmd</span> <span class="op">&gt;</span>  </span></code></pre></div>
-<p>この<code>vmd &gt;</code>とあるのがVMDのコマンドプロンプトであり、多くの操作をここから実行できる。慣れるとウィンドウ操作よりも早い。</p>
-<p>このコマンドプロンプトで、<code>cd</code>で作業ディレクトリに移動し、<code>mol new filename.lammpstrj</code>を実行することでファイルを読み込むことができる。</p>
-<h4 id="mac-3">Mac</h4>
-<p>Macの場合、ターミナルの作業ディレクトリで<code>pwd</code>を実行する。すると、例えば以下のような表示がされる。</p>
-<div class="sourceCode" id="cb18"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pwd</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/home/watanabe/github/lammps_samples/collision</span></span></code></pre></div>
-<p>この<code>/home/...</code>をコピーして、VMDのコマンドプロンプトにて以下を実行する。</p>
-<div class="sourceCode" id="cb19"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /home/watanabe/github/lammps_samples/collision</span></code></pre></div>
-<p>その後、</p>
-<div class="sourceCode" id="cb20"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mol</span> new collision.lammpstrj</span></code></pre></div>
-<p>を実行すると、<code>collision.lammpstrj</code>が読み込まれる。</p>
-<h4 id="windows-3">Windows</h4>
-<p>Windowsの場合は、WSLのパスをVMDに分かるように修正し、さらにバックスラッシュ<code>\</code>を二つ重ねて<code>\\</code>にして、さらにダブルクオーテーションマークで囲む必要がある。例えば、WSL側のパスが</p>
-<div class="sourceCode" id="cb21"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/home/watanabe/github/lammps_samples/collision</span></span></code></pre></div>
-<p>であるならば、VMDコマンドプロンプト上で</p>
-<div class="sourceCode" id="cb22"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="st">&quot;</span><span class="dt">\\\\</span><span class="st">wsl.localhost</span><span class="dt">\\</span><span class="st">Ubuntu</span><span class="dt">\\</span><span class="st">home</span><span class="dt">\\</span><span class="st">watanabe</span><span class="dt">\\</span><span class="st">github</span><span class="dt">\\</span><span class="st">lammps_samples</span><span class="dt">\\</span><span class="st">collision&quot;</span></span></code></pre></div>
-<p>を実行する必要がある。これらを毎回手で変換するのは手間なので、例えば以下のワンライナーを実行すると良い。</p>
-<div class="sourceCode" id="cb23"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="dt">\&quot;</span><span class="va">$(</span><span class="ex">wslpath</span> <span class="at">-w</span> <span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span> <span class="kw">|</span> <span class="fu">sed</span> <span class="st">&#39;s/\\/\\\\\\\\/g&#39;</span><span class="va">)</span><span class="dt">\&quot;</span><span class="st">&quot;</span></span></code></pre></div>
-<p>すると<code>"\\\\wsl.localhost\\Ubuntu\\home\\watanabe\\github\\lammps_samples\\collision"</code>などの表示がされるため、これをコピーしてVMDでcdすれば良い。</p>
-<p>その後、</p>
-<div class="sourceCode" id="cb24"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mol</span> new collision.lammpstrj</span></code></pre></div>
-<p>を実行すると、<code>collision.lammpstrj</code>が読み込まれる。</p>
-<h4 id="可視化手法の修正">可視化手法の修正</h4>
+<h3 id="可視化手法の修正">可視化手法の修正</h3>
 <p><code>collision.lammpstrj</code>をロードしたら、直線が多数重なったような画面が出たはずだ。この状態で、「VMD
 Main」の画面で「collision.lammpstrj」の行を選び、「Graphics」の「Representation」を選ぶ。そして、「Drawing
 Method」を「VDW」にすると、画面が玉に変わるはず。その状態で「Sphere
@@ -309,33 +241,126 @@ Scale」を小さくしよう。0.3くらいがちょうどよいと思う。</p
 </figure>
 <p>この状態で、VMD Mainの右下にある再生ボタン「Play
 Forward」を押せば、液滴が衝突のシミュレーションが表示される。マウスでドラッグすると角度を変えられるので試してみよ。</p>
+<h3 id="衝突速度の修正">衝突速度の修正</h3>
+<p>先ほどの可視化で、二つの液滴(氷)が衝突して融解し、一つの液滴となる様子が見られたはずだ。次は、もう少し衝突速度を上げて見よう。<code>generate_config.py</code>をVimで開き、一番下の衝突速度を修正してみよう。</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode py"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&quot;__main__&quot;</span>:</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    atoms <span class="op">=</span> []</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    add_ball(atoms, <span class="op">-</span><span class="dv">20</span>, <span class="fl">3.0</span>) <span class="co"># ← ここを2.0から3.0に</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    add_ball(atoms, <span class="dv">20</span>, <span class="op">-</span><span class="fl">3.0</span>) <span class="co"># ← ここを-2.0から-3.0に</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    save_file(<span class="st">&quot;collision.atoms&quot;</span>, atoms)</span></code></pre></div>
+<p>修正したら再度初期条件を作成し、LAMMPSを実行する。</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> generate_config.py</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">lmp_serial</span> <span class="op">&lt;</span> collision.input </span></code></pre></div>
+<p>実行終了後、またVMDで可視化して見よう。衝突の様子が変化したはずだ。</p>
+<h3
+id="vmdコマンドプロンプトからの入力">VMDコマンドプロンプトからの入力</h3>
+<p>VMDを起動すると、以下のように表示されるターミナルも合わせて開く。</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Info</span><span class="er">)</span> <span class="ex">VMD</span> for WIN32, version 1.9.4a48 <span class="er">(</span><span class="ex">October</span> 13, 2020<span class="kw">)</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="ex">snip</span><span class="kw">)</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="ex">vmd</span> <span class="op">&gt;</span>  </span></code></pre></div>
+<p>この<code>vmd &gt;</code>とあるのがVMDのコマンドプロンプトであり、多くの操作をここから実行できる。慣れるとウィンドウ操作よりも早い。</p>
+<p>このコマンドプロンプトで、<code>cd</code>で作業ディレクトリに移動し、<code>mol new filename.lammpstrj</code>を実行することでファイルを読み込むことができる。</p>
+<h4 id="mac-3">Mac</h4>
+<p>Macの場合、ターミナルの作業ディレクトリで<code>pwd</code>を実行する。すると、例えば以下のような表示がされる。</p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pwd</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/home/watanabe/github/lammps_samples/collision</span></span></code></pre></div>
+<p>この<code>/home/...</code>をコピーして、VMDのコマンドプロンプトにて以下を実行する。</p>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /home/watanabe/github/lammps_samples/collision</span></code></pre></div>
+<p>その後、</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mol</span> new collision.lammpstrj</span></code></pre></div>
+<p>を実行すると、<code>collision.lammpstrj</code>が読み込まれる。</p>
+<h4 id="windows-3">Windows</h4>
+<p>Windowsの場合は、WSLのパスをVMDに分かるように修正し、さらにバックスラッシュ<code>\</code>を二つ重ねて<code>\\</code>にして、さらにダブルクオーテーションマークで囲む必要がある。例えば、WSL側のパスが</p>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/home/watanabe/github/lammps_samples/collision</span></span></code></pre></div>
+<p>であるならば、VMDコマンドプロンプト上で</p>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="st">&quot;</span><span class="dt">\\\\</span><span class="st">wsl.localhost</span><span class="dt">\\</span><span class="st">Ubuntu</span><span class="dt">\\</span><span class="st">home</span><span class="dt">\\</span><span class="st">watanabe</span><span class="dt">\\</span><span class="st">github</span><span class="dt">\\</span><span class="st">lammps_samples</span><span class="dt">\\</span><span class="st">collision&quot;</span></span></code></pre></div>
+<p>を実行する必要がある。これらを毎回手で変換するのは手間なので、例えば以下のワンライナーを実行すると良い。</p>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="dt">\&quot;</span><span class="va">$(</span><span class="ex">wslpath</span> <span class="at">-w</span> <span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span> <span class="kw">|</span> <span class="fu">sed</span> <span class="st">&#39;s/\\/\\\\\\\\/g&#39;</span><span class="va">)</span><span class="dt">\&quot;</span><span class="st">&quot;</span></span></code></pre></div>
+<p>すると<code>"\\\\wsl.localhost\\Ubuntu\\home\\watanabe\\github\\lammps_samples\\collision"</code>などの表示がされるため、これをコピーしてVMDでcdすれば良い。</p>
+<p>その後、</p>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mol</span> new collision.lammpstrj</span></code></pre></div>
+<p>を実行すると、<code>collision.lammpstrj</code>が読み込まれる。</p>
+<h4 id="表示の修正">表示の修正</h4>
+<p>VMDのコマンドプロンプトで以下を実行すると、RepresenationをLineからVDWに修正できる。</p>
+<div class="sourceCode" id="cb22"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mol</span> modstyle 0 top VDW 1 12</span></code></pre></div>
+<h4
+id="シミュレーションボックスの表示">シミュレーションボックスの表示</h4>
+<p>VMDのコマンドプロンプトから以下を実行すると、シミュレーションボックスを表示できる。</p>
+<div class="sourceCode" id="cb23"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pbc</span> box <span class="at">-center</span> origin</span></code></pre></div>
+<h3 id="気泡シミュレーション">気泡シミュレーション</h3>
+<p><code>lammps_samples</code>の中の<code>bubble</code>の中のファイルを実行する。</p>
+<div class="sourceCode" id="cb24"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> bubble</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> generate_config.py</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="ex">lmp_serial</span> <span class="op">&lt;</span> bubble.input</span></code></pre></div>
+<p>すると<code>bubble.lammpstrj</code>が生成されるので、VMDで読み込む。</p>
+<p>その後「Graphics」の「Represenation」から「Graphical
+Representation」ウィンドウを開く。</p>
+<p>「Style Color
+Selection」とある下の「all」を含む行が選ばれた状態で、「Selected
+Atoms」の下の欄に以下を入力し、エンターキーを押してみよ。</p>
+<div class="sourceCode" id="cb25"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>-2 &lt; z and z &lt; 2</span></code></pre></div>
+<p>実は穴が空いており、しばらく後に穴がふさがっていく様子が見えるはずである。不安定性が起きている時に断面の様子を観察したい時などに有用である。</p>
+<h3 id="相分離シミュレーション">相分離シミュレーション</h3>
+<p><code>lammps_samples</code>の中の<code>phase_separation</code>の中のファイルを実行する。</p>
+<div class="sourceCode" id="cb26"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> phase_separation</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> generate_config.py</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="ex">lmp_serial</span> <span class="op">&lt;</span> phase_separation.input</span></code></pre></div>
+<p>すると<code>phase_separation.lammpstrj</code>が生成されるので、VMDで読み込む。すると、二種類の原子がランダムに配置された状態から相分離していく様子が見える。</p>
+<p>その後「Graphics」の「Represenation」から「Graphical
+Representation」ウィンドウを開く。</p>
+<p>「Style Color
+Selection」とある下の「all」を含む行が選ばれた状態で、「Selected
+Atoms」の下の欄に以下を入力し、エンターキーを押してみよ。</p>
+<div class="sourceCode" id="cb27"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>type=1</span></code></pre></div>
+<p>すると、二種類の原子のうち「Type
+1」の原子のみが表示される。同様に、</p>
+<div class="sourceCode" id="cb28"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>type=2</span></code></pre></div>
+<p>とすると「Type
+2」の原子のみ表示される。多数の溶媒中に溶質が溶けているような系で、溶質のみ表示したい時などに有用である。</p>
 <h2 id="vmdの初期設定">VMDの初期設定</h2>
 <p>ほとんどの場合、可視化方法としてVDW(ファンデルファールス)を選ぶと思われるが、毎回指定するのは面倒だ。以下、デフォルトで粒子のDrawing
 MethodをLinesからVDWにする方法を説明する。</p>
 <h3 id="mac-4">Mac</h3>
 <p>Macは簡単であり、ホームディレクトリに</p>
-<div class="sourceCode" id="cb25"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>mol default style VDW</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>menu main on</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>mol default style VDW</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>menu main on</span></code></pre></div>
 <p>という内容の<code>.vmdrc</code>ファイルを作ればよい。このファイルはVMDが起動時に自動的に読み込まれるため、デフォルトスタイルがVDWになる。</p>
 <h3 id="windows-4">Windows</h3>
 <p>Windowsでは、VDWの作業ディレクトリがデフォルトで<code>C:\Program Files (x86)\VMD\</code>になってしまうので面倒だ。
 そこで、VDWのショートカットを作成し、その「リンク先」として<code>.vmdrc</code>を指定する。</p>
 <p>まず、以下の内容の<code>.vmdrc</code>を作成する。</p>
-<div class="sourceCode" id="cb26"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>mol default style VDW</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>menu main on</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>mol default style VDW</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>menu main on</span></code></pre></div>
 <p>このファイルを(Ubuntuではなく)Windowsのホームディレクトリへコピーする。Windowsのホームディレクトリは、<code>C:\Users\name</code>という名前になっている。ここでは<code>c:\Users\watanabe</code>であるとする。</p>
 <p>WSLのUbuntuから作成したのなら、以下のようにしてUbuntu側からWindows側にコピーできる。</p>
-<div class="sourceCode" id="cb27"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">cp</span> .vmdrc /mnt/c/Users/watanabe</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">cp</span> .vmdrc /mnt/c/Users/watanabe</span></code></pre></div>
 <p>アカウント部分は適宜修正すること。</p>
 <p>次に、VMDのショートカットを作成する。</p>
 <p><code>C:\Program Files (x86)\VMD</code>にある<code>vmd.exe</code>を右クリックし「その他のオプション」から「ショートカットの作成」を選ぶと、「ここにショートカットを作成することはできません。デスクトップ上に作成しますか？」と聞かれるので「はい」を選ぶ。</p>
 <p>デスクトップに作成された「vmd.exe -
 ショートカット」を右クリックし、プロパティを開いて「リンク先」を以下のように修正する。</p>
-<div class="sourceCode" id="cb28"><pre
-class="sourceCode txt"><code class="sourceCode default"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>&quot;C:\Program Files (x86)\VMD\vmd.exe&quot; -e &quot;C:\Users\watanabe\.vmdrc&quot;</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>&quot;C:\Program Files (x86)\VMD\vmd.exe&quot; -e &quot;C:\Users\watanabe\.vmdrc&quot;</span></code></pre></div>
 <figure>
 <img src="fig/vmd_shortcut.png" alt="vmd_shortcut" />
 <figcaption aria-hidden="true">vmd_shortcut</figcaption>

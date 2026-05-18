@@ -65,6 +65,8 @@ export PATH=$PATH:/home/apps/lammps
 
 これにより、`lmp_serial`や、MPI版である`lmp_mpi`が使えるようになる。
 
+ただし、研究室サーバのVMDをMacからX Window越しに利用することはできない。
+
 ## VMDのインストール
 
 ### Windows
@@ -128,7 +130,7 @@ git clone https://github.com/kaityo256/lammps_samples.git
 cd lammps_samples
 ```
 
-### 衝突シミュレーション
+### シミュレーションの実行
 
 まず、`collision`ディレクトリに移動して、`python3 generate_config.py`を実行することで、原子の初期配置ファイル`collision.atoms`を生成する。
 
@@ -201,57 +203,36 @@ VMDが起動したら、「VMD Main」の「File」から「New Molecule」を�
 
 上記の方法でVMDがうまく起動しない場合は、エクスプローラーで作業ディレクトリを開き、そのパスをコピーする。その後、VMDを起動して、「File」から「New Molecule」を選び、「Browse」を押してから、先ほどコピーしたパスを貼り付けると、`collision.lammpstrj`ファイルが見つかるはずなので、それを選択して「LOAD」を押す。
 
-### 気泡シミュレーション
+### 可視化手法の修正
 
-`lammps_samples`の中の`bubble`の中のファイルを実行する。
+`collision.lammpstrj`をロードしたら、直線が多数重なったような画面が出たはずだ。この状態で、「VMD Main」の画面で「collision.lammpstrj」の行を選び、「Graphics」の「Representation」を選ぶ。そして、「Drawing Method」を「VDW」にすると、画面が玉に変わるはず。その状態で「Sphere Scale」を小さくしよう。0.3くらいがちょうどよいと思う。
+
+![Representation](fig/vmd_representation.png)
+
+この状態で、VMD Mainの右下にある再生ボタン「Play Forward」を押せば、液滴が衝突のシミュレーションが表示される。マウスでドラッグすると角度を変えられるので試してみよ。
+
+### 衝突速度の修正
+
+先ほどの可視化で、二つの液滴(氷)が衝突して融解し、一つの液滴となる様子が見られたはずだ。次は、もう少し衝突速度を上げて見よう。`generate_config.py`をVimで開き、一番下の衝突速度を修正してみよう。
+
+```py
+if __name__ == "__main__":
+    atoms = []
+    add_ball(atoms, -20, 3.0) # ← ここを2.0から3.0に
+    add_ball(atoms, 20, -3.0) # ← ここを-2.0から-3.0に
+    save_file("collision.atoms", atoms)
+```
+
+修正したら再度初期条件を作成し、LAMMPSを実行する。
 
 ```sh
-cd bubble
 python3 generate_config.py
-lmp_serial < bubble.input
+lmp_serial < collision.input 
 ```
 
-すると`bubble.lammpstrj`が生成されるので、VMDで読み込む。
+実行終了後、またVMDで可視化して見よう。衝突の様子が変化したはずだ。
 
-その後「Graphics」の「Represenation」から「Graphical Representation」ウィンドウを開く。
-
-「Style Color Selection」とある下の「all」を含む行が選ばれた状態で、「Selected Atoms」の下の欄に以下を入力し、エンターキーを押してみよ。
-
-```txt
--2 < z and z < 2
-```
-
-実は穴が空いており、しばらく後に穴がふさがっていく様子が見えるはずである。不安定性が起きている時に断面の様子を観察したい時などに有用である。
-
-### 相分離シミュレーション
-
-`lammps_samples`の中の`phase_separation`の中のファイルを実行する。
-
-```sh
-cd phase_separation
-python3 generate_config.py
-lmp_serial < phase_separation.input
-```
-
-すると`phase_separation.lammpstrj`が生成されるので、VMDで読み込む。すると、二種類の原子がランダムに配置された状態から相分離していく様子が見える。
-
-その後「Graphics」の「Represenation」から「Graphical Representation」ウィンドウを開く。
-
-「Style Color Selection」とある下の「all」を含む行が選ばれた状態で、「Selected Atoms」の下の欄に以下を入力し、エンターキーを押してみよ。
-
-```txt
-type=1
-```
-
-すると、二種類の原子のうち「Type 1」の原子のみが表示される。同様に、
-
-```txt
-type=2
-```
-
-とすると「Type 2」の原子のみ表示される。多数の溶媒中に溶質が溶けているような系で、溶質のみ表示したい時などに有用である。
-
-### VMDコマンドプロンプト
+### VMDコマンドプロンプトからの入力
 
 VMDを起動すると、以下のように表示されるターミナルも合わせて開く。
 
@@ -319,14 +300,71 @@ mol new collision.lammpstrj
 
 を実行すると、`collision.lammpstrj`が読み込まれる。
 
-#### 可視化手法の修正
+#### 表示の修正
 
-`collision.lammpstrj`をロードしたら、直線が多数重なったような画面が出たはずだ。この状態で、「VMD Main」の画面で「collision.lammpstrj」の行を選び、「Graphics」の「Representation」を選ぶ。そして、「Drawing Method」を「VDW」にすると、画面が玉に変わるはず。その状態で「Sphere Scale」を小さくしよう。0.3くらいがちょうどよいと思う。
+VMDのコマンドプロンプトで以下を実行すると、RepresenationをLineからVDWに修正できる。
 
-![Representation](fig/vmd_representation.png)
+```sh
+mol modstyle 0 top VDW 1 12
+```
 
-この状態で、VMD Mainの右下にある再生ボタン「Play Forward」を押せば、液滴が衝突のシミュレーションが表示される。マウスでドラッグすると角度を変えられるので試してみよ。
+#### シミュレーションボックスの表示
 
+VMDのコマンドプロンプトから以下を実行すると、シミュレーションボックスを表示できる。
+
+```sh
+pbc box -center origin
+```
+
+### 気泡シミュレーション
+
+`lammps_samples`の中の`bubble`の中のファイルを実行する。
+
+```sh
+cd bubble
+python3 generate_config.py
+lmp_serial < bubble.input
+```
+
+すると`bubble.lammpstrj`が生成されるので、VMDで読み込む。
+
+その後「Graphics」の「Represenation」から「Graphical Representation」ウィンドウを開く。
+
+「Style Color Selection」とある下の「all」を含む行が選ばれた状態で、「Selected Atoms」の下の欄に以下を入力し、エンターキーを押してみよ。
+
+```txt
+-2 < z and z < 2
+```
+
+実は穴が空いており、しばらく後に穴がふさがっていく様子が見えるはずである。不安定性が起きている時に断面の様子を観察したい時などに有用である。
+
+### 相分離シミュレーション
+
+`lammps_samples`の中の`phase_separation`の中のファイルを実行する。
+
+```sh
+cd phase_separation
+python3 generate_config.py
+lmp_serial < phase_separation.input
+```
+
+すると`phase_separation.lammpstrj`が生成されるので、VMDで読み込む。すると、二種類の原子がランダムに配置された状態から相分離していく様子が見える。
+
+その後「Graphics」の「Represenation」から「Graphical Representation」ウィンドウを開く。
+
+「Style Color Selection」とある下の「all」を含む行が選ばれた状態で、「Selected Atoms」の下の欄に以下を入力し、エンターキーを押してみよ。
+
+```txt
+type=1
+```
+
+すると、二種類の原子のうち「Type 1」の原子のみが表示される。同様に、
+
+```txt
+type=2
+```
+
+とすると「Type 2」の原子のみ表示される。多数の溶媒中に溶質が溶けているような系で、溶質のみ表示したい時などに有用である。
 
 ## VMDの初期設定
 
