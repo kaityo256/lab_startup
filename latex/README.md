@@ -177,18 +177,28 @@ Enter command:
 
 ```sh
 $ latex -v
-pdfTeX 3.141592653-2.6-1.40.23 (TeX Live 2022/dev)
+pdfTeX 3.141592653-2.6-1.40.29 (TeX Live 2026)
 (snip)
 
 $ platex -v
-e-pTeX 3.141592653-p3.9.0-210218-2.6 (utf8.euc) (TeX Live 2021)
+e-upTeX 3.141592653-p4.1.2-u2.02-251130-2.6 (utf8.euc) (TeX Live 2026)
 (snip)
 ```
 
 また、修士論文執筆時に使うので、pdftkも入れておこう。
 
+Apple Silicon Mac の場合はHomebrewでインストールする。
+
 ```sh
 brew install pdftk-java
+```
+
+一方、Intel Macの場合はMacPortsを使ってインストールする必要がある(HomebrewがIntel Macへのサポートを順次終了しているため)。
+
+[https://www.macports.org/install.php](https://www.macports.org/install.php)から対応するOSのパッケージをダウンロードしてインストール。その後、以下を実行する。
+
+```sh
+sudo port install pdftk-java
 ```
 
 以下のコマンドを実行し、バージョンが表示されれば正しくインストールされている。
