@@ -6,27 +6,38 @@ PCにLaTeX(ラテック・レイテック)の処理系をインストールし�
 
 ### Windowsの場合
 
-WSL2のUbuntu上で実行することを前提とする。ターミナルで以下を実行する。
+WSL2のUbuntu上で実行することを前提とする。Ubuntuの`texlive`パッケージではなく、[TeX Liveの公式インストーラ](https://tug.org/texlive/quickinstall.html)を使う。まず、ターミナルで必要なコマンドを用意し、インストーラをダウンロードする。
 
 ```sh
-sudo apt-get install -y util-linux-extra
-sudo hwclock -s
 sudo apt update
-sudo apt -y upgrade
-sudo apt install -y texlive-full latexmk
+sudo apt install -y wget perl tar ca-certificates
+mkdir -p ~/texlive-install
+cd ~/texlive-install
+wget https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
+tar xzf install-tl-unx.tar.gz
+cd install-tl-20*
+sudo perl ./install-tl
 ```
 
-最初に実行する`sudo hwclock -s`は、WSL2の時計を直す処理だ。WSL2はよく時計がずれるのでたまに実行すると良い。その後のインストールにはかなり時間がかかる(30分〜1時間?)ので、時間に余裕があるときに実行すること。インストール完了後、`latex -v`と`platex -v`を実行し、それぞれ以下のような表示がされれば正しくインストールされている。
+インストーラの画面で`I`を入力すると、標準設定でインストールが始まる。フルインストールには時間がかかるので、時間に余裕があるときに実行すること。
+
+終了後、インストーラが表示するTeX Liveの実行ファイルのディレクトリをPATHの先頭に追加する。標準の場所にTeX Live 2026をインストールしたx86_64環境なら、`~/.bashrc`に次の行を追加する。年やCPUの種類が異なる場合は、インストーラが表示したパスに読み替える。
 
 ```sh
-$ latex -v
-pdfTex 3.14159265-2.6-1.40.20 (Tex Live 2019/Debian)
-(snip)
-
-$ platex -v
-e-pTeX 3.14159265-p3.8.2-190908-2.6 (utf8.euc) (TeX Live 2019/Debian)
-(snip)
+export PATH=/usr/local/texlive/2026/bin/x86_64-linux:$PATH
 ```
+
+設定を反映し、`latex`、`platex`、`latexmk`のバージョンと実行場所を確認する。
+
+```sh
+source ~/.bashrc
+latex --version
+platex --version
+latexmk --version
+command -v latex
+```
+
+それぞれバージョンが表示され、`command -v latex`が追加したTeX Liveのディレクトリを指していればインストールできている。
 
 また、修士論文執筆時に使うので、pdftkも入れておこう。
 
