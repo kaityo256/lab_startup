@@ -27,14 +27,38 @@ sudo perl ./install-tl
 export PATH=/usr/local/texlive/2026/bin/x86_64-linux:$PATH
 ```
 
-設定を反映し、`latex`、`platex`、`latexmk`のバージョンと実行場所を確認する。
+その後、以下のコマンドで設定を反映する。
 
 ```sh
 source ~/.bashrc
-latex --version
-platex --version
-latexmk --version
-command -v latex
+```
+
+```sh
+$ latex -v
+pdfTeX 3.141592653-2.6-1.40.29 (TeX Live 2026)
+kpathsea version 6.4.2
+Copyright 2026 Han The Thanh (pdfTeX) et al.
+There is NO warranty.  Redistribution of this software is
+covered by the terms of both the pdfTeX copyright and
+the Lesser GNU General Public License.
+For more information about these matters, see the file
+named COPYING and the pdfTeX source.
+Primary author of pdfTeX: Han The Thanh (pdfTeX) et al.
+Compiled with libpng 1.6.55; using libpng 1.6.55
+Compiled with zlib 1.3.2; using zlib 1.3.2
+Compiled with xpdf version 4.06
+
+$ platex -v
+e-upTeX 3.141592653-p4.1.2-u2.02-251130-2.6 (utf8.euc) (TeX Live 2026)
+kpathsea version 6.4.2
+ptexenc version 1.5.2
+Copyright 2026 D.E. Knuth.
+There is NO warranty.  Redistribution of this software is
+covered by the terms of both the e-upTeX copyright and
+the Lesser GNU General Public License.
+For more information about these matters, see the file
+named COPYING and the e-upTeX source.
+Primary author of e-upTeX: Japanese TeX Development Community.
 ```
 
 それぞれバージョンが表示され、`command -v latex`が追加したTeX Liveのディレクトリを指していればインストールできている。
@@ -49,7 +73,7 @@ sudo apt install -y pdftk-java
 
 ```sh
 $ pdftk --version
-pdftk port to java 3.0.9 a Handy Tool for Manipulating PDF Documents
+pdftk port to java 3.3.3 a Handy Tool for Manipulating PDF Documents
 Copyright (c) 2017-2018 Marc Vinyals - https://gitlab.com/pdftk-java/pdftk
 Copyright (c) 2003-2013 Steward and Lee, LLC.
 pdftk includes a modified version of the iText library.
