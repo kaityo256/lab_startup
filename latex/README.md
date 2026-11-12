@@ -57,7 +57,7 @@ mkdir build
 cd build
 curl -O http://ftp.jaist.ac.jp/pub/CTAN/systems/texlive/tlnet/install-tl-unx.tar.gz
 tar xvzf install-tl-unx.tar.gz
-cd install-tl-20*  
+cd install-tl-20*
 sudo ./install-tl -no-gui  -repository https://ftp.jaist.ac.jp/pub/CTAN/systems/texlive/tlnet/
 
 ```
@@ -80,7 +80,7 @@ Actions:
  <P> save installation profile to 'texlive.profile' and exit
  <Q> quit
 
-Enter command: 
+Enter command:
 ```
 
 ここでは`O`(大文字のオー)を入力してエンターを押す。するとオプションのカスタマイズ画面になる。
@@ -95,15 +95,15 @@ Options customization:
  <D> install font/macro doc tree:              [X]
  <S> install font/macro source tree:           [X]
  <L> create symlinks in standard directories:  [ ]
-            binaries to: 
-            manpages to: 
-                info to: 
+            binaries to:
+            manpages to:
+                info to:
 
 Actions: (disk space required: 7416 MB)
  <R> return to main menu
  <Q> quit
 
-Enter command: 
+Enter command:
 ```
 
 ここで、`L`を入力すると、シンボリックリンクを作成する場所を聞かれるので、全てデフォルトのままエンターを押す。
@@ -132,7 +132,7 @@ Actions:
  <P> save installation profile to 'texlive.profile' and exit
  <Q> quit
 
-Enter command: 
+Enter command:
 ```
 
 こんな画面になり、「create symlinks to standard directories」にチェックが入っていることを確認して、`I`を入力してインストールを開始する。
@@ -275,75 +275,35 @@ latexmk testj
 
 ![latex-tools](fig/latex_workshop.png)
 
-
-「Code」メニューの「基本設定」→「設定」から設定メニューを開く。そこで「latex.tools」と検索すると「Latex-workshop › Latex: Tools」が見つかる(見つからない場合はVSCodeを再起動せよ)ので、その下にある「setting.jsonで編集」をクリック。
+「Code」メニューの「基本設定」→「設定」から設定メニューを開き、「settings.jsonで編集」を選ぶ。
 
 ![latex-tools](fig/latex_tools.png)
 
-すると、以下のような設定が見つかる。
-
-```json
-    "latex-workshop.latex.tools": [
-        {
-            "name": "latexmk",
-            "command": "latexmk",
-            "args": [
-                "-synctex=1",
-                "-interaction=nonstopmode",
-                "-file-line-error",
-                "-pdf",
-                "-outdir=%OUTDIR%",
-                "%DOC%"
-            ],
-            "env": {}
-        },
-```
-
-このうち、"args"の項目を'-interaction=nonstopmod'だけ残して削除する。
-
-```json
-    "latex-workshop.latex.tools": [
-        {
-            "name": "latexmk",
-            "command": "latexmk",
-            "args": [
-                "-interaction=nonstopmode"
-            ],
-            "env": {}
-        },
-```
-
-もし、`latex-workshop.latex.tools`の設定が見つからなかった場合は、以下を追加する。
-
-```json
-    "latex-workshop.latex.tools": [
-        {
-            "name": "latexmk",
-            "command": "latexmk",
-            "args": [
-                "-interaction=nonstopmode"
-            ],
-            "env": {}
-        },
-```
-
-JSONはカンマ区切りなので、他に項目がある場合はカンマを入れるのを忘れないこと。例えば、フォントサイズなどを指定していたら、`settings.json`は以下のようになる。
+先ほど作成した`.latexmkrc`を使ってビルドするため、`settings.json`に以下の設定を追加する。
 
 ```json
 {
-    "security.workspace.trust.enabled": false,
-    "editor.fontSize": 16,
-    "latex-workshop.latex.tools": [
-        {
-            "name": "latexmk",
-            "command": "latexmk",
-            "env": {}
-        }
-    ]
+  "latex-workshop.latex.tools": [
+    {
+      "name": "latexmk",
+      "command": "latexmk",
+      "args": ["%DOC%"],
+      "env": {}
+    }
+  ],
+  "latex-workshop.latex.recipes": [
+    {
+      "name": "latexmk",
+      "tools": ["latexmk"]
+    }
+  ],
+  "latex-workshop.latex.recipe.default": "latexmk"
 }
 ```
 
-この状態で、この状態で、先程作った`testj.tex`をVS Codeで開こう。TeXファイルを開いた状態で「保存」をするとビルドが走る。なお、Macでは保存時に「Formatting failed. Please refer to LaTeX Workshop Output for details.」というエラーが出ることがある。その場合はターミナルで
+`%DOC%`はビルド対象のTeXファイルを表す。`-pdf`などのオプションを指定せず、コンパイル方法は`.latexmkrc`に任せる。すでに`settings.json`に他の設定がある場合は、上記の各項目をカンマで区切って追加する。
+
+この状態で、先程作った`testj.tex`をVS Codeで開こう。TeXファイルを開いた状態で「保存」をするとビルドが走る。なお、Macでは保存時に「Formatting failed. Please refer to LaTeX Workshop Output for details.」というエラーが出ることがある。その場合はターミナルで
 
 ```sh
 cpan install Log::Log4perl YAML/Tiny.pm File/HomeDir.pm
@@ -427,7 +387,7 @@ LaTeXでは数式は`\(`と`\)`で囲まれたインライン数式と、`\[`と
 
 別行立ての数式は
 \[
- E = mc^2   
+ E = mc^2
 \]
 と書く。
 ```
@@ -655,13 +615,13 @@ pages = {234703},
 year = {2014},
 doi = {10.1063/1.4903811},
 
-URL = { 
+URL = {
         https://doi.org/10.1063/1.4903811
-    
+
 },
-eprint = { 
+eprint = {
         https://doi.org/10.1063/1.4903811
-    
+
 }
 
 }
@@ -694,13 +654,13 @@ pages = {024004},
 year = {2019},
 doi = {10.7566/JPSJ.88.024004},
 
-URL = { 
+URL = {
         https://doi.org/10.7566/JPSJ.88.024004
-    
+
 },
-eprint = { 
+eprint = {
         https://doi.org/10.7566/JPSJ.88.024004
-    
+
 }
 
 }
@@ -728,10 +688,10 @@ eprint = {
 
 まとめると、参考文献を管理する際は、
 
-* BibTeXファイルを使う
-* bibitemエントリはpublisherからダウンロードする
-* 文献ラベルがDOIになっていることが多いので、自分でわかりやすい名前に変える
-* BibTeXファイルに追加する
+- BibTeXファイルを使う
+- bibitemエントリはpublisherからダウンロードする
+- 文献ラベルがDOIになっていることが多いので、自分でわかりやすい名前に変える
+- BibTeXファイルに追加する
 
 という手順を取ると良い。BibTeXファイルは手で管理しても良いが、[JabRef](http://www.jabref.org/)や[Mendeley](https://www.mendeley.com/)といった文献管理ソフトで管理したほうが効率的であろう。
 
@@ -835,7 +795,7 @@ eprint = {
 
 ```tex
 本論文の構成は以下の通り。まず第\ref{sec:equation}節にて数式の入れ方を述べる。次に第\ref{sec:figure}節にて図の入れ方を述べる。最後に第\ref{sec:reference}にて参考文献の入れ方を紹介した後、将来への展望について述べる。
-````
+```
 
 #### 目次
 
