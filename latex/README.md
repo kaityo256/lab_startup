@@ -6,13 +6,13 @@ PCにLaTeX(ラテック・レイテック)の処理系をインストールし�
 
 ### Windowsの場合
 
-WSL2のUbuntu上で実行することを前提とする。Ubuntuの`texlive`パッケージではなく、[TeX Liveの公式インストーラ](https://tug.org/texlive/quickinstall.html)を使う。まず、ターミナルで必要なコマンドを用意し、インストーラをダウンロードする。
+WSL2のUbuntu上で実行することを前提とする。Ubuntuの`texlive`パッケージではなく、[TeX Liveの公式インストーラ](https://tug.org/texlive/quickinstall.html)を使う。まず、ターミナルで必要なコマンドを用意し、インストーラをダウンロードする。実行ディレクトリを趣味で`~/build`としているが、どこでも良い。
 
 ```sh
 sudo apt update
 sudo apt install -y wget perl tar ca-certificates
-mkdir -p ~/texlive-install
-cd ~/texlive-install
+mkdir -p ~/build
+cd ~/build
 wget https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
 tar xzf install-tl-unx.tar.gz
 cd install-tl-20*
@@ -88,7 +88,7 @@ NO warranty, not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 ```sh
 cd
-mkdir build
+mkdir -p build
 cd build
 curl -O https://ftp.jaist.ac.jp/pub/CTAN/systems/texlive/tlnet/install-tl-unx.tar.gz
 tar xvzf install-tl-unx.tar.gz
