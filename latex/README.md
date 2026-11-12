@@ -66,11 +66,10 @@ NO warranty, not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 cd
 mkdir build
 cd build
-curl -O http://ftp.jaist.ac.jp/pub/CTAN/systems/texlive/tlnet/install-tl-unx.tar.gz
+curl -O https://ftp.jaist.ac.jp/pub/CTAN/systems/texlive/tlnet/install-tl-unx.tar.gz
 tar xvzf install-tl-unx.tar.gz
 cd install-tl-20*
 sudo ./install-tl -no-gui  -repository https://ftp.jaist.ac.jp/pub/CTAN/systems/texlive/tlnet/
-
 ```
 
 すると、以下のような画面で入力待ちとなる。
